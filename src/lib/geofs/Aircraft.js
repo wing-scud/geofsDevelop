@@ -1,7 +1,7 @@
 import geofs from './geofs';
 import { V3 } from './utils';
 import Object3D from './Object3D';
-import audio from '../audio';
+import audio from './audio';
 import ui from '../ui/ui'
 
 let aircraft = {

@@ -9,10 +9,12 @@ import runwayslights from './runwayslights';
 import runways from './runways';
 import utils from './utils';
 import multiplayer from '../mutiplayer'
-
+import hackGeoFS from "./preferences"
+import audio from "./audio"
 
 window.PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
 window.geofs = window.geofs || {};
+hackGeoFS(geofs)
 geofs.includes = {};
 geofs.aircraft = aircraft;
 geofs.debug = debug;
@@ -20,6 +22,7 @@ geofs.frameCallbackStack = {};
 geofs.animation = animation;
 geofs.api = api;
 geofs.fx = fx;
+geofs.audio = audio;
 geofs.GlassPanel = GlassPanel;
 geofs.map = map;
 geofs.runwayslights = runwayslights;

@@ -457,5 +457,5 @@ var S2 = {
     },
 };
 
-// export { utils, V2, V3, M33, M3, S2 };
+export { utils, V2, V3, M33, M3, S2 };
 export default utils;
