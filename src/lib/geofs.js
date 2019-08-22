@@ -4,7 +4,7 @@ import ui from './ui/ui';
 import camera from './camera';
 import instruments from './instruments';
 import L from './lib/leaflet'
-
+import multiplayer from "./mutiplayer"
 L.Polyline.plotter = L.Polyline.extend({
     _lineMarkers: [],
     _editIcon: L.divIcon({

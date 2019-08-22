@@ -8,10 +8,10 @@ import map from './map';
 import runwayslights from './runwayslights';
 import runways from './runways';
 import utils from './utils';
+import multiplayer from '../mutiplayer'
 
 
-
-var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
+window.PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
 window.geofs = window.geofs || {};
 geofs.includes = {};
 geofs.aircraft = aircraft;
@@ -24,7 +24,7 @@ geofs.GlassPanel = GlassPanel;
 geofs.map = map;
 geofs.runwayslights = runwayslights;
 geofs.runways = runways;
-geofs.untils = untils;
+geofs.utils = utils;
 geofs.init = function(a) {
     geofs.PRODUCTION = geofs.PRODUCTION || !1;
     geofs.PRODUCTION || (geofs.killCache = `?kc=${Date.now()}`,

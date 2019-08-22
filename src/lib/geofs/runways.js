@@ -1,4 +1,4 @@
-runways = {
+var runways = {
   runwayNumberLimit: 4,
   refreshRate: 1E4,
   refreshDistanceThreshold: 0.1,
@@ -266,4 +266,4 @@ runways.runway.prototype = {
     this.destroyRunwayModel();
   },
 };
-export default runway;
+export default runways;

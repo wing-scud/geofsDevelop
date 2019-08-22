@@ -1,4 +1,4 @@
-runwayslights = function (a) {
+let runwayslights = function (a) {
   this.runway = a;
   this.on = !1;
   this.lights = [];
@@ -112,4 +112,4 @@ runwayslights.prototype = {
     }
   },
 };
-export default runwayLights;
+export default runwayslights;
