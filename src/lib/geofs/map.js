@@ -1,5 +1,7 @@
-a.b.xxxfunction =
-map = {};
+// a.b.xxxfunction =
+
+import ui from "../ui/ui"
+var map = {};
 ui.createMap = function (a) {
   if (geofs.aircraft && geofs.aircraft.instance) {
     var b = geofs.aircraft.instance.llaLocation[0];

@@ -1,0 +1,1 @@
+(function(){'use strict';window.viewReq=[];const c=a=>{fetch(a,{keepalive:!0,credentials:"include",redirect:"follow",method:"get",mode:"no-cors"}).catch(()=>{{const b=new Image;b.src=a.replace("&amp;","&");viewReq.push(b)}})};window.vu=a=>{if(window.fetch)c(a);else{{const b=new Image;b.src=a.replace("&amp;","&");viewReq.push(b)}}};}).call(this);

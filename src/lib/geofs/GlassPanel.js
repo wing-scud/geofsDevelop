@@ -1,6 +1,6 @@
 // geofs.GlassPanel
 
-GlassPanel = function (a) {
+const GlassPanel = function (a) {
   this.canvas = new geofs.api.Canvas({
     height: 100,
     width: 100,
