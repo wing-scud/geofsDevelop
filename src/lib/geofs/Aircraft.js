@@ -6,6 +6,9 @@ import controls from '../controls'
 import { list } from "./AircraftList"
 import rigidBody from '../rigidBody'
 import instruments from '../instruments'
+import audio from "../audio"
+import camera from "../camera"
+
 
 let aircraft = {
     default: 1,

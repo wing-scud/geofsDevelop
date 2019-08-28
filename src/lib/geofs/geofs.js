@@ -9,7 +9,6 @@ import runwayslights from './runwayslights';
 import runways from './runways';
 import utils from './utils';
 import { M33, V3 } from './utils'
-import flight from '../flight'
 import hackGeoFS from './preferences';
 import ui from '../ui/ui'
 import controls from '../controls'
@@ -17,6 +16,10 @@ import shadowGeofs from './shadow';
 import { list } from "./AircraftList"
 import objects from '../objects'
 import weather from '../weather'
+import multiplayer from "../multiplayer"
+import audio from "../audio"
+import camera from "../camera"
+import flight from "../flight"
 // import L from '../lib/leaflet'
 //var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
 window.geofs = window.geofs || {};

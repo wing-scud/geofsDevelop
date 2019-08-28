@@ -1,4 +1,5 @@
-window.audio = window.audio || {};
+
+const audio = window.audio || {};
 audio.init = function (a) {
   a = a || [];
   audio.soundplayer = audio.impl.webAudio.createPlayer() || audio.impl.html5.createPlayer();
@@ -321,4 +322,5 @@ audio.impl.cordova = {
     }
   },
 };
+export default audio
 

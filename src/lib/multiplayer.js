@@ -1,5 +1,6 @@
 import ui from './ui/ui'
-window.multiplayer = window.multiplayer || {};
+var multiplayer = window.multiplayer || {};
+console.log("init!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 geofs.multiplayerHost = geofs.multiplayerHost || 'https://net.geo-fs.com:8080';
 multiplayer.nbUsers = 0;
 multiplayer.users = {};
@@ -417,3 +418,4 @@ multiplayer.setNbUsers = function(a) {
 multiplayer.setChatMessage = function(a) {
     multiplayer.chatMessage = a;
 };
+export default multiplayer;

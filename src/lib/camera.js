@@ -4,7 +4,7 @@ import instruments from './instruments';
 import { V3, M33 } from './geofs/utils'
 import api from './geofs/api'
 import Object3D from './geofs/Object3D'
-window.camera = window.camera || {};
+const camera = window.camera || {};
 
 camera.animations = {
     orbitHorizontal: {
