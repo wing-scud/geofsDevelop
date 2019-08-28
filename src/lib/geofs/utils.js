@@ -58,18 +58,8 @@ utils.hashCode = function(a) {
     return `${b}`;
 };
 
-function clamp(a, b, c) {
-    return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a;
-}
 
-function fixAngle(a) {
-    return fixAngle360(a + 180) - 180;
-}
 
-function fixAngle360(a) {
-    a %= 360;
-    return a >= 0 ? a : a + 360;
-}
 
 function exponentialSmoothing(a, b, c, d) {
     SMOOTH_BUFFER[a] || (SMOOTH_BUFFER[a] = {

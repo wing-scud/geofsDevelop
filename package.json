@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "cesium": "^1.60.0",
+    "cors": "^2.8.5",
     "jquery": "^3.4.1",
+    "node-fetch": "^2.6.0",
     "vue": "^2.5.2"
   },
   "devDependencies": {

@@ -1,4 +1,6 @@
-let chat = {};
+import ui from './ui'
+
+const chat = {};
 chat.maxNumberMessages = 30;
 chat.init = function() {
     $('.geofs-chat-input').keydown((a) => {

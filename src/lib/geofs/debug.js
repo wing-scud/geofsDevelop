@@ -1,6 +1,8 @@
 class debug {};
 debug.logStack = [];
 debug.logStackMaxLength = 10;
+//var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
+var PAGE_PATH = "https://www.geo-fs.com/"
 debug.init = function() {
     debug.frameComplete = !0;
     debug.$panel = $('.geofs-debug');

@@ -1,6 +1,8 @@
  import geofs from '../geofs/geofs';
  import Overlay from '../Overlay';
  const hud = {};
+ var PAGE_PATH = "https://www.geo-fs.com/"
+     //var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
  hud.init = () => {
      hud.stall = new Overlay({
          name: 'stall',

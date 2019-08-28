@@ -22588,6 +22588,7 @@ geofs.runways = {
             }
             for (c in geofs.runways.nearRunways)
                 b[c] || geofs.runways.nearRunways[c].destroy();
+            console.log(b + "   b")
             geofs.runways.nearRunways = Object.assign({}, b);
             $("body").trigger("runwayUpdate")
         }
@@ -24419,6 +24420,10 @@ function ll2xy(a, b) {
 
 function clamp(a, b, c) {
     return a > c ? c : a < b ? b : a
+}
+
+function clamp(a, b, c) {
+    return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a
 }
 
 function geoDecodeLocation(a, b) {

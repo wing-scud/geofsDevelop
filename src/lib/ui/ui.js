@@ -1,6 +1,8 @@
 import panel from './panel';
 import chat from './chat';
 import hud from './hud';
+import camera from '../camera'
+import geofs from '../geofs/geofs'
 
 var ui = ui || {};
 ui.panel = panel;
