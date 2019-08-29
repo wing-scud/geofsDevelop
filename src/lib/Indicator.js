@@ -1,6 +1,7 @@
 import instruments from './instruments'
 import Overlay from './Overlay'
-const Indicator = function(a) {
+//指示器
+var Indicator = function(a) {
     this.definition = $.extend(this.definition, a);
     this.scale();
     const b = a.overlay;

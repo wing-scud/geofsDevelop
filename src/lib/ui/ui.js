@@ -5,6 +5,7 @@ import camera from '../camera'
 import geofs from '../geofs/geofs'
 
 var ui = ui || {};
+window.ui=ui
 ui.panel = panel;
 ui.chat = chat;
 ui.hud = hud;

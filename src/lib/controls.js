@@ -1,7 +1,9 @@
 import PID from './PID'
 import ui from './ui/ui'
 import camera from './camera'
-var controls = window.controls || {};
+import geofs  from './geofs/geofs'
+
+window.controls = window.controls || {};
 controls = {
     states: {},
     mouse: {},
@@ -37,6 +39,7 @@ controls.exponential = 1;
 controls.mixYawRollQuantity = 1;
 controls.mode = 'mouse';
 controls.init = function() {
+    console.log("init controls")
     controls.reset();
     geofs.addResizeHandler(controls.initViewportDimensions, controls);
     $(document).on('keydown', controls.keyDown).on('keyup', controls.keyUp);
@@ -59,6 +62,7 @@ controls.init = function() {
         controls.mouseHandler(a);
     });
     controls.mouseDownHandler = function(a) {
+        console.log("mouser down handle")
         controls.mouse.down = a.which;
         controls.mouse.down === 0 && (controls.mouse.down = 1);
         camera.isHandlingMouseRotation() && (a.preventDefault(),
@@ -76,6 +80,7 @@ controls.init = function() {
     $('.geofs-canvas-mouse-overlay').on('mousedown', controls.mouseDownHandler);
     $('.geofs-canvas-mouse-overlay').on('mouseup', controls.mouseUpHandler);
     $('.geofs-canvas-mouse-overlay').on('mousewheel', (a) => {
+        console.log("mouse wheel")
         a.originalEvent.wheelDelta / 120 > 0 ? camera.decreaseFOV() : camera.increaseFOV();
         a.preventDefault();
     });
@@ -454,6 +459,7 @@ controls.recenter = function() {
 controls.keyDown = function(a) {
     switch (a.which) {
         case geofs.preferences.keyboard.keys['Bank left'].keycode:
+            console.log("Bank left")
             controls.states.left = !0;
             a.returnValue = !1;
             controls.keyboard.override = !0;
@@ -831,7 +837,6 @@ controls.autopilot = {
     rollPID: new PID(0.02, 1E-5, 0),
     throttlePID: new PID(0.1, 0, 0),
 };
-ui.hud.autopilotIndicator = function() {};
 controls.autopilot.initUI = function() {
     let a = $('.geofs-autopilot-pad .control-pad-label'),
         b;

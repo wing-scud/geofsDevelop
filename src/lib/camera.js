@@ -2,9 +2,9 @@
 import geofs from './geofs/geofs';
 import instruments from './instruments';
 import { V3, M33 } from './geofs/utils'
-import api from './geofs/api'
-import Object3D from './geofs/Object3D'
-const camera = window.camera || {};
+import controls from "./controls"
+
+window.camera = window.camera || {};
 
 camera.animations = {
     orbitHorizontal: {
@@ -21,7 +21,7 @@ camera.animations = {
         max: 50,
     },
 };
-camera.currentMode = 0;
+camera.currentMode = 0;//设置跟随视角，按钮点击切换视角
 camera.currentModeName = 'follow';
 camera.lastCurrentMode = 0;
 camera.worldPosition = [0, 0, 0];
@@ -29,7 +29,7 @@ camera.openSlave = !1;
 camera.motionRange = [0.5, 0.5, 0.5];
 camera.FOVIncrement = 0.1;
 camera.defaultFOV = 1;
-camera.currentFOV = camera.defaultFOV;
+camera.currentFOV = camera.defaultFOV;//放大缩小级别，最大2.5最小0.2
 camera.minFOV = 0.2;
 camera.maxFOV = 2.5;
 camera.groundAvoidanceMargin = 1;
@@ -168,6 +168,7 @@ camera.cycle = function() {
     camera.set(a);
 };
 camera.set = function(a, b) {
+    console.log("camera .set")
     camera.currentDefinition = camera.modes[a] || camera.definitions[b] || camera.definitions[0];
     camera.currentMode = camera.currentDefinition.mode;
     camera.currentModeName = camera.currentDefinition.name;
@@ -246,6 +247,7 @@ camera.saveRotation = function() {
     if (camera.definitions) {
         const a = camera.definitions[camera.currentModeName];
         a.orientations.last = V3.dup(a.orientations.current);
+        console.log("a.orientations.last"+a.orientations.last)
     }
 };
 
@@ -273,12 +275,17 @@ camera.getFlytToCoordinates = function() {
     return a;
 };
 
+
+// function clamp(a, b, c) {
+//     return a > c ? c : a < b ? b : a
+// }
 function clamp(a, b, c) {
     return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a
 }
 
 camera.update = function(a) {
     let b = geofs.aircraft.instance;
+    console.log("camera update")
     if (geofs.aircraft.instance.object3d) {
         let c = geofs.aircraft.instance.object3d.getWorldFrame(),
             d = camera.definitions[camera.currentModeName];

@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Indicator from './Indicator'
 import camera from './camera'
-const instruments = window.instruments || {};
-var PAGE_PATH = "https://www.geo-fs.com//"
+var  instruments = window.instruments || {};
+var PAGE_PATH = 'http://localhost:3030/proxy/';
     //var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
 instruments.stackPosition = {
     x: 0,
@@ -2221,6 +2221,7 @@ instruments.updateCockpitPositions = function() {
     instruments.update(!0);
 };
 instruments.updateScreenPositions = function() {
+    console.log("instruments update")
     for (var a in instruments.list) {
         var b = instruments.list[a];
         camera.currentModeName == 'cockpit' ? b.updateCockpitPosition() : b.overlay && (b.overlay.rotation = 0,

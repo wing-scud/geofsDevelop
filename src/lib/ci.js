@@ -1,4 +1,4 @@
-const ci = {
+var ci = {
   latLngToPoint(t, i) {
     let e = this.projection.project(t),
       n = this.scale(i);

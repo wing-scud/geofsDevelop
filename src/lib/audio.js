@@ -1,5 +1,5 @@
 
-const audio = window.audio || {};
+window.audio = window.audio || {};
 audio.init = function (a) {
   a = a || [];
   audio.soundplayer = audio.impl.webAudio.createPlayer() || audio.impl.html5.createPlayer();
