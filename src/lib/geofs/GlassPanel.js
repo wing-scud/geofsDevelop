@@ -1,6 +1,6 @@
 
 import geofs from "./geofs"
-import Cesium from 'cesium/Cesium'
+// import Cesium from 'cesium/Cesium'
 
 var  GlassPanel = function (a) {
   this.canvas = new geofs.api.Canvas({

@@ -42,6 +42,7 @@ debug.error = function(a, b) {
         debug.throw(a)) : debug.log(b);
 };
 debug.log = function(a) {
+    console.log(e)
     debug.on ? (debug.$debugLog.html(`${debug.$debugLog.html()}<br/>${a}`),
         window.console && window.console.log && console.log(a)) : debug.stackLog(a);
 };
@@ -49,6 +50,7 @@ debug.debugger = function() {
     if (debug.on) { debugger; }
 };
 debug.throw = function(a) {
+    console.error(a)
     debug.on && a && setTimeout(() => {
         throw a;
     }, 0);

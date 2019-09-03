@@ -2,7 +2,7 @@
 
 import ui from './ui/ui'
 import geofs from "./geofs/geofs"
-import Cesium from 'cesium/Cesium'
+// import Cesium from 'cesium/Cesium'
 import flight from "./flight"
 import {fixAngle,M3,clamp,exponentialSmoothing,V3,xyz2lla,lla2xyz,EGM96_TO_WGS84} from "./geofs/utils"
 

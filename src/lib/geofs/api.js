@@ -3,8 +3,13 @@
 import geofs from "./geofs";
 import camera from "../camera";
 import { V3,M33,xyz2lla,V2,xy2ll,clamp,
+<<<<<<< HEAD
     lla2xyz,DEGREES_TO_RAD,RAD_TO_DEGREES,FEET_TO_METERS } from './utils'
 import Cesium from 'cesium/Cesium'
+=======
+    lla2xyz,DEGREES_TO_RAD,RAD_TO_DEGREES,FEET_TO_METERS,METERS_TO_LOCAL_LAT } from './utils'
+// import Cesium from 'cesium/Cesium'
+>>>>>>> 7f47baf4a196d6ddd72bcf0a9d9b327499519599
 
 
 var  api  = {};
