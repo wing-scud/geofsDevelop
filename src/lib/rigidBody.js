@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 //@ts-check
 import { M33 ,V3, xyz2lla} from './geofs/utils'
 import geofs from './geofs/geofs';
@@ -50,7 +48,6 @@ var GRAVITY = 9.81,
     SMOOTH_BUFFER = {},
     SMOOTHING_FACTOR = .2,
     SIX_STEP_WARNING = "#18a400 #2b9100 #487300 #835b00 #933700 #a71500".split(" ");
->>>>>>> 7f47baf4a196d6ddd72bcf0a9d9b327499519599
 
 //@ts-check
 import { M33 ,V3,GRAVITY,xyz2lla} from './geofs/utils'
