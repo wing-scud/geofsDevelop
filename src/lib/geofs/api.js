@@ -59,7 +59,6 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                         requestAnimationFrame(geofs.renderLoop);
                     },
                     geofs.renderLoop());
-         //  window.camera = api.viewer.camera
         } catch (c) {
             $.haring.create('GeoFS, Free Online Flight Simulator, requires WebGL in order to run. Please visit the <a href="/pages/instructions.php">instructions page</a> for more details', 'OK');
             console.log(c);

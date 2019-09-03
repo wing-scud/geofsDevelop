@@ -49,6 +49,9 @@ var GRAVITY = 9.81,
     SMOOTHING_FACTOR = .2,
     SIX_STEP_WARNING = "#18a400 #2b9100 #487300 #835b00 #933700 #a71500".split(" ");
 
+//@ts-check
+import { M33 ,V3,GRAVITY,xyz2lla} from './geofs/utils'
+import geofs from "./geofs/geofs"
 function rigidBody() {
     this.s_inverseMass = this.mass = 0;
     this.reset();

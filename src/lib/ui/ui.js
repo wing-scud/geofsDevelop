@@ -6,7 +6,7 @@ import geofs from '../geofs/geofs'
 import multiplayer from "../multiplayer"
 import camera from "../camera"
 import {DEGREES_TO_RAD} from "../geofs/utils"
-var ui = window.ui ||{
+window.ui = window.ui ||{
 };
 
 ui.panel=panel;

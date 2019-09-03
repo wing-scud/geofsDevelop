@@ -1,4 +1,4 @@
-//@ts-check
+
 
 import ui from './ui/ui'
 import geofs from "./geofs/geofs"

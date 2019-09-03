@@ -1,4 +1,4 @@
-//@ts-check
+
 import PID from './PID'
 import ui from './ui/ui'
 import camera from './camera'
@@ -492,7 +492,6 @@ controls.recenter = function() {
 controls.keyDown = function(a) {
     switch (a.which) {
         case geofs.preferences.keyboard.keys['Bank left'].keycode:
-            console.log("Bank left")
             controls.states.left = !0;
             a.returnValue = !1;
             controls.keyboard.override = !0;
@@ -539,6 +538,7 @@ controls.keyDown = function(a) {
             controls.setters.toggleParkingBrake.set();
             break;
         case geofs.preferences.keyboard.keys['Engine switch (on/off)'].keycode:
+            debugger
             geofs.aircraft.instance.engine.on ? geofs.aircraft.instance.stopEngine() : geofs.aircraft.instance.startEngine();
             break;
         case geofs.preferences.keyboard.keys['Gear toggle (up/down)'].keycode:

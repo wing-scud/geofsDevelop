@@ -2,9 +2,8 @@
 import Indicator from './Indicator'
 import camera from './camera'
 import geofs from "./geofs/geofs"
-import {VIEWPORT_REFERENCE_WIDTH,VIEWPORT_REFERENCE_HEIGHT,clamp,} from "./geofs/utils"
+import {VIEWPORT_REFERENCE_WIDTH,VIEWPORT_REFERENCE_HEIGHT,clamp,PAGE_PATH} from "./geofs/utils"
 window.instruments = window.instruments || {};
-var PAGE_PATH = 'http://localhost:3030/proxy/';
 instruments.stackPosition = {
     x: 0,
     y: 0,
