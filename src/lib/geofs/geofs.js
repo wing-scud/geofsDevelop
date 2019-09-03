@@ -198,8 +198,7 @@ geofs.frameCallback = function(a) {
         b <= 0 && (b = 1);
         b > 1E3 && (b = 1E3);
         a = b / 1E3;
-        flight.terrainElevationManagement();
-        debugger
+        flight.terrainElevationManagement()
         geofs.pause ? camera.update(a) : (controls.update(a),
             flight.tick(a, b),
             multiplayer.update(b),
