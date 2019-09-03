@@ -4,7 +4,7 @@ import geofs from "./geofs";
 import camera from "../camera";
 import { V3,M33,xyz2lla,V2,xy2ll,clamp,
     lla2xyz,DEGREES_TO_RAD,RAD_TO_DEGREES,FEET_TO_METERS,METERS_TO_LOCAL_LAT } from './utils'
-import Cesium from 'cesium/Cesium'
+// import Cesium from 'cesium/Cesium'
 
 
 var  api  = {};

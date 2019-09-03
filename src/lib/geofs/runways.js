@@ -1,7 +1,7 @@
 
 import { V2, V3 ,fixAngle, DEGREES_TO_RAD,FEET_TO_METERS,xy2ll,HALF_PI,clamp} from './utils'
 import geofs from "./geofs"
-import Cesium from 'cesium/Cesium'
+// import Cesium from 'cesium/Cesium'
 import $jscomp from "../jscomp"
 import majorRunwayGrid from "../majorRunwayGrid"
 var runways = {

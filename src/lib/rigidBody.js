@@ -1,4 +1,6 @@
-import { M33 ,V3} from './geofs/utils'
+//@ts-check
+import { M33 ,V3, xyz2lla} from './geofs/utils'
+import geofs from './geofs/geofs';
 var GRAVITY = 9.81,
     DEGREES_TO_RAD = Math.PI / 180,
     RAD_TO_DEGREES = 180 / Math.PI,

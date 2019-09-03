@@ -24,7 +24,7 @@ import camera from "../camera"
 import flight from "../flight"
 import  shadowGeofs from "./shadow"
 import instruments from "../instruments"
-import Cesium from "cesium/Cesium"
+// import Cesium from "cesium/Cesium"
 var geofs  =  window.geofs || {
 };
 geofs.aircraft=aircraft
@@ -200,6 +200,7 @@ geofs.frameCallback = function(a) {
         b > 1E3 && (b = 1E3);
         a = b / 1E3;
         flight.terrainElevationManagement();
+        debugger
         geofs.pause ? camera.update(a) : (controls.update(a),
             flight.tick(a, b),
             multiplayer.update(b),
