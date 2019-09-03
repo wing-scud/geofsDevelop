@@ -121,7 +121,6 @@ geofs.init = function(a) {
     });
     geofs.lastTime = geofs.utils.now();
     $(window).on("unload", geofs.unload)
-    
     geofs.api.addFrameCallback(geofs.frameCallback)
 };
 geofs.unload = function() {

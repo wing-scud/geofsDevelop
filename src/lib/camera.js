@@ -121,7 +121,6 @@ camera.cycle = function() {
     camera.set(a);
 };  
 camera.set = function(a, b) {
-    console.log("camera .set")
     camera.currentDefinition = camera.modes[a] || camera.definitions[b] || camera.definitions[0];
     camera.currentMode = camera.currentDefinition.mode;
     camera.currentModeName = camera.currentDefinition.name;

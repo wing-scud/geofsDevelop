@@ -3,7 +3,7 @@
 import geofs from "./geofs";
 import camera from "../camera";
 import { V3,M33,xyz2lla,V2,xy2ll,clamp,
-    lla2xyz,DEGREES_TO_RAD,RAD_TO_DEGREES,FEET_TO_METERS,METERS_TO_LOCAL_LAT } from './utils'
+    lla2xyz,DEGREES_TO_RAD,RAD_TO_DEGREES,FEET_TO_METERS } from './utils'
 import Cesium from 'cesium/Cesium'
 
 
@@ -59,7 +59,6 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                         requestAnimationFrame(geofs.renderLoop);
                     },
                     geofs.renderLoop());
-         //  window.camera = api.viewer.camera
         } catch (c) {
             $.haring.create('GeoFS, Free Online Flight Simulator, requires WebGL in order to run. Please visit the <a href="/pages/instructions.php">instructions page</a> for more details', 'OK');
             console.log(c);

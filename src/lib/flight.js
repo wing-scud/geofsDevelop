@@ -1,11 +1,11 @@
-
+//@ts-check
 import geofs from './geofs/geofs'
 import controls from './controls'
 import weather from "./weather"
 import camera from "./camera"
 import ui from "./ui/ui"
 import { clamp,V2,V3,M33,M3 ,TWO_PI,RAD_TO_DEGREES,MIN_DRAG_COEF,fixAngle,
-    DRAG_CONSTANT,xyz2lla,fixAngles,fixAngle360,METERS_TO_FEET} from './geofs/utils';
+    DRAG_CONSTANT,xyz2lla,fixAngles,fixAngle360,METERS_TO_FEET,KELVIN_OFFSET,GAS_CONSTANT,GRAVITY} from './geofs/utils';
     window.flight = window.flight || {};
 let currentAltitudeTestContext = {},
     pastAltitudeTestContext = {};
@@ -72,7 +72,7 @@ flight.tick = function(a, b) {
             t = 0;
             for (var F = geofs.aircraft.instance.balloons.length; t < F; t++) {
                 let M = geofs.aircraft.instance.balloons[t],
-                    bb = clamp(controls[M.controller.name], 0, 1);
+                    bb = clamp(controls[M.controller.name], 0, 1);  
                 E = M.temperature;
                 E += bb * M.heatingSpeed * d;
                 E -= M.coolingSpeed * (E - weather.atmosphere.airTempAtAltitude) * d;
