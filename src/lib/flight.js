@@ -1,6 +1,12 @@
 
-window.flight = window.flight || {};
-geofs.minPenetrationThreshold = 0.001;
+import geofs from './geofs/geofs'
+import controls from './controls'
+import weather from "./weather"
+import camera from "./camera"
+import ui from "./ui/ui"
+import { clamp,V2,V3,M33,M3 ,TWO_PI,RAD_TO_DEGREES,MIN_DRAG_COEF,fixAngle,
+    DRAG_CONSTANT,xyz2lla,fixAngles,fixAngle360,METERS_TO_FEET} from './geofs/utils';
+    window.flight = window.flight || {};
 let currentAltitudeTestContext = {},
     pastAltitudeTestContext = {};
 flight.tick = function(a, b) {
@@ -98,7 +104,7 @@ flight.tick = function(a, b) {
                         eb = V3.cross(ma, ka),
                         fb = V3.rotate(ma, eb, R);
                     if (r.area) {
-                        let ba = R * TWO_PI;
+                        let ba = R * TWO_PI;  
                         if (r.stalls == 1) {
                             var ca = R * RAD_TO_DEGREES,
                                 S = Math.abs(ca);
@@ -134,7 +140,7 @@ flight.tick = function(a, b) {
                 for (F = Ja.length; t < F; t++) {
                     var p = Ja[t],
                         q = p.part;
-                    q.contact = null;
+                    q.contact = null;  
                     const oa = V3.add(f.llaLocation, xyz2lla(p.worldPosition, f.llaLocation));
                     f.rigidBody.getVelocityInLocalPoint(p.worldPosition);
                     if (q.suspension) {
@@ -278,7 +284,7 @@ flight.tick = function(a, b) {
     f.htrAngularSpeed = fixAngles(f.htrAngularSpeed);
     f.htrAngularSpeed = V3.scale(f.htrAngularSpeed, 1 / b);
     f.htr = f.object3d.htr;
-    let Ca = 0;
+    let Ca = 0; 
     t = 0;
     for (F = f.wheels.length; t < F; t++) {
         const x = f.wheels[t];
@@ -503,7 +509,6 @@ flight.terrainElevationManagement = function() {
     const a = geofs.aircraft.instance;
     a.collResult = geofs.getCollisionResult([a.llaLocation[0], a.llaLocation[1], 0], null, null, currentAltitudeTestContext);
     a.collResult.normal = geofs.getNormalFromCollision(a.collResult, currentAltitudeTestContext);
-    console.log(a.collResult.normal + "  normal " + a.collResult.location)
     let b = a.collResult.location[2],
         c = geofs.getGroundAltitude(a.lastLlaLocation[0], a.lastLlaLocation[1], pastAltitudeTestContext).location[2],
         d = c - a.elevationAtPreviousLocation,

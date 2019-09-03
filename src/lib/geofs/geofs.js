@@ -1,18 +1,20 @@
+
 import aircraft from './Aircraft';
 import debug from './debug';
 import animation from './animation';
 import api from './api';
+// @ts-ignore
 import fx from './fx';
 import GlassPanel from './GlassPanel';
-import map from './map';
 import runwayslights from './runwayslights';
+// @ts-ignore
 import runways from './runways';
 import utils from './utils';
-import { M33, V3 } from './utils'
+import {  V3,VIEWPORT_REFERENCE_WIDTH  } from './utils'
 import hackGeoFS from './preferences';
+// @ts-ignore
 import ui from '../ui/ui'
 import controls from '../controls'
-import shadowGeofs from './shadow';
 import { list } from "./AircraftList"
 import objects from '../objects'
 import weather from '../weather'
@@ -20,73 +22,27 @@ import multiplayer from "../multiplayer"
 import audio from "../audio"
 import camera from "../camera"
 import flight from "../flight"
-// import L from '../lib/leaflet'
-//var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
-window.geofs = window.geofs || {};
-geofs.includes = {};
-geofs.aircraft = aircraft;
-geofs.aircraftList = list;
-geofs.debug = debug;
-geofs.frameCallbackStack = {};
-geofs.animation = animation;
-geofs.api = api;
-geofs.fx = fx;
-geofs.GlassPanel = GlassPanel;
-geofs.map = map;
+import  shadowGeofs from "./shadow"
+import instruments from "../instruments"
+import Cesium from "cesium/Cesium"
+var geofs  =  window.geofs || {
+};
+geofs.aircraft=aircraft
+geofs.animation=animation
+geofs.api=api
+geofs.debug=debug
+geofs.GlassPanel=GlassPanel
+geofs.fx=fx
+geofs.runways=runways
+geofs.utils=utils
+hackGeoFS(geofs)
+shadowGeofs(geofs)
 geofs.runwaysLights = runwayslights;
-geofs.runways = runways;
-geofs.utils = utils;
-geofs = hackGeoFS(geofs)
-geofs = shadowGeofs(geofs)
-var GRAVITY = 9.81,
-    DEGREES_TO_RAD = Math.PI / 180,
-    RAD_TO_DEGREES = 180 / Math.PI,
-    KMH_TO_MS = 1 / 3.6,
-    METERS_TO_FEET = 3.2808399,
-    FEET_TO_METERS = .3048,
-    LONGITUDE_TO_HOURS = .0666,
-    MERIDIONAL_RADIUS = 6378137,
-    EARTH_CIRCUMFERENCE = 2 * MERIDIONAL_RADIUS * Math.PI,
-    METERS_TO_LOCAL_LAT = 1 / (EARTH_CIRCUMFERENCE / 360),
-    WGS84_TO_EGM96 = -37,
-    EGM96_TO_WGS84 = 37,
-    PI = Math.PI,
-    HALF_PI = PI / 2,
-    TWO_PI = 2 * PI,
-    MS_TO_KNOTS = 1.94384449,
-    KNOTS_TO_MS = .514444444,
-    KMH_TO_KNOTS = .539956803,
-    AXIS_TO_INDEX = {
-        X: 0,
-        Y: 1,
-        Z: 2
-    },
-    AXIS_TO_VECTOR = {
-        X: [1, 0, 0],
-        Y: [0, 1, 0],
-        Z: [0, 0, 1]
-    },
-    KELVIN_OFFSET = 273.15,
-    TEMPERATURE_LAPSE_RATE = .0065,
-    AIR_DENSITY_SL = 1.22,
-    AIR_PRESSURE_SL = 101325,
-    AIR_TEMP_SL = 20,
-    DRAG_CONSTANT = .07,
-    MIN_DRAG_COEF = .02,
-    TOTAL_DRAG_CONSTANT = DRAG_CONSTANT + MIN_DRAG_COEF,
-    IDEAL_GAS_CONSTANT = 8.31447,
-    MOLAR_MASS_DRY_AIR = .0289644,
-    GAS_CONSTANT = IDEAL_GAS_CONSTANT / MOLAR_MASS_DRY_AIR,
-    GR_LM = GRAVITY * MOLAR_MASS_DRY_AIR / (IDEAL_GAS_CONSTANT * TEMPERATURE_LAPSE_RATE),
-    DEFAULT_AIRFOIL_ASPECT_RATIO = 7,
-    FOV = 60,
-    VIEWPORT_REFERENCE_WIDTH = 1800,
-    VIEWPORT_REFERENCE_HEIGHT = 800,
-    SMOOTH_BUFFER = {},
-    SMOOTHING_FACTOR = .2,
-    SIX_STEP_WARNING = "#18a400 #2b9100 #487300 #835b00 #933700 #a71500".split(" ");
-
-
+geofs.includes = {};
+geofs.aircraftList = list;
+geofs.frameCallbackStack = {};
+geofs.minPenetrationThreshold = 0.001;
+geofs.multiplayerHost = geofs.multiplayerHost || 'https://net.geo-fs.com:8080';
 geofs.init = function(a) {
     geofs.PRODUCTION = geofs.PRODUCTION || !1;
     geofs.PRODUCTION || (geofs.killCache = `?kc=${Date.now()}`,
@@ -165,7 +121,7 @@ geofs.init = function(a) {
     });
     geofs.lastTime = geofs.utils.now();
     $(window).on("unload", geofs.unload)
-        // $(window).unload(geofs.unload);
+    
     geofs.api.addFrameCallback(geofs.frameCallback)
 };
 geofs.unload = function() {
@@ -316,12 +272,6 @@ geofs.selectDropdown = function(a, b) {
         }
     }
 };
-
-function lla2xyz(a, b) {
-    b = ll2xy(a, b);
-    b[2] = a[2];
-    return b
-}
 geofs.fromHeadingPitchRoll = (a, b, c, d) => {
     d = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_X, -b);
     c = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, -c);
@@ -375,7 +325,7 @@ geofs.getGroundAltitude = function(a, b, c) {
     };
 };
 geofs.getCollisionResult = function(a, b, c, d) {
-    b && c ? (console.log(c + " c"), b = geofs.getAltitudeAtPointFromCollisionResult(c, [b[0], b[1], 0]),
+    b && c ? ( b = geofs.getAltitudeAtPointFromCollisionResult(c, [b[0], b[1], 0]),
 
         a = {
             location: [a[0], a[1], b],
@@ -384,7 +334,6 @@ geofs.getCollisionResult = function(a, b, c, d) {
     return a;
 };
 geofs.getAltitudeAtPointFromCollisionResult = function(a, b) {
-    console.log(a.location + "           " + a.normal + "  a" + b + '  b')
     return a.location[2] + -a.normal[0] / a.normal[2] * b[0] + -a.normal[1] / a.normal[2] * b[1];
 };
 geofs.getNormalFromCollision = function(a, b) {
@@ -445,7 +394,7 @@ window.addEventListener('deferredload', () => {
     geofs.init();
 });
 
-
+{
 // L.Polyline.plotter = L.Polyline.extend({
 //     _lineMarkers: [],
 //     _editIcon: L.divIcon({
@@ -595,7 +544,7 @@ window.addEventListener('deferredload', () => {
 // });
 // L.Polyline.Plotter = function(a, b) {
 //     return new L.Polyline.plotter(a, b);
-// };
+ };
 
 Math.sign = function(a) {
     return a < 0 ? -1 : 1;
@@ -604,8 +553,7 @@ Math.arrayToPrecision = function(a, b) {
     for (let c = a.length; c >= 0; c--) { a[c] && a[c].toFixed && (a[c] = parseFloat(a[c].toFixed(b))); }
     return a;
 };
-// /geofs utils
-// OverLay
+
 geofs.ajax = {};
 geofs.ajax.post = function(a, b, c, d) {
     b = JSON.stringify(b);
@@ -668,54 +616,4 @@ ui.vr = function(a) {
     geofs.vr = a;
 };
 'use strict';
-
-geofs.fx.lastRunwayTestLocation = [0, 0];
-geofs.runways.nearRunways = {};
-geofs.fx.litRunways = {};
-geofs.fx.particleBillboardOptions = {
-    sizeInMeters: !0,
-};
-geofs.fx.thresholdLightTemplate = [
-    [
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 'length'
-    ],
-    [
-        [1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1], 12
-    ],
-    [
-        [3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3], 1
-    ],
-    [
-        [0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0], 5
-    ],
-    [
-        [0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0], 1
-    ],
-    [
-        [0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0], 5
-    ],
-    [
-        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1], 1
-    ],
-    [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 5
-    ]
-];
-geofs.fx.templateCenter = [17, 2];
-$('body').on('runwayUpdate', () => {
-    geofs.runwaysLights.updateAll();
-});
-$('body').on('nightChange', () => {
-    geofs.runwaysLights.updateAll();
-});
-
-function clamp(a, b, c) {
-    return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a
-}
-function xy2ll(a, b) {
-    var c = [];
-    c[0] = a[1] * METERS_TO_LOCAL_LAT;
-    c[1] = a[0] / (Math.cos((b[0] + c[0]) * DEGREES_TO_RAD) * MERIDIONAL_RADIUS * DEGREES_TO_RAD);
-    return c
-}
 export default geofs;

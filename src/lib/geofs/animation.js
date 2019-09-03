@@ -1,4 +1,7 @@
-class animation {};
+//@ts-check
+import {clamp}from "./utils"
+import geofs from "./geofs"
+var  animation= {};
 animation.init = function() {};
 animation.getRampRatio = function(a, b) {
     if (b < 0 || b > 1) { return 0; }
@@ -12,9 +15,7 @@ animation.getRampRatio = function(a, b) {
     return a > c ? c + (b - f * d) / d * (a - c) : a + (d - (b - f * d)) / d * (c - a);
 };
 
-function clamp(a, b, c) {
-    return a > c ? c : a < b ? b : a
-}
+
 animation.getRampValue = function(a, b) {
     let c = 0;
     b > a[0] && b < a[3] && (c = b < a[1] ? 1 / (a[1] - a[0]) * (b - a[0]) : b > a[2] ? 1 - 1 / (a[3] - a[2]) * (b - a[2]) : 1);

@@ -1,60 +1,14 @@
-/* eslint-disable */
+
 import Indicator from './Indicator'
 import camera from './camera'
-var  instruments = window.instruments || {};
+import geofs from "./geofs/geofs"
+import {VIEWPORT_REFERENCE_WIDTH,VIEWPORT_REFERENCE_HEIGHT,clamp,} from "./geofs/utils"
+window.instruments = window.instruments || {};
 var PAGE_PATH = 'http://localhost:3030/proxy/';
-    //var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
 instruments.stackPosition = {
     x: 0,
     y: 0,
 };
-var GRAVITY = 9.81,
-    DEGREES_TO_RAD = Math.PI / 180,
-    RAD_TO_DEGREES = 180 / Math.PI,
-    KMH_TO_MS = 1 / 3.6,
-    METERS_TO_FEET = 3.2808399,
-    FEET_TO_METERS = .3048,
-    LONGITUDE_TO_HOURS = .0666,
-    MERIDIONAL_RADIUS = 6378137,
-    EARTH_CIRCUMFERENCE = 2 * MERIDIONAL_RADIUS * Math.PI,
-    METERS_TO_LOCAL_LAT = 1 / (EARTH_CIRCUMFERENCE / 360),
-    WGS84_TO_EGM96 = -37,
-    EGM96_TO_WGS84 = 37,
-    PI = Math.PI,
-    HALF_PI = PI / 2,
-    TWO_PI = 2 * PI,
-    MS_TO_KNOTS = 1.94384449,
-    KNOTS_TO_MS = .514444444,
-    KMH_TO_KNOTS = .539956803,
-    AXIS_TO_INDEX = {
-        X: 0,
-        Y: 1,
-        Z: 2
-    },
-    AXIS_TO_VECTOR = {
-        X: [1, 0, 0],
-        Y: [0, 1, 0],
-        Z: [0, 0, 1]
-    },
-    KELVIN_OFFSET = 273.15,
-    TEMPERATURE_LAPSE_RATE = .0065,
-    AIR_DENSITY_SL = 1.22,
-    AIR_PRESSURE_SL = 101325,
-    AIR_TEMP_SL = 20,
-    DRAG_CONSTANT = .07,
-    MIN_DRAG_COEF = .02,
-    TOTAL_DRAG_CONSTANT = DRAG_CONSTANT + MIN_DRAG_COEF,
-    IDEAL_GAS_CONSTANT = 8.31447,
-    MOLAR_MASS_DRY_AIR = .0289644,
-    GAS_CONSTANT = IDEAL_GAS_CONSTANT / MOLAR_MASS_DRY_AIR,
-    GR_LM = GRAVITY * MOLAR_MASS_DRY_AIR / (IDEAL_GAS_CONSTANT * TEMPERATURE_LAPSE_RATE),
-    DEFAULT_AIRFOIL_ASPECT_RATIO = 7,
-    FOV = 60,
-    VIEWPORT_REFERENCE_WIDTH = 1800,
-    VIEWPORT_REFERENCE_HEIGHT = 800,
-    SMOOTH_BUFFER = {},
-    SMOOTHING_FACTOR = .2,
-    SIX_STEP_WARNING = "#18a400 #2b9100 #487300 #835b00 #933700 #a71500".split(" ");
 instruments.margins = [0, 0, 0, 0];
 instruments.defaultMargin = 10;
 instruments.visible = !0;
@@ -2213,9 +2167,7 @@ instruments.update = function(a) {
     for (const b in instruments.list) { instruments.list[b].update(a); }
 };
 
-function clamp(a, b, c) {
-    return a > c ? c : a < b ? b : a;
-}
+
 instruments.updateCockpitPositions = function() {
     for (const a in instruments.list) { instruments.list[a].updateCockpitPosition(); }
     instruments.update(!0);

@@ -1,7 +1,7 @@
-/* eslint-disable */
+
 import geofs from './geofs/geofs';
 import instruments from './instruments';
-import { V3, M33 } from './geofs/utils'
+import { V3, M33,DEGREES_TO_RAD,clamp,fixAngle360,lookAt,fixAngle,clone,xyz2lla} from './geofs/utils'
 import controls from "./controls"
 
 window.camera = window.camera || {};
@@ -34,53 +34,6 @@ camera.minFOV = 0.2;
 camera.maxFOV = 2.5;
 camera.groundAvoidanceMargin = 1;
 camera.groundAvoidanceIgnore = 100;
-var GRAVITY = 9.81,
-    DEGREES_TO_RAD = Math.PI / 180,
-    RAD_TO_DEGREES = 180 / Math.PI,
-    KMH_TO_MS = 1 / 3.6,
-    METERS_TO_FEET = 3.2808399,
-    FEET_TO_METERS = .3048,
-    LONGITUDE_TO_HOURS = .0666,
-    MERIDIONAL_RADIUS = 6378137,
-    EARTH_CIRCUMFERENCE = 2 * MERIDIONAL_RADIUS * Math.PI,
-    METERS_TO_LOCAL_LAT = 1 / (EARTH_CIRCUMFERENCE / 360),
-    WGS84_TO_EGM96 = -37,
-    EGM96_TO_WGS84 = 37,
-    PI = Math.PI,
-    HALF_PI = PI / 2,
-    TWO_PI = 2 * PI,
-    MS_TO_KNOTS = 1.94384449,
-    KNOTS_TO_MS = .514444444,
-    KMH_TO_KNOTS = .539956803,
-    AXIS_TO_INDEX = {
-        X: 0,
-        Y: 1,
-        Z: 2
-    },
-    AXIS_TO_VECTOR = {
-        X: [1, 0, 0],
-        Y: [0, 1, 0],
-        Z: [0, 0, 1]
-    },
-    KELVIN_OFFSET = 273.15,
-    TEMPERATURE_LAPSE_RATE = .0065,
-    AIR_DENSITY_SL = 1.22,
-    AIR_PRESSURE_SL = 101325,
-    AIR_TEMP_SL = 20,
-    DRAG_CONSTANT = .07,
-    MIN_DRAG_COEF = .02,
-    TOTAL_DRAG_CONSTANT = DRAG_CONSTANT + MIN_DRAG_COEF,
-    IDEAL_GAS_CONSTANT = 8.31447,
-    MOLAR_MASS_DRY_AIR = .0289644,
-    GAS_CONSTANT = IDEAL_GAS_CONSTANT / MOLAR_MASS_DRY_AIR,
-    GR_LM = GRAVITY * MOLAR_MASS_DRY_AIR / (IDEAL_GAS_CONSTANT * TEMPERATURE_LAPSE_RATE),
-    DEFAULT_AIRFOIL_ASPECT_RATIO = 7,
-    FOV = 60,
-    VIEWPORT_REFERENCE_WIDTH = 1800,
-    VIEWPORT_REFERENCE_HEIGHT = 800,
-    SMOOTH_BUFFER = {},
-    SMOOTHING_FACTOR = .2,
-    SIX_STEP_WARNING = "#18a400 #2b9100 #487300 #835b00 #933700 #a71500".split(" ");
 camera.init = function() {
     camera.cam = geofs.api.initAndGetCamera();
     camera.lla = [0, 0, 0];
@@ -114,7 +67,7 @@ camera.decreaseFOV = function(a) {
     b < camera.minFOV && (b = camera.minFOV);
     camera.setFOV(b);
 };
-camera.reset = function() {
+camera.reset = function() {  
     camera.definitions = {
         follow: {
             orientation: [0, 5, 0],
@@ -166,7 +119,7 @@ camera.cycle = function() {
     let a = camera.currentMode + 1;
     a >= camera.modes.length && (a = 0);
     camera.set(a);
-};
+};  
 camera.set = function(a, b) {
     console.log("camera .set")
     camera.currentDefinition = camera.modes[a] || camera.definitions[b] || camera.definitions[0];
@@ -247,13 +200,8 @@ camera.saveRotation = function() {
     if (camera.definitions) {
         const a = camera.definitions[camera.currentModeName];
         a.orientations.last = V3.dup(a.orientations.current);
-        console.log("a.orientations.last"+a.orientations.last)
     }
 };
-
-function xyz2lla(a, b) {
-    return geofs.api.xyz2lla(a, b)
-}
 camera.setToNeutral = function() {
     const a = camera.definitions[camera.currentModeName];
     a.orientations.current = V3.dup(a.orientations.neutral);
@@ -274,15 +222,6 @@ camera.getFlytToCoordinates = function() {
         a[4] = !1) : a[4] = !0;
     return a;
 };
-
-
-// function clamp(a, b, c) {
-//     return a > c ? c : a < b ? b : a
-// }
-function clamp(a, b, c) {
-    return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a
-}
-
 camera.update = function(a) {
     let b = geofs.aircraft.instance;
     console.log("camera update")
@@ -352,7 +291,7 @@ camera.update = function(a) {
                 camera.lla = V3.add(b.llaLocation, xyz2lla(camera.worldPosition, b.llaLocation)),
                 camera.htr = [fixAngle360(camera.htr[0]), fixAngle360(-camera.htr[1]), -camera.htr[2]],
                 geofs.api.setCameraPositionAndOrientation(camera.cam, camera.lla, camera.htr));
-        }
+        } 
         camera.radianRoll = camera.htr[2] * DEGREES_TO_RAD;
         camera.openSlave && camera.updateSlaveData();
         camera.currentModeName == 'cockpit' && camera.hasMoved && (instruments.updateCockpitPositions(),
@@ -378,32 +317,5 @@ camera.updateSlaveData = function() {
     camera.transform = M33.setFromEuler([-camera.htr[1] * DEGREES_TO_RAD, -camera.htr[2] * DEGREES_TO_RAD, camera.htr[0] * DEGREES_TO_RAD]);
 };
 
-function lookAt(a, b, c) {
-    a = lla2xyz(V3.sub(a, b), b);
-    c = M33.makeOrthonormalFrame(a, c);
-    return M33.getOrientation(c)
-}
-
-function ll2xy(a, b) {
-    var c = [];
-    c[1] = a[0] / METERS_TO_LOCAL_LAT;
-    c[0] = a[1] / (1 / (Math.cos((b[0] + a[0]) * DEGREES_TO_RAD) * MERIDIONAL_RADIUS * DEGREES_TO_RAD));
-    return c
-}
-
-function lla2xyz(a, b) {
-    b = ll2xy(a, b);
-    b[2] = a[2];
-    return b
-}
-
-function fixAngle(a) {
-    return fixAngle360(a + 180) - 180
-}
-
-function fixAngle360(a) {
-    a %= 360;
-    return 0 <= a ? a : a + 360
-}
 
 export default camera;

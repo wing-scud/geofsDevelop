@@ -3,7 +3,7 @@ import instruments from './instruments'
 import { V3 } from './geofs/utils'
 
 
-var weather = window.weather || {};
+window.weather = window.weather || {};
 weather.dataProxy = `${geofs.url}/backend/weather/metar.php?icao=`;
 weather.minimumCloudCover = 10;
 weather.updateRate = 6E4;

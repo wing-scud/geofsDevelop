@@ -1,7 +1,13 @@
+//@ts-check
+
 import ui from './ui/ui'
-var multiplayer = window.multiplayer || {};
-console.log("init!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-geofs.multiplayerHost = geofs.multiplayerHost || 'https://net.geo-fs.com:8080';
+import geofs from "./geofs/geofs"
+import Cesium from 'cesium/Cesium'
+import flight from "./flight"
+import {fixAngle,M3,clamp,exponentialSmoothing,V3,xyz2lla,lla2xyz,EGM96_TO_WGS84} from "./geofs/utils"
+
+window.multiplayer = window.multiplayer || {};
+
 multiplayer.nbUsers = 0;
 multiplayer.users = {};
 multiplayer.visibleUsers = {};
@@ -207,7 +213,7 @@ multiplayer.updateCallback = function(a) {
     multiplayer.minPing = Math.min(multiplayer.minPing, c).toPrecision(2);
     multiplayer.serverTimeOffset = exponentialSmoothing('serverTimeOffset', b - (a.serverTime + c / 2), null, 0.01);
     c = clamp(multiplayer.minUpdateDelay - c, 0, multiplayer.minUpdateDelay);
-    multiplayer.myId = a.myId || null;
+    multiplayer.myId = a.myId || null; 
     multiplayer.chatMessageId = a.lastMsgId;
     multiplayer.started && (multiplayer.nextUpdateTime = b + c);
     if (a.chatMessages) {

@@ -1,6 +1,10 @@
-import ui from './ui'
+//@ts-check
 
-const chat = {};
+import ui from './ui'
+import geofs from "../geofs/geofs"
+import multiplayer from "../multiplayer"
+
+var chat = {};
 chat.maxNumberMessages = 30;
 chat.init = function() {
     $('.geofs-chat-input').keydown((a) => {

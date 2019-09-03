@@ -1,4 +1,6 @@
+
 import { M33, V3 } from './utils'
+import geofs from "./geofs"
 
 var Object3D = function(a) {
     a = a || {};

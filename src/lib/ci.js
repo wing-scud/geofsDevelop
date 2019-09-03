@@ -1,3 +1,5 @@
+// static geofs.js 的前面一堆代码，一系诶稀奇古怪的函数
+
 var ci = {
   latLngToPoint(t, i) {
     let e = this.projection.project(t),
@@ -43,7 +45,7 @@ var ci = {
     return new T(new M(s.lat - n, s.lng - o), new M(r.lat - n, r.lng - o));
   },
 };
-di = {
+var di = {
   R: 6378137,
   MAX_LATITUDE: 85.0511287798,
   project(t) {

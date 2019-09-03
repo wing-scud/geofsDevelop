@@ -1,7 +1,11 @@
-class debug {};
+
+import geofs from "./geofs"
+import instruments from "../instruments"
+import {V3,M33,xyz2lla} from "./utils"
+import ui from "../ui/ui"
+var  debug= {};
 debug.logStack = [];
 debug.logStackMaxLength = 10;
-//var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, '/');
 var PAGE_PATH = 'http://localhost:3030/proxy/';
 debug.init = function() {
     debug.frameComplete = !0;

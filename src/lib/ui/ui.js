@@ -1,14 +1,17 @@
+
 import panel from './panel';
 import chat from './chat';
 import hud from './hud';
-import camera from '../camera'
 import geofs from '../geofs/geofs'
+import multiplayer from "../multiplayer"
+import camera from "../camera"
+import {DEGREES_TO_RAD} from "../geofs/utils"
+var ui = window.ui ||{
+};
 
-var ui = ui || {};
-window.ui=ui
-ui.panel = panel;
-ui.chat = chat;
-ui.hud = hud;
+ui.panel=panel;
+ui.chat=chat;
+ui.hud=hud;
 ui.playerMarkers = {};
 ui.playerSymbols = {};
 ui.mouseUpHandlers = [];

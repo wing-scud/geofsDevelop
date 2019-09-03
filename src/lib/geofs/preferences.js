@@ -556,7 +556,6 @@ function hackGeoFS(geofs) {
         geofs.destroyPreferencePanel();
         geofs.savePreferences();
     };
-    return geofs
 }
 
 export default hackGeoFS;

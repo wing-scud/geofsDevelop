@@ -1,3 +1,4 @@
+//@ts-check
 const hi = {
   on(t, i, e) {
     if (typeof t === 'object') {

@@ -1,6 +1,8 @@
-// geofs.GlassPanel
 
-const GlassPanel = function (a) {
+import geofs from "./geofs"
+import Cesium from 'cesium/Cesium'
+
+var  GlassPanel = function (a) {
   this.canvas = new geofs.api.Canvas({
     height: 100,
     width: 100,

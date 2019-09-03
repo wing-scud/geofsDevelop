@@ -1,3 +1,5 @@
+//@ts-check
+import {M33,V3 } from "./utils"
 function shadowGeofs(geofs) {
     geofs.useSimpleShadow = function(a) {
         a == 0 ? (geofs.aircraft.instance && geofs.aircraft.instance.removeShadow(),
@@ -48,6 +50,5 @@ function shadowGeofs(geofs) {
             this._billboard.setLocation(a);
         },
     };
-    return geofs
 }
 export default shadowGeofs

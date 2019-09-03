@@ -1,11 +1,13 @@
+//@ts-check
 import PID from './PID'
 import ui from './ui/ui'
 import camera from './camera'
 import geofs  from './geofs/geofs'
-
-window.controls = window.controls || {};
-controls = {
-    states: {},
+import audio from "./audio"
+import instruments from "./instruments"
+import {fixAngle360 ,fixAngle, clamp,exponentialSmoothing ,V3}from "./geofs/utils"
+window.controls = window.controls || {
+    states:{},
     mouse: {},
 };
 controls.mouse.down = !1;
@@ -19,6 +21,41 @@ controls.keyboard.recenterRatio = 0.05;
 controls.keyboard.override = !1;
 controls.keyboard.overrideRudder = !1;
 controls.keyboard.exponential = 0;
+controls.roll = 0;
+controls.rawPitch = 0;
+controls.pitch = 0;
+controls.yaw = 0;
+controls.throttle = 0;
+controls.brakes = 0;
+controls.engine = {};
+controls.engine.on = !1;
+controls.elevatorTrim = 0;
+controls.elevatorTrimMin = -0.5;
+controls.elevatorTrimMax = 0.5;
+controls.elevatorTrimStep = 0.01;
+controls.gear = {};
+controls.gear.position = 0;
+controls.gear.target = 0;
+controls.flaps = {};
+controls.flaps.position = 0;
+controls.flaps.target = 0;
+controls.flaps.maxPosition = 1;
+controls.airbrakes = {};
+controls.airbrakes.position = 0;
+controls.airbrakes.target = 0;
+controls.optionalAnimatedPart = {};
+controls.optionalAnimatedPart.position = 0;
+controls.optionalAnimatedPart.target = 0;
+controls.states.left = !1;
+controls.states.right = !1;
+controls.states.up = !1;
+controls.states.down = !1;
+controls.states.rudderLeft = !1;
+controls.states.rudderRight = !1;
+controls.states.increaseThrottle = !1;
+controls.states.decreaseThrottle = !1;
+controls.mouse.xValue = 0;
+controls.mouse.yValue = 0;
 controls.touch = {
     pitch: 0,
     roll: 0,
@@ -29,10 +66,6 @@ controls.orientation = {
     values: [0, 0, 0],
     generalMultiplier: 1,
 };
-
-function clamp(a, b, c) {
-    return a > c ? c : a < b ? b : a
-}
 
 controls.mixYawRoll = !0;
 controls.exponential = 1;
@@ -62,7 +95,6 @@ controls.init = function() {
         controls.mouseHandler(a);
     });
     controls.mouseDownHandler = function(a) {
-        console.log("mouser down handle")
         controls.mouse.down = a.which;
         controls.mouse.down === 0 && (controls.mouse.down = 1);
         camera.isHandlingMouseRotation() && (a.preventDefault(),
@@ -73,6 +105,7 @@ controls.init = function() {
             camera.saveRotation());
     };
     controls.mouseUpHandler = function(a) {
+
         camera.isHandlingMouseRotation() && camera.saveRotation();
         a.preventDefault();
         controls.mouse.down = !1;
@@ -842,7 +875,7 @@ controls.autopilot.initUI = function() {
         b;
     controls.autopilot.setHeading = function(a) {
         const b = controls.autopilot.heading;
-        try {
+        try { 
             controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
                 $('.geofs-autopilot-heading').text(controls.autopilot.heading),
                 $('.legacyAutopilot .geofs-autopilot-heading').val(controls.autopilot.heading);
@@ -950,7 +983,7 @@ controls.autopilot.turnOff = function() {
 controls.autopilot.update = function(a) {
     let b = geofs.animation.values,
         c = controls.autopilot,
-        d = clamp(b.kias / 100, 1, 5),
+        d = clamp(b.kias / 100, 1, 5), 
         e = fixAngle(b.heading - c.heading);
     e = clamp(e, -c.maxBankAngle, c.maxBankAngle);
     controls.yaw = exponentialSmoothing('apYaw', e / -60, 0.1);
@@ -968,6 +1001,6 @@ controls.autopilot.update = function(a) {
     controls.rawPitch = exponentialSmoothing('apPitch', c.pitchPID.compute(-b.atilt, a) / d, 0.9);
     c.throttlePID.set(c.kias);
     controls.throttle = exponentialSmoothing('apThrottle', c.throttlePID.compute(b.kias, a), 0.9);
-    controls.throttle = clamp(controls.throttle, 0, 1);
+    controls.throttle = clamp( controls.throttle, 0, 1);
 };
 export default controls;

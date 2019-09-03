@@ -1,6 +1,7 @@
-/* eslint-disable */
+//@ts-check
 import ui from './ui'
-const panel = {
+import geofs from "../geofs/geofs"
+var  panel = {
     init() {
         $(document).on('click', '[data-toggle-panel]', function(a) {
             ui.panel.toggle($(this).attr('data-toggle-panel'));

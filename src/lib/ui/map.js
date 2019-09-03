@@ -1,6 +1,10 @@
-// a.b.xxxfunction =
 
-import ui from "../ui/ui"
+
+
+// @ts-ignore
+import ui from "../ui/ui.js"
+import geofs from "../geofs/geofs"
+
 var map = {};
 ui.createMap = function (a) {
   if (geofs.aircraft && geofs.aircraft.instance) {
