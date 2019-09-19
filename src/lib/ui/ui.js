@@ -2,10 +2,11 @@
 import panel from './panel';
 import chat from './chat';
 import hud from './hud';
-import geofs from '../geofs/geofs'
-import multiplayer from "../multiplayer"
-import camera from "../camera"
-import {DEGREES_TO_RAD} from "../geofs/utils"
+import geofs from '../geofs'
+import multiplayer from "../modules/multiplayer"
+import camera from "../modules/camera"
+import {DEGREES_TO_RAD} from "../utils/utils"
+import map from "./map"
 window.ui = window.ui ||{
 };
 
@@ -139,4 +140,60 @@ ui.runMouseUpHandlers = function(a) {
 ui.closePreferencePanel = function() {
     ui.panel.hide('.geofs-preference-list', !0);
 };
+ui.Text = function(a, b) {
+    b = $.extend({}, this.defaultOptions, b);
+    b.text = `${a}`;
+    this._overlay = new geofs.api.cssTransform(b);
+};
+ui.Text.prototype = {
+    defaultOptions: {
+        rescale: !1,
+        anchor: {
+            x: 0,
+            y: 0,
+        },
+    },
+    show() {
+        this._overlay.setVisibility(!0);
+    },
+    hide() {
+        this._overlay.setVisibility(!1);
+    },
+    setText(a) {
+        this._overlay.setText(a);
+    },
+    destroy() {
+        this._overlay.destroy();
+    },
+};
+ui.clearPlayerList = function() {
+    $('.geofs-player-list').html('');
+};
+ui.initPlayerList = function() {};
+
+
+ui.notification = {};
+ui.notification.show = function(a) {
+    geofs.api.notify(a);
+};
+ui.vr = function(a) {
+    a ? ($('body').addClass('geofs-vr'),
+        camera.set(1, 'cockpit')) : $(body).removeClass('geofs-vr');
+    instruments.toggle();
+    geofs.api.vr(a);
+    geofs.vr = a;
+};
+ui.createMap = function (a) {
+  if (geofs.aircraft && geofs.aircraft.instance) {
+    var b = geofs.aircraft.instance.llaLocation[0];
+    var c = geofs.aircraft.instance.llaLocation[1];
+  } else {
+    b = a.lat,
+    c = a.lon;
+  }
+  ui.mapInstance ? (ui.mapInstance.startMap(),
+  ui.mapInstance.updateMap(b, c)) : ui.mapInstance = new map(a, b, c);
+}
+;
+
 export default ui;

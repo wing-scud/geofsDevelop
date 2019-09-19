@@ -1,8 +1,8 @@
-//@ts-check
+
 
 import ui from './ui'
-import geofs from "../geofs/geofs"
-import multiplayer from "../multiplayer"
+import geofs from "../geofs"
+import multiplayer from "../modules/multiplayer"
 
 var chat = {};
 chat.maxNumberMessages = 30;

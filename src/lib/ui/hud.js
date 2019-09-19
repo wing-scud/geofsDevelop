@@ -1,6 +1,6 @@
 //@ts-check
-import geofs from '../geofs/geofs';
- import Overlay from '../Overlay';
+import geofs from '../geofs';
+ import Overlay from '../modules/Overlay';
  const hud = {};
  var PAGE_PATH = 'http://localhost:3030/proxy/';
  hud.init = () => {

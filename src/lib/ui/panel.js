@@ -1,6 +1,6 @@
-//@ts-check
+
 import ui from './ui'
-import geofs from "../geofs/geofs"
+import geofs from "../geofs"
 var  panel = {
     init() {
         $(document).on('click', '[data-toggle-panel]', function(a) {

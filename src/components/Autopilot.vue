@@ -1,13 +1,12 @@
 <template>
-
+<div>
+</div>
 </template>
-
 <script>
 export default {
-  name: '',
+  name: 'Autopilot',
   data() {
     return {
-    
     };
   },
   created() {

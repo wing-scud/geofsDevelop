@@ -3,21 +3,9 @@
 
 // @ts-ignore
 import ui from "../ui/ui.js"
-import geofs from "../geofs/geofs"
+import geofs from "../geofs"
 
 var map = {};
-ui.createMap = function (a) {
-  if (geofs.aircraft && geofs.aircraft.instance) {
-    var b = geofs.aircraft.instance.llaLocation[0];
-    var c = geofs.aircraft.instance.llaLocation[1];
-  } else {
-    b = a.lat,
-    c = a.lon;
-  }
-  ui.mapInstance ? (ui.mapInstance.startMap(),
-  ui.mapInstance.updateMap(b, c)) : ui.mapInstance = new map(a, b, c);
-}
-;
 map = function (a, b, c) {
   this.dontMoveTimeoutValue = 1E4;
   this._options = a = a || {};
