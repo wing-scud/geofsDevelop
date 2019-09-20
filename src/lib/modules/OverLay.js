@@ -1,4 +1,3 @@
-//覆盖图 ，拿取图片
 import camera from './camera'
 import {S2,VIEWPORT_REFERENCE_WIDTH,
     VIEWPORT_REFERENCE_HEIGHT,DEGREES_TO_RAD,M33 } from "../utils/utils"

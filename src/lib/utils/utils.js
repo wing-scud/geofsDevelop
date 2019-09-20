@@ -539,539 +539,162 @@ function geoDecodeLocation(a, b) {
     geofs.api.reverserGeocode(a, b)
 }
 
-const PID = function (a, b, c) {
+var PID = function(a, b, c) {
     this._kp = a;
     this._ki = b;
     this._kd = c;
-    this.reset();
-  };
-  PID.prototype.reset = function () {
-    this._iTerm = this._lastError = this._lastInput = 0;
-  }
-  ;
-  PID.prototype.set = function (a, b, c) {
+    this.reset()
+};
+PID.prototype.reset = function() {
+    this._iTerm = this._lastError = this._lastInput = 0
+};
+PID.prototype.set = function(a, b, c) {
     this._minOutput = b;
     this._maxOutput = c;
-    this._setPoint = a;
-  }
-  ;
-  PID.prototype.compute = function (a, b) {
-    const c = this._setPoint - a;
+    this._setPoint = a
+};
+PID.prototype.compute = function(a, b) {
+    var c = this._setPoint - a;
     this._iTerm += clamp(c * b * this._ki, this._minOutput, this._maxOutput);
     clamp(c * b * this._ki, this._minOutput, this._maxOutput);
     b = (a - this._lastInput) / b;
     this._lastErr = c;
     this._lastInput = a;
-    return clamp(this._kp * c + this._iTerm - this._kd * b, this._minOutput, this._maxOutput);
-  }
-//     v.extend = function (t) {
-//     let e = function () {
-//         this.initialize && this.initialize.apply(this, arguments),
-//         this.callInitHooks();
-//       },
-//       n = e.__super__ = this.prototype,
-//       o = Qt(n);
-//     o.constructor = e,
-//     e.prototype = o;
-//     for (const s in this) { this.hasOwnProperty(s) && s !== 'prototype' && s !== '__super__' && (e[s] = this[s]); }
-//     return t.statics && (i(e, t.statics),
-//     delete t.statics),
-//     t.includes && (y(t.includes),
-//     i(...[o].concat(t.includes)),
-//     delete t.includes),
-//     o.options && (t.options = i(Qt(o.options), t.options)),
-//     i(o, t),
-//     o._initHooks = [],
-//     o.callInitHooks = function () {
-//       if (!this._initHooksCalled) {
-//         n.callInitHooks && n.callInitHooks.call(this),
-//         this._initHooksCalled = !0;
-//         for (let t = 0, i = o._initHooks.length; t < i; t++) { o._initHooks[t].call(this); }
-//       }
-//     }
-//     ,
-//     e;
-//   }
-//   ,
-//   v.include = function (t) {
-//     return i(this.prototype, t),
-//     this;
-//   }
-//   ,
-//   v.mergeOptions = function (t) {
-//     return i(this.prototype.options, t),
-//     this;
-//   }
-//   ,
-//   v.addInitHook = function (t) {
-//     let i = Array.prototype.slice.call(arguments, 1),
-//       e = typeof t === 'function' ? t : function () {
-//         this[t].apply(this, i);
-//       }
-//       ;
-//     return this.prototype._initHooks = this.prototype._initHooks || [],
-//     this.prototype._initHooks.push(e),
-//     this;
-//   }
-//   ;
-//   x.prototype = {
-//     clone() {
-//       return new x(this.x, this.y);
-//     },
-//     add(t) {
-//       return this.clone()._add(w(t));
-//     },
-//     _add(t) {
-//       return this.x += t.x,
-//       this.y += t.y,
-//       this;
-//     },
-//     subtract(t) {
-//       return this.clone()._subtract(w(t));
-//     },
-//     _subtract(t) {
-//       return this.x -= t.x,
-//       this.y -= t.y,
-//       this;
-//     },
-//     divideBy(t) {
-//       return this.clone()._divideBy(t);
-//     },
-//     _divideBy(t) {
-//       return this.x /= t,
-//       this.y /= t,
-//       this;
-//     },
-//     multiplyBy(t) {
-//       return this.clone()._multiplyBy(t);
-//     },
-//     _multiplyBy(t) {
-//       return this.x *= t,
-//       this.y *= t,
-//       this;
-//     },
-//     scaleBy(t) {
-//       return new x(this.x * t.x, this.y * t.y);
-//     },
-//     unscaleBy(t) {
-//       return new x(this.x / t.x, this.y / t.y);
-//     },
-//     round() {
-//       return this.clone()._round();
-//     },
-//     _round() {
-//       return this.x = Math.round(this.x),
-//       this.y = Math.round(this.y),
-//       this;
-//     },
-//     floor() {
-//       return this.clone()._floor();
-//     },
-//     _floor() {
-//       return this.x = Math.floor(this.x),
-//       this.y = Math.floor(this.y),
-//       this;
-//     },
-//     ceil() {
-//       return this.clone()._ceil();
-//     },
-//     _ceil() {
-//       return this.x = Math.ceil(this.x),
-//       this.y = Math.ceil(this.y),
-//       this;
-//     },
-//     trunc() {
-//       return this.clone()._trunc();
-//     },
-//     _trunc() {
-//       return this.x = li(this.x),
-//       this.y = li(this.y),
-//       this;
-//     },
-//     distanceTo(t) {
-//       let i = (t = w(t)).x - this.x,
-//         e = t.y - this.y;
-//       return Math.sqrt(i * i + e * e);
-//     },
-//     equals(t) {
-//       return (t = w(t)).x === this.x && t.y === this.y;
-//     },
-//     contains(t) {
-//       return t = w(t),
-//       Math.abs(t.x) <= Math.abs(this.x) && Math.abs(t.y) <= Math.abs(this.y);
-//     },
-//     toString() {
-//       return `Point(${a(this.x)}, ${a(this.y)})`;
-//     },
-//   };
-//   P.prototype = {
-//     extend(t) {
-//       return t = w(t),
-//       this.min || this.max ? (this.min.x = Math.min(t.x, this.min.x),
-//       this.max.x = Math.max(t.x, this.max.x),
-//       this.min.y = Math.min(t.y, this.min.y),
-//       this.max.y = Math.max(t.y, this.max.y)) : (this.min = t.clone(),
-//       this.max = t.clone()),
-//       this;
-//     },
-//     getCenter(t) {
-//       return new x((this.min.x + this.max.x) / 2, (this.min.y + this.max.y) / 2, t);
-//     },
-//     getBottomLeft() {
-//       return new x(this.min.x, this.max.y);
-//     },
-//     getTopRight() {
-//       return new x(this.max.x, this.min.y);
-//     },
-//     getTopLeft() {
-//       return this.min;
-//     },
-//     getBottomRight() {
-//       return this.max;
-//     },
-//     getSize() {
-//       return this.max.subtract(this.min);
-//     },
-//     contains(t) {
-//       let i,
-//         e;
-//       return (t = typeof t[0] === 'number' || t instanceof x ? w(t) : b(t)) instanceof P ? (i = t.min,
-//       e = t.max) : i = e = t,
-//       i.x >= this.min.x && e.x <= this.max.x && i.y >= this.min.y && e.y <= this.max.y;
-//     },
-//     intersects(t) {
-//       t = b(t);
-//       let i = this.min,
-//         e = this.max,
-//         n = t.min,
-//         o = t.max,
-//         s = o.x >= i.x && n.x <= e.x,
-//         r = o.y >= i.y && n.y <= e.y;
-//       return s && r;
-//     },
-//     overlaps(t) {
-//       t = b(t);
-//       let i = this.min,
-//         e = this.max,
-//         n = t.min,
-//         o = t.max,
-//         s = o.x > i.x && n.x < e.x,
-//         r = o.y > i.y && n.y < e.y;
-//       return s && r;
-//     },
-//     isValid() {
-//       return !(!this.min || !this.max);
-//     },
-//   },
-//   T.prototype = {
-//     extend(t) {
-//       let i,
-//         e,
-//         n = this._southWest,
-//         o = this._northEast;
-//       if (t instanceof M) {
-//         i = t,
-//         e = t;
-//       } else {
-//         if (!(t instanceof T)) { return t ? this.extend(C(t) || z(t)) : this; }
-//         if (i = t._southWest,
-//         e = t._northEast,
-//         !i || !e) { return this; }
-//       }
-//       return n || o ? (n.lat = Math.min(i.lat, n.lat),
-//       n.lng = Math.min(i.lng, n.lng),
-//       o.lat = Math.max(e.lat, o.lat),
-//       o.lng = Math.max(e.lng, o.lng)) : (this._southWest = new M(i.lat, i.lng),
-//       this._northEast = new M(e.lat, e.lng)),
-//       this;
-//     },
-//     pad(t) {
-//       let i = this._southWest,
-//         e = this._northEast,
-//         n = Math.abs(i.lat - e.lat) * t,
-//         o = Math.abs(i.lng - e.lng) * t;
-//       return new T(new M(i.lat - n, i.lng - o), new M(e.lat + n, e.lng + o));
-//     },
-//     getCenter() {
-//       return new M((this._southWest.lat + this._northEast.lat) / 2, (this._southWest.lng + this._northEast.lng) / 2);
-//     },
-//     getSouthWest() {
-//       return this._southWest;
-//     },
-//     getNorthEast() {
-//       return this._northEast;
-//     },
-//     getNorthWest() {
-//       return new M(this.getNorth(), this.getWest());
-//     },
-//     getSouthEast() {
-//       return new M(this.getSouth(), this.getEast());
-//     },
-//     getWest() {
-//       return this._southWest.lng;
-//     },
-//     getSouth() {
-//       return this._southWest.lat;
-//     },
-//     getEast() {
-//       return this._northEast.lng;
-//     },
-//     getNorth() {
-//       return this._northEast.lat;
-//     },
-//     contains(t) {
-//       t = typeof t[0] === 'number' || t instanceof M || 'lat' in t ? C(t) : z(t);
-//       let i,
-//         e,
-//         n = this._southWest,
-//         o = this._northEast;
-//       return t instanceof T ? (i = t.getSouthWest(),
-//       e = t.getNorthEast()) : i = e = t,
-//       i.lat >= n.lat && e.lat <= o.lat && i.lng >= n.lng && e.lng <= o.lng;
-//     },
-//     intersects(t) {
-//       t = z(t);
-//       let i = this._southWest,
-//         e = this._northEast,
-//         n = t.getSouthWest(),
-//         o = t.getNorthEast(),
-//         s = o.lat >= i.lat && n.lat <= e.lat,
-//         r = o.lng >= i.lng && n.lng <= e.lng;
-//       return s && r;
-//     },
-//     overlaps(t) {
-//       t = z(t);
-//       let i = this._southWest,
-//         e = this._northEast,
-//         n = t.getSouthWest(),
-//         o = t.getNorthEast(),
-//         s = o.lat > i.lat && n.lat < e.lat,
-//         r = o.lng > i.lng && n.lng < e.lng;
-//       return s && r;
-//     },
-//     toBBoxString() {
-//       return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(',');
-//     },
-//     equals(t, i) {
-//       return !!t && (t = z(t),
-//       this._southWest.equals(t.getSouthWest(), i) && this._northEast.equals(t.getNorthEast(), i));
-//     },
-//     isValid() {
-//       return !(!this._southWest || !this._northEast);
-//     },
-//   },
-//   M.prototype = {
-//     equals(t, i) {
-//       return !!t && (t = C(t),
-//       Math.max(Math.abs(this.lat - t.lat), Math.abs(this.lng - t.lng)) <= (void 0 === i ? 1e-9 : i));
-//     },
-//     toString(t) {
-//       return `LatLng(${a(this.lat, t)}, ${a(this.lng, t)})`;
-//     },
-//     distanceTo(t) {
-//       return _i.distance(this, C(t));
-//     },
-//     wrap() {
-//       return _i.wrapLatLng(this);
-//     },
-//     toBounds(t) {
-//       let i = 180 * t / 40075017,
-//         e = i / Math.cos(Math.PI / 180 * this.lat);
-//       return z([this.lat - i, this.lng - e], [this.lat + i, this.lng + e]);
-//     },
-//     clone() {
-//       return new M(this.lat, this.lng, this.alt);
-//     },
-//   };
+    return clamp(this._kp * c + this._iTerm - this._kd * b, this._minOutput, this._maxOutput)
+};
 
-// const hi = {
-//     on(t, i, e) {
-//       if (typeof t === 'object') {
-//         for (const n in t) { this._on(n, t[n], i); }
-//       } else {
-//         for (let o = 0, s = (t = u(t)).length; o < s; o++) { this._on(t[o], i, e); }
-//       }
-//       return this;
-//     },
-//     off(t, i, e) {
-//       if (t) {
-//         if (typeof t === 'object') {
-//           for (const n in t) { this._off(n, t[n], i); }
-//         } else {
-//           for (let o = 0, s = (t = u(t)).length; o < s; o++) { this._off(t[o], i, e); }
-//         }
-//       } else { delete this._events; }
-//       return this;
-//     },
-//     _on(t, i, e) {
-//       this._events = this._events || {};
-//       let n = this._events[t];
-//       n || (n = [],
-//       this._events[t] = n),
-//       e === this && (e = void 0);
-//       for (var o = {
-//           fn: i,
-//           ctx: e,
-//         }, s = n, r = 0, a = s.length; r < a; r++) {
-//         if (s[r].fn === i && s[r].ctx === e) { return; }
-//       }
-//       s.push(o);
-//     },
-//     _off(t, i, e) {
-//       let n,
-//         o,
-//         s;
-//       if (this._events && (n = this._events[t])) {
-//         if (i) {
-//           if (e === this && (e = void 0),
-//           n) {
-//             for (o = 0,
-//             s = n.length; o < s; o++) {
-//               const a = n[o];
-//               if (a.ctx === e && a.fn === i) {
-//                 return a.fn = r,
-//                 this._firingCount && (this._events[t] = n = n.slice()),
-//                 void n.splice(o, 1);
-//               }
-//             }
-//           }
-//         } else {
-//           for (o = 0,
-//           s = n.length; o < s; o++) { n[o].fn = r; }
-//           delete this._events[t];
-//         }
-//       }
-//     },
-//     fire(t, e, n) {
-//       if (!this.listens(t, n)) { return this; }
-//       const o = i({}, e, {
-//         type: t,
-//         target: this,
-//         sourceTarget: e && e.sourceTarget || this,
-//       });
-//       if (this._events) {
-//         const s = this._events[t];
-//         if (s) {
-//           this._firingCount = this._firingCount + 1 || 1;
-//           for (let r = 0, a = s.length; r < a; r++) {
-//             const h = s[r];
-//             h.fn.call(h.ctx || this, o);
-//           }
-//           this._firingCount--;
-//         }
-//       }
-//       return n && this._propagateEvent(o),
-//       this;
-//     },
-//     listens(t, i) {
-//       const e = this._events && this._events[t];
-//       if (e && e.length) { return !0; }
-//       if (i) {
-//         for (const n in this._eventParents) {
-//           if (this._eventParents[n].listens(t, i)) { return !0; }
-//         }
-//       }
-//       return !1;
-//     },
-//     once(t, i, n) {
-//       if (typeof t === 'object') {
-//         for (const o in t) { this.once(o, t[o], i); }
-//         return this;
-//       }
-//       var s = e(function () {
-//         this.off(t, i, n).off(t, s, n);
-//       }, this);
-//       return this.on(t, i, n).on(t, s, n);
-//     },
-//     addEventParent(t) {
-//       return this._eventParents = this._eventParents || {},
-//       this._eventParents[n(t)] = t,
-//       this;
-//     },
-//     removeEventParent(t) {
-//       return this._eventParents && delete this._eventParents[n(t)],
-//       this;
-//     },
-//     _propagateEvent(t) {
-//       for (const e in this._eventParents) {
-//         this._eventParents[e].fire(t.type, i({
-//           layer: t.target,
-//           propagatedFrom: t.target,
-//         }, t), !0);
-//       }
-//     },
-//   };
-//   hi.addEventListener = hi.on,
-//   hi.removeEventListener = hi.clearAllEventListeners = hi.off,
-//   hi.addOneTimeEventListener = hi.once,
-//   hi.fireEvent = hi.fire,
-//   hi.hasEventListeners = hi.listens;
-  // static geofs.js 的前面一堆代码，一系诶稀奇古怪的函数
-  
-//   var ci = {
-//     latLngToPoint(t, i) {
-//       let e = this.projection.project(t),
-//         n = this.scale(i);
-//       return this.transformation._transform(e, n);
-//     },
-//     pointToLatLng(t, i) {
-//       let e = this.scale(i),
-//         n = this.transformation.untransform(t, e);
-//       return this.projection.unproject(n);
-//     },
-//     project(t) {
-//       return this.projection.project(t);
-//     },
-//     unproject(t) {
-//       return this.projection.unproject(t);
-//     },
-//     scale(t) {
-//       return 256 * Math.pow(2, t);
-//     },
-//     zoom(t) {
-//       return Math.log(t / 256) / Math.LN2;
-//     },
-//     getProjectedBounds(t) {
-//       if (this.infinite) { return null; }
-//       let i = this.projection.bounds,
-//         e = this.scale(t);
-//       return new P(this.transformation.transform(i.min, e), this.transformation.transform(i.max, e));
-//     },
-//     infinite: !1,
-//     wrapLatLng(t) {
-//       const i = this.wrapLng ? s(t.lng, this.wrapLng, !0) : t.lng;
-//       return new M(this.wrapLat ? s(t.lat, this.wrapLat, !0) : t.lat, i, t.alt);
-//     },
-//     wrapLatLngBounds(t) {
-//       let i = t.getCenter(),
-//         e = this.wrapLatLng(i),
-//         n = i.lat - e.lat,
-//         o = i.lng - e.lng;
-//       if (n === 0 && o === 0) { return t; }
-//       let s = t.getSouthWest(),
-//         r = t.getNorthEast();
-//       return new T(new M(s.lat - n, s.lng - o), new M(r.lat - n, r.lng - o));
-//     },
-//   };
-//   var di = {
-//     R: 6378137,
-//     MAX_LATITUDE: 85.0511287798,
-//     project(t) {
-//       let i = Math.PI / 180,
-//         e = this.MAX_LATITUDE,
-//         n = Math.max(Math.min(e, t.lat), -e),
-//         o = Math.sin(n * i);
-//       return new x(this.R * t.lng * i, this.R * Math.log((1 + o) / (1 - o)) / 2);
-//     },
-//     unproject(t) {
-//       const i = 180 / Math.PI;
-//       return new M((2 * Math.atan(Math.exp(t.y / this.R)) - Math.PI / 2) * i, t.x * i / this.R);
-//     },
-//     bounds: (function () {
-//       const t = 6378137 * Math.PI;
-//       return new P([-t, -t], [t, t]);
-//     }()),
-//   };
+
+
+  function boundHours24(a) {
+    a %= 24;
+    0 > a && (a = 24 + a);
+    return a
+}
+
+const hi = {
+    on(t, i, e) {
+      if (typeof t === 'object') {
+        for (const n in t) { this._on(n, t[n], i); }
+      } else {
+        for (let o = 0, s = (t = u(t)).length; o < s; o++) { this._on(t[o], i, e); }
+      }
+      return this;
+    },
+    off(t, i, e) {
+      if (t) {
+        if (typeof t === 'object') {
+          for (const n in t) { this._off(n, t[n], i); }
+        } else {
+          for (let o = 0, s = (t = u(t)).length; o < s; o++) { this._off(t[o], i, e); }
+        }
+      } else { delete this._events; }
+      return this;
+    },
+    _on(t, i, e) {
+      this._events = this._events || {};
+      let n = this._events[t];
+      n || (n = [],
+      this._events[t] = n),
+      e === this && (e = void 0);
+      for (var o = {
+          fn: i,
+          ctx: e,
+        }, s = n, r = 0, a = s.length; r < a; r++) {
+        if (s[r].fn === i && s[r].ctx === e) { return; }
+      }
+      s.push(o);
+    },
+    _off(t, i, e) {
+      let n,
+        o,
+        s;
+      if (this._events && (n = this._events[t])) {
+        if (i) {
+          if (e === this && (e = void 0),
+          n) {
+            for (o = 0,
+            s = n.length; o < s; o++) {
+              const a = n[o];
+              if (a.ctx === e && a.fn === i) {
+                return a.fn = r,
+                this._firingCount && (this._events[t] = n = n.slice()),
+                void n.splice(o, 1);
+              }
+            }
+          }
+        } else {
+          for (o = 0,
+          s = n.length; o < s; o++) { n[o].fn = r; }
+          delete this._events[t];
+        }
+      }
+    },
+    fire(t, e, n) {
+      if (!this.listens(t, n)) { return this; }
+      const o = i({}, e, {
+        type: t,
+        target: this,
+        sourceTarget: e && e.sourceTarget || this,
+      });
+      if (this._events) {
+        const s = this._events[t];
+        if (s) {
+          this._firingCount = this._firingCount + 1 || 1;
+          for (let r = 0, a = s.length; r < a; r++) {
+            const h = s[r];
+            h.fn.call(h.ctx || this, o);
+          }
+          this._firingCount--;
+        }
+      }
+      return n && this._propagateEvent(o),
+      this;
+    },
+    listens(t, i) {
+      const e = this._events && this._events[t];
+      if (e && e.length) { return !0; }
+      if (i) {
+        for (const n in this._eventParents) {
+          if (this._eventParents[n].listens(t, i)) { return !0; }
+        }
+      }
+      return !1;
+    },
+    once(t, i, n) {
+      if (typeof t === 'object') {
+        for (const o in t) { this.once(o, t[o], i); }
+        return this;
+      }
+      var s = e(function () {
+        this.off(t, i, n).off(t, s, n);
+      }, this);
+      return this.on(t, i, n).on(t, s, n);
+    },
+    addEventParent(t) {
+      return this._eventParents = this._eventParents || {},
+      this._eventParents[n(t)] = t,
+      this;
+    },
+    removeEventParent(t) {
+      return this._eventParents && delete this._eventParents[n(t)],
+      this;
+    },
+    _propagateEvent(t) {
+      for (const e in this._eventParents) {
+        this._eventParents[e].fire(t.type, i({
+          layer: t.target,
+          propagatedFrom: t.target,
+        }, t), !0);
+      }
+    },
+  };
+  hi.addEventListener = hi.on,
+  hi.removeEventListener = hi.clearAllEventListeners = hi.off,
+  hi.addOneTimeEventListener = hi.once,
+  hi.fireEvent = hi.fire,
+  hi.hasEventListeners = hi.listens;
+window.hi = hi;
+
 var PAGE_PATH = 'http://localhost:3030/proxy/';
 var GRAVITY = 9.81,
     DEGREES_TO_RAD = Math.PI / 180,
@@ -1120,8 +743,9 @@ var GRAVITY = 9.81,
     SMOOTH_BUFFER = {},
     SMOOTHING_FACTOR = .2,
     SIX_STEP_WARNING = "#18a400 #2b9100 #487300 #835b00 #933700 #a71500".split(" ");
-// export { V2, V3, M33, M3, S2 ,PID,v,x, M, P, T,ci, di ,hi};
 export { V2, V3, M33, M3, S2 ,PID};
+
+
 export {clone,xyz2lla,clamp,ll2xy,lla2xyz,geoDecodeLocation,getBuildingCollision,xy2ll,lookAt,intersect_RayTriangle,
     absMin,boundHours24,fixAngle,fixAngle360,fixAngles360,fixAngles,exponentialSmoothing,exponentialSmoothingV3}
     export {GRAVITY,PAGE_PATH,FEET_TO_METERS,
@@ -1130,4 +754,6 @@ export {clone,xyz2lla,clamp,ll2xy,lla2xyz,geoDecodeLocation,getBuildingCollision
         TEMPERATURE_LAPSE_RATE,AIR_PRESSURE_SL,AIR_DENSITY_SL,AIR_TEMP_SL,DRAG_CONSTANT,MIN_DRAG_COEF,
     TOTAL_DRAG_CONSTANT,IDEAL_GAS_CONSTANT,MOLAR_MASS_DRY_AIR,GAS_CONSTANT,GR_LM,DEFAULT_AIRFOIL_ASPECT_RATIO,
     FOV,VIEWPORT_REFERENCE_WIDTH,VIEWPORT_REFERENCE_HEIGHT,SMOOTH_BUFFER,SMOOTHING_FACTOR,SIX_STEP_WARNING}
+
+    
 export default utils;

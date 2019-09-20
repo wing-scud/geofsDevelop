@@ -1,4 +1,4 @@
-//@ts-check
+
 import { V3,lla2xyz ,xyz2lla,intersect_RayTriangle} from '../utils/utils'
 import geofs from "../geofs"
 

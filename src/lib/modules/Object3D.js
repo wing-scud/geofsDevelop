@@ -1,4 +1,4 @@
-//@ts-check
+
 import { M33, V3,xyz2lla } from '../utils/utils'
 import geofs from "../geofs"
 

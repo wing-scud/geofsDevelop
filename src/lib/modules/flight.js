@@ -9,6 +9,7 @@ import ui from "../ui/ui"
 import { clamp,V3,M33,M3 ,TWO_PI,RAD_TO_DEGREES,MIN_DRAG_COEF,fixAngle,
     DRAG_CONSTANT,xyz2lla,fixAngles,fixAngle360,METERS_TO_FEET,KELVIN_OFFSET,GAS_CONSTANT,GRAVITY} from '../utils/utils';
     window.flight = window.flight || {};
+
 let currentAltitudeTestContext = {},
     pastAltitudeTestContext = {};
 flight.tick = function(a, b) {

@@ -1,5 +1,6 @@
 //提供一些初始化的参数->>>键码 . 风速风向。
 //数据保存在本地，序列化（对象，字符串）保存
+import controls from "../modules/controls"
 function hackGeoFS(geofs) {
     geofs.preferences = {};
     geofs.userRecord = geofs.userRecord || {};

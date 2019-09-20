@@ -22,7 +22,6 @@ api.getPlatform = () => {// 平台支持
 };
 
 api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
-
     api.initWorld = a => { //初始化世界，可添加模型
         Cesium.Ion.defaultAccessToken = geofs.ionkey;
         const b = {
@@ -1105,6 +1104,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
         const d = this;
         a.zoom = a.zoom || 10;
         this._holder = a.holder || $('.geofs-map-viewport')[0];
+        debugger
         this.map = L.map(this._holder, {
             minZoom: 3,
             maxZoom: 13,

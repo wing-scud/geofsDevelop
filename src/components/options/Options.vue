@@ -138,7 +138,7 @@
 
 <script>
 export default {
-  name: 'Bottom',
+  name: 'Options',
   data() {
     return {
     

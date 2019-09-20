@@ -1,8 +1,9 @@
-//@ts-check
+
 import geofs from '../geofs';
- import Overlay from '../modules/Overlay';
+ import Overlay from '../modules/OverLay';
  const hud = {};
  var PAGE_PATH = 'http://localhost:3030/proxy/';
+ hud.autopilotIndicator = function() {};
  hud.init = () => {
      hud.stall = new Overlay({
          name: 'stall',

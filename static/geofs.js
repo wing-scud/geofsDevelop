@@ -1557,6 +1557,7 @@
             restoreOutline: Mt
         }),
         we = ui.extend({
+          
             run: function(t, i, e, n) {
                 this.stop(),
                     this._el = t,

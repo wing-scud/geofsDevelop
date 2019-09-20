@@ -1,17 +1,17 @@
-
+import { V3,VIEWPORT_REFERENCE_WIDTH  } from './utils/utils'
+debugger
+console.log(V3)
 import aircraft from './aircraft/Aircraft';
 import debug from './aircraft/debug';
 import animation from './aircraft/animation';
 import api from './aircraft/api';
 import  shadowGeofs from "./aircraft/shadow"
-import fx from './aircraft/fx';
-import GlassPanel from './aircraft/GlassPanel';
-import runwayslights from './aircraft/runwayslights';
+import fxGeofs from './aircraft/fx';
 import hackGeoFS from './aircraft/preferences';
 import runways from './aircraft/runways';
 
 import utils from './utils/utils';
-import { V3,VIEWPORT_REFERENCE_WIDTH  } from './utils/utils'
+
 import { list } from "./utils/AircraftList"
 
 import controls from './modules/controls'
@@ -31,13 +31,11 @@ geofs.aircraft=aircraft
 geofs.animation=animation
 geofs.api=api
 geofs.debug=debug
-geofs.GlassPanel=GlassPanel
-geofs.fx=fx
 geofs.runways=runways
 geofs.utils=utils
 hackGeoFS(geofs)
 shadowGeofs(geofs)
-geofs.runwaysLights = runwayslights;
+fxGeofs(geofs)
 geofs.includes = {};
 geofs.aircraftList = list;
 geofs.frameCallbackStack = {};
@@ -383,6 +381,7 @@ geofs.getViewportDimentions = function() {
         geofs.fovScale /= Math.pow(geofs.api.getFOV(camera.cam), 0.6));
 };
 window.addEventListener('deferredload', () => {
+
     $(document).on('loginChange', () => {
         geofs.api.setHD(geofs.preferences.graphics.HD);
     });
@@ -418,5 +417,22 @@ geofs.ajax.post = function(a, b, c, d) {
         },
     });
 };
-
+geofs.GlassPanel = function(a) {
+    this.canvas = new geofs.api.Canvas({
+        height: 100,
+        width: 100
+    });
+    this.entity = geofs.api.viewer.entities.add({
+        box: {
+            dimensions: new Cesium.Cartesian3(1, 1, 1),
+            material: this.canvas.getTexture()
+        }
+    });
+    return this
+};
+geofs.GlassPanel.prototype = {
+    update: function() {},
+    updateCockpitPosition: function() {},
+    destroy: function() {}
+};
 export default geofs;
