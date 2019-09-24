@@ -50,7 +50,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
         geofs.iosViewerOptions = geofs.iosViewerOptions || {};
         Object.assign(b, geofs.androidViewerOptions, geofs.iosViewerOptions);
         try {
-            api.viewer = new Cesium.Viewer(a, b),
+            api.viewer = new Cesium.Earth(a, b),
                 b.useDefaultRenderLoop || (geofs.renderLoop = () => {
                         geofs.pause || api.viewer.render();
                         requestAnimationFrame(geofs.renderLoop);
@@ -82,9 +82,18 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                 negativeZ: 'images/skybox/tycho2t3_80_mz.png',
             },
         });
-        api.viewer.scene.moon.textureUrl = 'images/moonSmall.jpg';
+        // api.viewer.scene.moon.textureUrl = 'images/moonSmall.jpg';
         api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
-            baseProvider: new Cesium.EllipsoidTerrainProvider(),
+            baseProvider:  new GeoVis.GeoserverTerrainProvider({
+                url: "http://192.168.13.32:8080/geoserver/wms",
+                layerName: "GlobalTerrain:pyramid32",
+                maxLevel: 11,
+                service: "WMS",
+                scale: 1,
+                landScale: 1,
+                oceanScale: 1,
+                waterMask: true
+    }),
         });
         api.viewer.terrainProvider = api.flatRunwayTerrainProviderInstance;
         api.viewer.scene.globe.enableLighting = !1;
@@ -198,8 +207,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                 if (!geofs.userRecord.sessionId) { return; }
                 a.sessionId = geofs.userRecord.sessionId;
             }
-            // $('.geofs-apiResponse').on('load', `${geofs.url}/backend/accounts/hd.php`, a);
-          //  $('.geofs-apiResponse').htmlView('load', `${geofs.url}/backend/accounts/hd.php`, a);
+            $('.geofs-apiResponse').htmlView('load', `${geofs.url}/backend/accounts/hd.php`, a);
         }
     };
     api.setImageryProvider = (a, b, c, d, e) => {
@@ -342,10 +350,10 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
         geofs.fx.cloudManager.setCloudsBrightness(api.atmosphereColors.cloudsBrightness);
     };
     api.showSun = () => {
-        api.viewer.scene.sun.show = !0;
+        // api.viewer.scene.sun.show = !0;
     };
     api.hideSun = () => {
-        api.viewer.scene.sun.show = !1;
+        // api.viewer.scene.sun.show = !1;
     };
     $('.geofs-ui-3dview').on('terrainUnstable', () => {
         api.renderingQuality('loading');
@@ -449,7 +457,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                     api.flatRunwayTerrainProviderInstance.setMaximumLevel(20);
         }
         geofs.useSimpleShadow(geofs.preferences.graphics.forceSimpleShadow || geofs.preferences.graphics.simpleShadow);
-        api.viewer.resize();
+        api.viewer.handleResize();
     };
     api.useNativeShadows = a => {
         api.viewer.shadows = a;
@@ -507,6 +515,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
         let d = V3.add(c, [a[0], 0, 0]),
             e = V3.add(c, [0, a[1], 0]);
         a = Cesium.sampleTerrainMostDetailed(api.viewer.terrainProvider, [Cesium.Cartographic.fromDegrees(c[1], c[0]), Cesium.Cartographic.fromDegrees(d[1], d[0]), Cesium.Cartographic.fromDegrees(e[1], e[0])]);
+        //对地形进行采样
         Cesium.when(a, (a) => {
             c[2] = a[0].height;
             d[2] = a[1].height;  
@@ -743,7 +752,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
         c = Cesium.Matrix4.multiplyByPoint(c, a, new Cesium.Cartesian3());
         return (d = Cesium.Cartographic.fromCartesian(c, d, new Cesium.Cartographic())) ? [d.latitude * RAD_TO_DEGREES - b[0], d.longitude * RAD_TO_DEGREES - b[1], d.height - b[2]] : [0, 0, 0];
     };
-    api.cssTransform = function() {
+    api.cssTransform = function() {//这个方法专门为instrument设计的，把OverLay添加到  <div class="geofs-overlay-container"></div>中，stall.png在ui.hub中使用
         this._$element = $('<div class="geofs-overlay"></div>').appendTo('.geofs-overlay-container');
         this.positionY = this.positionX = this.rotation = 0;
         this.offset = {
@@ -1087,10 +1096,16 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
     };
     api.add3dBuildings = () => {
         api.viewer.terrainProvider = api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
-            baseProvider: Cesium.createWorldTerrain({
-                requestWaterMask: !0,
-                requestVertexNormals: !0,
-            }),
+            baseProvider: new GeoVis.GeoserverTerrainProvider({
+                url: "http://192.168.13.32:8080/geoserver/wms",
+                layerName: "GlobalTerrain:pyramid32",
+                maxLevel: 11,
+                service: "WMS",
+                scale: 1,
+                landScale: 1,
+                oceanScale: 1,
+                waterMask: true
+    }),
         });
         geofs.useSimpleShadow(!0);
         api.buildings = [];
@@ -1104,13 +1119,12 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
         const d = this;
         a.zoom = a.zoom || 10;
         this._holder = a.holder || $('.geofs-map-viewport')[0];
-        debugger
         this.map = L.map(this._holder, {
             minZoom: 3,
             maxZoom: 13,
             preferCanvas: !0,
         });
-        L.tileLayer.fallback(geofs.mapXYZ, {
+        L.tileLayer(geofs.mapXYZ, {
             attribution: '\u00a9 OpenStreetMap contributors - Made with Natural Earth.',
         }).addTo(this.map);
         this.icons = {

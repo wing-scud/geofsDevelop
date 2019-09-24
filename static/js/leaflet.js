@@ -1028,7 +1028,11 @@
       hi.addOneTimeEventListener = hi.once,
       hi.fireEvent = hi.fire,
       hi.hasEventListeners = hi.listens;
-
+      var ui = v.extend(hi)
+      , li = Math.trunc || function (t) {
+          return t > 0 ? Math.floor(t) : Math.ceil(t)
+      }
+      ;
   x.prototype = {
           clone: function() {
               return new x(this.x, this.y)

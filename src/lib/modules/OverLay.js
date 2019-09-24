@@ -35,6 +35,7 @@ function Overlay(a, b) {
             y: 'bottom',
         },
         overlays: [],
+    
     };
     this.children = [];
     this.definition = $.extend(!0, {}, this.definition, a);
@@ -56,6 +57,7 @@ function Overlay(a, b) {
     this.opacity = this.definition.opacity;
     this.anchor = this.definition.anchor;
     this.visibility = this.definition.visibility;
+    
     this.overlay = new geofs.api.cssTransform();
     this.overlay.setUrl(this.definition.url);
     this.overlay.setText(this.definition.text);
@@ -155,6 +157,7 @@ Overlay.prototype.scaleAndPlace = function(a, b, c) {
     };
     this.scaleAllProperties();
     this.place(b);
+
     for (b = 0; b < this.children.length; b++) { this.children[b].scaleAndPlace(); }
 };
 Overlay.prototype.place = function(a) {

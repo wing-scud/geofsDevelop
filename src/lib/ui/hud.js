@@ -5,6 +5,7 @@ import geofs from '../geofs';
  var PAGE_PATH = 'http://localhost:3030/proxy/';
  hud.autopilotIndicator = function() {};
  hud.init = () => {
+  
      hud.stall = new Overlay({
          name: 'stall',
          url: `${PAGE_PATH}images/instruments/stall.png`,

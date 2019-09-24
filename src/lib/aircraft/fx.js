@@ -356,7 +356,7 @@ function fxGeofs(geofs)
             valueRamp: [.1, .1, .1, 0, 0]
         },
         init: function() {
-            geofs.api.viewer.scene.moon.show = .55 < weather.timeRatio ? !0 : !1
+            // geofs.api.viewer.scene.moon.show = .55 < weather.timeRatio ? !0 : !1
         },
         update: function(a, b) {
             a = clamp(1 - weather.timeRatio + Math.sin(a[0] * DEGREES_TO_RAD) * weather.seasonRatio * .2, 0, 1);

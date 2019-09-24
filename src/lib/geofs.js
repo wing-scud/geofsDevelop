@@ -1,6 +1,5 @@
+import flight from "./modules/flight"
 import { V3,VIEWPORT_REFERENCE_WIDTH  } from './utils/utils'
-debugger
-console.log(V3)
 import aircraft from './aircraft/Aircraft';
 import debug from './aircraft/debug';
 import animation from './aircraft/animation';
@@ -9,7 +8,6 @@ import  shadowGeofs from "./aircraft/shadow"
 import fxGeofs from './aircraft/fx';
 import hackGeoFS from './aircraft/preferences';
 import runways from './aircraft/runways';
-
 import utils from './utils/utils';
 
 import { list } from "./utils/AircraftList"
@@ -20,13 +18,13 @@ import weather from './modules/weather'
 import multiplayer from "./modules/multiplayer"
 import audio from "./modules/audio"
 import camera from "./modules/camera"
-import flight from "./modules/flight"
-import instruments from "./modules/instruments"
 
+import instruments from "./modules/instruments"
 import ui from './ui/ui'
 
 var geofs  =  window.geofs || {
 };
+geofs.mapXYZ = "http://192.168.13.32/tiles/googleimg/{z}/{x}/{y}.png"
 geofs.aircraft=aircraft
 geofs.animation=animation
 geofs.api=api

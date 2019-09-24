@@ -9211,8 +9211,16 @@ body:not(.geofs-hd) .cesium-widget-credits {
     display: block;
 }
 
-.geofs-autopilot {
+/* .geofs-autopilot {
     display: none;
+    position: absolute;
+    bottom: 0px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px 20px;
+    box-shadow: 0px 0px 16px #888 inset;
+} */
+.geofs-autopilot {
     position: absolute;
     bottom: 0px;
     box-sizing: border-box;

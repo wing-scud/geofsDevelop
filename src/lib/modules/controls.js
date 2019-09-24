@@ -5,10 +5,8 @@ import geofs  from '../geofs'
 import audio from "./audio"
 import instruments from "./instruments"
 import {fixAngle,clamp,exponentialSmoothing ,V3,PID} from "../utils/utils" 
-
-debugger
-console.log(V3,"tag```````````````")
-var controls = window.controls || {};
+window.controls = window.controls || {};
+console.log(V3)
 controls = {
     states: {},
     mouse: {}
@@ -729,6 +727,7 @@ controls.joystick.getAxisValue = function(a, b, c) {
     if (controls.joystick.axes && (a = controls.joystick.axes[a]))
         return clamp(controls.joystick.sticks[a.stick].axes[a.id], b || -1, c || 1)
 };
+
 controls.updateJoystick = function(a) {
     if (controls.joystick.poll()) {
         for (var b in controls.joystick.axes) {
@@ -813,9 +812,7 @@ controls.updateTouch = function(a) {
     controls.yaw = controls.touch.yaw
 };
 
-setTimeout(()=>{
-    console.log(PID)
-    controls.autopilot = {
+controls.autopilot = {
         on: !1,
         maxBankAngle: 30,
         maxPitchAngle: 10,
@@ -833,139 +830,137 @@ setTimeout(()=>{
         rollPID: new PID(.02, 1E-5, 0),
         throttlePID: new PID(.1, 0, 0)
     };
-},1)
-
-// controls.autopilot.initUI = function() {
-//     var a = $(".geofs-autopilot-pad .control-pad-label"),
-//         b;
-//     controls.autopilot.setHeading = function(a) {
-//         var b = controls.autopilot.heading;
-//         try {
-//             controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
-//                 $(".geofs-autopilot-heading").text(controls.autopilot.heading),
-//                 $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
-//         } catch (e) {
-//             controls.autopilot.heading = b
-//         }
-//     };
-//     controls.autopilot.setAltitude = function(a) {
-//         var b = controls.autopilot.altitude;
-//         try {
-//             controls.autopilot.altitude = parseInt(a, 10),
-//                 $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),
-//                 $(".legacyAutopilot .geofs-autopilot-altitude").val(controls.autopilot.altitude)
-//         } catch (e) {
-//             controls.autopilot.altitude = b
-//         }
-//     };
-//     controls.autopilot.setKias = function(a) {
-//         var b = controls.autopilot.kias;
-//         try {
-//             controls.autopilot.kias = parseInt(a, 10),
-//                 $(".geofs-autopilot-kias").text(controls.autopilot.kias),
-//                 $(".legacyAutopilot .geofs-autopilot-kias").val(controls.autopilot.kias)
-//         } catch (e) {
-//             controls.autopilot.kias = b
-//         }
-//     };
-//     controls.autopilot.setClimbrate = function(a) {
-//         var b = controls.autopilot.climbrate;
-//         try {
-//             controls.autopilot.climbrate = parseInt(a, 10),
-//                 $(".geofs-autopilot-climbrate").text(controls.autopilot.climbrate)
-//         } catch (e) {
-//             controls.autopilot.climbrate = b
-//         }
-//     };
-//     $(document).on("autopilotOn", function() {
-//         clearTimeout(b);
-//         a.removeClass("red-pad").addClass("green-pad");
-//         $(".geofs-autopilot-controls").show();
-//         $(".geofs-autopilot-toggle").html("Engaged").addClass("mdl-button--colored")
-//     });
-//     $(document).on("autopilotOff", function() {
-//         a.removeClass("green-pad").addClass("red-pad");
-//         $(".geofs-autopilot-controls").hide();
-//         $(".geofs-autopilot-toggle").html("Disengaged").removeClass("mdl-button--colored");
-//         b = setTimeout(function() {
-//             a.removeClass("red-pad").removeClass("green-pad")
-//         }, 3E3)
-//     });
-//     $(document).on("pointerdown touchstart", ".numberUp, .numberDown", function(a) {
-//         var b = $(this),
-//             c = $(this).parent().find(".numberValue"),
-//             f = parseInt(c.text()) || 0,
-//             g = parseInt(c.attr("step")),
-//             h = parseInt(c.attr("min")),
-//             k = parseInt(c.attr("max")),
-//             n = b.hasClass("numberUp") ? g : -g,
-//             v = c.attr("loop"),
-//             z = c.attr("method"),
-//             A = function() {
-//                 f += n;
-//                 f = Math.floor(f / g) * g;
-//                 f = v && f > k ? h : v && f < h ? k : clamp(f, h, k);
-//                 c.text(f);
-//                 controls.autopilot[z](f)
-//             },
-//             C = function() {
-//                 A();
-//                 clearTimeout(window.spinnerRepeat);
-//                 window.spinnerRepeat = setTimeout(C, 50)
-//             };
-//         clearTimeout(window.spinnerRepeat);
-//         window.spinnerRepeat = setTimeout(C, 500);
-//         A();
-//         a.preventDefault()
-//     }).on("pointerup pointercancel mouseleave touchend", ".numberUp, .numberDown", function() {
-//         clearTimeout(window.spinnerRepeat)
-//     }).on("click", ".geofs-autopilot-pad", function(a) {
-//         controls.autopilot.toggle()
-//     })
-// };
-// controls.autopilot.toggle = function() {
-//     controls.autopilot.on ? controls.autopilot.turnOff() : controls.autopilot.turnOn()
-// };
-// controls.autopilot.turnOn = function() {
-//     if (geofs.aircraft.instance.setup.autopilot) {
-//         var a = geofs.animation.values;
-//         controls.autopilot.climbPID.reset();
-//         controls.autopilot.pitchPID.reset();
-//         controls.autopilot.rollPID.reset();
-//         controls.autopilot.throttlePID.reset();
-//         controls.autopilot.setAltitude(a.altitude);
-//         controls.autopilot.setHeading(a.heading);
-//         controls.autopilot.setKias(a.kias);
-//         controls.autopilot.setClimbrate(0);
-//         controls.autopilot.on = !0;
-//         $(document).trigger("autopilotOn")
-//     }
-// };
-// controls.autopilot.turnOff = function() {
-//     controls.autopilot.on = !1;
-//     $(document).trigger("autopilotOff")
-// };
-// controls.autopilot.update = function(a) {
-//     var b = geofs.animation.values,
-//         c = controls.autopilot,
-//         d = clamp(b.kias / 100, 1, 5),
-//         e = fixAngle(b.heading - c.heading);
-//     e = clamp(e, -c.maxBankAngle, c.maxBankAngle);
-//     controls.yaw = exponentialSmoothing("apYaw", e / -60, .1);
-//     c.rollPID.set(e);
-//     controls.roll = exponentialSmoothing("apRoll", -c.rollPID.compute(b.aroll, a) / d, .9);
-//     var f = c.altitude - b.altitude;
-//     e = clamp(d * c.commonClimbrate, 0, c.maxClimbrate);
-//     var g = clamp(d * c.commonDescentrate, c.maxDescentrate, 0);
-//     f = clamp(5 * f, g, e);
-//     c.climbPID.set(-f);
-//     e = clamp(b.climbrate, g, e);
-//     e = c.climbPID.compute(-e, a) / d;
-//     e = clamp(e, -c.maxPitchAngle, -c.minPitchAngle);
-//     c.pitchPID.set(-e);
-//     controls.rawPitch = exponentialSmoothing("apPitch", c.pitchPID.compute(-b.atilt, a) / d, .9);
-//     c.throttlePID.set(c.kias);
-//     controls.throttle = exponentialSmoothing("apThrottle", c.throttlePID.compute(b.kias, a), .9);
-//     controls.throttle = clamp(controls.throttle, 0, 1)
-// };
+    controls.autopilot.setHeading = function(a) {
+        var b = controls.autopilot.heading;
+        try {
+            controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
+                $(".geofs-autopilot-heading").text(controls.autopilot.heading),
+                $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
+        } catch (e) {
+            controls.autopilot.heading = b
+        }
+    };
+    controls.autopilot.setAltitude = function(a) {
+        var b = controls.autopilot.altitude;
+        try {
+            controls.autopilot.altitude = parseInt(a, 10),
+                $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),//更新map内的自动驾驶数据
+                $(".legacyAutopilot .geofs-autopilot-altitude").val(controls.autopilot.altitude)
+        } catch (e) {
+            controls.autopilot.altitude = b
+        }
+    };
+    controls.autopilot.setKias = function(a) {
+        var b = controls.autopilot.kias;
+        try {
+            controls.autopilot.kias = parseInt(a, 10),
+                $(".geofs-autopilot-kias").text(controls.autopilot.kias),
+                $(".legacyAutopilot .geofs-autopilot-kias").val(controls.autopilot.kias)
+        } catch (e) {
+            controls.autopilot.kias = b
+        }
+    };
+    controls.autopilot.setClimbrate = function(a) {
+        var b = controls.autopilot.climbrate;
+        try {
+            controls.autopilot.climbrate = parseInt(a, 10),
+                $(".geofs-autopilot-climbrate").text(controls.autopilot.climbrate)
+        } catch (e) {
+            controls.autopilot.climbrate = b
+        }
+    };
+    controls.autopilot.initUI = function() {
+        var a = $(".geofs-autopilot-pad .control-pad-label"),
+            b;
+        $(document).on("autopilotOn", function() {
+            clearTimeout(b);
+            a.removeClass("red-pad").addClass("green-pad");
+            $(".geofs-autopilot-controls").show();
+            $(".geofs-autopilot-toggle").html("Engaged").addClass("mdl-button--colored")
+        });
+        $(document).on("autopilotOff", function() {
+            a.removeClass("green-pad").addClass("red-pad");
+            $(".geofs-autopilot-controls").hide();
+            $(".geofs-autopilot-toggle").html("Disengaged").removeClass("mdl-button--colored");
+            b = setTimeout(function() {
+                a.removeClass("red-pad").removeClass("green-pad")
+            }, 3E3)
+        });
+        $(document).on("pointerdown touchstart", ".numberUp, .numberDown", function(a) {
+            var b = $(this),
+                c = $(this).parent().find(".numberValue"),
+                f = parseInt(c.text()) || 0,
+                g = parseInt(c.attr("step")),
+                h = parseInt(c.attr("min")),
+                k = parseInt(c.attr("max")),
+                n = b.hasClass("numberUp") ? g : -g,
+                v = c.attr("loop"),
+                z = c.attr("method"),
+                A = function() {
+                    f += n;
+                    f = Math.floor(f / g) * g;
+                    f = v && f > k ? h : v && f < h ? k : clamp(f, h, k);
+                    c.text(f);
+                    controls.autopilot[z](f)
+                },
+                C = function() {
+                    A();
+                    clearTimeout(window.spinnerRepeat);
+                    window.spinnerRepeat = setTimeout(C, 50)
+                };
+            clearTimeout(window.spinnerRepeat);
+            window.spinnerRepeat = setTimeout(C, 500);
+            A();
+            a.preventDefault()
+        }).on("pointerup pointercancel mouseleave touchend", ".numberUp, .numberDown", function() {
+            clearTimeout(window.spinnerRepeat)
+        }).on("click", ".geofs-autopilot-pad", function(a) {
+            controls.autopilot.toggle()
+        })
+    };
+controls.autopilot.toggle = function() {
+    controls.autopilot.on ? controls.autopilot.turnOff() : controls.autopilot.turnOn()
+};
+controls.autopilot.turnOn = function() {
+    if (geofs.aircraft.instance.setup.autopilot) {
+        var a = geofs.animation.values;
+        controls.autopilot.climbPID.reset();
+        controls.autopilot.pitchPID.reset();
+        controls.autopilot.rollPID.reset();
+        controls.autopilot.throttlePID.reset();
+        controls.autopilot.setAltitude(a.altitude);
+        controls.autopilot.setHeading(a.heading);
+        controls.autopilot.setKias(a.kias);
+        controls.autopilot.setClimbrate(0);
+        controls.autopilot.on = !0;
+        $(document).trigger("autopilotOn")
+    }
+};
+controls.autopilot.turnOff = function() {
+    controls.autopilot.on = !1;
+    $(document).trigger("autopilotOff")
+};
+controls.autopilot.update = function(a) {
+    var b = geofs.animation.values,
+        c = controls.autopilot,
+        d = clamp(b.kias / 100, 1, 5),
+        e = fixAngle(b.heading - c.heading);
+    e = clamp(e, -c.maxBankAngle, c.maxBankAngle);
+    controls.yaw = exponentialSmoothing("apYaw", e / -60, .1);
+    c.rollPID.set(e);
+    controls.roll = exponentialSmoothing("apRoll", -c.rollPID.compute(b.aroll, a) / d, .9);
+    var f = c.altitude - b.altitude;
+    e = clamp(d * c.commonClimbrate, 0, c.maxClimbrate);
+    var g = clamp(d * c.commonDescentrate, c.maxDescentrate, 0);
+    f = clamp(5 * f, g, e);
+    c.climbPID.set(-f);
+    e = clamp(b.climbrate, g, e);
+    e = c.climbPID.compute(-e, a) / d;
+    e = clamp(e, -c.maxPitchAngle, -c.minPitchAngle);
+    c.pitchPID.set(-e);
+    controls.rawPitch = exponentialSmoothing("apPitch", c.pitchPID.compute(-b.atilt, a) / d, .9);
+    c.throttlePID.set(c.kias);
+    controls.throttle = exponentialSmoothing("apThrottle", c.throttlePID.compute(b.kias, a), .9);
+    controls.throttle = clamp(controls.throttle, 0, 1)
+};
 export default controls;

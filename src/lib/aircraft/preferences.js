@@ -500,6 +500,7 @@ function hackGeoFS(geofs) {
         ui.closePreferencePanel();
     };
     geofs.setPreferenceFromInput = function(a) {
+  
         try {
             let b = a.getAttribute('gespref');
             if (b) {
@@ -554,6 +555,7 @@ function hackGeoFS(geofs) {
         }
     };
     geofs.savePreferencesPanel = function() {
+
         $('[gespref]', geofs.$preferencePanel).each(function() {
             geofs.setPreferenceFromInput(this);
         });

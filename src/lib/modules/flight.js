@@ -412,26 +412,26 @@ flight.recorder.startRecording = function() {
 flight.recorder.stopRecording = function() {
     flight.recorder.recording = !1;
 };
-flight.recorder.enterPlayback = function() {
-    geofs.aircraft.instance.rigidBody.saveState();
-    flight.recorder.stopRecording();
-    $('.geofs-recordPlayer-slider').attr('max', flight.recorder.tape.length - 2);
-    flight.recorder.setStep(0);
-    $('.geofs-recordPlayer-slider').on('userchange', (a, b) => {
-        flight.recorder.setStep(parseInt(b), !0);
-    }).on('dragstart', flight.recorder.pausePlayback).on('dragend', flight.recorder.unpausePlayback);
-    $('body').addClass('geofs-record-playing');
-    flight.recorder.playing = !0;
-};
-flight.recorder.exitPlayback = function() {
-    geofs.doPause();
-    flight.recorder.playing = !1;
-    geofs.aircraft.instance.rigidBody.restoreState();
-    flight.recorder.setStep(flight.recorder.currentStep);
-    geofs.aircraft.instance.object3d.resetRotationMatrix();
-    $('body').removeClass('geofs-record-playing');
-    flight.recorder.startRecording();
-};
+// flight.recorder.enterPlayback = function() {
+//     geofs.aircraft.instance.rigidBody.saveState();
+//     flight.recorder.stopRecording();
+//     $('.geofs-recordPlayer-slider').attr('max', flight.recorder.tape.length - 2);
+//     flight.recorder.setStep(0);
+//     $('.geofs-recordPlayer-slider').on('userchange', (a, b) => {
+//         flight.recorder.setStep(parseInt(b), !0);
+//     }).on('dragstart', flight.recorder.pausePlayback).on('dragend', flight.recorder.unpausePlayback);
+//     $('body').addClass('geofs-record-playing');
+//     flight.recorder.playing = !0;
+// };
+// flight.recorder.exitPlayback = function() {
+//     geofs.doPause();
+//     flight.recorder.playing = !1;
+//     geofs.aircraft.instance.rigidBody.restoreState();
+//     flight.recorder.setStep(flight.recorder.currentStep);
+//     geofs.aircraft.instance.object3d.resetRotationMatrix();
+//     $('body').removeClass('geofs-record-playing');
+//     flight.recorder.startRecording();
+// };
 flight.recorder.pausePlayback = function() {
     flight.recorder.paused = !0;
 };

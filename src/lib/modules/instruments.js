@@ -2126,6 +2126,7 @@ instruments.init = function(a) {
         c && (c.overlay ? (instruments.list[b] = new Indicator(c),
             c = c.group || "all",
             instruments.groups[c] = instruments.groups[c] || {},
+            
             instruments.groups[c][b] = instruments.list[b]) : c.include && (geofs.aircraft.instance.addParts([c]),
             geofs.aircraft.instance.parts[c.name].animations.push({
                 value: "overlaysVisibility",
@@ -2204,6 +2205,7 @@ var Indicator = function(a) {
         instruments.stackPosition.y += b.size.y + instruments.defaultMargin + a);
     b.position.y = b.alignment && "top" == b.alignment.y ? b.position.y + instruments.margins[0] : b.position.y + instruments.margins[2];
     b.position.x = b.alignment && "right" == b.alignment.x ? b.position.x + instruments.margins[1] : b.position.x + instruments.margins[3];
+ 
     this.overlay = new Overlay(b);
     this.setVisibility(this.visibility);
     return this

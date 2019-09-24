@@ -88,11 +88,12 @@
             </li>
         </ul>
 </template>
+<script>
 export default {
   name: 'AircraftList',
   data() {
     return {
-    
+
     };
   },
   created() {

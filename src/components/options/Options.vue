@@ -1,5 +1,4 @@
 <template>
-
         <div class="geofs-ui-bottom">
             <!-- Small screen menu -->
             <button id="small_screen_menu" class="mdl-button mdl-js-button mdl-button--icon geofs-smallScreenOnly">
@@ -7,36 +6,32 @@
          </button>
             <!-- Small Screen Menu -->
             <ul class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect geofs-smallScreenOnly" for="small_screen_menu">
-                <!--
-            <li class="mdl-menu__item">
-                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="ui.vr(true);" title="Toggle VR mode"><i class="material-icons">visibility</i></button>
-            </li>
-                -->
+             <!-- Pause, mute, reset -->
                 <li class="mdl-menu__item">
-                    <!-- Pause, mute, reset -->
                     <div class="geofs-ui-bottom-box geofs-f-standard-ui">
-                        <button class="geofs-button-pause mdl-button mdl-js-button mdl-button--icon" onclick="geofs.togglePause();" title="Pause/Unpause the simulation [P]">
-                    <i class="material-icons">pause_circle_outline</i>
-                </button>
+                        <button class="geofs-button-pause mdl-button mdl-js-button mdl-button--icon"  v-on:click="togglePause()" title="Pause/Unpause the simulation [P]">
+                            <i class="material-icons">pause_circle_outline</i>
+                        </button>
                         <button class="geofs-button-mute mdl-button mdl-js-button mdl-button--icon" onclick="audio.toggleMute();" title="Mute/Unmute sound [S]">
-                    <i class="material-icons">volume_off</i>
-                </button>
+                            <i class="material-icons">volume_off</i>
+                        </button>
                         <button class="mdl-button mdl-js-button mdl-button--icon" onclick="geofs.resetFlight();" title="Reset the flight [R]">
-                    <i class="material-icons">autorenew</i>
-                </button>
+                            <i class="material-icons">autorenew</i>
+                        </button>
                     </div>
                 </li>
-                <li class="mdl-menu__item">
+                <!--options setting-->
+                 <li class="mdl-menu__item">
                     <button class="mdl-button mdl-js-button geofs-f-standard-ui" data-toggle-panel=".geofs-preference-list" title="Open the settings/options panel [O]">
-                <i class="material-icons">settings</i>
-                Options
-            </button>
+                        <i class="material-icons">settings</i>
+                        Options
+                    </button>
                 </li>
                 <li class="mdl-menu__item">
                     <button class="mdl-button mdl-js-button geofs-f-standard-ui" data-toggle-panel=".geofs-map-list" title="Navigation and Autopilot panel [N]">
-                <i class="material-icons">explore</i>
-                Nav
-            </button>
+                        <i class="material-icons">explore</i>
+                        Nav
+                    </button>
                 </li>
             </ul>
             <!-- Full size menu -->
@@ -69,7 +64,7 @@
     </button>
             <!-- Pause, mute, reset, playback -->
             <div class="geofs-ui-bottom-box geofs-f-standard-ui geofs-bigScreenOnly">
-                <button class="geofs-button-pause mdl-button mdl-js-button mdl-button--icon" data-tooltip-classname="mdl-tooltip--top" onclick="geofs.togglePause();" title="Pause/Unpause the simulation [P]">
+                <button class="geofs-button-pause mdl-button mdl-js-button mdl-button--icon" data-tooltip-classname="mdl-tooltip--top" v-on:click="togglePause()" title="Pause/Unpause the simulation [P]">
             <i class="material-icons">pause_circle_outline</i>
         </button>
                 <button class="geofs-button-mute mdl-button mdl-js-button mdl-button--icon" data-tooltip-classname="mdl-tooltip--top" onclick="audio.toggleMute();" title="Mute/Unmute sound [S]">
@@ -78,49 +73,51 @@
                 <button class="mdl-button mdl-js-button mdl-button--icon" data-tooltip-classname="mdl-tooltip--top" onclick="geofs.resetFlight();" title="Reset the flight [R]">
             <i class="material-icons">autorenew</i>
         </button>
-                <button class="mdl-button mdl-js-button mdl-button--icon" data-tooltip-classname="mdl-tooltip--top" onclick="flight.recorder.enterPlayback();" title="Watch recorded flight">
+                <button class="mdl-button mdl-js-button mdl-button--icon" data-tooltip-classname="mdl-tooltip--top" v-on:click="enterPlayback()" title="Watch recorded flight">
             <i class="material-icons">play_circle_outline</i>
         </button>
                 <!--<button class="mdl-button mdl-js-button mdl-button--icon" onclick="ui.vr(true);" title="Toggle VR mode"><i class="material-icons">visibility</i></button>-->
             </div>
             <button class="mdl-button mdl-js-button geofs-authenticated mdl-button--icon geofs-f-standard-ui" data-tooltip-classname="mdl-tooltip--top" data-toggle-panel=".geofs-player-list" title="List of online pilots">
         <i class="material-icons">group</i>
-    </button>
+                    </button>
             <!-- Chat -->
             <div class="geofs-chat-input-section geofs-authenticated geofs-f-standard-ui geofs-bigScreenOnly">
-                <button class="geofs-chat-button mdl-button mdl-js-button" data-tooltip-classname="mdl-tooltip--top" title="Type a chat message [T]">
-            Talk <i class="icon-align-left"></i>
-        </button>
-                <form class="geofs-chat-form">
+                  <button class="geofs-chat-button mdl-button mdl-js-button" data-tooltip-classname="mdl-tooltip--top" title="Type a chat message [T]">
+                 Talk <i class="icon-align-left"></i>
+                     </button>
+                    <form class="geofs-chat-form">
                     <div class="mdl-textfield mdl-js-textfield">
                         <input class="mdl-textfield__input geofs-chat-input geofs-stopKeyboardPropagation geofs-stopKeyupPropagation geofs-stopMousePropagation" size="30" maxlength="140" type="text" id="chatInput">
                         <label class="mdl-textfield__label" for="chatInput">Message...</label>
                     </div>
                     <button class="geofs-chat-send-button mdl-button mdl-js-button mdl-button--colored" type="submit">Send</button>
-                </form>
+                     </form>
             </div>
             <button class="mdl-button mdl-js-button mdl-button--icon geofs-f-standard-ui geofs-orientationReset" data-tooltip-classname="mdl-tooltip--top" title="Reset orientation controls to neutral">
-        <i class="material-icons">adjust</i>
+            <i class="material-icons">adjust</i>
     </button>
             <!--        * Record player  -->
             <div class="geofs-f-recordPlayer geofs-bigScreenOnly">
-                <button class="mdl-button mdl-js-button" onclick="flight.recorder.exitPlayback();" data-tooltip-classname="mdl-tooltip--top" title="Exit record player">Exit player</button>
+                <button class="mdl-button mdl-js-button" v-on:click="exitPlayback()" data-tooltip-classname="mdl-tooltip--top" title="Exit record player">Exit player</button>
                 <!-- Player controls -->
                 <div class="geofs-ui-bottom-box">
                     <button class="mdl-button mdl-js-button mdl-button--icon" onclick="flight.recorder.setStep(0);" data-tooltip-classname="mdl-tooltip--top" title="Begining">
-                <i class="material-icons">fast_rewind</i>
-            </button>
+                    <i class="material-icons">fast_rewind</i>
+                    </button>
                     <button class="mdl-button mdl-js-button mdl-button--icon" onclick="flight.recorder.startPlayback();" data-tooltip-classname="mdl-tooltip--top" title="Start playback">
-                <i class="material-icons">play_arrow</i>
-            </button>
-                    <button class="geofs-button-pause mdl-button mdl-js-button mdl-button--icon" onclick="geofs.togglePause();" data-tooltip-classname="mdl-tooltip--top" title="Pause/Unpause playback [P]">
-                <i class="material-icons">pause</i>
-            </button>
+                    <i class="material-icons">play_arrow</i>
+                     </button>
+                     <button class="geofs-button-pause mdl-button mdl-js-button mdl-button--icon" v-on:click="togglePause()" data-tooltip-classname="mdl-tooltip--top" title="Pause/Unpause playback [P]">
+                     <i class="material-icons">pause</i>
+                        </button>
                     <button class="mdl-button mdl-js-button mdl-button--icon" onclick="flight.recorder.setStep(100000);" data-tooltip-classname="mdl-tooltip--top" title="End">
-                <i class="material-icons">fast_forward</i>
-            </button>
+                         <i class="material-icons">fast_forward</i>
+                    </button>
                 </div>
             </div>
+
+
             <!-- player's slider -->
             <div class="geofs-f-recordPlayer geofs-slider-container geofs-bigScreenOnly">
                 <div class="slider geofs-recordPlayer-slider" type="slider" value="0" min="0" precision="0" style="height: 10px;">
@@ -137,12 +134,39 @@
 </template>
 
 <script>
+import geofs from "../../lib/geofs"
+import flight from "../../lib/modules/flight"
 export default {
   name: 'Options',
   data() {
     return {
     
     };
+  },
+  methods:{
+    enterPlayback:function() {
+        geofs.aircraft.instance.rigidBody.saveState();
+        flight.recorder.stopRecording();
+        $('.geofs-recordPlayer-slider').attr('max', flight.recorder.tape.length - 2);
+        flight.recorder.setStep(0);
+        $('.geofs-recordPlayer-slider').on('userchange', (a, b) => {
+        flight.recorder.setStep(parseInt(b), !0);
+        }).on('dragstart', flight.recorder.pausePlayback).on('dragend', flight.recorder.unpausePlayback);
+         $('body').addClass('geofs-record-playing');
+         flight.recorder.playing = !0;
+        },  
+   exitPlayback:function() {
+        geofs.doPause();
+        flight.recorder.playing = !1;
+        geofs.aircraft.instance.rigidBody.restoreState();
+        flight.recorder.setStep(flight.recorder.currentStep);
+        geofs.aircraft.instance.object3d.resetRotationMatrix();
+        $('body').removeClass('geofs-record-playing');
+        flight.recorder.startRecording();
+        },
+  togglePause: function() {
+    geofs.pause ? geofs.undoPause(2) : geofs.doPause(2);
+    }
   },
   created() {
 

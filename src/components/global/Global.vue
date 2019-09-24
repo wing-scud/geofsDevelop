@@ -71,97 +71,97 @@ export default {
     };
   },
   methods:{
-    initUI: function(){
-    var a = $(".geofs-autopilot-pad .control-pad-label"),
-        b;
-    controls.autopilot.setHeading = function(a) {
-        var b = controls.autopilot.heading;
-        try {
-            controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
-                $(".geofs-autopilot-heading").text(controls.autopilot.heading),
-                $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
-        } catch (e) {
-            controls.autopilot.heading = b
-        }
-    };
-    controls.autopilot.setAltitude = function(a) {
-        var b = controls.autopilot.altitude;
-        try {
-            controls.autopilot.altitude = parseInt(a, 10),
-                $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),
-                $(".legacyAutopilot .geofs-autopilot-altitude").val(controls.autopilot.altitude)
-        } catch (e) {
-            controls.autopilot.altitude = b
-        }
-    };
-    controls.autopilot.setKias = function(a) {
-        var b = controls.autopilot.kias;
-        try {
-            controls.autopilot.kias = parseInt(a, 10),
-                $(".geofs-autopilot-kias").text(controls.autopilot.kias),
-                $(".legacyAutopilot .geofs-autopilot-kias").val(controls.autopilot.kias)
-        } catch (e) {
-            controls.autopilot.kias = b
-        }
-    };
-    controls.autopilot.setClimbrate = function(a) {
-        var b = controls.autopilot.climbrate;
-        try {
-            controls.autopilot.climbrate = parseInt(a, 10),
-                $(".geofs-autopilot-climbrate").text(controls.autopilot.climbrate)
-        } catch (e) {
-            controls.autopilot.climbrate = b
-        }
-    };
-    $(document).on("autopilotOn", function() {
-        clearTimeout(b);
-        a.removeClass("red-pad").addClass("green-pad");
-        $(".geofs-autopilot-controls").show();
-        $(".geofs-autopilot-toggle").html("Engaged").addClass("mdl-button--colored")
-    });
-    $(document).on("autopilotOff", function() {
-        a.removeClass("green-pad").addClass("red-pad");
-        $(".geofs-autopilot-controls").hide();
-        $(".geofs-autopilot-toggle").html("Disengaged").removeClass("mdl-button--colored");
-        b = setTimeout(function() {
-            a.removeClass("red-pad").removeClass("green-pad")
-        }, 3E3)
-    });
-    $(document).on("pointerdown touchstart", ".numberUp, .numberDown", function(a) {
-        var b = $(this),
-            c = $(this).parent().find(".numberValue"),
-            f = parseInt(c.text()) || 0,
-            g = parseInt(c.attr("step")),
-            h = parseInt(c.attr("min")),
-            k = parseInt(c.attr("max")),
-            n = b.hasClass("numberUp") ? g : -g,
-            v = c.attr("loop"),
-            z = c.attr("method"),
-            A = function() {
-                f += n;
-                f = Math.floor(f / g) * g;
-                f = v && f > k ? h : v && f < h ? k : clamp(f, h, k);
-                c.text(f);
-                controls.autopilot[z](f)
-            },
-            C = function() {
-                A();
-                clearTimeout(window.spinnerRepeat);
-                window.spinnerRepeat = setTimeout(C, 50)
-            };
-        clearTimeout(window.spinnerRepeat);
-        window.spinnerRepeat = setTimeout(C, 500);
-        A();
-        a.preventDefault()
-    }).on("pointerup pointercancel mouseleave touchend", ".numberUp, .numberDown", function() {
-        clearTimeout(window.spinnerRepeat)
-    }).on("click", ".geofs-autopilot-pad", function(a) {
-        controls.autopilot.toggle()
-    })
-    }
+//     initUI: function(){
+//             var a = $(".geofs-autopilot-pad .control-pad-label"),
+//         b;
+//     controls.autopilot.setHeading = function(a) {
+//         var b = controls.autopilot.heading;
+//         try {
+//             controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
+//                 $(".geofs-autopilot-heading").text(controls.autopilot.heading),
+//                 $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
+//         } catch (e) {
+//             controls.autopilot.heading = b
+//         }
+//     };
+//     controls.autopilot.setAltitude = function(a) {
+//         var b = controls.autopilot.altitude;
+//         try {
+//             controls.autopilot.altitude = parseInt(a, 10),
+//                 $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),
+//                 $(".legacyAutopilot .geofs-autopilot-altitude").val(controls.autopilot.altitude)
+//         } catch (e) {
+//             controls.autopilot.altitude = b
+//         }
+//     };
+//     controls.autopilot.setKias = function(a) {
+//         var b = controls.autopilot.kias;
+//         try {
+//             controls.autopilot.kias = parseInt(a, 10),
+//                 $(".geofs-autopilot-kias").text(controls.autopilot.kias),
+//                 $(".legacyAutopilot .geofs-autopilot-kias").val(controls.autopilot.kias)
+//         } catch (e) {
+//             controls.autopilot.kias = b
+//         }
+//     };
+//     controls.autopilot.setClimbrate = function(a) {
+//         var b = controls.autopilot.climbrate;
+//         try {
+//             controls.autopilot.climbrate = parseInt(a, 10),
+//                 $(".geofs-autopilot-climbrate").text(controls.autopilot.climbrate)
+//         } catch (e) {
+//             controls.autopilot.climbrate = b
+//         }
+//     };
+//     $(document).on("autopilotOn", function() {
+//         clearTimeout(b);
+//         a.removeClass("red-pad").addClass("green-pad");
+//         $(".geofs-autopilot-controls").show();
+//         $(".geofs-autopilot-toggle").html("Engaged").addClass("mdl-button--colored")
+//     });
+//     $(document).on("autopilotOff", function() {
+//         a.removeClass("green-pad").addClass("red-pad");
+//         $(".geofs-autopilot-controls").hide();
+//         $(".geofs-autopilot-toggle").html("Disengaged").removeClass("mdl-button--colored");
+//         b = setTimeout(function() {
+//             a.removeClass("red-pad").removeClass("green-pad")
+//         }, 3E3)
+//     });
+//     $(document).on("pointerdown touchstart", ".numberUp, .numberDown", function(a) {
+//         var b = $(this),
+//             c = $(this).parent().find(".numberValue"),
+//             f = parseInt(c.text()) || 0,
+//             g = parseInt(c.attr("step")),
+//             h = parseInt(c.attr("min")),
+//             k = parseInt(c.attr("max")),
+//             n = b.hasClass("numberUp") ? g : -g,
+//             v = c.attr("loop"),
+//             z = c.attr("method"),
+//             A = function() {
+//                 f += n;
+//                 f = Math.floor(f / g) * g;
+//                 f = v && f > k ? h : v && f < h ? k : clamp(f, h, k);
+//                 c.text(f);
+//                 controls.autopilot[z](f)
+//             },
+//             C = function() {
+//                 A();
+//                 clearTimeout(window.spinnerRepeat);
+//                 window.spinnerRepeat = setTimeout(C, 50)
+//             };
+//         clearTimeout(window.spinnerRepeat);
+//         window.spinnerRepeat = setTimeout(C, 500);
+//         A();
+//         a.preventDefault()
+//     }).on("pointerup pointercancel mouseleave touchend", ".numberUp, .numberDown", function() {
+//         clearTimeout(window.spinnerRepeat)
+//     }).on("click", ".geofs-autopilot-pad", function(a) {
+//         controls.autopilot.toggle()
+//     })
+// }
   },
   created() {
-      // this.initUI()
+    //   this.initUI()
   },
 };
 
