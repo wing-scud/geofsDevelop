@@ -15,7 +15,7 @@ import { list } from "./utils/AircraftList"
 import controls from './modules/controls'
 import objects from './modules/objects'
 import weather from './modules/weather'
-import multiplayer from "./modules/multiplayer"
+//import multiplayer from "./modules/multiplayer"
 import audio from "./modules/audio"
 import camera from "./modules/camera"
 
@@ -38,8 +38,12 @@ geofs.includes = {};
 geofs.aircraftList = list;
 geofs.frameCallbackStack = {};
 geofs.minPenetrationThreshold = 0.001;
-geofs.multiplayerHost = geofs.multiplayerHost || 'https://net.geo-fs.com:8080';
+//geofs.multiplayerHost = geofs.multiplayerHost || 'https://net.geo-fs.com:8080';
 geofs.init = function(a) {
+    for (var i in geofs.aircraftList) {
+        geofs.aircraftList[i].path = geofs.aircraftList[i].dir.replace(/\|/gi, '/')
+    }
+
     geofs.PRODUCTION = geofs.PRODUCTION || !1;
     geofs.PRODUCTION || (geofs.killCache = `?kc=${Date.now()}`,
         geofs.debug.init(),
@@ -107,7 +111,7 @@ geofs.init = function(a) {
         camera.init();
         objects.init();
         weather.init();
-        multiplayer.init();
+      //  multiplayer.init();
         geofs.fx.init();
         weather.refresh(c);
         geofs.initLoggedInUser();
@@ -124,7 +128,7 @@ geofs.unload = function() {
     geofs.savePreferences();
     if (geofs.PRODUCTION) {
         try {
-            multiplayer.avgPing && geofs.api.analytics.event('system', 'networkLatency', `${50 * Math.ceil(multiplayer.avgPing / 50)}`, Math.floor(multiplayer.avgPing)),
+        //    multiplayer.avgPing && geofs.api.analytics.event('system', 'networkLatency', `${50 * Math.ceil(multiplayer.avgPing / 50)}`, Math.floor(multiplayer.avgPing)),
                 geofs.api.analytics.event('system', 'framerate', `${5 * Math.ceil(geofs.debug.fps / 5)}`, 1 * geofs.debug.fps);
         } catch (a) {
             geofs.debug.error(a, 'geofs.unload');
@@ -167,7 +171,7 @@ geofs.isPaused = function() {
 geofs.doPause = function(a, b) {
     a = a || 0;
     geofs.pauses = geofs.pauses || {};
-    a < geofs.pauseLevel || (b || multiplayer.stopUpdates(),
+    a < geofs.pauseLevel || (b ||// multiplayer.stopUpdates(),
          audio.stop(),
         flight.recorder.stopRecording(),
         flight.recorder.pausePlayback(),
@@ -177,8 +181,8 @@ geofs.doPause = function(a, b) {
 };
 geofs.undoPause = function(a) {
     (a || 0) < geofs.pauseLevel || (geofs.lastTime = null,
-        geofs.cautiousWithTerrain ? ($(geofs.canvas).one('terrainStable', multiplayer.startUpdates),
-            $(geofs.canvas).one('terrainStable', flight.recorder.startRecording)) : (multiplayer.startUpdates(),
+        geofs.cautiousWithTerrain ? ($(geofs.canvas).one('terrainStable'),//geofs.cautiousWithTerrain ? ($(geofs.canvas).one('terrainStable', multiplayer.startUpdates),
+            $(geofs.canvas).one('terrainStable', flight.recorder.startRecording)) : (//multiplayer.startUpdates(),
             flight.recorder.startRecording()),
         geofs.pause = !1,
         ui.toggleButton('.geofs-button-pause', !1),
@@ -195,7 +199,7 @@ geofs.frameCallback = function(a) {
         flight.terrainElevationManagement()
         geofs.pause ? camera.update(a) : (controls.update(a),
             flight.tick(a, b),
-            multiplayer.update(b),//多人玩家-
+        //    multiplayer.update(b),//多人玩家-
             geofs.debug.update(b),
             camera.update(a),//相机更新
             instruments.update(),//指示器

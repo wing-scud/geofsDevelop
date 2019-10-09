@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Index></Index>-
+    <Index></Index>
   </div>
  
 </template>
@@ -18,13 +18,3 @@ export default {
   }
 };
 </script>
-
-<style>
-#app {
-    width:100%;
-    flex-direction: row;
-    display: flex;
-    align-items: stretch;
-    height: 100%;
-}
-</style>

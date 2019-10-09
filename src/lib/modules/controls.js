@@ -651,7 +651,7 @@ controls.keyUp = function(a) {
             controls.setters.setBrakes.unset();
             break;
         case 84:
-            ui.chat.showInput()
+        //    ui.chat.showInput()
     }
 };
 controls.joystick = {};

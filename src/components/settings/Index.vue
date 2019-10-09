@@ -3,7 +3,7 @@
      <ul class="geofs-list geofs-toggle-panel geofs-preference-list geofs-preferences" data-noblur="true" onShow="geofs.initializePreferencesPanel();" onHide="geofs.savePreferencesPanel();">
             <ControlsSetting></ControlsSetting>
             <SimulationSetting></SimulationSetting>
-             <MultiplayerSetting></MultiplayerSetting>
+            <!-- <MultiplayerSetting></MultiplayerSetting>-->
              <GraphicsSetting></GraphicsSetting>
             <EnvironmentSetting></EnvironmentSetting>
                 <!--<li class="geofs-list-collapsible-item geofs-collapsible-profile geofs-onlyForApp">
@@ -36,7 +36,7 @@ import ControlsSetting from "./ControlsSetting"
 import SimulationSetting from "./SimulationSetting"
 import EnvironmentSetting from "./EnvironmentSetting"
 import GraphicsSetting from "./GraphicsSetting"
-import MultiplayerSetting from "./MultiplayerSetting"
+//import MultiplayerSetting from "./MultiplayerSetting"
 import InstrumentsSetting from "./InstrumentsSetting"
 import DebugInforSetting from "./DebugInforSetting"
 export default {
@@ -46,7 +46,7 @@ export default {
     SimulationSetting,
     EnvironmentSetting,
     GraphicsSetting,
-    MultiplayerSetting,
+   // MultiplayerSetting,
     InstrumentsSetting,
     DebugInforSetting
   },

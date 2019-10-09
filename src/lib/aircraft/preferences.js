@@ -190,9 +190,9 @@ function hackGeoFS(geofs) {
         },
         crashDetection: !1,
         showPapi: !0,
-        multiplayer: !0,
+       // multiplayer: !0,
         adsb: !0,
-        chat: !1,
+        //chat: !1,
         sound: !0,
     };
     geofs.preferencesKeycodeLookup = {
@@ -390,8 +390,9 @@ function hackGeoFS(geofs) {
         });
     };
     geofs.preferencesDebugInfo = function() {
-        for (var a = `Network Latency (avg): ${multiplayer.avgPing} ms\nFramerate (avg): ${geofs.debug.fps} fps\n--------------\nlogs:\n`, b = 0; b < geofs.debug.logStack.length; b++) { a += `${geofs.debug.logStack[b]}\n`; }
-        $('.geofs-debug-info', geofs.$preferencePanel).html(a);
+        //debug infor textArea输出的信息
+    //    for (var a = `Network Latency (avg): ${multiplayer.avgPing} ms\nFramerate (avg): ${geofs.debug.fps} fps\n--------------\nlogs:\n`, b = 0; b < geofs.debug.logStack.length; b++) { a += `${geofs.debug.logStack[b]}\n`; }
+     //   $('.geofs-debug-info', geofs.$preferencePanel).html(a);
     };
     geofs.preferencesTestJoystick = function() {
         const a = controls.joystick.poll();

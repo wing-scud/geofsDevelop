@@ -1,9 +1,9 @@
 
 import panel from './panel';
-import chat from './chat';
+//import chat from './chat';
 import hud from './hud';
 import geofs from '../geofs'
-import multiplayer from "../modules/multiplayer"
+//import multiplayer from "../modules/multiplayer"
 import camera from "../modules/camera"
 import {DEGREES_TO_RAD} from "../utils/utils"
 import map from "./map"
@@ -11,7 +11,7 @@ window.ui = window.ui ||{
 };
 
 ui.panel=panel;
-ui.chat=chat;
+//ui.chat=chat;
 ui.hud=hud;
 ui.playerMarkers = {};
 ui.playerSymbols = {};
@@ -69,7 +69,7 @@ ui.init = function() {
     });
     ui.panel.init();
     ui.hud.init();
-    ui.chat.init();
+   // ui.chat.init();
     $(document).on('keydown', '.geofs-stopKeyboardPropagation', (a) => {
         a.stopImmediatePropagation();
     });
@@ -92,15 +92,15 @@ ui.init = function() {
         ui.panel.hide(null, !0);
         a.stopPropagation();
     });
-    $(document).on('click', '[data-player]', function(a) {
-        a = $(this).attr('data-player');
-        const b = multiplayer.users[a].getCoordinates();
-        b[0] -= 0.003 * Math.cos(b[3] * DEGREES_TO_RAD);
-        b[1] -= 0.003 * Math.sin(b[3] * DEGREES_TO_RAD);
-        multiplayer.users[a].isOnGround() && (b[2] = 0);
-        b && (b[4] = !0,
-            geofs.flyTo(b));
-    });
+    // $(document).on('click', '[data-player]', function(a) {
+    //     a = $(this).attr('data-player');
+    //     const b = multiplayer.users[a].getCoordinates();
+    //     b[0] -= 0.003 * Math.cos(b[3] * DEGREES_TO_RAD);
+    //     b[1] -= 0.003 * Math.sin(b[3] * DEGREES_TO_RAD);
+    //     multiplayer.users[a].isOnGround() && (b[2] = 0);
+    //     b && (b[4] = !0,
+    //         geofs.flyTo(b));
+    // });
     $(document).on('keydown', '.address-input', (a) => {
         a.stopImmediatePropagation();
     });

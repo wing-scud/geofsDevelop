@@ -78,11 +78,11 @@
         </button>
                 <!--<button class="mdl-button mdl-js-button mdl-button--icon" onclick="ui.vr(true);" title="Toggle VR mode"><i class="material-icons">visibility</i></button>-->
             </div>
-            <button class="mdl-button mdl-js-button geofs-authenticated mdl-button--icon geofs-f-standard-ui" data-tooltip-classname="mdl-tooltip--top" data-toggle-panel=".geofs-player-list" title="List of online pilots">
+         <!--   <button class="mdl-button mdl-js-button geofs-authenticated mdl-button--icon geofs-f-standard-ui" data-tooltip-classname="mdl-tooltip--top" data-toggle-panel=".geofs-player-list" title="List of online pilots">
         <i class="material-icons">group</i>
-                    </button>
+                    </button>-->
             <!-- Chat -->
-            <div class="geofs-chat-input-section geofs-authenticated geofs-f-standard-ui geofs-bigScreenOnly">
+            <!--<div class="geofs-chat-input-section geofs-authenticated geofs-f-standard-ui geofs-bigScreenOnly">
                   <button class="geofs-chat-button mdl-button mdl-js-button" data-tooltip-classname="mdl-tooltip--top" title="Type a chat message [T]">
                  Talk <i class="icon-align-left"></i>
                      </button>
@@ -93,7 +93,7 @@
                     </div>
                     <button class="geofs-chat-send-button mdl-button mdl-js-button mdl-button--colored" type="submit">Send</button>
                      </form>
-            </div>
+            </div>-->
             <button class="mdl-button mdl-js-button mdl-button--icon geofs-f-standard-ui geofs-orientationReset" data-tooltip-classname="mdl-tooltip--top" title="Reset orientation controls to neutral">
             <i class="material-icons">adjust</i>
     </button>
@@ -119,7 +119,7 @@
 
 
             <!-- player's slider -->
-            <div class="geofs-f-recordPlayer geofs-slider-container geofs-bigScreenOnly">
+         <!--   <div class="geofs-f-recordPlayer geofs-slider-container geofs-bigScreenOnly">
                 <div class="slider geofs-recordPlayer-slider" type="slider" value="0" min="0" precision="0" style="height: 10px;">
                     <div class="slider-rail">
                         <div class="slider-selection">
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
 </template>
 

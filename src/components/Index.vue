@@ -1,6 +1,6 @@
 <template>
-  <div id="container">
-    <div class="geofs-ui-left">
+  <div id="app">
+    <div class="geofs-ui-left" :style="{height:'95%'}">
         <div class="geofs-apiResponse"></div>
         <AircraftLocation></AircraftLocation>
         <AircraftList></AircraftList>
@@ -39,22 +39,10 @@ export default {
     Navigation
   },
   created(){
-      for (var i in geofs.aircraftList) {
-          geofs.aircraftList[i].path = geofs.aircraftList[i].dir.replace(/\|/gi, '/')
-      }
   }
 };
 </script>
 
-<style>
-#container {
-  width:100%;
-    flex-direction: row;
-    display: flex;
-    align-items: stretch;
-    height: 100%;
-}
-</style>
 
 
 

@@ -20,7 +20,9 @@ camera.animations = {
         min: -20,
         max: 50,
     },
+    radianRoll: 0
 };
+camera.radianRoll =0;
 camera.currentMode = 0;//设置跟随视角，按钮点击切换视角
 camera.currentModeName = 'follow';
 camera.lastCurrentMode = 0;

@@ -85,7 +85,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
         // api.viewer.scene.moon.textureUrl = 'images/moonSmall.jpg';
         api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
             baseProvider:  new GeoVis.GeoserverTerrainProvider({
-                url: "http://192.168.13.32:8080/geoserver/wms",
+                url: "http://syy.geovisweb.cn:10088/geoserver/wms",
                 layerName: "GlobalTerrain:pyramid32",
                 maxLevel: 11,
                 service: "WMS",
@@ -207,7 +207,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                 if (!geofs.userRecord.sessionId) { return; }
                 a.sessionId = geofs.userRecord.sessionId;
             }
-            $('.geofs-apiResponse').htmlView('load', `${geofs.url}/backend/accounts/hd.php`, a);
+            // $('.geofs-apiResponse').htmlView('load', `${geofs.url}/backend/accounts/hd.php`, a);
         }
     };
     api.setImageryProvider = (a, b, c, d, e) => {
@@ -608,7 +608,6 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
         a.receiveShadows && (b = Cesium.ShadowMode.RECEIVE_ONLY);
         a.castShadows && a.receiveShadows && (b = Cesium.ShadowMode.ENABLED);
         a.shadows = b;
-        // debugger
         b = Cesium.Model.fromGltf(a);
         a.justLoad || api.addModelToWorld(b);
         return b;
@@ -1097,7 +1096,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
     api.add3dBuildings = () => {
         api.viewer.terrainProvider = api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
             baseProvider: new GeoVis.GeoserverTerrainProvider({
-                url: "http://192.168.13.32:8080/geoserver/wms",
+                url: "http://syy.geovisweb.cn:10088/geoserver/wms",
                 layerName: "GlobalTerrain:pyramid32",
                 maxLevel: 11,
                 service: "WMS",

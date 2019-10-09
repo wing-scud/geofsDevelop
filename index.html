@@ -56,7 +56,7 @@
     <link rel="stylesheet" type="text/css" href="static/css/geofs.css?kc=1560503593-2" media="screen" />
 </head>
 
-<body>
+<body >
     <div id="app"></div>
 </body>
 <script type="text/javascript">
@@ -75,7 +75,7 @@
         geofs.preferences.graphics.HD = false;
         document.body.classList.remove('geofs-hd');
         geofs.api.imageryProvider = new Cesium.UrlTemplateImageryProvider({
-            url: 'http://localhost:3030/proxy?baseUrl=http://192.168.13.32/tiles/googleimg/{z}/{x}/{y}.png'
+            url: 'http://localhost:3030/proxy?baseUrl=http://www.google.cn/maps/vt&lyrs=s@709&gl=cn&x={x}&y={y}&z={z}'
         })
         geofs.api.setImageryProvider(geofs.api.imageryProvider, true, 1.5, 1.2, 1);
         geofs.api.analytics.event('geofs', 'mode', 'sd', 1);
@@ -148,11 +148,10 @@
 <style>
     #app {
         width:100%;
-        height:100%;
-        flex-direction: row;
-        display: flex;
-        align-items: stretch;
-        overflow: hidden;
+    flex-direction: row;
+    display: flex;
+    align-items: stretch;
+    height: 100%; 
         }
 </style>
         

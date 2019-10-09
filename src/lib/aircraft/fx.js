@@ -664,7 +664,7 @@ function fxGeofs(geofs)
             maxScale: 10,
             opacity: .9
         }, {
-            model: "models/clouds/flat1.gltf",
+            model: geofs.url+"/models/clouds/flat1.gltf",
             belowCeiling: 2E3,
             aboveCeiling: 9E3,
             minScale: 4E4,
@@ -673,7 +673,7 @@ function fxGeofs(geofs)
             rotationMultiplier: 360,
             opacity: 1
         }, {
-            model: "models/clouds/flat2.gltf",
+            model: geofs.url+"/models/clouds/flat2.gltf",
             belowCeiling: 2E3,
             aboveCeiling: 9E3,
             minScale: 4E4,
