@@ -624,7 +624,7 @@ function fxGeofs(geofs)
             brightnessDelta: 0
         },
         types: [{
-            billboard: "images/weather/clouds/1.png",
+            billboard: PAGE_PATH+"images/weather/clouds/1.png",
             belowCeiling: 500,
             aboveCeiling: 1E3,
             minScale: 6,
@@ -632,7 +632,7 @@ function fxGeofs(geofs)
             maxRadius: 5E4,
             opacity: .9
         }, {
-            billboard: "images/weather/clouds/6.png",
+            billboard: PAGE_PATH+"images/weather/clouds/6.png",
             belowCeiling: 500,
             aboveCeiling: 1E3,
             minScale: 10,
@@ -640,7 +640,7 @@ function fxGeofs(geofs)
             maxRadius: 5E4,
             opacity: .9
         }, {
-            billboard: "images/weather/clouds/1.png",
+            billboard: PAGE_PATH+"images/weather/clouds/1.png",
             belowCeiling: 500,
             aboveCeiling: 1500,
             maxRadius: 1E5,
@@ -648,7 +648,7 @@ function fxGeofs(geofs)
             maxScale: 15,
             opacity: .9
         }, {
-            billboard: "images/weather/clouds/5.png",
+            billboard: PAGE_PATH+"images/weather/clouds/5.png",
             belowCeiling: 500,
             aboveCeiling: 1E3,
             maxRadius: 1E5,
@@ -656,7 +656,7 @@ function fxGeofs(geofs)
             maxScale: 10,
             opacity: .9
         }, {
-            billboard: "images/weather/clouds/cumuloniumbus.png",
+            billboard:PAGE_PATH+"images/weather/clouds/cumuloniumbus.png",
             belowCeiling: 500,
             aboveCeiling: 100,
             maxRadius: 1E5,
@@ -751,7 +751,7 @@ function fxGeofs(geofs)
         texture: "models/clouds/cover.jpg",
         size: 1,
         options: {
-            url: "models/clouds/cover.gltf",
+            url: PAGE_PATH+"models/clouds/cover.gltf",
             scale: 4E5
         },
         create: function(a) {
@@ -784,15 +784,16 @@ function fxGeofs(geofs)
             this.entity = null
         }
     };
+    //rain ???
     geofs.fx.precipitation = {
         types: {
             snow: {
                 speed: .001,
-                model: "models/precipitations/snow.gltf"
+                model: PAGE_PATH+"models/precipitations/snow.gltf"
             },
             rain: {
                 speed: .1,
-                model: "models/precipitations/rain.gltf?bla=1"
+                model: PAGE_PATH+"models/precipitations/rain.gltf?bla=1"
             }
         },
         visible: !0,
@@ -876,7 +877,7 @@ function fxGeofs(geofs)
         var d = geofs.api.viewer.entities.add({
             position: Cesium.Cartesian3.fromDegrees(0, 0, 1E6),
             billboard: {
-                image: "images/retro/sun.png",
+                image:PAGE_PATH+ "images/retro/sun.png",
                 show: !0,
                 pixelOffset: new Cesium.Cartesian2(0, 0),
                 eyeOffset: new Cesium.Cartesian3(0, 0, 0),

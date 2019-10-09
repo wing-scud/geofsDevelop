@@ -110,6 +110,7 @@ weather.generateFromPreferences = function() {
     return weather.manualDefinition
 };
 weather.set = function(a, b) {
+   
     a = a || {};
     b = b || camera.lla;
     weather.setDateAndTime(b);
