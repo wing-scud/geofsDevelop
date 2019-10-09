@@ -4,7 +4,7 @@ import camera from './camera'
 import geofs  from '../geofs'
 import audio from "./audio"
 import instruments from "./instruments"
-import {fixAngle,clamp,exponentialSmoothing ,V3,PID} from "../utils/utils" 
+import {fixAngle,fixAngle360,clamp,exponentialSmoothing ,V3,PID} from "../utils/utils" 
 window.controls = window.controls || {};
 console.log(V3)
 controls = {
@@ -830,48 +830,53 @@ controls.autopilot = {
         rollPID: new PID(.02, 1E-5, 0),
         throttlePID: new PID(.1, 0, 0)
     };
-    controls.autopilot.setHeading = function(a) {
-        var b = controls.autopilot.heading;
-        try {
-            controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
+
+    controls.autopilot.initUI = function() {
+        var a = $(".geofs-autopilot-pad .control-pad-label"), b;
+        controls.autopilot.setHeading = function(a) {
+            var b = controls.autopilot.heading;
+            try {
+                
+                controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
                 $(".geofs-autopilot-heading").text(controls.autopilot.heading),
                 $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
-        } catch (e) {
-            controls.autopilot.heading = b
+            } catch (e) {
+                controls.autopilot.heading = b
+            }
         }
-    };
-    controls.autopilot.setAltitude = function(a) {
-        var b = controls.autopilot.altitude;
-        try {
-            controls.autopilot.altitude = parseInt(a, 10),
-                $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),//更新map内的自动驾驶数据
+        ;
+        controls.autopilot.setAltitude = function(a) {
+            var b = controls.autopilot.altitude;
+            try {
+                controls.autopilot.altitude = parseInt(a, 10),
+                $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),
                 $(".legacyAutopilot .geofs-autopilot-altitude").val(controls.autopilot.altitude)
-        } catch (e) {
-            controls.autopilot.altitude = b
+            } catch (e) {
+                controls.autopilot.altitude = b
+            }
         }
-    };
-    controls.autopilot.setKias = function(a) {
-        var b = controls.autopilot.kias;
-        try {
-            controls.autopilot.kias = parseInt(a, 10),
+        ;
+        controls.autopilot.setKias = function(a) {
+            var b = controls.autopilot.kias;
+            try {
+                controls.autopilot.kias = parseInt(a, 10),
                 $(".geofs-autopilot-kias").text(controls.autopilot.kias),
                 $(".legacyAutopilot .geofs-autopilot-kias").val(controls.autopilot.kias)
-        } catch (e) {
-            controls.autopilot.kias = b
+            } catch (e) {
+                controls.autopilot.kias = b
+            }
         }
-    };
-    controls.autopilot.setClimbrate = function(a) {
-        var b = controls.autopilot.climbrate;
-        try {
-            controls.autopilot.climbrate = parseInt(a, 10),
+        ;
+        controls.autopilot.setClimbrate = function(a) {
+            var b = controls.autopilot.climbrate;
+            try {
+                controls.autopilot.climbrate = parseInt(a, 10),
                 $(".geofs-autopilot-climbrate").text(controls.autopilot.climbrate)
-        } catch (e) {
-            controls.autopilot.climbrate = b
+            } catch (e) {
+                controls.autopilot.climbrate = b
+            }
         }
-    };
-    controls.autopilot.initUI = function() {
-        var a = $(".geofs-autopilot-pad .control-pad-label"),
-            b;
+        ;
         $(document).on("autopilotOn", function() {
             clearTimeout(b);
             a.removeClass("red-pad").addClass("green-pad");
@@ -887,27 +892,27 @@ controls.autopilot = {
             }, 3E3)
         });
         $(document).on("pointerdown touchstart", ".numberUp, .numberDown", function(a) {
-            var b = $(this),
-                c = $(this).parent().find(".numberValue"),
-                f = parseInt(c.text()) || 0,
-                g = parseInt(c.attr("step")),
-                h = parseInt(c.attr("min")),
-                k = parseInt(c.attr("max")),
-                n = b.hasClass("numberUp") ? g : -g,
-                v = c.attr("loop"),
-                z = c.attr("method"),
-                A = function() {
-                    f += n;
-                    f = Math.floor(f / g) * g;
-                    f = v && f > k ? h : v && f < h ? k : clamp(f, h, k);
-                    c.text(f);
-                    controls.autopilot[z](f)
-                },
-                C = function() {
-                    A();
-                    clearTimeout(window.spinnerRepeat);
-                    window.spinnerRepeat = setTimeout(C, 50)
-                };
+            var b = $(this)
+              , c = $(this).parent().find(".numberValue")
+              , f = parseInt(c.text()) || 0
+              , g = parseInt(c.attr("step"))
+              , h = parseInt(c.attr("min"))
+              , k = parseInt(c.attr("max"))
+              , n = b.hasClass("numberUp") ? g : -g
+              , v = c.attr("loop")
+              , z = c.attr("method")
+              , A = function() {
+                f += n;
+                f = Math.floor(f / g) * g;
+                f = v && f > k ? h : v && f < h ? k : clamp(f, h, k);
+                c.text(f);
+                controls.autopilot[z](f)
+            }
+              , C = function() {
+                A();
+                clearTimeout(window.spinnerRepeat);
+                window.spinnerRepeat = setTimeout(C, 50)
+            };
             clearTimeout(window.spinnerRepeat);
             window.spinnerRepeat = setTimeout(C, 500);
             A();
@@ -917,7 +922,8 @@ controls.autopilot = {
         }).on("click", ".geofs-autopilot-pad", function(a) {
             controls.autopilot.toggle()
         })
-    };
+    }
+    ;
 controls.autopilot.toggle = function() {
     controls.autopilot.on ? controls.autopilot.turnOff() : controls.autopilot.turnOn()
 };

@@ -201,10 +201,14 @@ audio.impl.webAudio = {
     d.onload = function () {
       audio.impl.webAudio.stackDecoding(() => {
         audio.impl.webAudio.context.decodeAudioData(d.response, (b) => {
+     
           c.buffer = b;
           audio.loaded(a);
         }, (a) => {
-          throw `Error with decoding audio data${a.err}`;
+         // throw `Error with decoding audio data${a.err}`;
+         console.log(a)
+          throw `Error with decoding audio data ${a}`;
+        
         });
       }, a);
     }

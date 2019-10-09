@@ -9234,6 +9234,7 @@ body:not(.geofs-hd) .cesium-widget-credits {
 }
 
 .geofs-autopilot-displays {
+    top:35px;
     width: 250px;
     position: absolute;
     right: 20px;

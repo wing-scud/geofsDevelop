@@ -1,12 +1,11 @@
 <template>
 <div>
-        <ul class="geofs-list geofs-toggle-panel geofs-player-list geofs-authenticated" onshow="ui.initPlayerList();" onhide="ui.clearPlayerList();"></ul>
-        <!-- Navigation panel    -->
-        <div class="geofs-map-list geofs-toggle-panel" onshow="ui.createMap();" onhide="ui.stopMap();" data-noblur="true"><!-- ui的CreateMap需要调整大小，掩盖的map内的自动驾驶-->
+          <ul class="geofs-list geofs-toggle-panel geofs-player-list geofs-authenticated" onshow="ui.initPlayerList();" onhide="ui.clearPlayerList();"></ul>
+        <!-- Navigation panel -->
+        <div class="geofs-map-list geofs-toggle-panel" onshow="ui.createMap();" onhide="ui.stopMap();" data-noblur="true">
             <div class="geofs-createPath">Create flight path</div>
             <div class="geofs-clearPath">Clear path</div>
-            <!--地图 -->
-            <div class="geofs-map-viewport geofs-stopMousePropagation" style="height:85%"></div>
+            <div class="geofs-map-viewport geofs-stopMousePropagation"></div>
             <!-- map内自动驾驶 autopilot -->
             <div class="geofs-autopilot geofs-stopKeyboardPropagation geofs-stopMousePropagation">
                 <h6>Autopilot</h6>

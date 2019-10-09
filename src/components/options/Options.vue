@@ -117,8 +117,7 @@
                 </div>
             </div>
 
-
-            <!-- player's slider -->
+            <!--  回放航班 player's slider -->
            <div class="geofs-f-recordPlayer geofs-slider-container geofs-bigScreenOnly">
                 <div class="slider geofs-recordPlayer-slider" type="slider" value="0" min="0" precision="0" style="height: 10px;">
                     <div class="slider-rail">
@@ -165,6 +164,7 @@ export default {
         flight.recorder.startRecording();
         },
   togglePause: function() {
+    
     geofs.pause ? geofs.undoPause(2) : geofs.doPause(2);
     }
   },

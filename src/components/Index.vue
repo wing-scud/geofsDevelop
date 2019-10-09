@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="geofs geofs-ingame legacyAutopilot">
     <div class="geofs-ui-left" :style="{height:'95%'}">
         <div class="geofs-apiResponse"></div>
         <AircraftLocation></AircraftLocation>

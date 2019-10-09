@@ -83,7 +83,6 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
             },
         });
         // api.viewer.scene.moon.textureUrl = 'images/moonSmall.jpg';
-        debugger
         api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
             baseProvider:  new GeoVis.GeoserverTerrainProvider({
                 url: "http://syy.geovisweb.cn:10088/geoserver/wms",
@@ -953,7 +952,6 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
             h.push(f);
         }
         return Cesium.when.all(c.map((b, c) => {
-            debugger
             if (b) { return Cesium.sampleTerrain(a, c, b); }
         })).then(() => b);
     }));
