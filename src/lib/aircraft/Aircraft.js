@@ -59,7 +59,7 @@ aircraft.Aircraft.prototype.getCurrentCoordinates = function() {
     a[3] = aircraft.instance.htr[0];
     return a;
 };
-aircraft.Aircraft.prototype.change = function(a, b) {
+aircraft.Aircraft.prototype.change = function(a, b) {//点击改变飞机
     a = a || this.aircraftRecord.id;
     geofs.doPause(1);
     this.load(a, this.getCurrentCoordinates(), b);
@@ -84,6 +84,7 @@ aircraft.Aircraft.prototype.loadDefault = a => { //显示自定义通知
 };
 aircraft.Aircraft.prototype.parseRecord = function(a) {
     try {
+        
         const b = $.parseJSON(a);
         this.aircraftRecord = b;
         if (b.definition) {
@@ -120,7 +121,9 @@ aircraft.Aircraft.prototype.load = (a, b, c) => { //载入飞机的json，配置
                     d = aircraft.instance.parseRecord(d)) {
                     aircraftList[a].local || (aircraft.instance.aircraftRecord.fullPath = geofs.url + aircraft.instance.aircraftRecord.fullPath),
                         aircraft.instance.id = a,
+                    
                         aircraft.instance.init(d, b, c);
+            
                 }
             } else { aircraft.instance.loadDefault('Could not load aircraft file'); }
         },

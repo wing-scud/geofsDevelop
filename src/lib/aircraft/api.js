@@ -74,15 +74,16 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
         api.viewer.scene.highDynamicRange = !1;
         api.viewer.scene.skyBox = new Cesium.SkyBox({
             sources: {
-                positiveX: 'images/skybox/tycho2t3_80_px.png',
-                negativeX: 'images/skybox/tycho2t3_80_mx.png',
-                positiveY: 'images/skybox/tycho2t3_80_py.png',
-                negativeY: 'images/skybox/tycho2t3_80_my.png',
-                positiveZ: 'images/skybox/tycho2t3_80_pz.png',
-                negativeZ: 'images/skybox/tycho2t3_80_mz.png',
+                positiveX: geofs.localUrl+'images/skybox/tycho2t3_80_px.png',
+                negativeX: geofs.localUrl+'images/skybox/tycho2t3_80_mx.png',
+                positiveY: geofs.localUrl+'images/skybox/tycho2t3_80_py.png',
+                negativeY: geofs.localUrl+'images/skybox/tycho2t3_80_my.png',
+                positiveZ: geofs.localUrl+'images/skybox/tycho2t3_80_pz.png',
+                negativeZ: geofs.localUrl+'images/skybox/tycho2t3_80_mz.png',
             },
         });
         // api.viewer.scene.moon.textureUrl = 'images/moonSmall.jpg';
+        debugger
         api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
             baseProvider:  new GeoVis.GeoserverTerrainProvider({
                 url: "http://syy.geovisweb.cn:10088/geoserver/wms",
@@ -509,13 +510,15 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
     api.oldNormal = [0, 0, 1];
     api.normalDotThreshold = 0.95;
     api.wrongNormalTries = 3;
-    api.getMostDetailedGroundNormal = (a, b) => {
+    api.getMostDetailedGroundNormal = (a, b) => {  
+        
         const c = V3.dup(a);
         a = xyz2lla([1, 1, 0], c);
         let d = V3.add(c, [a[0], 0, 0]),
             e = V3.add(c, [0, a[1], 0]);
+       
         a = Cesium.sampleTerrainMostDetailed(api.viewer.terrainProvider, [Cesium.Cartographic.fromDegrees(c[1], c[0]), Cesium.Cartographic.fromDegrees(d[1], d[0]), Cesium.Cartographic.fromDegrees(e[1], e[0])]);
-        //对地形进行采样
+        //对地形进行采样????
         Cesium.when(a, (a) => {
             c[2] = a[0].height;
             d[2] = a[1].height;  
@@ -950,6 +953,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
             h.push(f);
         }
         return Cesium.when.all(c.map((b, c) => {
+            debugger
             if (b) { return Cesium.sampleTerrain(a, c, b); }
         })).then(() => b);
     }));

@@ -24,7 +24,7 @@ import ui from './ui/ui'
 
 var geofs  =  window.geofs || {
 };
-geofs.mapXYZ = "http://192.168.13.32/tiles/googleimg/{z}/{x}/{y}.png"
+//geofs.mapXYZ = "http://192.168.13.32/tiles/googleimg/{z}/{x}/{y}.png"
 geofs.aircraft=aircraft
 geofs.animation=animation
 geofs.api=api

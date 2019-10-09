@@ -37,7 +37,8 @@ audio.update = function () {
       let b = audio.sounds[a],
         c = b.effects;
       if (b.file && !b.loading && !b.loaded && audio.soundplayer.loadMP3) {
-        audio.soundplayer.loadMP3(b.id, b.file + geofs.killCache, b.cut[0], b.cut[1], b.lowLatency || !1, b.fadeDuration || 0),
+        //添加获取声音代理
+        audio.soundplayer.loadMP3(b.id,  geofs.localUrl+b.file + geofs.killCache, b.cut[0], b.cut[1], b.lowLatency || !1, b.fadeDuration || 0),
         b.loading = !0;
       } else if (b.loaded) {
         for (const d in c) {

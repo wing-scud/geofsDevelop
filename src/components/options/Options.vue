@@ -119,7 +119,7 @@
 
 
             <!-- player's slider -->
-         <!--   <div class="geofs-f-recordPlayer geofs-slider-container geofs-bigScreenOnly">
+           <div class="geofs-f-recordPlayer geofs-slider-container geofs-bigScreenOnly">
                 <div class="slider geofs-recordPlayer-slider" type="slider" value="0" min="0" precision="0" style="height: 10px;">
                     <div class="slider-rail">
                         <div class="slider-selection">
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                 </div>
-            </div>-->
+            </div>
         </div>
 </template>
 
