@@ -289,6 +289,7 @@ function fxGeofs(geofs)
         var d = this;
         a = Cesium.sampleTerrainMostDetailed(geofs.api.viewer.terrainProvider, [Cesium.Cartographic.fromDegrees(a[1], a[0])]);
         Cesium.when(a, function(a) {
+            // debugger
             d.location[2] = a[0].height
         });
         this.refresh()
