@@ -416,7 +416,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                 api.viewer.scene.fog.screenSpaceErrorFactor = 2;
                 api.viewer.scene.fog.density = 2.5E-4;
                 api.viewer.shadowMap.size = 2048;
-                api.flatRunwayTerrainProviderInstance.setMaximumLevel(12);
+                api.flatRunwayTerrainProviderInstance.setMaximumLevel(11);
                 break;
             case 4:
                 api.viewer.scene.globe.tileCacheSize = geofs.isMobile ? 50 : 1500;
@@ -429,7 +429,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                 api.viewer.scene.fog.screenSpaceErrorFactor = 2;
                 api.viewer.scene.fog.density = 2E-4;
                 api.viewer.shadowMap.size = 2048;
-                api.flatRunwayTerrainProviderInstance.setMaximumLevel(14);
+                api.flatRunwayTerrainProviderInstance.setMaximumLevel(11);
                 break;
             case 5:
                 api.viewer.scene.globe.tileCacheSize = geofs.isMobile ? 50 : 1500;
@@ -442,7 +442,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                 api.viewer.scene.fog.screenSpaceErrorFactor = 2;
                 api.viewer.scene.fog.density = 2E-4;
                 api.viewer.shadowMap.size = 3072;
-                api.flatRunwayTerrainProviderInstance.setMaximumLevel(16);
+                api.flatRunwayTerrainProviderInstance.setMaximumLevel(11);
                 break;
             case 6:
                 api.viewer.scene.globe.tileCacheSize = geofs.isMobile ? 100 : 1500,
@@ -454,7 +454,7 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
                     api.viewer.scene.fog.screenSpaceErrorFactor = 2,
                     api.viewer.scene.fog.density = 2E-4,
                     api.viewer.shadowMap.size = 4096,
-                    api.flatRunwayTerrainProviderInstance.setMaximumLevel(20);
+                    api.flatRunwayTerrainProviderInstance.setMaximumLevel(11);
         }
         geofs.useSimpleShadow(geofs.preferences.graphics.forceSimpleShadow || geofs.preferences.graphics.simpleShadow);
         api.viewer.handleResize();
@@ -951,8 +951,8 @@ api.isIOS = () => api.getPlatform() == 'ios' ? !0 : !1;
             h || (c[g] = h = []);
             h.push(f);
         }
-        return Cesium.when.all(c.map((b, c) => {
-            if (b) { return Cesium.sampleTerrain(a, c, b); }
+        return Cesium.when.all(c.map((b, level) => {
+            if (b) { return Cesium.sampleTerrain(a.baseProvider, level, b); }
         })).then(() => b);
     }));
     api.FlatRunwayTerrainProvider = function(a) {
