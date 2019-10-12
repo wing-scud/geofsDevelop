@@ -784,7 +784,7 @@ function fxGeofs(geofs)
             this.entity = null
         }
     };
-    //rain ???
+    //rain  显示雨的效果
     geofs.fx.precipitation = {
         types: {
             snow: {

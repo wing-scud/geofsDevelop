@@ -80,7 +80,7 @@ controls.init = function() {
         a.preventDefault()
     });
     controls.joystick.init();
-    controls.autopilot.initUI();
+ //   controls.autopilot.initUI();
     controls.setMode(geofs.preferences.controlMode)
 };
 controls.initViewportDimensions = function() {
@@ -831,12 +831,10 @@ controls.autopilot = {
         throttlePID: new PID(.1, 0, 0)
     };
 
-    controls.autopilot.initUI = function() {
         var a = $(".geofs-autopilot-pad .control-pad-label"), b;
         controls.autopilot.setHeading = function(a) {
             var b = controls.autopilot.heading;
             try {
-                
                 controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
                 $(".geofs-autopilot-heading").text(controls.autopilot.heading),
                 $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
@@ -876,54 +874,6 @@ controls.autopilot = {
                 controls.autopilot.climbrate = b
             }
         }
-        ;
-        $(document).on("autopilotOn", function() {
-            clearTimeout(b);
-            a.removeClass("red-pad").addClass("green-pad");
-            $(".geofs-autopilot-controls").show();
-            $(".geofs-autopilot-toggle").html("Engaged").addClass("mdl-button--colored")
-        });
-        $(document).on("autopilotOff", function() {
-            a.removeClass("green-pad").addClass("red-pad");
-            $(".geofs-autopilot-controls").hide();
-            $(".geofs-autopilot-toggle").html("Disengaged").removeClass("mdl-button--colored");
-            b = setTimeout(function() {
-                a.removeClass("red-pad").removeClass("green-pad")
-            }, 3E3)
-        });
-        $(document).on("pointerdown touchstart", ".numberUp, .numberDown", function(a) {
-            var b = $(this)
-              , c = $(this).parent().find(".numberValue")
-              , f = parseInt(c.text()) || 0
-              , g = parseInt(c.attr("step"))
-              , h = parseInt(c.attr("min"))
-              , k = parseInt(c.attr("max"))
-              , n = b.hasClass("numberUp") ? g : -g
-              , v = c.attr("loop")
-              , z = c.attr("method")
-              , A = function() {
-                f += n;
-                f = Math.floor(f / g) * g;
-                f = v && f > k ? h : v && f < h ? k : clamp(f, h, k);
-                c.text(f);
-                controls.autopilot[z](f)
-            }
-              , C = function() {
-                A();
-                clearTimeout(window.spinnerRepeat);
-                window.spinnerRepeat = setTimeout(C, 50)
-            };
-            clearTimeout(window.spinnerRepeat);
-            window.spinnerRepeat = setTimeout(C, 500);
-            A();
-            a.preventDefault()
-        }).on("pointerup pointercancel mouseleave touchend", ".numberUp, .numberDown", function() {
-            clearTimeout(window.spinnerRepeat)
-        }).on("click", ".geofs-autopilot-pad", function(a) {
-            controls.autopilot.toggle()
-        })
-    }
-    ;
 controls.autopilot.toggle = function() {
     controls.autopilot.on ? controls.autopilot.turnOff() : controls.autopilot.turnOn()
 };

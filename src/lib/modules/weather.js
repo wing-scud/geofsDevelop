@@ -110,7 +110,6 @@ weather.generateFromPreferences = function() {
     return weather.manualDefinition
 };
 weather.set = function(a, b) {
-   
     a = a || {};
     b = b || camera.lla;
     weather.setDateAndTime(b);
@@ -140,8 +139,10 @@ weather.set = function(a, b) {
         contrast: 1.5,
         saturation: .1
     }) : geofs.api.removeImageryColorModifier("snow")
+  //  weather.update(a)
 };
 weather.update = function(a) {
+    
     var b = camera.lla;
     if (weather.windActive && 0 < weather.windLayers.length) {
         for (var c = geofs.aircraft.instance.llaLocation[2], d = 0, e = 1; e < weather.windLayers.length && !(c < weather.windLayers[e].floor); e++)

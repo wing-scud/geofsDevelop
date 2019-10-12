@@ -164,7 +164,6 @@ export default {
         flight.recorder.startRecording();
         },
   togglePause: function() {
-    
     geofs.pause ? geofs.undoPause(2) : geofs.doPause(2);
     }
   },
