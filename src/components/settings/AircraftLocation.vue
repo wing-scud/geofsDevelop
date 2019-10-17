@@ -35,7 +35,6 @@
             </li>
             <li class="geofs-list-collapsible-item">
                 On Runway
-
                 <ul>
                     <li data-location="geofs.windOverride = false; geofs.flyTo([42.36021520436057,-70.98767662157663,0,-103.54]);">Logan Int'l (Boston) - 27</li>
                     <li data-location="geofs.windOverride = false; geofs.flyTo([25.800717256450998,-80.30116643603567,0,87.65]);">Miami Int'l - 8R</li>

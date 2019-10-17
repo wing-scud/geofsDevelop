@@ -1,10 +1,9 @@
-
 import ui from '../ui/ui'
 import camera from './camera'
-import geofs  from '../geofs'
+import geofs from '../geofs'
 import audio from "./audio"
 import instruments from "./instruments"
-import {fixAngle,fixAngle360,clamp,exponentialSmoothing ,V3,PID} from "../utils/utils" 
+import { fixAngle, fixAngle360, clamp, exponentialSmoothing, V3, PID } from "../utils/utils"
 window.controls = window.controls || {};
 console.log(V3)
 controls = {
@@ -80,7 +79,7 @@ controls.init = function() {
         a.preventDefault()
     });
     controls.joystick.init();
- //   controls.autopilot.initUI();
+    //   controls.autopilot.initUI();
     controls.setMode(geofs.preferences.controlMode)
 };
 controls.initViewportDimensions = function() {
@@ -651,7 +650,7 @@ controls.keyUp = function(a) {
             controls.setters.setBrakes.unset();
             break;
         case 84:
-        //    ui.chat.showInput()
+            //    ui.chat.showInput()
     }
 };
 controls.joystick = {};
@@ -813,67 +812,65 @@ controls.updateTouch = function(a) {
 };
 
 controls.autopilot = {
-        on: !1,
-        maxBankAngle: 30,
-        maxPitchAngle: 10,
-        minPitchAngle: -20,
-        commonClimbrate: 500,
-        commonDescentrate: -750,
-        maxClimbrate: 3E3,
-        maxDescentrate: -4E3,
-        heading: 0,
-        altitude: 0,
-        kias: 0,
-        climbrate: 0,
-        climbPID: new PID(.01, .001, .001),
-        pitchPID: new PID(.03, .002, .01),
-        rollPID: new PID(.02, 1E-5, 0),
-        throttlePID: new PID(.1, 0, 0)
-    };
+    on: !1,
+    maxBankAngle: 30,
+    maxPitchAngle: 10,
+    minPitchAngle: -20,
+    commonClimbrate: 500,
+    commonDescentrate: -750,
+    maxClimbrate: 3E3,
+    maxDescentrate: -4E3,
+    heading: 0,
+    altitude: 0,
+    kias: 0,
+    climbrate: 0,
+    climbPID: new PID(.01, .001, .001),
+    pitchPID: new PID(.03, .002, .01),
+    rollPID: new PID(.02, 1E-5, 0),
+    throttlePID: new PID(.1, 0, 0)
+};
 
-        var a = $(".geofs-autopilot-pad .control-pad-label"), b;
-        controls.autopilot.setHeading = function(a) {
-            var b = controls.autopilot.heading;
-            try {
-                controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
-                $(".geofs-autopilot-heading").text(controls.autopilot.heading),
-                $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
-            } catch (e) {
-                controls.autopilot.heading = b
-            }
-        }
-        ;
-        controls.autopilot.setAltitude = function(a) {
-            var b = controls.autopilot.altitude;
-            try {
-                controls.autopilot.altitude = parseInt(a, 10),
-                $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),
-                $(".legacyAutopilot .geofs-autopilot-altitude").val(controls.autopilot.altitude)
-            } catch (e) {
-                controls.autopilot.altitude = b
-            }
-        }
-        ;
-        controls.autopilot.setKias = function(a) {
-            var b = controls.autopilot.kias;
-            try {
-                controls.autopilot.kias = parseInt(a, 10),
-                $(".geofs-autopilot-kias").text(controls.autopilot.kias),
-                $(".legacyAutopilot .geofs-autopilot-kias").val(controls.autopilot.kias)
-            } catch (e) {
-                controls.autopilot.kias = b
-            }
-        }
-        ;
-        controls.autopilot.setClimbrate = function(a) {
-            var b = controls.autopilot.climbrate;
-            try {
-                controls.autopilot.climbrate = parseInt(a, 10),
-                $(".geofs-autopilot-climbrate").text(controls.autopilot.climbrate)
-            } catch (e) {
-                controls.autopilot.climbrate = b
-            }
-        }
+var a = $(".geofs-autopilot-pad .control-pad-label"),
+    b;
+controls.autopilot.setHeading = function(a) {
+    var b = controls.autopilot.heading;
+    try {
+        controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
+            $(".geofs-autopilot-heading").text(controls.autopilot.heading),
+            $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
+    } catch (e) {
+        controls.autopilot.heading = b
+    }
+};
+controls.autopilot.setAltitude = function(a) {
+    var b = controls.autopilot.altitude;
+    try {
+        controls.autopilot.altitude = parseInt(a, 10),
+            $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),
+            $(".legacyAutopilot .geofs-autopilot-altitude").val(controls.autopilot.altitude)
+    } catch (e) {
+        controls.autopilot.altitude = b
+    }
+};
+controls.autopilot.setKias = function(a) {
+    var b = controls.autopilot.kias;
+    try {
+        controls.autopilot.kias = parseInt(a, 10),
+            $(".geofs-autopilot-kias").text(controls.autopilot.kias),
+            $(".legacyAutopilot .geofs-autopilot-kias").val(controls.autopilot.kias)
+    } catch (e) {
+        controls.autopilot.kias = b
+    }
+};
+controls.autopilot.setClimbrate = function(a) {
+    var b = controls.autopilot.climbrate;
+    try {
+        controls.autopilot.climbrate = parseInt(a, 10),
+            $(".geofs-autopilot-climbrate").text(controls.autopilot.climbrate)
+    } catch (e) {
+        controls.autopilot.climbrate = b
+    }
+}
 controls.autopilot.toggle = function() {
     controls.autopilot.on ? controls.autopilot.turnOff() : controls.autopilot.turnOn()
 };

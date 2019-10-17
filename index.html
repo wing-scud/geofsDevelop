@@ -2,7 +2,7 @@
 
 <script>
     window.geofs = window.geofs || {};
-    PAGE_PATH="http://localhost:3030/proxy/"
+    PAGE_PATH = "http://localhost:3030/proxy/"
     geofs.version = '2.7';
     geofs.multiplayerHost = 'https://net.geo-fs.com:8080';
     geofs.domain = 'www.geo-fs.com';
@@ -20,7 +20,7 @@
     geofs.dataServer = 'https://data3.geo-fs.com/';
     geofs.googleAppId = '208044912282-4g0gk5oum6gecc2d7ll1ensv921l12us.apps.googleusercontent.com';
     geofs.facebookAppId = '404853203195387';
-    geofs.mapXYZ = 'https://data3.geo-fs.com/osm/{z}/{x}/{y}.png';// map explore url
+    geofs.mapXYZ = 'https://data3.geo-fs.com/osm/{z}/{x}/{y}.png'; // map explore url
     geofs.ionkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwYjk1N2FhZi1hN2M5LTQ4ZmUtOWVhMS0yNDVjODBmODlmOGQiLCJpZCI6NzYsImlhdCI6MTQ4ODIxMDc4OX0.Sv58Vigu_z-rEXj1SyO1ygvo4LhA6bDPyKIjsQ3Bgc4';
 </script>
 
@@ -44,7 +44,7 @@
     <script type="text/javascript" src="/static/js/commonJS.js?kc=1566290741"></script>
     <!-- 3rd parties -->
     <!-- <script type="text/javascript" src="static/js/CesiumUnminified/Cesium.js"></script> -->
-    <script type="text/javascript" src="static/Build/GeoVis.js"></script> 
+    <script type="text/javascript" src="static/Build/GeoVis.js"></script>
     <!-- Data -->
     <!-- Common libs -->
     <!-- Sim -->
@@ -57,8 +57,8 @@
     <link rel="stylesheet" type="text/css" href="static/css/geofs.css?kc=1560503593-2" media="screen" />
 </head>
 
-<body >
-    <div id="app" ></div>
+<body>
+    <div id="app"></div>
 </body>
 <script type="text/javascript">
     window.geofs = window.geofs || {};
@@ -67,12 +67,12 @@
         "role": 0
     };
     geofs.userRecord.muteList = [];
-    window.executeOnEventDone('afterDeferredload', function () {
+    window.executeOnEventDone('afterDeferredload', function() {
         jQuery(document).trigger('loginChange');
     });
 
-    geofs.geoIpUpdate = function () {
-        jQuery('.geofs-creditContainer').html('<a rel="nofollow" target="_blank" href="https://s2maps.eu">Sentinel-2 cloudless - https://s2maps.eu</a> by <a rel="nofollow" target="_blank" href="https://eox.at/">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2016 & 2017)');
+    geofs.geoIpUpdate = function() {
+        // jQuery('.geofs-creditContainer').html('<a rel="nofollow" target="_blank" href="https://s2maps.eu">Sentinel-2 cloudless - https://s2maps.eu</a> by <a rel="nofollow" target="_blank" href="https://eox.at/">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2016 & 2017)');
         geofs.preferences.graphics.HD = false;
         document.body.classList.remove('geofs-hd');
         geofs.api.imageryProvider = new Cesium.UrlTemplateImageryProvider({
@@ -83,7 +83,7 @@
     };
 
     var geofsNewHDState = false;
-    window.executeOnEventDone('afterDeferredload', function () {
+    window.executeOnEventDone('afterDeferredload', function() {
         if (geofs.api.hdOn === geofsNewHDState)
             return;
         geofs.geoIpUpdate();
@@ -92,27 +92,27 @@
         jQuery('body').trigger('terrainProviderUpdate');
     });
 
-    window.executeOnEventDone('afterDeferredload', function () {
+    window.executeOnEventDone('afterDeferredload', function() {
         geofs.savePreferences();
     });
 
-    window.executeOnEventDone('afterDeferredload', function () {
+    window.executeOnEventDone('afterDeferredload', function() {
         // geofs.mapXYZ = 'https://data3.geo-fs.com/osm/{z}/{x}/{y}.png';
     });
 
     function initTrial() {
         if (window.trialInitialized)
             return;
-        $(document).one('loginchange', function () {
+        $(document).one('loginchange', function() {
             $('.geofs-hdTrial-view').htmlView('load', geofs.url + '/html/hd/trial.php');
         });
 
-        $(window).one('subscriptionchange', function () {
+        $(window).one('subscriptionchange', function() {
             $('.geofs-hdTrial-view').htmlView('load', geofs.url + '/html/hd/trial.php');
         });
 
-        startHDTrial = function (node, paymentData) {
-            $.ajax('/backend/accounts/hd.php?method=startHDTrial').done(function () {
+        startHDTrial = function(node, paymentData) {
+            $.ajax('/backend/accounts/hd.php?method=startHDTrial').done(function() {
                 $('.geofs-hdTrial-view').htmlView('load', geofs.url + '/html/hd/trial.php?d=true');
                 $('.geofs-HDPurchase-view').htmlView('load', geofs.url + '/html/hd/subscription.php');
             });
@@ -126,30 +126,31 @@
 </script>
 <script src="./static/js/leaflet.js"></script>
 <script obfuscation="none">
-        window.executeOnEventDone('afterDeferredload', function() {
-            geofs.lastFlyTo = new Date().getTime();
-            geofs.adCount = 1;
-            $(document).on('flyto', function() {
-                var t = new Date().getTime();
-                if (t - geofs.lastFlyTo > 40000) {
+    window.executeOnEventDone('afterDeferredload', function() {
+        geofs.lastFlyTo = new Date().getTime();
+        geofs.adCount = 1;
+        $(document).on('flyto', function() {
+            var t = new Date().getTime();
+            if (t - geofs.lastFlyTo > 40000) {
 
-                    if (geofs.adCount % 3 == 0) {
-                        // every three impressions
-                        $('.geofs-refreshTarget').htmlView('load', '/pages/common/includes/ba/loader.php?type=2');
-                    } else {
-                        $('.geofs-refreshTarget').empty().html('<scr' + 'ipt async src="//pagead2.googlesyndication.com/pagead/static/js/adsbygoogle.js"></scr' + 'ipt><ins class="adsbygoogle" style="display:block; width: 160px;" data-ad-client="ca-pub-1808592532341984" data-ad-slot="5302287636" data-ad-format="auto"></ins><scr' + 'ipt>(adsbygoogle = window.adsbygoogle || []).push({});</scr' + 'ipt>');
-                    }
-                    geofs.adCount++;
-                    geofs.lastFlyTo = t;
+                if (geofs.adCount % 3 == 0) {
+                    // every three impressions
+                    $('.geofs-refreshTarget').htmlView('load', '/pages/common/includes/ba/loader.php?type=2');
+                } else {
+                    $('.geofs-refreshTarget').empty().html('<scr' + 'ipt async src="//pagead2.googlesyndication.com/pagead/static/js/adsbygoogle.js"></scr' + 'ipt><ins class="adsbygoogle" style="display:block; width: 160px;" data-ad-client="ca-pub-1808592532341984" data-ad-slot="5302287636" data-ad-format="auto"></ins><scr' + 'ipt>(adsbygoogle = window.adsbygoogle || []).push({});</scr' + 'ipt>');
                 }
-            });
+                geofs.adCount++;
+                geofs.lastFlyTo = t;
+            }
         });
-    </script>
+    });
+</script>
+
 </html>
 <style>
- #app {
-  width:100%;
-  height:100%;
-  font-family: "Hiragino Sans GB";
-}
+    #app {
+        width: 100%;
+        height: 100%;
+        font-family: "Hiragino Sans GB";
+    }
 </style>

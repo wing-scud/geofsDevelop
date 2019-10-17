@@ -1,7 +1,6 @@
-
 import ui from './ui'
 import geofs from "../geofs"
-var  panel = {
+var panel = {
     init() {
         $(document).on('click', '[data-toggle-panel]', function(a) {
             ui.panel.toggle($(this).attr('data-toggle-panel'));

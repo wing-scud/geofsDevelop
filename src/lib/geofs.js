@@ -1,10 +1,10 @@
 import flight from "./modules/flight"
-import { V3,VIEWPORT_REFERENCE_WIDTH  } from './utils/utils'
+import { V3, VIEWPORT_REFERENCE_WIDTH } from './utils/utils'
 import aircraft from './aircraft/Aircraft';
 import debug from './aircraft/debug';
 import animation from './aircraft/animation';
 import api from './aircraft/api';
-import  shadowGeofs from "./aircraft/shadow"
+import shadowGeofs from "./aircraft/shadow"
 import fxGeofs from './aircraft/fx';
 import hackGeoFS from './aircraft/preferences';
 import runways from './aircraft/runways';
@@ -22,15 +22,14 @@ import camera from "./modules/camera"
 import instruments from "./modules/instruments"
 import ui from './ui/ui'
 
-var geofs  =  window.geofs || {
-};
+var geofs = window.geofs || {};
 //geofs.mapXYZ = "http://192.168.13.32/tiles/googleimg/{z}/{x}/{y}.png"
-geofs.aircraft=aircraft
-geofs.animation=animation
-geofs.api=api
-geofs.debug=debug
-geofs.runways=runways
-geofs.utils=utils
+geofs.aircraft = aircraft
+geofs.animation = animation
+geofs.api = api
+geofs.debug = debug
+geofs.runways = runways
+geofs.utils = utils
 hackGeoFS(geofs)
 shadowGeofs(geofs)
 fxGeofs(geofs)
@@ -111,7 +110,7 @@ geofs.init = function(a) {
         camera.init();
         objects.init();
         weather.init();
-      //  multiplayer.init();
+        //  multiplayer.init();
         geofs.fx.init();
         weather.refresh(c);
         geofs.initLoggedInUser();
@@ -128,8 +127,8 @@ geofs.unload = function() {
     geofs.savePreferences();
     if (geofs.PRODUCTION) {
         try {
-        //    multiplayer.avgPing && geofs.api.analytics.event('system', 'networkLatency', `${50 * Math.ceil(multiplayer.avgPing / 50)}`, Math.floor(multiplayer.avgPing)),
-                geofs.api.analytics.event('system', 'framerate', `${5 * Math.ceil(geofs.debug.fps / 5)}`, 1 * geofs.debug.fps);
+            //    multiplayer.avgPing && geofs.api.analytics.event('system', 'networkLatency', `${50 * Math.ceil(multiplayer.avgPing / 50)}`, Math.floor(multiplayer.avgPing)),
+            geofs.api.analytics.event('system', 'framerate', `${5 * Math.ceil(geofs.debug.fps / 5)}`, 1 * geofs.debug.fps);
         } catch (a) {
             geofs.debug.error(a, 'geofs.unload');
         }
@@ -144,7 +143,7 @@ geofs.initLoggedInUser = function() {
                 action: 'keeptime',
             };
             a == controls.rawPitch || controls.autopilot.on || (b.activeFlying = !0);
-         //  $('.geofs-apiResponse').htmlView('load', `${geofs.url}/backend/accounts/api.php`, b);
+            //  $('.geofs-apiResponse').htmlView('load', `${geofs.url}/backend/accounts/api.php`, b);
         }
         a = controls.rawPitch;
     }, 6E4);
@@ -171,8 +170,8 @@ geofs.isPaused = function() {
 geofs.doPause = function(a, b) {
     a = a || 0;
     geofs.pauses = geofs.pauses || {};
-    a < geofs.pauseLevel || (b ||// multiplayer.stopUpdates(),
-         audio.stop(),
+    a < geofs.pauseLevel || (b || // multiplayer.stopUpdates(),
+        audio.stop(),
         flight.recorder.stopRecording(),
         flight.recorder.pausePlayback(),
         ui.toggleButton('.geofs-button-pause', !0),
@@ -181,8 +180,8 @@ geofs.doPause = function(a, b) {
 };
 geofs.undoPause = function(a) {
     (a || 0) < geofs.pauseLevel || (geofs.lastTime = null,
-        geofs.cautiousWithTerrain ? ($(geofs.canvas).one('terrainStable'),//geofs.cautiousWithTerrain ? ($(geofs.canvas).one('terrainStable', multiplayer.startUpdates),
-            $(geofs.canvas).one('terrainStable', flight.recorder.startRecording)) : (//multiplayer.startUpdates(),
+        geofs.cautiousWithTerrain ? ($(geofs.canvas).one('terrainStable'), //geofs.cautiousWithTerrain ? ($(geofs.canvas).one('terrainStable', multiplayer.startUpdates),
+            $(geofs.canvas).one('terrainStable', flight.recorder.startRecording)) : ( //multiplayer.startUpdates(),
             flight.recorder.startRecording()),
         geofs.pause = !1,
         ui.toggleButton('.geofs-button-pause', !1),
@@ -199,17 +198,18 @@ geofs.frameCallback = function(a) {
         flight.terrainElevationManagement()
         geofs.pause ? camera.update(a) : (controls.update(a),
             flight.tick(a, b),
-        //    multiplayer.update(b),//多人玩家-
+            //    multiplayer.update(b),//多人玩家-
             geofs.debug.update(b),
-            camera.update(a),//相机更新
-            instruments.update(),//指示器
-            audio.update(),//音频
+            camera.update(a), //相机更新
+            instruments.update(), //指示器
+            audio.update(), //音频
             geofs.fx.update(b));
-        weather.update(a);//天气
+        weather.update(a); //天气
     } else { geofs.lastTime = a; }
 };
 //重点fly to 给定坐标，飞机移动到这
 geofs.flyTo = function(a, b) {
+
     if (a) {
         geofs.doPause(1);
         const c = geofs.aircraft.instance;
@@ -323,7 +323,7 @@ geofs.getGroundAltitude = function(a, b, c) {
     };
 };
 geofs.getCollisionResult = function(a, b, c, d) {
-    b && c ? ( b = geofs.getAltitudeAtPointFromCollisionResult(c, [b[0], b[1], 0]),
+    b && c ? (b = geofs.getAltitudeAtPointFromCollisionResult(c, [b[0], b[1], 0]),
 
         a = {
             location: [a[0], a[1], b],
@@ -391,6 +391,7 @@ window.addEventListener('deferredload', () => {
         geofs.api.setHD(geofs.preferences.graphics.HD);
     });
     geofs.init();
+    geofs.api.viewer.scene.postProcessStages.fxaa.enabled = true
 });
 
 Math.sign = function(a) {

@@ -1,6 +1,7 @@
 //提供一些初始化的参数->>>键码 . 风速风向。
 //数据保存在本地，序列化（对象，字符串）保存
 import controls from "../modules/controls"
+
 function hackGeoFS(geofs) {
     geofs.preferences = {};
     geofs.userRecord = geofs.userRecord || {};
@@ -190,7 +191,7 @@ function hackGeoFS(geofs) {
         },
         crashDetection: !1,
         showPapi: !0,
-       // multiplayer: !0,
+        // multiplayer: !0,
         adsb: !0,
         //chat: !1,
         sound: !0,
@@ -391,8 +392,8 @@ function hackGeoFS(geofs) {
     };
     geofs.preferencesDebugInfo = function() {
         //debug infor textArea输出的信息
-    //    for (var a = `Network Latency (avg): ${multiplayer.avgPing} ms\nFramerate (avg): ${geofs.debug.fps} fps\n--------------\nlogs:\n`, b = 0; b < geofs.debug.logStack.length; b++) { a += `${geofs.debug.logStack[b]}\n`; }
-     //   $('.geofs-debug-info', geofs.$preferencePanel).html(a);
+        //    for (var a = `Network Latency (avg): ${multiplayer.avgPing} ms\nFramerate (avg): ${geofs.debug.fps} fps\n--------------\nlogs:\n`, b = 0; b < geofs.debug.logStack.length; b++) { a += `${geofs.debug.logStack[b]}\n`; }
+        //   $('.geofs-debug-info', geofs.$preferencePanel).html(a);
     };
     geofs.preferencesTestJoystick = function() {
         const a = controls.joystick.poll();
@@ -501,7 +502,7 @@ function hackGeoFS(geofs) {
         ui.closePreferencePanel();
     };
     geofs.setPreferenceFromInput = function(a) {
-  
+
         try {
             let b = a.getAttribute('gespref');
             if (b) {
@@ -556,7 +557,6 @@ function hackGeoFS(geofs) {
         }
     };
     geofs.savePreferencesPanel = function() {
-
         $('[gespref]', geofs.$preferencePanel).each(function() {
             geofs.setPreferenceFromInput(this);
         });

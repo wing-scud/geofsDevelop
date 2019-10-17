@@ -3,7 +3,6 @@
             <!-- Top UI overlay -->
             <div class="geofs-ui-top">
                 <div class="geofs-auth geofs-htmlView">
-                    <!-- 地图提供-->
                 </div>
                 <a href="/" class="geofs-home-button" title="GeoFS home page">
                     <i class="material-icons"></i>
@@ -58,6 +57,7 @@
             </div>
             <div class="geofs-creditContainer"></div>
             <!-- Canvas placeholder -->
+                <!-- 地图提供-->
             <div id="geofs-ui-3dview" class="geofs-ui-3dview"></div>
         </div>
 </template>
@@ -156,6 +156,7 @@ export default {
     }).on("pointerup pointercancel mouseleave touchend", ".numberUp, .numberDown", function() {
         clearTimeout(window.spinnerRepeat)
     }).on("click", ".geofs-autopilot-pad", function(a) {
+
         controls.autopilot.toggle()
     })
 }

@@ -21,7 +21,7 @@ export default {
 <style>
 .image_item{
     height:40px;
-    border-bottom: 1px solid #EBEEF5;
+    border-top: 1px solid #EBEEF5;
 }
 .image_item:hover{
     height: 60px;
