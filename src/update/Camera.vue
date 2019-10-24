@@ -13,11 +13,11 @@ export default {
     data(){
         return{
             cameraViews:[
-                "Follow views",
-                "Cockpit cam",
-                "Cockpit-less cam",
-                "Chase cam",
-                " Free cam",
+                "紧跟视角",
+                "驾驶舱视角",
+                "机头视角",
+                "追随视角",
+                " 自由视角",
                 // "Extra views"
             ]
         }

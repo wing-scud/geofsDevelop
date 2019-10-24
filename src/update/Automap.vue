@@ -5,7 +5,7 @@
             <div class="map" id="autopilotMap">
             </div>
             <div class="autopilot">
-                asssssssssssd
+               
             </div>
         </div>
 </template>

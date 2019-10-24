@@ -175,7 +175,6 @@ import Camera from "./Camera"
    padding-left:15px;
    width: 300px !important;
    left: 4.2% !important;
-   overflow-y: auto;
  }
  .menu_item_bottom{
    position: fixed;

@@ -3,17 +3,17 @@
             <el-collapse>
                 <el-collapse-item>
                     <template slot="title">
-                         <el-radio v-model="model" label="keyboard">Keyboard [K]</el-radio>
+                         <el-radio v-model="model" label="keyboard">键盘</el-radio>
                     </template>
                     <div class="block">
-                        <el-switch v-model="mixYawRoll"  active-text="Mix Roll" inactive-text="Mix Yaw"></el-switch>
+                        <el-switch v-model="mixYawRoll"  active-text="旋转" inactive-text="偏航"></el-switch>
                     </div>
                     <div class="block">
-                        <span class="demonstration">Roll/Yaw Mix Ratio</span>
+                        <span class="demonstration">比例</span>
                         <el-slider v-model="mixRatio" :min=0 :max=4  :step=0.1 ></el-slider>
                     </div>
                     <div class="block">
-                        <span class="demonstration">Sensitivity</span>
+                        <span class="demonstration">灵敏度</span>
                         <el-slider v-model="sensitivity" :min=0 :max=4  :step=0.1></el-slider>
                     </div>
                     <div class="textArea" v-for="(value, name) in keys" :key="value.label">
@@ -25,21 +25,21 @@
             <el-collapse>
                 <el-collapse-item>
                     <template slot="title">
-                         <el-radio v-model="model" label="mouse">Mouse [M]</el-radio>
+                         <el-radio v-model="model" label="mouse">鼠标</el-radio>
                     </template>
                     <div class="block">
-                        <el-switch v-model="mixYawRoll"  active-text="Mix Roll" inactive-text="Mix Yaw"></el-switch>
+                        <el-switch v-model="mixYawRoll"  active-text="旋转" inactive-text="偏航"></el-switch>
                     </div>
                     <div class="block">
-                        <span class="demonstration">Roll/Yaw Mix Ratio</span>
+                        <span class="demonstration">比例</span>
                         <el-slider v-model="mixRatio" :min=0 :max=4  :step=0.1 ></el-slider>
                     </div>
                     <div class="block">
-                        <span class="demonstration">Sensitivity</span>
+                        <span class="demonstration">灵敏度</span>
                         <el-slider v-model="sensitivity" :min=0 :max=2  :step=0.1></el-slider>
                     </div>
                     <div class="block">
-                        <span class="demonstration">Exponential</span>
+                        <span class="demonstration">指数</span>
                         <el-slider v-model="exponential" :min=0 :max=2  :step=0.1></el-slider>
                     </div>
                  </el-collapse-item>

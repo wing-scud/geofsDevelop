@@ -5,7 +5,7 @@
             <el-slider :min=0 :max=5 :step=1 v-model="quality" @input="updateQualityImage"></el-slider>
         </div>
         <div class="block">
-            <span class="demonstration">enhancement</span>
+            <span class="demonstration">增强</span>
             <el-slider :min=0 :max=1.4 :step=0.1 v-model="enhanceColors" @input="updateEnhancement"></el-slider>
         </div>
         <div class="block">
@@ -15,7 +15,7 @@
             <el-switch v-model="hd" active-text="高清" @change="updateHd"></el-switch>
         </div>
         <div class="block">
-            <el-switch v-model="headMotion" active-text="Cockpit view head motion" @change="updateCockpit"></el-switch>
+            <el-switch v-model="headMotion" active-text="驾驶舱马达" @change="updateCockpit"></el-switch>
         </div>
     </div>
 </template>

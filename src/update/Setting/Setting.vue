@@ -2,16 +2,16 @@
 <template>
 <div class=".setttingPanel">
         <el-collapse accordion> 
-            <el-collapse-item title="Control" name="1">
+            <el-collapse-item title="控制模式" name="1">
                 <Control></Control>
             </el-collapse-item>
-            <el-collapse-item  title="Simulation" name="2">
+            <el-collapse-item  title="探测" name="2">
                 <Simulation></Simulation>
             </el-collapse-item>
-            <el-collapse-item  title="Graphics" name="3">
+            <el-collapse-item  title="图形" name="3">
                 <Graphics></Graphics>
             </el-collapse-item>
-            <el-collapse-item  title="Environment" name="4">
+            <el-collapse-item  title="环境设置" name="4">
                 <Environment></Environment>
             </el-collapse-item>
        </el-collapse>
@@ -19,10 +19,10 @@
                 <!-- Bottom buttons 恢复默认设置和 关闭按钮 -->
                 <div class="bottomButton">
                     <div style="float: left;">
-                         <el-button type="warning" @click="geofs.resetPreferences()" round>Reset Settings</el-button>
+                         <el-button type="warning" @click="geofs.resetPreferences()" round>恢复默认设置</el-button>
                     </div>
                     <div style="float: right;">
-                        <el-button type="primary" @click="geofs.savePreferencesPanel()" plain>Close</el-button>
+                        <el-button type="primary" @click="geofs.savePreferencesPanel()" plain>关闭</el-button>
                     </div>
                 </div>
 
@@ -61,6 +61,7 @@ export default {
     list-style: none;
     padding: 0px;
     margin: 0px;
+    overflow-y:auto;
 }
 .bottomButton {
     position: absolute;
@@ -69,6 +70,7 @@ export default {
     padding: 5px;
     height: 50px;
     width: 100%;
+    margin-right: 10px;
     white-space: nowrap;
     box-shadow: 0px -2px 36px #aaa;
 }

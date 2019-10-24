@@ -16,7 +16,7 @@
                                     <a class="numberDown">-</a>
                                     <div class="numberValue geofs-autopilot-kias" min="0" step="10" method="setKias">0</div>
                                     <a class="numberUp">+</a>
-                                    <span>IAS</span>
+                                    <span>速度</span>
                                 </div>
                             </el-col>
                         </el-row>
@@ -26,7 +26,7 @@
                                     <a class="numberDown">-</a>
                                     <div class="numberValue geofs-autopilot-heading" min="0" max="359" loop="true" step="1" method="setHeading">000</div>
                                     <a class="numberUp">+</a>
-                                    <span>HDG</span>
+                                    <span>偏航</span>
                                  </div>
                             </el-col>
                         </el-row>
@@ -36,7 +36,7 @@
                                     <a class="numberDown">-</a>
                                     <div class="numberValue geofs-autopilot-altitude" min="0" step="1000" method="setAltitude">00000</div>
                                     <a class="numberUp">+</a>
-                                    <span>ALTITUDE</span>
+                                    <span>高度</span>
                                 </div>
                             </el-col>
                          </el-row>

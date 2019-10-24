@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="block">
-            <el-switch active-text="set environment manually" v-model="manual"/>
+            <el-switch active-text="手控" v-model="manual"/>
         </div>
         <div class="block">
             <span class="">时刻</span>

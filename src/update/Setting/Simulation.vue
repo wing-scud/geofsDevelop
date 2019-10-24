@@ -1,6 +1,6 @@
 <template>
     <div class="block">
-        <el-switch v-model="crash"  active-text="Detect crashes" @change="crashChange" ></el-switch>
+        <el-switch v-model="crash"  active-text="监测碰撞" @change="crashChange" ></el-switch>
     </div>
         <!-- <el-collapse-item>
             <el-button  >得到当前位置</el-button>
