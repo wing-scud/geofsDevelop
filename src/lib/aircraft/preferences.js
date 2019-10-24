@@ -355,6 +355,7 @@ function hackGeoFS(geofs) {
         }
     };
     geofs.populateKeyAssignments = function() {
+        //循环生成key绑定的内容，动态显示。-》vue
         let a = $('.geofs-keyboard-keys-container', geofs.$preferencePanel),
             b = '',
             c;

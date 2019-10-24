@@ -1,18 +1,18 @@
 <template>
     <div>
-        <el-collapse  style="background-color:none;" v-model="activeName" accordion>
+        <el-collapse  style="background-color:none" v-model="activeName" accordion>
             <el-collapse-item  title="自定义模型" name="1">
-                <div  class="image_item" :key="aircraft.serialNumber" v-for="aircraft in customs">
+                <div  class="image_item" :key="aircraft.serialNumber" v-for="aircraft in customs" @click="changeAircraft(aircraft)" >
                     <el-row>
-                        <el-col :span="24"> {{aircraft.name}}</el-col>
+                        <el-col :span="24" > {{aircraft.name}}</el-col>
                     </el-row> 
                 </div>
             </el-collapse-item>
             <el-collapse-item title="默认" name="2">
-                <div  class="image_item" :key="aircraft.serialNumber" v-for="aircraft in defaults">
+                <div  class="image_item" :key="aircraft.serialNumber" v-for="aircraft in defaults"  @click="changeAircraft(aircraft)">
                     <el-row :gutter="20">
                         <el-col :span="8">
-                             <el-image :src="aircraft.src" fit="fit" style="width:80px"></el-image>
+                             <el-image  :src="aircraft.src" fit="fit" style="width:80px"></el-image>
                        </el-col>
                         <el-col :span="16">{{aircraft.name}}</el-col>
                     </el-row> 
@@ -22,6 +22,7 @@
     </div>
 </template>
 <script>
+import geofs from "../lib/geofs"
 export default {
     name:"AircraftDrawer",
     data(){
@@ -69,6 +70,11 @@ export default {
                 {name:"Goat Airchair",serialNumber:"53",src:require('../assets/images/planes/goat.png')},
             ]
         }
+    },
+    methods:{
+        changeAircraft(val){
+            geofs.aircraft.instance.change(val.serialNumber);
+        }
     }
 }
 </script>
@@ -76,6 +82,7 @@ export default {
 .image_item{
     height:40px;
     padding-left:5px;
+    cursor: pointer;
     border-top: 1px solid #EBEEF5;
 }
 .image_item:hover{

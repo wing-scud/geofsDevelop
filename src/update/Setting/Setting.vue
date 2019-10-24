@@ -1,7 +1,7 @@
 
 <template>
-        <ul class="geofs-list geofs-preference-list geofs-preferences" data-noblur="true" onShow="geofs.initializePreferencesPanel();" onHide="geofs.savePreferencesPanel();">
-        <el-collapse>
+<div class=".setttingPanel">
+        <el-collapse accordion> 
             <el-collapse-item title="Control" name="1">
                 <Control></Control>
             </el-collapse-item>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
 
-    </ul>
+    </div>
 </template>
 <script>
 import Control from "./Control"
@@ -63,7 +63,6 @@ export default {
     margin: 0px;
 }
 .bottomButton {
-    z-index: 100;
     position: absolute;
     bottom: 0px;
     box-sizing: border-box;

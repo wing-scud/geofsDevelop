@@ -1,5 +1,11 @@
 <template>
-            <li class="geofs-list-collapsible-item geofs-hideForApp">
+    <div class="block">
+        <el-switch v-model="crash"  active-text="Detect crashes" @change="crashChange" ></el-switch>
+    </div>
+        <!-- <el-collapse-item>
+            <el-button  >得到当前位置</el-button>
+        </el-collapse-item> -->
+            <!-- <li class="geofs-list-collapsible-item geofs-hideForApp">
                 Simulation
                 <div class="geofs-collapsible">
                     <fieldset>
@@ -24,16 +30,23 @@
                         <button class="mdl-button mdl-js-button mdl-button--raised" onclick="camera.openSlaveWindow(1);" title="Extend screen to the right">Open right screen</button>
                     </fieldset>
                 </div>
-            </li>
+            </li> -->
 </template>
 
 <script>
+import geofs from "../../lib/geofs"
 export default {
   name: 'Simulation',
   data() {
     return {
-    
+        crash:false,
+
     };
+  },
+  method:{
+      crashChange(){
+          geofs.preferences.crashDetection()
+      }
   },
   created() {
 
@@ -41,6 +54,13 @@ export default {
 };
 
 </script>
+<style scoped>
+.block{
+        margin-bottom: 5px;
+    padding-left:10px;
+     padding-right:10px
+}
+</style>
 
 
 

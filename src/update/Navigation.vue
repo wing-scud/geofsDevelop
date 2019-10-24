@@ -1,80 +1,161 @@
 <template>
-<div class="root"> 
-  <div class="menu_item" v-for="option in options" :key="option.name" :title="option.name">
-        <el-button icon="el-icon-search"  style="width:80%;height:100%" @click="clickButton" circle></el-button>
-        <!-- <el-image :src="require('@/assets/'+data)"></el-image>   --> <!-- 图片地址加载问题,:src和src，@和../  require--> 
-     <!-- <img src="@/assets/options/aircraft.png" width="80%" height="100%"> -->
+<div class="root">
+  <!-- <div class="menu_item"  title="自动驾驶">
+      <el-button circle  @click="clickButton($event)"  id="autopilot" ><i class="iconfont">   &#xe622;</i></el-button>
+  </div> -->
+  <!-- 回放按钮暂且不做 -->
+  <!-- Bug:
+      给button绑定事件，附带的icon点击则无效 -->
+  <div class="menu_item" title="飞机">
+      <el-button  @click="clickButton($event)"  id="aircraft" circle><i class="iconfont"  >&#xe600;</i></el-button>
+  </div>  
+  <div class="menu_item"  title="位置">
+        <el-button icon="el-icon-location-information" @click="clickButton($event)" id="position" circle></el-button>
+  </div>  
+  <div class="menu_item" title="声音">
+        <el-button icon="el-icon-message-solid" @click="clickButton($event)" id="volume"  circle></el-button>
+  </div>  
+  <div class="menu_item"  title="相机">
+        <el-button icon="el-icon-camera-solid" @click="clickButton($event)" id="camera" v-popover:camera circle></el-button>
+  </div>
+    <div class="menu_item"  title="设置">
+        <el-button icon="el-icon-s-tools" @click="clickButton($event)" id="setting" circle></el-button>
+  </div>
+  <div class="menu_item" title="地图">
+      <el-button @click="clickButton($event)" id="map" circle><i class="iconfont" >&#xec72;</i></el-button>
+  </div>
+  <div class="menu_item" title="暂停">
+      <el-button @click="clickButton($event)" id="stop" circle><i class="iconfont" >  &#xe612;</i></el-button>
+  </div>
+  <div class="menu_item" title="重置">
+      <el-button @click="clickButton($event)" id="reset" circle><i class="iconfont"  >&#xe7fe;</i></el-button>
+  </div>
+  <div class="menu_item_bottom"  title="更多">
+      <el-button id="more" circle><i class="iconfont"> &#xe601;</i></el-button>
+  </div>
+  <div class="menu_item"  title="自动驾驶">
+   <el-button  @click="clickButton($event)" v-popover:autopilot id="autopilot" circle > <i class="iconfont">&#xe622;</i></el-button>
   </div>
   <!-- 二种，信息量大的drawer，小的popover,二种生成方式不同 -->
   <el-drawer
-      title="飞机"
+      :title="format(current)"
       custom-class="drawer"
       :modal-append-to-body="false"
       :visible.sync="drawer"
       :wrapperClosable="true"
       :modal="false"
       direction="ltr" >
-      <Setting/>
-      <!-- <LocationDrawer/> -->
-      <!-- <AircraftDrawer/> -->
+      <Setting  v-if="current==='setting'"/>
+      <Automap  v-if="current==='map'"/>
+      <LocationDrawer  v-if="current==='position'"/>
+      <AircraftDrawer v-if="current==='aircraft'"/>
 </el-drawer>
-<div class="menu_item">
-    <el-image :src='!autopilotShow? autopilotImageOff : autopilotImageOn'  @click="toggle"  
-            :alt='!autopilotShow?"toggleOff":"toggleOn"' :title='!autopilotShow ?"toggleOff":"toggleOn"'> </el-image>
-</div>
-<!-- 自定义的就用custom-class？？？好像都可以 -->
-<el-popover  width="185px" v-model='autopilotShow' custom-class="el-popover" title="自动驾驶" >
-      <Autopilot/>
-      <!-- popover的slot属性怎么使用 -->
-      <!-- 应该给这个button添加特殊，所有就不用循环打印，就，纯手写？？ -->
-      <!-- 这个button点击一次，打开面板，悬浮显示toggle on，再点击关闭,点击成功则一直保持一个状态 -->
+<!-- Bug: 自动驾驶点击，启动，当自动驾驶启动时，自动驾驶按钮应有提问数标志表示启动着
+          点击自动驾驶关闭，应关闭，飞机快速迫降，目前无
+           如果按照这种引用，无法引用多次，会一个popover对应一个功能溶，冗余-->
+
+
+
+<el-popover  width="185px" custom-class="el-popover" :title="format(current)" placement="right-start" ref="autopilot">
+      <Autopilot v-if="current==='autopilot'"/>
+</el-popover>
+<el-popover  width="80px" custom-class="el-popover" :title="format(current)" placement="right-start" ref="camera">
+      <Camera v-if="current==='camera'"/>
 </el-popover>
 </div>
 </template>
 
 <script>
+import Automap from "./Automap"
 import AircraftDrawer from "./AircraftDrawer"
 import Autopilot from "./Autopilot"
 import controls from "../lib/modules/controls"
 import LocationDrawer from "./LocationDrawer"
 import Setting from "./Setting/Setting"
+import aircraft from '../lib/aircraft/Aircraft'
+import Camera from "./Camera"
   export default {
     name:"Navigation",
     components:{
       AircraftDrawer,
       Autopilot,
       LocationDrawer,
-      Setting
+      Setting,
+      Automap,
+      Camera
     },
     data() {
       return{
          drawer: false,
-         autopilotImageOff:require('../assets/autopilotOff.png'),
-         autopilotImageOn:require('../assets/autopilotOn.png'),
          autopilotShow:false,
-         options:[
-          {src:"../assets/options/aircrft.png",name:"aircraft"},
-          {src:"../assets/logo.png",name:"autopilot"},
-        ],
-        visible: false,
+         current:"",
       }
     },
     methods: {
-      clickButton(){
-        this.drawer = !this.drawer
+      clickButton(e){
+          switch(e.target.id){
+              case "aircraft":
+                  this.current='aircraft';
+                  this.drawer = !this.drawer
+                  break;
+              case "position":
+                  this.current='position';
+                  this.drawer = !this.drawer
+                  break;
+              case "volume":
+                  audio.toggleMute();
+                  break;
+              case "camera":
+                this.current='camera'
+                  break;
+              case "setting":
+                  this.current='setting';
+                  this.drawer = !this.drawer
+                  break;
+              case "map":
+                  this.current='map';
+                  this.drawer = !this.drawer
+                  break;
+              case "stop":
+                  geofs.togglePause()
+                  break;
+              case "reset":
+                geofs.resetFlight()
+                  break;
+              case "autopilot":
+                this.current="autopilot";
+                controls.autopilot.toggle();
+                break;
+          }
         if(this.drawer===true){
-     
           geofs.initializePreferencesPanel();
         }
         else{
           geofs.savePreferencesPanel()
         }
-        
       },
-      toggle(){
-        this.autopilotShow=!this.autopilotShow;
-        controls.autopilot.toggle();
-      }
+      format(val){
+        switch(val){
+            case "aircraft":
+              return "飞机"
+                break;
+            case "position":
+                return "位置"
+                break;
+            case "setting":
+                return "设置"
+                break;
+            case "map":
+              return "地图"
+                break;
+            case "autopilot":
+              return "自动驾驶"
+              break;
+            case "camera":
+              return "相机"
+              break;
+        }
+      },
     }
   }
 </script>
@@ -86,15 +167,29 @@ import Setting from "./Setting/Setting"
 }
  .menu_item{
    margin:0 10% 5px 10%;
-   width:80%;
-   height:6%;
+   width:40px;
+   height:39px;
    padding-top:10px;
  }
  .drawer{
+   padding-left:15px;
    width: 300px !important;
    left: 4.2% !important;
    overflow-y: auto;
  }
+ .menu_item_bottom{
+   position: fixed;
+   left:10px;
+   bottom:20px;
+   width:40px;
+   height:39px;
+ }
+/* .el-button:focus {
+    color: #606266;
+    border-color:  #DCDFE6;
+    background-color: rgb(255, 255, 255);
+} */
+
  .el-popover{
    left:4.2% !important
  }
@@ -117,4 +212,10 @@ import Setting from "./Setting/Setting"
         border-radius: 10px;
         background: #EDEDED;
     }
+     i,button span{
+      pointer-events: none;
+    }
+</style>
+<style scoped>
+  @import '../assets/css/font.css'
 </style>

@@ -1,5 +1,22 @@
 <template>
-
+    <div>
+        <div class="block">
+            <el-switch active-text="set environment manually" v-model="manual"/>
+        </div>
+        <div class="block">
+            <span class="">时刻</span>
+            <el-slider  v-model="localTime" :format-tooltip="formatTime"/>
+        </div>
+        <div class="block">
+            <span class="">季节</span>
+            <el-slider  v-model="season" :min=0 :max=3 :step=1 :format-tooltip="formatSeason"/>
+        </div>
+        <div class="block">
+            <span class="">天气</span>
+            <el-slider  v-model="quality" :min=0 :max=100 :step=1 />
+        </div>
+    </div>
+<!-- 
             <li class="geofs-list-collapsible-item">
                 Environment
                 <div class="geofs-collapsible">
@@ -56,23 +73,56 @@
                         </div>
                     </fieldset>
                     </div>
-            </li>
+            </li> -->
 </template>
 
 <script>
+import weather from "../../lib/modules/weather"
 export default {
   name: 'Environment',
   data() {
     return {
-    
+        manual:false,
+        //localTime存在双向转化，拿过来的时候也需要转化
+        localTime:1*60+40,
+        season:1,
+        quality:1
     };
   },
   created() {
-
+       geofs.preferences.weather.manual;
+       geofs.preferences.weather.localTime;
+       geofs.preferences.weather.season;
+       geofs.preferences.weather.quality;
   },
+  methods:{
+      formatTime(val){
+          let time=""
+          time=val/60+":"+val%60
+          return time
+      },
+      formatSeason(val){
+          let arrays=["春，夏，秋，冬"]
+          return arrays[val]
+      },
+      update(){
+        //  weather.refresh()
+      },
+      //原始的数据更新，均是html直接与js绑定，然后调用weather.set更新，
+      //现在需要通过v-model
+      update(){
+        //  weather.set()
+      }
+  }
 };
 
 </script>
-
+<style scoped>
+.block{
+    margin-bottom: 5px;
+    padding-left:10px;
+     padding-right:10px
+}
+</style>
 
 
