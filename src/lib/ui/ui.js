@@ -1,18 +1,16 @@
-
 import panel from './panel';
 //import chat from './chat';
 import hud from './hud';
 import geofs from '../geofs'
 //import multiplayer from "../modules/multiplayer"
 import camera from "../modules/camera"
-import {DEGREES_TO_RAD} from "../utils/utils"
+import { DEGREES_TO_RAD } from "../utils/utils"
 import map from "./map"
-window.ui = window.ui ||{
-};
+window.ui = window.ui || {};
 
-ui.panel=panel;
+ui.panel = panel;
 //ui.chat=chat;
-ui.hud=hud;
+ui.hud = hud;
 ui.playerMarkers = {};
 ui.playerSymbols = {};
 ui.mouseUpHandlers = [];
@@ -69,7 +67,7 @@ ui.init = function() {
     });
     ui.panel.init();
     ui.hud.init();
-   // ui.chat.init();
+    // ui.chat.init();
     $(document).on('keydown', '.geofs-stopKeyboardPropagation', (a) => {
         a.stopImmediatePropagation();
     });
@@ -183,17 +181,16 @@ ui.vr = function(a) {
     geofs.api.vr(a);
     geofs.vr = a;
 };
-ui.createMap = function (a) {
-  if (geofs.aircraft && geofs.aircraft.instance) {
-    var b = geofs.aircraft.instance.llaLocation[0];
-    var c = geofs.aircraft.instance.llaLocation[1];
-  } else {
-    b = a.lat,
-    c = a.lon;
-  }
-  ui.mapInstance ? (ui.mapInstance.startMap(),
-  ui.mapInstance.updateMap(b, c)) : ui.mapInstance = new map(a, b, c);
-}
-;
+ui.createMap = function(a) {
+    if (geofs.aircraft && geofs.aircraft.instance) {
+        var b = geofs.aircraft.instance.llaLocation[0];
+        var c = geofs.aircraft.instance.llaLocation[1];
+    } else {
+        b = a.lat,
+            c = a.lon;
+    }
+    ui.mapInstance ? (ui.mapInstance.startMap(),
+        ui.mapInstance.updateMap(b, c)) : ui.mapInstance = new map(a, b, c);
+};
 
 export default ui;

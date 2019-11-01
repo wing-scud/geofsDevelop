@@ -9,10 +9,10 @@
             <el-slider :min=0 :max=1.4 :step=0.1 v-model="enhanceColors" @input="updateEnhancement"></el-slider>
         </div>
         <div class="block">
-            <el-switch v-model="shadow" active-text="强制阴影" @change="updateShadow"></el-switch>
+            <el-switch v-model="forceSimpleShadow" active-text="强制阴影" @change="updateShadow"></el-switch>
         </div>
         <div class="block">
-            <el-switch v-model="hd" active-text="高清" @change="updateHd"></el-switch>
+            <el-switch v-model="HD" active-text="高清" @change="updateHd"></el-switch>
         </div>
         <div class="block">
             <el-switch v-model="headMotion" active-text="驾驶舱马达" @change="updateCockpit"></el-switch>
@@ -34,27 +34,31 @@ export default {
     };
   },
   created() {
-     this.quality= geofs.preferences.graphics.quality
-     this.enhanceColors=geofs.preferences.graphics.enhanceColors
+    this.quality= geofs.preferences.graphics.quality
+    this.enhanceColors=geofs.preferences.graphics.enhanceColors
     this.HD= geofs.preferences.graphics.HD
     this.forceSimpleShadow=geofs.preferences.graphics.forceSimpleShadow
     this.headMotion=geofs.preferences.camera.headMotion
   },
   methods:{
       updateQualityImage(){
+           geofs.preferences.graphics.quality=this.quality
           geofs.api.renderingQuality(this.quality)
       },
       updateEnhancement(){
+          geofs.preferences.graphics.enhanceColors=this.enhanceColors
           geofs.api.enhanceColors(this.enhanceColors)
       },
       updateShadow(){
-          geofs.api.renderingQuality(this.forceSimpleShadow);
+          geofs.preferences.graphics.forceSimpleShadow=this.forceSimpleShadow
+          geofs.api.renderingQuality();
       },
       updateHd(){
+          geofs.preferences.graphics.HD=this.HD
           geofs.api.setHD(this.HD)
       },
       updateCockpit(){
-          //
+          geofs.preferences.camera.headMotion=this.headMotion
       }
   }
 };

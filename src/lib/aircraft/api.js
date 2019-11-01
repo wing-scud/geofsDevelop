@@ -2,6 +2,8 @@
 
 import geofs from "../geofs";
 import camera from "../modules/camera";
+import controls from "../modules/controls"
+// import L from "../lib/L.js"
 import {
     V3,
     M33,
@@ -9,7 +11,10 @@ import {
     V2,
     xy2ll,
     clamp,
+    GetAzimuth,
+    fixAngle,
     lla2xyz,
+    GetDistanceTwo,
     DEGREES_TO_RAD,
     RAD_TO_DEGREES,
     FEET_TO_METERS,
@@ -1138,8 +1143,13 @@ api.map = function(a, b, c) {
         maxZoom: 13,
         preferCanvas: !0,
     });
+    this.map.on('click', function(e) {
+        e.latlng.lat //纬度
+        e.latlng.lng
+    });
     L.tileLayer(geofs.mapXYZ, {
-        attribution: '\u00a9 OpenStreetMap contributors - Made with Natural Earth.',
+        //  attribution: '\u00a9 OpenStreetMap contributors - Made with Natural Earth.',
+        attribution: '',
     }).addTo(this.map);
     this.icons = {
         yellow: [],
@@ -1174,14 +1184,14 @@ api.map = function(a, b, c) {
     });
     this.map.getPanes().overlayPane.style.opacity = 0.7;
     this.map.setView(L.latLng(b, c), a.zoom);
-    $(document).on('click', '.geofs-createPath', () => {
-        api.map.flightPathOn ? api.map.stopCreatePath(d) : api.map.createPath(d);
-    }).on('click', '.geofs-clearPath', () => {
-        api.map.clearPath(d);
-    });
 };
 api.createPath = function() {
-    api.map.flightPathOn ? api.map.stopCreatePath(api.map) : api.map.createPath(ui.mapInstance.apiMap);
+    if (api.map.flightPathOn) {
+        api.map.stopCreatePath(api.map)
+
+    } else {
+        api.map.createPath(ui.mapInstance.apiMap);
+    }
 };
 api.clearPath = function() {
     api.map.clearPath(ui.mapInstance.apiMap);
@@ -1273,6 +1283,7 @@ api.map.prototype = {
                 c = xy2ll(V2.scale([Math.sin(c), Math.cos(c)], parseFloat(b[5])), d),
                 d[0] -= c[0],
                 d[1] -= c[1],
+                //将英尺转为米
                 d[2] = d[2] * FEET_TO_METERS + parseFloat(b[6]),
                 d[4] = !0) : d[4] = b[4];
             geofs.flyTo(d);
@@ -1334,6 +1345,44 @@ api.map.planeMarker.prototype = {
         this._marker && this._marker.remove();
     },
 };
+api.map.autoFlight = function() {
+    var start = api.map.flightPath._latlngs[0]
+    var end = api.map.flightPath._latlngs[1]
+        //纬度，经度
+    var angle = GetAzimuth(end, start)
+    angle = (angle + 180) % 360
+        // angle = Math.abs(angle - 90)
+    controls.autopilot.heading = angle;
+    let destination = [start.lat, start.lng, 0, 0, "true"]
+    geofs.flyTo(destination)
+    controls.autopilot.toggle()
+        //做个偏差检测，如果偏差超出一定范围，自动修正
+    let autoFlightJudge = setInterval(function() {
+            let llaLocation = [geofs.aircraft.instance.llaLocation[0], geofs.aircraft.instance.llaLocation[1]]
+            let autoLocation = controls.autopilot.autoLocation
+            let destination = api.map.flightPath._latlngs[autoLocation + 1]
+            if (autoLocation === api.map.flightPath._latlngs.length - 1) {
+                clearInterval(autoFlightJudge);
+                controls.autopilot.autoLocation = 0
+                controls.autopilot.kias = 0
+                return;
+            }
+            var distance = GetDistanceTwo(destination, llaLocation)
+            if (distance <= 0.2) {
+                controls.autopilot.autoLocation++;
+                autoLocation = controls.autopilot.autoLocation
+                var start = api.map.flightPath._latlngs[autoLocation]
+                var end = api.map.flightPath._latlngs[autoLocation + 1]
+                var angle = GetAzimuth(end, start)
+                angle = (angle + 180) % 360
+                controls.autopilot.heading = angle;
+            }
+        }, 100)
+        //判断一条直线的朝向，然后转为飞机的自动驾驶角度
+        //判断飞行的当前直线是否飞行完毕 -》》aircraft有个llalocation属性判断 ...经纬度无法直接判断，必须知道朝向，在当前方向上，是否超出
+        //修改方向继续飞行
+        //直到飞到终点
+}
 api.map.flightPath = null;
 api.map.flightPathOn = !1;
 api.map.createPath = (a, b) => {
@@ -1341,6 +1390,7 @@ api.map.createPath = (a, b) => {
         weight: 5,
     };
     api.map.flightPath || (api.map.flightPath = L.Polyline.Plotter(b || [], c).addTo(a.map));
+    // api.flightPath._latlngs=>飞行路径点
     api.map.flightPath.setReadOnly(!1);
     $('.geofs-createPath').addClass('on');
     $('.geofs-clearPath').show();

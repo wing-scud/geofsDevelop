@@ -823,6 +823,7 @@ controls.autopilot = {
     heading: 0,
     altitude: 0,
     kias: 0,
+    autoLocation: 0,
     climbrate: 0,
     climbPID: new PID(.01, .001, .001),
     pitchPID: new PID(.03, .002, .01),
@@ -881,17 +882,17 @@ controls.autopilot.turnOn = function() {
         controls.autopilot.pitchPID.reset();
         controls.autopilot.rollPID.reset();
         controls.autopilot.throttlePID.reset();
-        controls.autopilot.setAltitude(a.altitude);
-        controls.autopilot.setHeading(a.heading);
-        controls.autopilot.setKias(a.kias);
+        // controls.autopilot.setAltitude(a.altitude);
+        // controls.autopilot.setHeading(a.heading);
+        // controls.autopilot.setKias(a.kias);
         controls.autopilot.setClimbrate(0);
         controls.autopilot.on = !0;
-        $(document).trigger("autopilotOn")
+        // $(document).trigger("autopilotOn")
     }
 };
 controls.autopilot.turnOff = function() {
     controls.autopilot.on = !1;
-    $(document).trigger("autopilotOff")
+    //  $(document).trigger("autopilotOff")
 };
 controls.autopilot.update = function(a) {
     var b = geofs.animation.values,
