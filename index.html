@@ -76,7 +76,7 @@
         geofs.preferences.graphics.HD = false;
         document.body.classList.remove('geofs-hd');
         geofs.api.imageryProvider = new Cesium.UrlTemplateImageryProvider({
-            url: 'http://localhost:3030/proxy?baseUrl=http://www.google.cn/maps/vt&lyrs=s@709&gl=cn&x={x}&y={y}&z={z}'
+            url: 'http://www.google.cn/maps/vt?lyrs=s@709&gl=cn&x={x}&y={y}&z={z}'
         })
         geofs.api.setImageryProvider(geofs.api.imageryProvider, true, 1.5, 1.2, 1);
         geofs.api.analytics.event('geofs', 'mode', 'sd', 1);
