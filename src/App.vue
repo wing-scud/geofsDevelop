@@ -5,9 +5,8 @@
 </template>
 
 <script>
-// import Index from  "./components/Index"
 import geofs from "./lib/geofs"
-import Index from "./update/Index"
+import Index from "./Components/Index"
 export default {
   name: 'App',
   components: {

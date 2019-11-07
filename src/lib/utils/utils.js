@@ -1,4 +1,3 @@
-
 import geofs from '../geofs'
 let utils = {
     timeProvider: window.performance || window.Date,
@@ -424,6 +423,7 @@ Math.arrayToPrecision = function(a, b) {
         a[c] && a[c].toFixed && (a[c] = parseFloat(a[c].toFixed(b)));
     return a
 };
+
 function clone(a) {
     if ("object" == typeof a)
         if (geofs.isArray(a)) {
@@ -438,15 +438,63 @@ function clone(a) {
         b = a;
     return b
 }
+
 function absMin(a, b) {
     asbA = Math.abs(a);
     asbB = Math.abs(b);
     return asbA < asbB ? a : b
 }
 
+function rad(d) {
+    return d * Math.PI / 180.0;
+}
+
+function GetDistanceTwo(destination, llaLoccation) {
+    var lon1 = destination.lng
+    var lat1 = destination.lat
+    var lon2 = llaLoccation[1]
+    var lat2 = llaLoccation[0]
+    let radLat1 = rad(lat1);
+    let radLat2 = rad(lat2);
+    let a = radLat1 - radLat2;
+    let b = rad(lon1) - rad(lon2);
+    let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+        Math.cos(radLat1) * Math.cos(radLat2) *
+        Math.pow(Math.sin(b / 2), 2)));
+    s = s * 6378.137;
+    return s;
+}
+
+function GetAzimuth(latlng1, latlng2) {
+    var lon1 = latlng1.lng
+    var lat1 = latlng1.lat
+    var lon2 = latlng2.lng
+    var lat2 = latlng2.lat
+    lat1 = rad(lat1);
+    lat2 = rad(lat2);
+    lon1 = rad(lon1);
+    lon2 = rad(lon2);
+    let azimuth = Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) *
+        Math.cos(lat2) * Math.cos(lon2 - lon1);
+    azimuth = Math.sqrt(1 - azimuth * azimuth);
+    azimuth = Math.cos(lat2) * Math.sin(lon2 - lon1) / azimuth;
+    azimuth = Math.asin(azimuth) * 180 / Math.PI;
+    if (typeof(azimuth) === "undefined") {
+        if (lon1 < lon2) {
+            azimuth = 90.0;
+        } else {
+            azimuth = 270.0;
+        }
+    }
+    return azimuth;
+}
+
+
+
 function clamp(a, b, c) {
     return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a
 }
+
 function boundHours24(a) {
     a %= 24;
     0 > a && (a = 24 + a);
@@ -473,6 +521,7 @@ function fixAngles(a) {
         a[b] = fixAngle(a[b]);
     return a
 }
+
 function lookAt(a, b, c) {
     a = lla2xyz(V3.sub(a, b), b);
     c = M33.makeOrthonormalFrame(a, c);
@@ -565,7 +614,7 @@ PID.prototype.compute = function(a, b) {
 
 
 
-  function boundHours24(a) {
+function boundHours24(a) {
     a %= 24;
     0 > a && (a = 24 + a);
     return a
@@ -573,126 +622,126 @@ PID.prototype.compute = function(a, b) {
 
 const hi = {
     on(t, i, e) {
-      if (typeof t === 'object') {
-        for (const n in t) { this._on(n, t[n], i); }
-      } else {
-        for (let o = 0, s = (t = u(t)).length; o < s; o++) { this._on(t[o], i, e); }
-      }
-      return this;
+        if (typeof t === 'object') {
+            for (const n in t) { this._on(n, t[n], i); }
+        } else {
+            for (let o = 0, s = (t = u(t)).length; o < s; o++) { this._on(t[o], i, e); }
+        }
+        return this;
     },
     off(t, i, e) {
-      if (t) {
-        if (typeof t === 'object') {
-          for (const n in t) { this._off(n, t[n], i); }
-        } else {
-          for (let o = 0, s = (t = u(t)).length; o < s; o++) { this._off(t[o], i, e); }
-        }
-      } else { delete this._events; }
-      return this;
+        if (t) {
+            if (typeof t === 'object') {
+                for (const n in t) { this._off(n, t[n], i); }
+            } else {
+                for (let o = 0, s = (t = u(t)).length; o < s; o++) { this._off(t[o], i, e); }
+            }
+        } else { delete this._events; }
+        return this;
     },
     _on(t, i, e) {
-      this._events = this._events || {};
-      let n = this._events[t];
-      n || (n = [],
-      this._events[t] = n),
-      e === this && (e = void 0);
-      for (var o = {
-          fn: i,
-          ctx: e,
-        }, s = n, r = 0, a = s.length; r < a; r++) {
-        if (s[r].fn === i && s[r].ctx === e) { return; }
-      }
-      s.push(o);
+        this._events = this._events || {};
+        let n = this._events[t];
+        n || (n = [],
+                this._events[t] = n),
+            e === this && (e = void 0);
+        for (var o = {
+                fn: i,
+                ctx: e,
+            }, s = n, r = 0, a = s.length; r < a; r++) {
+            if (s[r].fn === i && s[r].ctx === e) { return; }
+        }
+        s.push(o);
     },
     _off(t, i, e) {
-      let n,
-        o,
-        s;
-      if (this._events && (n = this._events[t])) {
-        if (i) {
-          if (e === this && (e = void 0),
-          n) {
-            for (o = 0,
-            s = n.length; o < s; o++) {
-              const a = n[o];
-              if (a.ctx === e && a.fn === i) {
-                return a.fn = r,
-                this._firingCount && (this._events[t] = n = n.slice()),
-                void n.splice(o, 1);
-              }
+        let n,
+            o,
+            s;
+        if (this._events && (n = this._events[t])) {
+            if (i) {
+                if (e === this && (e = void 0),
+                    n) {
+                    for (o = 0,
+                        s = n.length; o < s; o++) {
+                        const a = n[o];
+                        if (a.ctx === e && a.fn === i) {
+                            return a.fn = r,
+                                this._firingCount && (this._events[t] = n = n.slice()),
+                                void n.splice(o, 1);
+                        }
+                    }
+                }
+            } else {
+                for (o = 0,
+                    s = n.length; o < s; o++) { n[o].fn = r; }
+                delete this._events[t];
             }
-          }
-        } else {
-          for (o = 0,
-          s = n.length; o < s; o++) { n[o].fn = r; }
-          delete this._events[t];
         }
-      }
     },
     fire(t, e, n) {
-      if (!this.listens(t, n)) { return this; }
-      const o = i({}, e, {
-        type: t,
-        target: this,
-        sourceTarget: e && e.sourceTarget || this,
-      });
-      if (this._events) {
-        const s = this._events[t];
-        if (s) {
-          this._firingCount = this._firingCount + 1 || 1;
-          for (let r = 0, a = s.length; r < a; r++) {
-            const h = s[r];
-            h.fn.call(h.ctx || this, o);
-          }
-          this._firingCount--;
+        if (!this.listens(t, n)) { return this; }
+        const o = i({}, e, {
+            type: t,
+            target: this,
+            sourceTarget: e && e.sourceTarget || this,
+        });
+        if (this._events) {
+            const s = this._events[t];
+            if (s) {
+                this._firingCount = this._firingCount + 1 || 1;
+                for (let r = 0, a = s.length; r < a; r++) {
+                    const h = s[r];
+                    h.fn.call(h.ctx || this, o);
+                }
+                this._firingCount--;
+            }
         }
-      }
-      return n && this._propagateEvent(o),
-      this;
+        return n && this._propagateEvent(o),
+            this;
     },
     listens(t, i) {
-      const e = this._events && this._events[t];
-      if (e && e.length) { return !0; }
-      if (i) {
-        for (const n in this._eventParents) {
-          if (this._eventParents[n].listens(t, i)) { return !0; }
+        const e = this._events && this._events[t];
+        if (e && e.length) { return !0; }
+        if (i) {
+            for (const n in this._eventParents) {
+                if (this._eventParents[n].listens(t, i)) { return !0; }
+            }
         }
-      }
-      return !1;
+        return !1;
     },
     once(t, i, n) {
-      if (typeof t === 'object') {
-        for (const o in t) { this.once(o, t[o], i); }
-        return this;
-      }
-      var s = e(function () {
-        this.off(t, i, n).off(t, s, n);
-      }, this);
-      return this.on(t, i, n).on(t, s, n);
+        if (typeof t === 'object') {
+            for (const o in t) { this.once(o, t[o], i); }
+            return this;
+        }
+        var s = e(function() {
+            this.off(t, i, n).off(t, s, n);
+        }, this);
+        return this.on(t, i, n).on(t, s, n);
     },
     addEventParent(t) {
-      return this._eventParents = this._eventParents || {},
-      this._eventParents[n(t)] = t,
-      this;
+        return this._eventParents = this._eventParents || {},
+            this._eventParents[n(t)] = t,
+            this;
     },
     removeEventParent(t) {
-      return this._eventParents && delete this._eventParents[n(t)],
-      this;
+        return this._eventParents && delete this._eventParents[n(t)],
+            this;
     },
     _propagateEvent(t) {
-      for (const e in this._eventParents) {
-        this._eventParents[e].fire(t.type, i({
-          layer: t.target,
-          propagatedFrom: t.target,
-        }, t), !0);
-      }
+        for (const e in this._eventParents) {
+            this._eventParents[e].fire(t.type, i({
+                layer: t.target,
+                propagatedFrom: t.target,
+            }, t), !0);
+        }
     },
-  };
-  hi.addEventListener = hi.on,
-  hi.removeEventListener = hi.clearAllEventListeners = hi.off,
-  hi.addOneTimeEventListener = hi.once,
-  hi.fireEvent = hi.fire,
-  hi.hasEventListeners = hi.listens;
+};
+hi.addEventListener = hi.on,
+    hi.removeEventListener = hi.clearAllEventListeners = hi.off,
+    hi.addOneTimeEventListener = hi.once,
+    hi.fireEvent = hi.fire,
+    hi.hasEventListeners = hi.listens;
 window.hi = hi;
 
 var PAGE_PATH = 'http://localhost:3030/proxy/';
@@ -743,17 +792,71 @@ var GRAVITY = 9.81,
     SMOOTH_BUFFER = {},
     SMOOTHING_FACTOR = .2,
     SIX_STEP_WARNING = "#18a400 #2b9100 #487300 #835b00 #933700 #a71500".split(" ");
-export { V2, V3, M33, M3, S2 ,PID};
+export { V2, V3, M33, M3, S2, PID };
 
 
-export {clone,xyz2lla,clamp,ll2xy,lla2xyz,geoDecodeLocation,getBuildingCollision,xy2ll,lookAt,intersect_RayTriangle,
-    absMin,boundHours24,fixAngle,fixAngle360,fixAngles360,fixAngles,exponentialSmoothing,exponentialSmoothingV3}
-    export {GRAVITY,PAGE_PATH,FEET_TO_METERS,
-        HALF_PI,PI,DEGREES_TO_RAD,RAD_TO_DEGREES,KMH_TO_MS,METERS_TO_LOCAL_LAT,WGS84_TO_EGM96,EGM96_TO_WGS84,
-        TWO_PI,MS_TO_KNOTS,KNOTS_TO_MS,KMH_TO_KNOTS,AXIS_TO_INDEX,AXIS_TO_VECTOR,KELVIN_OFFSET,LONGITUDE_TO_HOURS,METERS_TO_FEET,
-        TEMPERATURE_LAPSE_RATE,AIR_PRESSURE_SL,AIR_DENSITY_SL,AIR_TEMP_SL,DRAG_CONSTANT,MIN_DRAG_COEF,
-    TOTAL_DRAG_CONSTANT,IDEAL_GAS_CONSTANT,MOLAR_MASS_DRY_AIR,GAS_CONSTANT,GR_LM,DEFAULT_AIRFOIL_ASPECT_RATIO,
-    FOV,VIEWPORT_REFERENCE_WIDTH,VIEWPORT_REFERENCE_HEIGHT,SMOOTH_BUFFER,SMOOTHING_FACTOR,SIX_STEP_WARNING}
+export {
+    clone,
+    xyz2lla,
+    clamp,
+    ll2xy,
+    lla2xyz,
+    geoDecodeLocation,
+    getBuildingCollision,
+    xy2ll,
+    lookAt,
+    intersect_RayTriangle,
+    absMin,
+    boundHours24,
+    fixAngle,
+    fixAngle360,
+    fixAngles360,
+    fixAngles,
+    exponentialSmoothing,
+    exponentialSmoothingV3,
+    GetAzimuth,
+    GetDistanceTwo
+}
+export {
+    GRAVITY,
+    PAGE_PATH,
+    FEET_TO_METERS,
+    HALF_PI,
+    PI,
+    DEGREES_TO_RAD,
+    RAD_TO_DEGREES,
+    KMH_TO_MS,
+    METERS_TO_LOCAL_LAT,
+    WGS84_TO_EGM96,
+    EGM96_TO_WGS84,
+    TWO_PI,
+    MS_TO_KNOTS,
+    KNOTS_TO_MS,
+    KMH_TO_KNOTS,
+    AXIS_TO_INDEX,
+    AXIS_TO_VECTOR,
+    KELVIN_OFFSET,
+    LONGITUDE_TO_HOURS,
+    METERS_TO_FEET,
+    TEMPERATURE_LAPSE_RATE,
+    AIR_PRESSURE_SL,
+    AIR_DENSITY_SL,
+    AIR_TEMP_SL,
+    DRAG_CONSTANT,
+    MIN_DRAG_COEF,
+    TOTAL_DRAG_CONSTANT,
+    IDEAL_GAS_CONSTANT,
+    MOLAR_MASS_DRY_AIR,
+    GAS_CONSTANT,
+    GR_LM,
+    DEFAULT_AIRFOIL_ASPECT_RATIO,
+    FOV,
+    VIEWPORT_REFERENCE_WIDTH,
+    VIEWPORT_REFERENCE_HEIGHT,
+    SMOOTH_BUFFER,
+    SMOOTHING_FACTOR,
+    SIX_STEP_WARNING
+}
 
-    
+
 export default utils;

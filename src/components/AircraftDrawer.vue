@@ -2,13 +2,16 @@
     <div>
         <el-collapse  style="background-color:none" v-model="activeName" accordion>
             <el-collapse-item  title="自定义模型" name="1">
+                <div class="scroll">
                 <div  class="image_item" :key="aircraft.serialNumber" v-for="aircraft in customs" @click="changeAircraft(aircraft)" >
                     <el-row>
                         <el-col :span="24" > {{aircraft.name}}</el-col>
                     </el-row> 
                 </div>
+                </div>
             </el-collapse-item>
             <el-collapse-item title="默认" name="2">
+                <div class="scroll">
                 <div  class="image_item" :key="aircraft.serialNumber" v-for="aircraft in defaults"  @click="changeAircraft(aircraft)">
                     <el-row :gutter="20">
                         <el-col :span="8">
@@ -16,6 +19,7 @@
                        </el-col>
                         <el-col :span="16">{{aircraft.name}}</el-col>
                     </el-row> 
+                </div>
                 </div>
             </el-collapse-item>
         </el-collapse>
@@ -95,5 +99,10 @@ export default {
 }
 .el-image:hover{
     height:60px;
+}
+.scroll{
+    overflow-y:auto;
+    height:90%;
+
 }
 </style>

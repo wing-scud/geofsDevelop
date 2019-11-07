@@ -209,7 +209,7 @@ geofs.frameCallback = function(a) {
 };
 //重点fly to 给定坐标，飞机移动到这
 geofs.flyTo = function(a, b) {
-
+    //a0 纬度a1经度 a2 llaLocation另外一个参数高度，为米   a3  a4->是否为绝对高度
     if (a) {
         geofs.doPause(1);
         const c = geofs.aircraft.instance;

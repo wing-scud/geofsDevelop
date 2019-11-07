@@ -43,6 +43,12 @@ map.prototype = {
             this.mapUpdateInterval = null);
         this.mapActive = !1;
     },
+    destoryMap() {
+        if (ui.mapInstance) {
+            this.apiMap = null
+            this.mapActive = !1;
+        }
+    },
     startMap() {
         const a = this;
         this.stopMap();
@@ -55,6 +61,7 @@ map.prototype = {
             }
         }, 1E3);
     },
+
     stopMovingMap(a) {
         const b = this;
         this.dontMoveTimeout && clearTimeout(this.dontMoveTimeout);

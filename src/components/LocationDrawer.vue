@@ -49,7 +49,7 @@ export default {
             runways:[
                 {windOverride:false,coordinate:[42.36021520436057,-70.98767662157663,0,-103.54],name:"Logan Int'l (Boston) - 27"},
                 {windOverride:false,coordinate:[43.578924,-6.09867,550,104, true],name:"Miami Int'l - 8R"},
-                {windOverride:false,coordinate:[43.66555302435758,7.228367855065596,0,-135],name:">Aéroport Nice Côte d'Azur - 22L"}
+                {windOverride:false,coordinate:[43.66555302435758,7.228367855065596,0,-135],name:"Aéroport Nice Côte d'Azur - 22L"}
             ],
             others:[
                 {windOverride:false,coordinate:[45.938149486108856,6.892803255304612,1500,37.89311560373897],name:"Chamonix - Alps - France"},

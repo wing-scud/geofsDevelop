@@ -1,7 +1,7 @@
-//动画？？？暂且 提供方法
-import {clamp}from "../utils/utils"
+//？？暂且 提供方法
+import { clamp } from "../utils/utils"
 import geofs from "../geofs"
-var  animation= {};
+var animation = {};
 animation.init = function() {};
 animation.getRampRatio = function(a, b) {
     if (b < 0 || b > 1) { return 0; }
