@@ -1,56 +1,20 @@
 <template>
-<div>
-    <el-row>
-        <el-col>
-            <div class="blockAuto">
-                <span>速度</span>
-                <div class="el-input-number">
-                    <span role="button" class="decrease" @click="numberMin('kias')">
-                        <i class="el-icon-minus"></i>
-                    </span>
-                    <el-input v-model="kias" size="small" style="width:130px">
-                    </el-input>
-                    <span role="button" class="increase" @click="numberPlus('kias')">
-                        <i class="el-icon-plus"></i>
-                    </span>
-                </div>
-            </div>
-        </el-col>
-    </el-row>
-    <el-row>
-        <el-col>
-            <div class="blockAuto">
-                <span>偏航</span>
-                <div class="el-input-number" debounce="300">
-                    <span role="button" class="decrease" @click="numberMin('hdg')">
-                        <i class="el-icon-minus"></i>
-                    </span>
-                    <el-input v-model="hdg" size="small" style="width:130px">
-                    </el-input>
-                    <span role="button" class="increase" @click="numberPlus('hdg')">
-                        <i class="el-icon-plus"></i>
-                    </span>
-                </div>
-            </div>
-        </el-col>
-    </el-row>
-    <el-row>
-        <el-col>
-            <div class="blockAuto">
-                <span>高度</span>
-                <div class="el-input-number" debounce="300">
-                    <span role="button" class="decrease" @click="numberMin('height')">
-                        <i class="el-icon-minus"></i>
-                    </span>
-                    <el-input v-model="height" size="small" style="width:130px">
-                    </el-input>
-                    <span role="button" class="increase" @click="numberPlus('height')">
-                        <i class="el-icon-plus"></i>
-                    </span>
-                </div>
-            </div>
-        </el-col>
-    </el-row>
+<div  class="autoRow">
+    <div class="blockAuto">
+        <span>速度</span>
+            <el-input v-model="kias" size="small" style="width:130px">
+            </el-input>
+    </div>
+    <div class="blockAuto">
+        <span>偏航</span>
+            <el-input v-model="heading" size="small" style="width:130px">
+            </el-input>
+    </div>
+    <div class="blockAuto">
+        <span>高度</span>
+            <el-input  v-model="height" size="small" style="width:130px">
+            </el-input>
+    </div>
 </div>
 </template>
 
@@ -66,61 +30,42 @@ export default {
         return {
             kias: 0,
             height: 0,
-            hdg: 0
+            heading: 0
         };
     },
-    methods: {
-        numberMin(key) {
-            switch (key) {
-                case "kias":
-                    this.kias--;
-                    break;
-                case "height":
-                    this.height--;
-                    break;
-                case "hdg":
-                    this.hdg--;
-                    break;
-            }
-        },
-        numberPlus(key) {
-            switch (key) {
-                case "kias":
-                    this.kias++;
-                    break;
-                case "height":
-                    this.height++;
-                    break;
-                case "hdg":
-                    this.hdg++;
-                    break;
-            }
-        },
-    },
+    methods: {},
     watch: {
         kias: function (newValue, oldValue) {
-            controls.autopilot.kias = newValue
+            controls.autopilot.setKias(Number(newValue))
         },
         height: function (newValue, oldValue) {
-            controls.autopilot.height = newValue
+            controls.autopilot.setAltitude(Number(newValue))
         },
-        hdg: function (newValue, oldValue) {
-            controls.autopilot.hdg = newValue
+        heading: function (newValue, oldValue) {
+            controls.autopilot.setHeading(Number(newValue))
         },
     },
     created() {
+        this.kias=controls.autopilot.kias;
+        this.heading=controls.autopilot.heading;
+        this.height=controls.autopilot.altitude;
     },
 };
 </script>
 
-<style >
+<style>
+.autoRow{
+    display: flex;
+    flex-direction: row;
+}
 .blockAuto {
-    width: 100%;
+    width: 100px;
     height: 40px;
     display: flex;
     margin-top: 10px;
     flex-direction: row;
     margin-bottom: 5px;
+    margin-left:15px;
 }
 
 .el-input-number {

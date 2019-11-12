@@ -1,4 +1,3 @@
-//？？暂且 提供方法
 import { clamp } from "../utils/utils"
 import geofs from "../geofs"
 var animation = {};
@@ -29,6 +28,7 @@ animation.getValue = function(a) {
     return animation.values[a] || 0;
 };
 animation.filter = function(a, b) {
+    //debugger
     if (a.value == 'random') { b = Math.random(); } else if ($.isFunction(a.value)) {
         if (b = 0, !geofs.aircraft.instance.aircraftRecord.isCommunity) {
             try {

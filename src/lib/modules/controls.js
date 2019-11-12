@@ -836,9 +836,7 @@ var a = $(".geofs-autopilot-pad .control-pad-label"),
 controls.autopilot.setHeading = function(a) {
     var b = controls.autopilot.heading;
     try {
-        controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
-            $(".geofs-autopilot-heading").text(controls.autopilot.heading),
-            $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
+        controls.autopilot.heading = fixAngle360(parseInt(a, 10))
     } catch (e) {
         controls.autopilot.heading = b
     }
@@ -846,9 +844,8 @@ controls.autopilot.setHeading = function(a) {
 controls.autopilot.setAltitude = function(a) {
     var b = controls.autopilot.altitude;
     try {
-        controls.autopilot.altitude = parseInt(a, 10),
-            $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),
-            $(".legacyAutopilot .geofs-autopilot-altitude").val(controls.autopilot.altitude)
+        controls.autopilot.altitude = parseInt(a, 10)
+
     } catch (e) {
         controls.autopilot.altitude = b
     }
@@ -856,18 +853,16 @@ controls.autopilot.setAltitude = function(a) {
 controls.autopilot.setKias = function(a) {
     var b = controls.autopilot.kias;
     try {
-        controls.autopilot.kias = parseInt(a, 10),
-            $(".geofs-autopilot-kias").text(controls.autopilot.kias),
-            $(".legacyAutopilot .geofs-autopilot-kias").val(controls.autopilot.kias)
+        controls.autopilot.kias = parseInt(a, 10)
+
     } catch (e) {
         controls.autopilot.kias = b
     }
 };
-controls.autopilot.setClimbrate = function(a) {
+controls.autopilot.setClimbrate = function(a) { //爬升率
     var b = controls.autopilot.climbrate;
     try {
-        controls.autopilot.climbrate = parseInt(a, 10),
-            $(".geofs-autopilot-climbrate").text(controls.autopilot.climbrate)
+        controls.autopilot.climbrate = parseInt(a, 10)
     } catch (e) {
         controls.autopilot.climbrate = b
     }
@@ -876,7 +871,8 @@ controls.autopilot.toggle = function() {
     controls.autopilot.on ? controls.autopilot.turnOff() : controls.autopilot.turnOn()
 };
 controls.autopilot.turnOn = function() {
-    if (geofs.aircraft.instance.setup.autopilot) {
+    if (geofs.aircraft.instance.setup.autopilot) { //飞机是否存在能够自动驾驶的属性
+        //格式化归0
         var a = geofs.animation.values;
         controls.autopilot.climbPID.reset();
         controls.autopilot.pitchPID.reset();
@@ -892,29 +888,30 @@ controls.autopilot.turnOn = function() {
 };
 controls.autopilot.turnOff = function() {
     controls.autopilot.on = !1;
-    //  $(document).trigger("autopilotOff")
 };
 controls.autopilot.update = function(a) {
-    var b = geofs.animation.values,
-        c = controls.autopilot,
-        d = clamp(b.kias / 100, 1, 5),
-        e = fixAngle(b.heading - c.heading);
-    e = clamp(e, -c.maxBankAngle, c.maxBankAngle);
-    controls.yaw = exponentialSmoothing("apYaw", e / -60, .1);
-    c.rollPID.set(e);
-    controls.roll = exponentialSmoothing("apRoll", -c.rollPID.compute(b.aroll, a) / d, .9);
-    var f = c.altitude - b.altitude;
-    e = clamp(d * c.commonClimbrate, 0, c.maxClimbrate);
-    var g = clamp(d * c.commonDescentrate, c.maxDescentrate, 0);
-    f = clamp(5 * f, g, e);
-    c.climbPID.set(-f);
-    e = clamp(b.climbrate, g, e);
-    e = c.climbPID.compute(-e, a) / d;
-    e = clamp(e, -c.maxPitchAngle, -c.minPitchAngle);
-    c.pitchPID.set(-e);
-    controls.rawPitch = exponentialSmoothing("apPitch", c.pitchPID.compute(-b.atilt, a) / d, .9);
-    c.throttlePID.set(c.kias);
-    controls.throttle = exponentialSmoothing("apThrottle", c.throttlePID.compute(b.kias, a), .9);
+    //计算实际的参数
+
+    var values = geofs.animation.values,
+        autopilot = controls.autopilot,
+        kias = clamp(values.kias / 100, 1, 5),
+        fixedAngle = fixAngle(values.heading - autopilot.heading);
+    fixedAngle = clamp(fixedAngle, -autopilot.maxBankAngle, autopilot.maxBankAngle);
+    controls.yaw = exponentialSmoothing("apYaw", fixedAngle / -60, .1); //yaw偏航
+    autopilot.rollPID.set(fixedAngle);
+    controls.roll = exponentialSmoothing("apRoll", -autopilot.rollPID.compute(values.aroll, a) / kias, .9);
+    var deltaAltitude = autopilot.altitude - values.altitude;
+    fixedAngle = clamp(kias * autopilot.commonClimbrate, 0, autopilot.maxClimbrate);
+    var g = clamp(kias * autopilot.commonDescentrate, autopilot.maxDescentrate, 0);
+    deltaAltitude = clamp(5 * deltaAltitude, g, fixedAngle);
+    autopilot.climbPID.set(-deltaAltitude);
+    fixedAngle = clamp(values.climbrate, g, fixedAngle);
+    fixedAngle = autopilot.climbPID.compute(-fixedAngle, a) / kias;
+    fixedAngle = clamp(fixedAngle, -autopilot.maxPitchAngle, -autopilot.minPitchAngle);
+    autopilot.pitchPID.set(-fixedAngle);
+    controls.rawPitch = exponentialSmoothing("apPitch", autopilot.pitchPID.compute(-values.atilt, a) / kias, .9); //pitch 倾斜
+    autopilot.throttlePID.set(autopilot.kias);
+    controls.throttle = exponentialSmoothing("apThrottle", autopilot.throttlePID.compute(values.kias, a), .9); //throttle 油门
     controls.throttle = clamp(controls.throttle, 0, 1)
 };
 export default controls;

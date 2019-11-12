@@ -1,7 +1,13 @@
 import camera from './camera'
-import {S2,VIEWPORT_REFERENCE_WIDTH,
-    VIEWPORT_REFERENCE_HEIGHT,DEGREES_TO_RAD,M33 } from "../utils/utils"
+import {
+    S2,
+    VIEWPORT_REFERENCE_WIDTH,
+    VIEWPORT_REFERENCE_HEIGHT,
+    DEGREES_TO_RAD,
+    M33
+} from "../utils/utils"
 import geofs from "../geofs"
+
 function Overlay(a, b) {
     this.definition = {
         url: '',
@@ -35,11 +41,11 @@ function Overlay(a, b) {
             y: 'bottom',
         },
         overlays: [],
-    
+
     };
     this.children = [];
     this.definition = $.extend(!0, {}, this.definition, a);
-    console.log(this.definition['url']+" url")
+    console.log(this.definition['url'] + " url")
     this.position = this.definition.position;
     this.size = this.definition.size;
     this.iconFrame = {
@@ -57,7 +63,7 @@ function Overlay(a, b) {
     this.opacity = this.definition.opacity;
     this.anchor = this.definition.anchor;
     this.visibility = this.definition.visibility;
-    
+
     this.overlay = new geofs.api.cssTransform();
     this.overlay.setUrl(this.definition.url);
     this.overlay.setText(this.definition.text);
@@ -151,7 +157,7 @@ Overlay.prototype.scaleAndPlace = function(a, b, c) {
         a = clamp(geofs.viewportWidth / VIEWPORT_REFERENCE_WIDTH, 0.3, 1),
         c = clamp(geofs.viewportHeight / VIEWPORT_REFERENCE_HEIGHT, 0.3, 1),
         this.scale = S2.scale(this.scale, Math.min(a, c))) : this.scale = this.scaleFromParent(a);
-    this.offset = {              
+    this.offset = {
         x: 0,
         y: 0,
     };
@@ -190,7 +196,7 @@ Overlay.prototype.positionFromParentRotation = function() {
         b = M33.identity();
     b = M33.rotationZ(b, -this.parent.rotation * DEGREES_TO_RAD);
     a = M33.transform(b, a);
-    return {         
+    return {
         x: a[0],
         y: a[1],
     };
@@ -198,11 +204,11 @@ Overlay.prototype.positionFromParentRotation = function() {
 Overlay.prototype.animate = function(a) {
     if (this.definition.animations) {
         for (var b = 0; b < this.definition.animations.length; b++) {
-            let c = this.definition.animations[b],
-                d = geofs.animation.filter(c);
-            if (c.lastValue != d || a) {
-                switch (c.lastValue = d,
-                    c.type) {
+            let animation = this.definition.animations[b],
+                d = geofs.animation.filter(animation);
+            if (animation.lastValue != d || a) {
+                switch (animation.lastValue = d,
+                    animation.type) {
                     case 'moveY':
                         this.visibility && this.overlay.setPositionY(this.position.y + d * this.scale.y);
                         break;

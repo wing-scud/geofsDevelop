@@ -13,9 +13,8 @@ var basePath = "./server/tmp";
 /**
  *
  * @param {Request} req
- * @param {Response} res
- * @param {*} next
- */
+ * @param {Response} ad
+ * */
 function tileProxy(req, res) {
 
     //https://www.geo-fs.com

@@ -49,9 +49,9 @@
     <!-- Bug: 自动驾驶点击，启动，当自动驾驶启动时，自动驾驶按钮应有提问数标志表示启动着
           点击自动驾驶关闭，应关闭，飞机快速迫降，目前无
            如果按照这种引用，无法引用多次，会一个popover对应一个功能溶，冗余-->
-    <el-popover width="185px" custom-class="el-popover" :title="format(current)" placement="right-start" ref="autopilot">
-        <Autopilot v-if="current==='autopilot'" />
-    </el-popover>
+    <div class="autopilotPosition">
+        <Autopilot v-if="autopilotShow" />
+    </div>
     <el-popover width="80px" custom-class="el-popover" :title="format(current)" placement="right-start" ref="camera">
         <Camera v-if="current==='camera'" />
     </el-popover>
@@ -117,7 +117,7 @@ export default {
                     geofs.resetFlight()
                     break;
                 case "autopilot":
-                    this.current = "autopilot";
+                    this.autopilotShow = ! this.autopilotShow;
                     controls.autopilot.toggle();
                     if (!controls.autopilot.on) {
                         this.color = "white"
@@ -176,6 +176,15 @@ export default {
     padding-left: 15px;
     width: 300px !important;
     left: 4.2% !important;
+}
+
+.autopilotPosition {
+    width: 300px;
+    height: 30px;
+    position: fixed;
+    right: 100px;
+    top: 30px;
+    z-index:10000;
 }
 
 .menu_item_bottom {

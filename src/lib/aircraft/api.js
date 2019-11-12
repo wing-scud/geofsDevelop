@@ -1188,7 +1188,6 @@ api.map = function(a, b, c) {
 api.createPath = function() {
     if (api.map.flightPathOn) {
         api.map.stopCreatePath(api.map)
-
     } else {
         api.map.createPath(ui.mapInstance.apiMap);
     }
@@ -1346,42 +1345,39 @@ api.map.planeMarker.prototype = {
     },
 };
 api.map.autoFlight = function() {
-    var start = api.map.flightPath._latlngs[0]
-    var end = api.map.flightPath._latlngs[1]
-        //纬度，经度
-    var angle = GetAzimuth(end, start)
-    angle = (angle + 180) % 360
-        // angle = Math.abs(angle - 90)
-    controls.autopilot.heading = angle;
-    let destination = [start.lat, start.lng, 0, 0, "true"]
-    geofs.flyTo(destination)
-    controls.autopilot.toggle()
-        //做个偏差检测，如果偏差超出一定范围，自动修正
-    let autoFlightJudge = setInterval(function() {
-            let llaLocation = [geofs.aircraft.instance.llaLocation[0], geofs.aircraft.instance.llaLocation[1]]
-            let autoLocation = controls.autopilot.autoLocation
-            let destination = api.map.flightPath._latlngs[autoLocation + 1]
-            if (autoLocation === api.map.flightPath._latlngs.length - 1) {
-                clearInterval(autoFlightJudge);
-                controls.autopilot.autoLocation = 0
-                controls.autopilot.kias = 0
-                return;
-            }
-            var distance = GetDistanceTwo(destination, llaLocation)
-            if (distance <= 0.2) {
-                controls.autopilot.autoLocation++;
-                autoLocation = controls.autopilot.autoLocation
-                var start = api.map.flightPath._latlngs[autoLocation]
-                var end = api.map.flightPath._latlngs[autoLocation + 1]
-                var angle = GetAzimuth(end, start)
-                angle = (angle + 180) % 360
-                controls.autopilot.heading = angle;
+    if (api.map.flightPath !== null) {
+        var start = api.map.flightPath._latlngs[0]
+        var end = api.map.flightPath._latlngs[1]
+        var angle = GetAzimuth(start, end)
+        controls.autopilot.heading = angle;
+        let destination = [start.lat, start.lng, 0, 0, "true"]
+        geofs.flyTo(destination)
+        controls.autopilot.turnOn()
+        let autoFlightJudge = setInterval(function() {
+            if (api.map.flightPath !== null) {
+                let llaLocation = [geofs.aircraft.instance.llaLocation[0], geofs.aircraft.instance.llaLocation[1]]
+                let autoLocation = controls.autopilot.autoLocation
+                let destination = api.map.flightPath._latlngs[autoLocation + 1]
+                if (autoLocation === api.map.flightPath._latlngs.length - 1) {
+                    clearInterval(autoFlightJudge);
+                    controls.autopilot.autoLocation = 0
+                    controls.autopilot.kias = 0
+                    return;
+                }
+                var distance = GetDistanceTwo(destination, llaLocation)
+                if (distance <= 200) {
+                    controls.autopilot.autoLocation++;
+                    autoLocation = controls.autopilot.autoLocation
+                    var start = api.map.flightPath._latlngs[autoLocation]
+                        // let destination = [start.lat, start.lng, 0, 0, "true"]
+                        //  geofs.flyTo(destination)
+                    var end = api.map.flightPath._latlngs[autoLocation + 1]
+                    var angle = GetAzimuth(start, end)
+                    controls.autopilot.heading = angle;
+                }
             }
         }, 100)
-        //判断一条直线的朝向，然后转为飞机的自动驾驶角度
-        //判断飞行的当前直线是否飞行完毕 -》》aircraft有个llalocation属性判断 ...经纬度无法直接判断，必须知道朝向，在当前方向上，是否超出
-        //修改方向继续飞行
-        //直到飞到终点
+    }
 }
 api.map.flightPath = null;
 api.map.flightPathOn = !1;

@@ -461,7 +461,7 @@ function GetDistanceTwo(destination, llaLoccation) {
     let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
         Math.cos(radLat1) * Math.cos(radLat2) *
         Math.pow(Math.sin(b / 2), 2)));
-    s = s * 6378.137;
+    s = s * 6378137;
     return s;
 }
 
@@ -479,13 +479,15 @@ function GetAzimuth(latlng1, latlng2) {
     azimuth = Math.sqrt(1 - azimuth * azimuth);
     azimuth = Math.cos(lat2) * Math.sin(lon2 - lon1) / azimuth;
     azimuth = Math.asin(azimuth) * 180 / Math.PI;
-    if (typeof(azimuth) === "undefined") {
-        if (lon1 < lon2) {
-            azimuth = 90.0;
-        } else {
-            azimuth = 270.0;
-        }
+    if (lat2 > lat1 && lon2 > lon1) {
+        azimuth = azimuth;
     }
+    if (lat2 > lat1 && lon2 < lon1) {
+        azimuth = 360 + azimuth
+    } else {
+        azimuth = 180 - azimuth
+    }
+
     return azimuth;
 }
 
