@@ -13,8 +13,13 @@
   "dependencies": {
     "cesium": "^1.60.0",
     "cors": "^2.8.5",
+    "d": "^1.0.1",
     "element-ui": "^2.12.0",
+    "https-proxy-agent": "^3.0.1",
     "jquery": "^3.4.1",
+    "leveldown": "^5.4.1",
+    "levelup": "^4.3.2",
+    "md5": "^2.2.1",
     "node-fetch": "^2.6.0",
     "underscore": "^1.9.1",
     "vue": "^2.5.2"

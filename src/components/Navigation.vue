@@ -36,7 +36,8 @@
     <div class="menu_item" title="自动驾驶">
         <el-button @click="clickButton($event)" v-popover:autopilot id="autopilot" :style="{backgroundColor:color}" circle> <i class="iconfont">&#xe622;</i></el-button>
     </div>
-    <el-drawer :title="format(current)" custom-class="drawer" :modal-append-to-body="false" :visible.sync="drawer" :wrapperClosable="true" :modal="false" direction="ltr">
+    <!-- 二种，信息量大的drawer，小的popover,二种生成方式不同 -->
+    <el-drawer :title="format(current)" :custom-class="`width: ${current==='map'?'mapDrawer':'drawer'}`" :modal-append-to-body="false" :visible.sync="drawer" :wrapperClosable="true" :modal="false" direction="ltr">
         <Setting v-if="current==='setting'" />
         <!-- <component :is="componentId"></component>  不使用的原因，keep-alive-->
         <keep-alive>
