@@ -100,16 +100,8 @@ api.initWorld = a => { //初始化世界，可添加模型
     });
     // api.viewer.scene.moon.textureUrl = 'images/moonSmall.jpg';
     api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
-        baseProvider: new GeoVis.GeoserverTerrainProvider({
-            url: "http://syy.geovisweb.cn:10088/geoserver/wms",
-            layerName: "GlobalTerrain:pyramid32",
-            maxLevel: 11,
-            service: "WMS",
-            scale: 1,
-            landScale: 1,
-            oceanScale: 1,
-            waterMask: true
-        }),
+        baseProvider: new GeoVis.CesiumTerrainProvider(
+            {url:`http://${window.location.hostname}:3030/terrain/1/`})
     });
     api.viewer.terrainProvider = api.flatRunwayTerrainProviderInstance;
     api.viewer.scene.globe.enableLighting = !1;
@@ -300,6 +292,7 @@ api.applyImageryColorModifiers = () => {
 };
 api.setImageryBrightness = a => {
     const b = api.viewer.imageryLayers.get(0);
+    debugger
     a && (b.brightness = a);
     return b.brightness;
 };
@@ -1113,16 +1106,8 @@ api.FlatRunwayTerrainProvider.prototype = {
 };
 api.add3dBuildings = () => {
     api.viewer.terrainProvider = api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
-        baseProvider: new GeoVis.GeoserverTerrainProvider({
-            url: "http://syy.geovisweb.cn:10088/geoserver/wms",
-            layerName: "GlobalTerrain:pyramid32",
-            maxLevel: 11,
-            service: "WMS",
-            scale: 1,
-            landScale: 1,
-            oceanScale: 1,
-            waterMask: true
-        }),
+        baseProvider: new GeoVis.CesiumTerrainProvider(
+            {url:`http://${window.location.hostname}:3030/terrain/1/`})
     });
     geofs.useSimpleShadow(!0);
     api.buildings = [];

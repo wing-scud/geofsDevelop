@@ -32,9 +32,9 @@ async function googleProxy(req, resp) {
 
 async function requestFileGet2(baseUrl, filename, resp, type) {
   const data = await fetch(baseUrl, {
-    agent,
+    // agent,
     headers: {
-      Accept: 'application/vnd.quantized-mesh,application/octet-stream;q=0.9,*/*;q=0.01,*/*;access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwYTdiZmYwOC04NjFjLTQ3ZjQtYjVjZC0zN2MzMmFlMWQ1ODgiLCJpZCI6NjYwLCJhc3NldHMiOnsiMSI6eyJ0eXBlIjoiVEVSUkFJTiIsImV4dGVuc2lvbnMiOlt0cnVlLHRydWUsdHJ1ZV0sInB1bGxBcGFydFRlcnJhaW4iOmZhbHNlfX0sInNyYyI6ImRhNTBjNTU1LTAxNmEtNDA4NS1iZmFlLTFhY2E3NjkyYjQ1NSIsImlhdCI6MTU2NzUzMzMwOCwiZXhwIjoxNTY3NTM2OTA4fQ.toFtIIQ7asgEf-YuzRak8la5FtYYfLMBNykg-6tFg7E',
+      Accept: 'application/vnd.quantized-mesh,application/octet-stream;q=0.9,*/*;q=0.01,*/*;access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNjBjZmZmYS0zYWNjLTQ3NzktYWEzMy0xMWU3NzViY2IxYTYiLCJpZCI6NjYwLCJzY29wZXMiOlsiYXNsIiwiYXNyIiwiYXN3IiwiZ2MiXSwiaWF0IjoxNTY3NTI4OTE4fQ.3FRk7CsqbA_5Qn3u0JzHNFhyY9TMZ6oqy6aaF-0QE90',
       DNT: 1,
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
     },

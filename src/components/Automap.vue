@@ -120,7 +120,7 @@ export default {
 .mapDrawer {
     position: flex;
     flex-direction: row;
-    width: 100%;
+    width: 450px!important;
     height: calc(100% - 56px)
 }
 

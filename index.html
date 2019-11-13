@@ -20,7 +20,7 @@
     geofs.dataServer = 'https://data3.geo-fs.com/';
     geofs.googleAppId = '208044912282-4g0gk5oum6gecc2d7ll1ensv921l12us.apps.googleusercontent.com';
     geofs.facebookAppId = '404853203195387';
-    geofs.mapXYZ = 'https://data3.geo-fs.com/osm/{z}/{x}/{y}.png'; // map explore url
+    geofs.mapXYZ = 'http://mt2.google.cn/vt/x={x}&y={y}&z={z}'; // map explore url
     geofs.ionkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwYjk1N2FhZi1hN2M5LTQ4ZmUtOWVhMS0yNDVjODBmODlmOGQiLCJpZCI6NzYsImlhdCI6MTQ4ODIxMDc4OX0.Sv58Vigu_z-rEXj1SyO1ygvo4LhA6bDPyKIjsQ3Bgc4';
 </script>
 
@@ -78,8 +78,8 @@
         geofs.api.imageryProvider = new Cesium.UrlTemplateImageryProvider({
             url: 'http://www.google.cn/maps/vt?lyrs=s@709&gl=cn&x={x}&y={y}&z={z}'
         })
-        geofs.api.setImageryProvider(geofs.api.imageryProvider, true, 1.5, 1.2, 1);
-        geofs.api.analytics.event('geofs', 'mode', 'sd', 1);
+        geofs.api.setImageryProvider(geofs.api.imageryProvider, true, 1, 1, 1);
+        // geofs.api.analytics.event('geofs', 'mode', 'sd', 1);
     };
 
     var geofsNewHDState = false;

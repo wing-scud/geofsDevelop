@@ -37,7 +37,7 @@
         <el-button @click="clickButton($event)" v-popover:autopilot id="autopilot" :style="{backgroundColor:color}" circle> <i class="iconfont">&#xe622;</i></el-button>
     </div>
     <!-- 二种，信息量大的drawer，小的popover,二种生成方式不同 -->
-    <el-drawer :title="format(current)" custom-class="drawer" :modal-append-to-body="false" :visible.sync="drawer" :wrapperClosable="true" :modal="false" direction="ltr">
+    <el-drawer :title="format(current)" :custom-class="`width: ${current==='map'?'mapDrawer':'drawer'}`" :modal-append-to-body="false" :visible.sync="drawer" :wrapperClosable="true" :modal="false" direction="ltr">
         <Setting v-if="current==='setting'" />
         <!-- <component :is="componentId"></component>  不使用的原因，keep-alive-->
         <keep-alive>
@@ -175,6 +175,11 @@ export default {
 .drawer {
     padding-left: 15px;
     width: 300px !important;
+    left: 4.2% !important;
+}
+.mapDrawer {
+    padding-left: 15px;
+    width: 450px !important;
     left: 4.2% !important;
 }
 
