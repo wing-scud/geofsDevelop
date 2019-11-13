@@ -1,4 +1,3 @@
-
 import geofs from '../geofs';
 import { V3 } from '../utils/utils';
 import Object3D from '../modules/Object3D';
@@ -9,15 +8,23 @@ import { list } from "../utils/AircraftList"
 import rigidBody from '../modules/rigidBody'
 import camera from '../modules/camera'
 import instruments from '../modules/instruments'
-import {DEGREES_TO_RAD,RAD_TO_DEGREES,PI,TWO_PI
-    ,HALF_PI,AXIS_TO_INDEX,DEFAULT_AIRFOIL_ASPECT_RATIO,AXIS_TO_VECTOR}from "../utils/utils"
-var  aircraft = {
+import {
+    DEGREES_TO_RAD,
+    RAD_TO_DEGREES,
+    PI,
+    TWO_PI,
+    HALF_PI,
+    AXIS_TO_INDEX,
+    DEFAULT_AIRFOIL_ASPECT_RATIO,
+    AXIS_TO_VECTOR
+} from "../utils/utils"
+var aircraft = {
     default: 1,
 };
 var aircraftList = list
 aircraft.Aircraft = function(a) {
     aircraft.instance = this;
-    this.engine = {};// rpm,on,
+    this.engine = {}; // rpm,on,
     this.engine.rpm = 0;
     this.engine.on = !0;
     this.brakesOn = !1;
@@ -59,13 +66,13 @@ aircraft.Aircraft.prototype.getCurrentCoordinates = function() {
     a[3] = aircraft.instance.htr[0];
     return a;
 };
-aircraft.Aircraft.prototype.change = function(a, b) {//点击改变飞机
+aircraft.Aircraft.prototype.change = function(a, b) { //点击改变飞机
     a = a || this.aircraftRecord.id;
     geofs.doPause(1);
     this.load(a, this.getCurrentCoordinates(), b);
     geofs.api.analytics.event('aircraft', aircraftList[a].name);
 };
-aircraft.Aircraft.prototype.addShadow = function() {//添加影子
+aircraft.Aircraft.prototype.addShadow = function() { //添加影子
     this.removeShadow();
     if (this.aircraftRecord) {
         let a = this.aircraftRecord.fullPath + (this.setup.shadowFile || 'shadow.glb'),
@@ -84,7 +91,7 @@ aircraft.Aircraft.prototype.loadDefault = a => { //显示自定义通知
 };
 aircraft.Aircraft.prototype.parseRecord = function(a) {
     try {
-        
+
         const b = $.parseJSON(a);
         this.aircraftRecord = b;
         if (b.definition) {
@@ -121,9 +128,9 @@ aircraft.Aircraft.prototype.load = (a, b, c) => { //载入飞机的json，配置
                     d = aircraft.instance.parseRecord(d)) {
                     aircraftList[a].local || (aircraft.instance.aircraftRecord.fullPath = geofs.url + aircraft.instance.aircraftRecord.fullPath),
                         aircraft.instance.id = a,
-                    
+
                         aircraft.instance.init(d, b, c);
-            
+
                 }
             } else { aircraft.instance.loadDefault('Could not load aircraft file'); }
         },
@@ -244,7 +251,7 @@ aircraft.Aircraft.prototype.loadCockpit = function() { //驾驶舱信息初始�
         } else { aircraft.instance._cockpitLoaded = !0; }
     }
 };
-aircraft.Aircraft.prototype.addParts = (a, b, c) => {//添加飞机组成，共 body  leftWing rightWing horizontalStab  verticalStab  aileronleft 
+aircraft.Aircraft.prototype.addParts = (a, b, c) => { //添加飞机组成，共 body  leftWing rightWing horizontalStab  verticalStab  aileronleft 
     // aileronright   elevator  rudder   gearleft  wheelleft   gearright wheelright  tailwheel   engine   prop   propblur  
     c = c || 1;
     for (var d = 0; d < a.length; d++) {
@@ -414,9 +421,9 @@ aircraft.Aircraft.prototype.placePart = a => {
     if (a.animations) {
         a.object3d.resetAnimatedTransform();
         for (let b = 0, c = a.animations.length; b < c; b++) {
-           
+
             const d = a.animations[b];
-            let e = geofs.animation.filter(d); 
+            let e = geofs.animation.filter(d);
 
             switch (d.type) {
                 case 'rotate':
@@ -499,6 +506,7 @@ aircraft.Aircraft.prototype.fixCockpitScale = function(a) {
     }
 };
 aircraft.Aircraft.prototype.crash = function() {
+    //检测碰撞，如果撞击地面，产生烟雾，引擎关闭
     this.engine.on = !1;
     new geofs.fx.ParticleEmitter({
         anchor: {

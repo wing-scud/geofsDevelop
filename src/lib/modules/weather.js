@@ -1,17 +1,31 @@
 /**
  * options settings  enviroment  weather setting?
  * 
- */ 
+ */
 //天气 ->>风 { 风速，风向，风所在的高度}， 大气 atmosphere  ；白天黑夜，采集数据来源于openweathermap.org
 import camera from './camera'
 import instruments from './instruments'
 
-import { V3,AIR_PRESSURE_SL,AIR_TEMP_SL,LONGITUDE_TO_HOURS,KELVIN_OFFSET,
-    TEMPERATURE_LAPSE_RATE,MOLAR_MASS_DRY_AIR,IDEAL_GAS_CONSTANT,GR_LM,fixAngle,clamp,xyz2lla,DEGREES_TO_RAD
-    ,MS_TO_KNOTS,boundHours24} from '../utils/utils'
+import {
+    V3,
+    AIR_PRESSURE_SL,
+    AIR_TEMP_SL,
+    LONGITUDE_TO_HOURS,
+    KELVIN_OFFSET,
+    TEMPERATURE_LAPSE_RATE,
+    MOLAR_MASS_DRY_AIR,
+    IDEAL_GAS_CONSTANT,
+    GR_LM,
+    fixAngle,
+    clamp,
+    xyz2lla,
+    DEGREES_TO_RAD,
+    MS_TO_KNOTS,
+    boundHours24
+} from '../utils/utils'
 import geofs from "../geofs"
 window.weather = window.weather || {};
-weather.dataProxy = 'http://localhost:3030/proxy'+ "/backend/weather/metar.php?icao=";
+weather.dataProxy = 'http://localhost:3030/proxy' + "/backend/weather/metar.php?icao=";
 weather.minimumCloudCover = 10;
 weather.updateRate = 6E4;
 weather.timeRatio = 1;
@@ -75,6 +89,8 @@ weather.refresh = function(a) {
         weather.set(null, a);
     else {
         var c = geofs.runways.getNearestRunway(a);
+        //请求天气？？？？
+
         c ? $.ajax(weather.dataProxy + c.icao, {
             success: b,
             error: b
@@ -135,14 +151,14 @@ weather.set = function(a, b) {
     0 < weather.definition.precipitationAmount ? geofs.fx.precipitation.create(weather.definition.precipitationType, weather.definition.precipitationAmount) : geofs.fx.precipitation.destroy();
     weather.belowCeilingBrightness = clamp(1.2 - a, 0, 1);
     "snow" == weather.definition.precipitationType ? geofs.api.setImageryColorModifier("snow", {
-        brightness: 2.5,
-        contrast: 1.5,
-        saturation: .1
-    }) : geofs.api.removeImageryColorModifier("snow")
-  //  weather.update(a)
+            brightness: 2.5,
+            contrast: 1.5,
+            saturation: .1
+        }) : geofs.api.removeImageryColorModifier("snow")
+        //  weather.update(a)
 };
 weather.update = function(a) {
-    
+
     var b = camera.lla;
     if (weather.windActive && 0 < weather.windLayers.length) {
         for (var c = geofs.aircraft.instance.llaLocation[2], d = 0, e = 1; e < weather.windLayers.length && !(c < weather.windLayers[e].floor); e++)
@@ -259,7 +275,7 @@ weather.atmosphere.init = function() {
     weather.atmosphere.update()
 };
 weather.atmosphere.update = function(a) {
-
+    //提供经纬度，环境更新
     a = a || geofs.aircraft.instance.altitude;
     var b = weather.definition.AIR_TEMP_SL + KELVIN_OFFSET;
     weather.atmosphere.airTempAtAltitude = weather.definition.AIR_TEMP_SL - a * TEMPERATURE_LAPSE_RATE;

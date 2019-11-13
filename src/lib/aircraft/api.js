@@ -1355,22 +1355,25 @@ api.map.autoFlight = function() {
         controls.autopilot.turnOn()
         let autoFlightJudge = setInterval(function() {
             if (api.map.flightPath !== null) {
-                let llaLocation = [geofs.aircraft.instance.llaLocation[0], geofs.aircraft.instance.llaLocation[1]]
-                let autoLocation = controls.autopilot.autoLocation
-                let destination = api.map.flightPath._latlngs[autoLocation + 1]
-                if (autoLocation === api.map.flightPath._latlngs.length - 1) {
-                    clearInterval(autoFlightJudge);
-                    controls.autopilot.autoLocation = 0
-                    controls.autopilot.kias = 0
-                    return;
-                }
+                var llaLocation = [geofs.aircraft.instance.llaLocation[0], geofs.aircraft.instance.llaLocation[1]]
+                var autoLocation = controls.autopilot.autoLocation
+                var destination = api.map.flightPath._latlngs[autoLocation + 1]
+
                 var distance = GetDistanceTwo(destination, llaLocation)
-                if (distance <= 200) {
+
+                if (distance <= 250) {
+
+                    //飞机是运行中转向，所以速度越快，对应的距离要越大，不然，转向之后是越过了
                     controls.autopilot.autoLocation++;
                     autoLocation = controls.autopilot.autoLocation
+                    if (autoLocation === api.map.flightPath._latlngs.length - 1) {
+                        clearInterval(autoFlightJudge);
+                        controls.autopilot.autoLocation = 0
+                        controls.autopilot.turnOff();
+                        controls.update(0);
+                        return;
+                    }
                     var start = api.map.flightPath._latlngs[autoLocation]
-                        // let destination = [start.lat, start.lng, 0, 0, "true"]
-                        //  geofs.flyTo(destination)
                     var end = api.map.flightPath._latlngs[autoLocation + 1]
                     var angle = GetAzimuth(start, end)
                     controls.autopilot.heading = angle;

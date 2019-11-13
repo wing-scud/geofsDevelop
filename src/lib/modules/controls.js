@@ -3,9 +3,10 @@ import camera from './camera'
 import geofs from '../geofs'
 import audio from "./audio"
 import instruments from "./instruments"
+import flight from "./flight"
 import { fixAngle, fixAngle360, clamp, exponentialSmoothing, V3, PID } from "../utils/utils"
 window.controls = window.controls || {};
-console.log(V3)
+console.log(clamp)
 controls = {
     states: {},
     mouse: {}
@@ -391,6 +392,8 @@ controls.update = function(a) {
     if (controls.autopilot.on)
         controls.autopilot.update(a);
     else {
+        //elevatorTrimDown 升降 的降
+        //controls.states.elevatorTrimDown=false
         controls.states.elevatorTrimUp ? controls.trimUp() : controls.states.elevatorTrimDown && controls.trimDown();
         controls.elevatorTrim = clamp(controls.elevatorTrim, controls.elevatorTrimMin, controls.elevatorTrimMax);
         "mouse" != controls.mode && "touch" != controls.mode || controls.keyboard.override || controls.updateMouse(a);
@@ -830,9 +833,6 @@ controls.autopilot = {
     rollPID: new PID(.02, 1E-5, 0),
     throttlePID: new PID(.1, 0, 0)
 };
-
-var a = $(".geofs-autopilot-pad .control-pad-label"),
-    b;
 controls.autopilot.setHeading = function(a) {
     var b = controls.autopilot.heading;
     try {
@@ -891,7 +891,6 @@ controls.autopilot.turnOff = function() {
 };
 controls.autopilot.update = function(a) {
     //计算实际的参数
-
     var values = geofs.animation.values,
         autopilot = controls.autopilot,
         kias = clamp(values.kias / 100, 1, 5),
@@ -911,6 +910,7 @@ controls.autopilot.update = function(a) {
     autopilot.pitchPID.set(-fixedAngle);
     controls.rawPitch = exponentialSmoothing("apPitch", autopilot.pitchPID.compute(-values.atilt, a) / kias, .9); //pitch 倾斜
     autopilot.throttlePID.set(autopilot.kias);
+    //计算油门，根据kias？？
     controls.throttle = exponentialSmoothing("apThrottle", autopilot.throttlePID.compute(values.kias, a), .9); //throttle 油门
     controls.throttle = clamp(controls.throttle, 0, 1)
 };

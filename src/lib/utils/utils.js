@@ -484,17 +484,11 @@ function GetAzimuth(latlng1, latlng2) {
     }
     if (lat2 > lat1 && lon2 < lon1) {
         azimuth = 360 + azimuth
-    } else {
+    }
+    if (lat2 < lat1) {
         azimuth = 180 - azimuth
     }
-
     return azimuth;
-}
-
-
-
-function clamp(a, b, c) {
-    return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a
 }
 
 function boundHours24(a) {
@@ -582,9 +576,9 @@ function clamp(a, b, c) {
     return a > c ? c : a < b ? b : a
 }
 
-function clamp(a, b, c) {
-    return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a
-}
+// function clamp(a, b, c) {
+//     return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a
+// }
 
 function geoDecodeLocation(a, b) {
     geofs.api.reverserGeocode(a, b)

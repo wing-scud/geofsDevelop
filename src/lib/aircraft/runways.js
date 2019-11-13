@@ -1,5 +1,5 @@
-//跑道
-import { V2, V3 ,fixAngle, DEGREES_TO_RAD,FEET_TO_METERS,xy2ll,HALF_PI,clamp} from '../utils/utils'
+//跑道？
+import { V2, V3, fixAngle, DEGREES_TO_RAD, FEET_TO_METERS, xy2ll, HALF_PI, clamp } from '../utils/utils'
 import geofs from "../geofs"
 import $jscomp from "../utils/jscomp"
 import majorRunwayGrid from "../utils/majorRunwayGrid"
@@ -19,11 +19,11 @@ var runways = {
         runways.modelVisibility && (runways.setRunwayModelVisibility(!1),
             runways.setRunwayModelVisibility(!0));
     },
-    runwaysCheckTimeout (){
+    runwaysCheckTimeout() {
         setInterval(() => {
-        runways.refresh();
-    }, runways.refreshRate)
-},
+            runways.refresh();
+        }, runways.refreshRate)
+    },
     refresh() {
         let a = geofs.aircraft.instance.llaLocation;
         clearInterval(this.runwaysCheckTimeout);
@@ -143,11 +143,11 @@ runways.runway = function(a, b) {
     this.location = [a[4], a[5], 0];
     this.heading = fixAngle(a[3]);
     this.headingRad = this.heading * DEGREES_TO_RAD;
-    this.lengthFeet = a[1]; 
+    this.lengthFeet = a[1];
     this.widthFeet = a[2];
     this.lengthMeters = this.lengthFeet * FEET_TO_METERS;
     this.widthMeters = this.widthFeet * FEET_TO_METERS;
-    this.threshold1 = this.location;  
+    this.threshold1 = this.location;
     this.padding = a[6] || runways.defaultPadding;
     this.meterlla = xy2ll([Math.sin(this.headingRad), Math.cos(this.headingRad)], this.threshold1);
     this.lengthInLla = V2.scale(this.meterlla, this.lengthMeters);

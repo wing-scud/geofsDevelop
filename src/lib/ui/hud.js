@@ -4,7 +4,6 @@ const hud = {};
 var PAGE_PATH = 'http://localhost:3030/proxy/';
 hud.autopilotIndicator = function() {};
 hud.init = () => {
-
     hud.stall = new Overlay({
         name: 'stall',
         url: `${PAGE_PATH}images/instruments/stall.png`,
@@ -40,10 +39,10 @@ hud.stallAlarm = a => {
         hud.stallAlarmTimeout = setTimeout(() => {
             hud.stall.setVisibility(!1);
             hud.stallAlarmOn = !1;
+            //半秒后，将stall取消显示，
         }, 500));
 };
 hud.autopilotIndicator = a => {
-
-    a ? $(document).trigger('autopilotOn') : $(document).trigger('autopilotOff');
+    // a ? $(document).trigger('autopilotOn') : $(document).trigger('autopilotOff');
 };
 export default hud;

@@ -1,6 +1,8 @@
-//刚性体，理想情况下，模型不变形，方便研究受力？应力
-import { M33 ,V3,GRAVITY,xyz2lla} from '../utils/utils'
+//刚性体，理想情况下，模型不变形，研究受力
+//
+import { M33, V3, GRAVITY, xyz2lla } from '../utils/utils'
 import geofs from "../geofs"
+
 function rigidBody() {
     this.s_inverseMass = this.mass = 0;
     this.reset();

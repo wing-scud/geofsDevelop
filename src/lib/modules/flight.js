@@ -1,101 +1,127 @@
-
-
 //所有每一次完整的飞行为一次flight，可以回放上一次的飞行，回放（再次飞行）
 import geofs from '../geofs'
 import controls from './controls'
 import weather from "./weather"
 import camera from "./camera"
 import ui from "../ui/ui"
-import { clamp,V3,M33,M3 ,TWO_PI,RAD_TO_DEGREES,MIN_DRAG_COEF,fixAngle,
-    DRAG_CONSTANT,xyz2lla,fixAngles,fixAngle360,METERS_TO_FEET,KELVIN_OFFSET,GAS_CONSTANT,GRAVITY} from '../utils/utils';
-    window.flight = window.flight || {};
+import {
+    clamp,
+    V3,
+    M33,
+    M3,
+    TWO_PI,
+    RAD_TO_DEGREES,
+    MIN_DRAG_COEF,
+    fixAngle,
+    DRAG_CONSTANT,
+    xyz2lla,
+    fixAngles,
+    fixAngle360,
+    METERS_TO_FEET,
+    KELVIN_OFFSET,
+    GAS_CONSTANT,
+    GRAVITY
+} from '../utils/utils';
+window.flight = window.flight || {};
 
 let currentAltitudeTestContext = {},
     pastAltitudeTestContext = {};
 flight.tick = function(a, b) {
+    //找到计算推力大小
+
+    //飞机组成   "elevator" -》升降舵 ，飞机的俯仰
+    /**
+     * flapright 襟翼 其基本效用是在飞行中增加升力、
+     * "aileronleft" 副翼 飞机 转向 滚转
+     * rudder 方向坨 偏航 
+     */
     let c = clamp(Math.floor(b / (geofs.PHYSICS_DELTA_MS || 10)), 1, 20),
         d = a / c,
         e = 1 / a,
-        f = geofs.aircraft.instance,
-        g = geofs.animation.values,
-        h = f.setup,
-        k = f.llaLocation[2];
+        aircraftInstance = geofs.aircraft.instance,
+        animationValues = geofs.animation.values,
+        setUp = aircraftInstance.setup,
+        k = aircraftInstance.llaLocation[2];
     if (flight.recorder.playing == 1) { flight.recorder.stepInterpolation(); } else {
-        weather.atmosphere.update(f.llaLocation[2]);
+        //大气环境 变量高度更新
+        weather.atmosphere.update(aircraftInstance.llaLocation[2]);
         for (let n = 0; n < c; n++) {
-            f.velocity = f.rigidBody.v_linearVelocity;
-            f.velocityScalar = V3.length(f.velocity);
-            const v = f.velocityScalar * d;
-            f.airVelocity = V3.sub(f.velocity, weather.currentWindVector);
-            f.veldir = V3.normalize(f.airVelocity);
-            f.trueAirSpeed = V3.length(f.airVelocity);
+            //velocity 速率 周转率
+            aircraftInstance.velocity = aircraftInstance.rigidBody.v_linearVelocity;
+            aircraftInstance.velocityScalar = V3.length(aircraftInstance.velocity);
+            const v = aircraftInstance.velocityScalar * d;
+            aircraftInstance.airVelocity = V3.sub(aircraftInstance.velocity, weather.currentWindVector);
+            aircraftInstance.veldir = V3.normalize(aircraftInstance.airVelocity);
+            aircraftInstance.trueAirSpeed = V3.length(aircraftInstance.airVelocity);
             var z = 0,
                 A = 1,
                 C = 1,
-                w = h.zeroThrustAltitude,
-                y = h.zeroRPMAltitude;
-            w ? A = clamp(w - g.altitude, 0, w) / w : y && (C = clamp(y - g.altitude, 0, y) / y);
+                w = setUp.zeroThrustAltitude,
+                y = setUp.zeroRPMAltitude; //35000
+            w ? A = clamp(w - animationValues.altitude, 0, w) / w : y && (C = clamp(y - animationValues.altitude, 0, y) / y);
             for (var D = geofs.aircraft.instance.engines, B = D.length, t = 0; t < B; t++) {
+                //不同的飞机存在多个发动机，
                 let m = D[t],
                     O = controls.throttle,
                     Y = 1,
-                    fa = m.animations;
+                    fa = m.animations; //length=0
                 if (fa) {
                     for (let ha = 0; ha < fa.length; ha++) {
                         const K = fa[ha];
                         switch (K.type) {
                             case 'throttle':
-                                O = g[K.value] * K.ratio + K.offset;
+                                O = animationValues[K.value] * K.ratio + K.offset;
                                 break;
                             case 'pitch':
-                                Y = g[K.value] * K.ratio + K.offset;
+                                Y = animationValues[K.value] * K.ratio + K.offset;
                         }
                     }
                 }
-                if (f.engine.on) {
-                    let Da = (h.maxRPM - h.minRPM) * O + h.minRPM;
+                if (aircraftInstance.engine.on) {
+                    let Da = (setUp.maxRPM - setUp.minRPM) * O + setUp.minRPM;
                     Da *= C;
-                    m.rpm += (Da - m.rpm) * h.engineInertia * d;
-                    geofs.aircraft.instance.setup.reverse && (m.rpm < h.minRPM && m.rpm > 0 && !f.engine.startup && (m.rpm = -h.minRPM),
-                        m.rpm > -h.minRPM && m.rpm < 0 && !f.engine.startup && (m.rpm = h.minRPM));
-                } else { m.rpm = m.rpm < 1E-5 ? 0 : m.rpm - m.rpm * h.engineInertia * d; }
+                    m.rpm += (Da - m.rpm) * setUp.engineInertia * d;
+                    geofs.aircraft.instance.setup.reverse && (m.rpm < setUp.minRPM && m.rpm > 0 && !aircraftInstance.engine.startup && (m.rpm = -setUp.minRPM),
+                        m.rpm > -setUp.minRPM && m.rpm < 0 && !aircraftInstance.engine.startup && (m.rpm = setUp.minRPM));
+                } else { m.rpm = m.rpm < 1E-5 ? 0 : m.rpm - m.rpm * setUp.engineInertia * d; }
                 var Ea = Math.abs(m.rpm),
                     ia = m.thrust;
                 m.afterBurnerThrust && O > 0.9 && (ia = m.afterBurnerThrust);
                 m.rpm < 0 && (ia = m.reverseThrust ? -m.reverseThrust : 0);
-                let Z = ia * clamp(Ea - h.minRPM, 0, h.maxRPM) * f.engine.invRPMRange;
+                let Z = ia * clamp(Ea - setUp.minRPM, 0, setUp.maxRPM) * aircraftInstance.engine.invRPMRange;
                 Z *= A;
                 Z *= Y;
                 const ab = m.object3d.getWorldFrame()[m.forceDirection];
-                f.rigidBody.applyForce(V3.scale(ab, Z), m.points.forceSourcePoint.worldPosition);
+                //产生推力，进行进行水平运动 ，
+                aircraftInstance.rigidBody.applyForce(V3.scale(ab, Z), m.points.forceSourcePoint.worldPosition);
                 z += Z;
             }
-            B > 0 && (f.engine.rpm = parseInt(Ea));
+            B > 0 && (aircraftInstance.engine.rpm = parseInt(Ea));
             var E = 0;
             t = 0;
             for (var F = geofs.aircraft.instance.balloons.length; t < F; t++) {
                 let M = geofs.aircraft.instance.balloons[t],
-                    bb = clamp(controls[M.controller.name], 0, 1);  
+                    bb = clamp(controls[M.controller.name], 0, 1);
                 E = M.temperature;
                 E += bb * M.heatingSpeed * d;
                 E -= M.coolingSpeed * (E - weather.atmosphere.airTempAtAltitude) * d;
                 E = clamp(E, 0, 300);
                 M.temperature = E;
-                f.rigidBody.applyForce([0, 0, (weather.atmosphere.airDensityAtAltitude - weather.atmosphere.airPressureAtAltitude / (GAS_CONSTANT * (E + KELVIN_OFFSET))) * M.volume * GRAVITY], M.points.forceSourcePoint.worldPosition);
+                aircraftInstance.rigidBody.applyForce([0, 0, (weather.atmosphere.airDensityAtAltitude - weather.atmosphere.airPressureAtAltitude / (GAS_CONSTANT * (E + KELVIN_OFFSET))) * M.volume * GRAVITY], M.points.forceSourcePoint.worldPosition);
             }
-            if (f.trueAirSpeed > 0.01) {
-                let aa = V3.scale(f.veldir, -(h.dragFactor * f.trueAirSpeed * f.trueAirSpeed * weather.atmosphere.airDensityAtAltitude));
-                f.rigidBody.applyCentralForce(aa);
+            if (aircraftInstance.trueAirSpeed > 0.01) {
+                let aa = V3.scale(aircraftInstance.veldir, -(setUp.dragFactor * aircraftInstance.trueAirSpeed * aircraftInstance.trueAirSpeed * weather.atmosphere.airDensityAtAltitude));
+                aircraftInstance.rigidBody.applyCentralForce(aa);
                 t = 0;
-                for (F = f.airfoils.length; t < F; t++) {
-                    let r = f.airfoils[t],
+                for (F = aircraftInstance.airfoils.length; t < F; t++) {
+                    let r = aircraftInstance.airfoils[t],
                         ja = r.points.forceSourcePoint.worldPosition,
                         cb = r.object3d.getWorldFrame(),
-                        G = f.rigidBody.getVelocityInLocalPoint(ja);
+                        G = aircraftInstance.rigidBody.getVelocityInLocalPoint(ja);
                     if (r.propwash) {
-                        let Fa = f.engine.rpm * r.propwash,
-                            db = V3.dot(G, f.object3d.worldRotation[1]);
-                        G = V3.add(G, V3.scale(f.object3d.worldRotation[1], clamp(Fa - db, 0, Fa)));
+                        let Fa = aircraftInstance.engine.rpm * r.propwash,
+                            db = V3.dot(G, aircraftInstance.object3d.worldRotation[1]);
+                        G = V3.add(G, V3.scale(aircraftInstance.object3d.worldRotation[1], clamp(Fa - db, 0, Fa)));
                     }
                     G = V3.sub(G, weather.currentWindVector);
                     G = V3.sub(G, weather.thermals.currentVector);
@@ -107,8 +133,9 @@ flight.tick = function(a, b) {
                         eb = V3.cross(ma, ka),
                         fb = V3.rotate(ma, eb, R);
                     if (r.area) {
-                        let ba = R * TWO_PI;  
+                        let ba = R * TWO_PI;
                         if (r.stalls == 1) {
+                            //某一部件是否失衡
                             var ca = R * RAD_TO_DEGREES,
                                 S = Math.abs(ca);
                             S > r.stallIncidence && (ui.hud.stallAlarm(!0),
@@ -127,15 +154,18 @@ flight.tick = function(a, b) {
                         Ga = Ha * Ia * weather.atmosphere.airDensityAtAltitude;
                         aa = gb * Math.abs(Ia) * weather.atmosphere.airDensityAtAltitude;
                     }
-                    f.rigidBody.applyForce(V3.scale(fb, Ga), ja);
-                    f.rigidBody.applyForce(V3.scale(ka, -aa), ja);
+                    //V3.scale作用，数组里每一项乘以b
+                    //不同部件施加某一方向的力，使其进行上升，左右运动
+                    aircraftInstance.rigidBody.applyForce(V3.scale(fb, Ga), ja);
+                    aircraftInstance.rigidBody.applyForce(V3.scale(ka, -aa), ja);
                 }
             }
             var na = 0;
-            f.groundContact = !1;
-            f.rigidBody.applyCentralForce(f.rigidBody.gravityForce);
-            geofs.relativeAltitude = f.llaLocation[2] - geofs.groundElevation;
+            aircraftInstance.groundContact = !1;
+            aircraftInstance.rigidBody.applyCentralForce(aircraftInstance.rigidBody.gravityForce);
+            geofs.relativeAltitude = aircraftInstance.llaLocation[2] - geofs.groundElevation; //Elevation 海拔
             if (geofs.relativeAltitude < geofs.aircraft.instance.boundingSphereRadius + v && !flight.skipCollisionResponse) {
+                //collisionPoints  飞机与地面碰撞接触点
                 let Ja = geofs.aircraft.instance.collisionPoints,
                     T = [],
                     U = 0;
@@ -143,14 +173,14 @@ flight.tick = function(a, b) {
                 for (F = Ja.length; t < F; t++) {
                     var p = Ja[t],
                         q = p.part;
-                    q.contact = null;  
-                    const oa = V3.add(f.llaLocation, xyz2lla(p.worldPosition, f.llaLocation));
-                    f.rigidBody.getVelocityInLocalPoint(p.worldPosition);
+                    q.contact = null;
+                    const oa = V3.add(aircraftInstance.llaLocation, xyz2lla(p.worldPosition, aircraftInstance.llaLocation));
+                    aircraftInstance.rigidBody.getVelocityInLocalPoint(p.worldPosition);
                     if (q.suspension) {
                         var P = q.points.suspensionOrigin,
-                            V = geofs.getCollisionResult(oa, p.worldPosition, f.collResult),
+                            V = geofs.getCollisionResult(oa, p.worldPosition, aircraftInstance.collResult),
                             pa = V.location[2],
-                            Ka = V3.sub([P.worldPosition[0], P.worldPosition[1], P.worldPosition[2] + f.llaLocation[2]], [p.worldPosition[0], p.worldPosition[1], pa]),
+                            Ka = V3.sub([P.worldPosition[0], P.worldPosition[1], P.worldPosition[2] + aircraftInstance.llaLocation[2]], [p.worldPosition[0], p.worldPosition[1], pa]),
                             hb = Math.sign(Ka[2]),
                             ib = V3.length(Ka) * hb,
                             qa = q.suspension.restLength - ib,
@@ -172,19 +202,19 @@ flight.tick = function(a, b) {
                             T.push(u);
                             P[2] = -qa;
                             var ra = `${q.name}Suspension`;
-                            g[ra] = qa;
+                            animationValues[ra] = qa;
                             q.suspension.rest = !1;
                         } else {
                             q.suspension.rest || (ra = `${q.name}Suspension`,
-                                g[ra] = 0,
+                                animationValues[ra] = 0,
                                 P[2] = 0,
                                 q.suspension.rest = !0);
                         }
                         const Ma = {};
                         Ma[q.name] = q;
-                        f.placeParts(Ma);
+                        aircraftInstance.placeParts(Ma);
                     } else {
-                        V = geofs.getCollisionResult(oa, p.worldPosition, f.collResult);
+                        V = geofs.getCollisionResult(oa, p.worldPosition, aircraftInstance.collResult);
                         pa = V.location[2];
                         const sa = pa - oa[2];
                         sa >= 0 && (Q = q.object3d.getWorldFrame(),
@@ -203,8 +233,8 @@ flight.tick = function(a, b) {
                     }
                 }
                 if (T.length) {
-                    f.groundContact = !0;
-                    U > geofs.minPenetrationThreshold && (f.llaLocation[2] += U,
+                    aircraftInstance.groundContact = !0;
+                    U > geofs.minPenetrationThreshold && (aircraftInstance.llaLocation[2] += U,
                         U = 0);
                     let ta = 0;
                     for (F = T.length; ta < F; ta++) {
@@ -212,23 +242,23 @@ flight.tick = function(a, b) {
                         p = u.collisionPoint;
                         q = p.part;
                         let H = p.contactProperties,
-                            da = f.rigidBody.getVelocityInLocalPoint(p.worldPosition),
+                            da = aircraftInstance.rigidBody.getVelocityInLocalPoint(p.worldPosition),
                             W = V3.dot(u.normal, da);
                         na = Math.max(na, Math.abs(W));
                         let X = 0;
                         if (u.type == 'raycast' || u.type == 'hardpoint') {
-                            X = (u.force - q.suspension.damping * W) * f.rigidBody.mass * d,
-                                X > 0 && f.rigidBody.applyImpulse(V3.scale(u.normal, X), p.worldPosition);
+                            X = (u.force - q.suspension.damping * W) * aircraftInstance.rigidBody.mass * d,
+                                X > 0 && aircraftInstance.rigidBody.applyImpulse(V3.scale(u.normal, X), p.worldPosition);
                         }
                         if ((u.type == 'standard' || u.type == 'hardpoint') && W < 0) {
-                            let Na = f.rigidBody.computeJacobian(0, W, p.worldPosition, u.normal),
+                            let Na = aircraftInstance.rigidBody.computeJacobian(0, W, p.worldPosition, u.normal),
                                 ua = V3.scale(u.normal, Na);
                             ua = V3.scale(ua, H.damping);
-                            f.rigidBody.applyImpulse(ua, p.worldPosition);
+                            aircraftInstance.rigidBody.applyImpulse(ua, p.worldPosition);
                             X = Na;
                         }
                         let I = X * H.frictionCoef;
-                        I = clamp(I, I, 2 * f.rigidBody.mass * d * H.frictionCoef);
+                        I = clamp(I, I, 2 * aircraftInstance.rigidBody.mass * d * H.frictionCoef);
                         if (q.type == 'wheel') {
                             let va = u.contactFwdDir,
                                 wa = u.contactSideDir,
@@ -236,8 +266,8 @@ flight.tick = function(a, b) {
                                 xa = V3.dot(va, da);
                             u.forwardProjVel = xa;
                             u.sideProjVel = Oa;
-                            let Pa = f.rigidBody.computeJacobian(0, Oa, p.worldPosition, wa),
-                                Qa = f.rigidBody.computeJacobian(0, xa, p.worldPosition, va),
+                            let Pa = aircraftInstance.rigidBody.computeJacobian(0, Oa, p.worldPosition, wa),
+                                Qa = aircraftInstance.rigidBody.computeJacobian(0, xa, p.worldPosition, va),
                                 ya = Math.abs(Pa),
                                 za = Math.abs(Qa),
                                 Ra = 1,
@@ -245,52 +275,53 @@ flight.tick = function(a, b) {
                             Math.abs(xa) > H.lockSpeed && (ea = H.rollingFriction);
                             const Sa = q.brakesController;
                             if (Sa && za > 0) {
-                                const kb = clamp(g[Sa] * q.brakesControllerRatio, 0, 1);
+                                const kb = clamp(animationValues[Sa] * q.brakesControllerRatio, 0, 1);
                                 ea = clamp(I / (za * H.frictionCoef), 0, 1) * kb;
                             }
-                            const lb = f.setup.brakeDamping || 3;
+                            const lb = aircraftInstance.setup.brakeDamping || 3;
                             controls.brakes > 0.05 && (ea = clamp(I / (za * H.frictionCoef * lb) * controls.brakes, 0, 1));
                             if (ya > I) {
                                 var Aa = I / (ya * ya);
                                 Ra = clamp(Aa, H.dynamicFriction, 1);
                             }
-                            f.rigidBody.applyImpulse(V3.scale(wa, Pa * Ra), p.worldPosition);
-                            f.rigidBody.applyImpulse(V3.scale(va, Qa * ea), p.worldPosition);
+                            aircraftInstance.rigidBody.applyImpulse(V3.scale(wa, Pa * Ra), p.worldPosition);
+                            aircraftInstance.rigidBody.applyImpulse(V3.scale(va, Qa * ea), p.worldPosition);
                         } else {
                             let Ta = V3.sub(da, V3.scale(u.normal, W)),
                                 Ua = V3.normalize(Ta),
                                 Va = V3.length(Ta);
                             if (Va) {
-                                let Wa = f.rigidBody.computeJacobian(0, Va, p.worldPosition, Ua),
+                                let Wa = aircraftInstance.rigidBody.computeJacobian(0, Va, p.worldPosition, Ua),
                                     Ba = Math.abs(Wa),
                                     Xa = 1;
                                 Ba > I && (Aa = I / (Ba * Ba),
                                     Xa = clamp(Aa, H.dynamicFriction, 1));
-                                f.rigidBody.applyImpulse(V3.scale(Ua, Xa * Wa), p.worldPosition);
+                                aircraftInstance.rigidBody.applyImpulse(V3.scale(Ua, Xa * Wa), p.worldPosition);
                             }
                         }
                     }
                 }
             }
-            f.rigidBody.integrateVelocities(d);
-            f.rigidBody.integrateTransform(d);
-            geofs.aircraft.instance.object3d.compute(f.llaLocation);
+            aircraftInstance.rigidBody.integrateVelocities(d);
+            aircraftInstance.rigidBody.integrateTransform(d);
+            geofs.aircraft.instance.object3d.compute(aircraftInstance.llaLocation);
         }
-        f.rigidBody.setCurrentAcceleration(e, a);
-        f.placeParts();
-        f.render();
+        aircraftInstance.rigidBody.setCurrentAcceleration(e, a);
+        aircraftInstance.placeParts();
+        aircraftInstance.render();
         flight.recorder.recording == 1 && flight.recorder.record();
-        geofs.preferences.crashDetection && (na > 10 && (f.crashed = !0), !f.crashNotified && f.crashed && (f.crashNotified = !0,
-            f.crash()));
+        //检测冲撞
+        geofs.preferences.crashDetection && (na > 10 && (aircraftInstance.crashed = !0), !aircraftInstance.crashNotified && aircraftInstance.crashed && (aircraftInstance.crashNotified = !0,
+            aircraftInstance.crash()));
     }
-    f.htrAngularSpeed = V3.sub(f.object3d.htr, f.htr);
-    f.htrAngularSpeed = fixAngles(f.htrAngularSpeed);
-    f.htrAngularSpeed = V3.scale(f.htrAngularSpeed, 1 / b);
-    f.htr = f.object3d.htr;
-    let Ca = 0; 
+    aircraftInstance.htrAngularSpeed = V3.sub(aircraftInstance.object3d.htr, aircraftInstance.htr);
+    aircraftInstance.htrAngularSpeed = fixAngles(aircraftInstance.htrAngularSpeed);
+    aircraftInstance.htrAngularSpeed = V3.scale(aircraftInstance.htrAngularSpeed, 1 / b);
+    aircraftInstance.htr = aircraftInstance.object3d.htr;
+    let Ca = 0;
     t = 0;
-    for (F = f.wheels.length; t < F; t++) {
-        const x = f.wheels[t];
+    for (F = aircraftInstance.wheels.length; t < F; t++) {
+        const x = aircraftInstance.wheels[t];
         x.oldAngularVelocity = x.angularVelocity;
         if (x.contact) {
             x.angularVelocity = x.contact.forwardProjVel * a / x.arcDegree;
@@ -311,71 +342,73 @@ flight.tick = function(a, b) {
             Ca = Math.max(Ca, Ya);
         } else { x.angularVelocity > 0.01 && (x.angularVelocity *= 0.9); }
         const Za = `${x.name}Rotation`;
-        g[Za] = fixAngle360((g[Za] || 0) + x.angularVelocity);
+        animationValues[Za] = fixAngle360((animationValues[Za] || 0) + x.angularVelocity);
     }
-    let N = f.llaLocation[2] * METERS_TO_FEET,
+    let N = aircraftInstance.llaLocation[2] * METERS_TO_FEET,
         mb = 60 * (N - k * METERS_TO_FEET) / a,
-        nb = fixAngle(weather.currentWindDirection - f.htr[0]),
-        ob = f.engine.rpm * h.RPM2PropAS * a;
-    g.maxAngularVRatio = Ca;
-    g.enginesOn = geofs.aircraft.instance.engine.on;
-    g.prop = fixAngle360(g.prop + ob);
-    g.thrust = z;
-    g.rpm = f.engine.rpm;
-    g.throttle = controls.throttle;
-    g.pitch = controls.pitch;
-    g.rawPitch = controls.rawPitch;
-    g.roll = controls.roll;
-    g.yaw = controls.yaw;
-    g.trim = controls.elevatorTrim;
-    g.brakes = controls.brakes;
-    g.gearPosition = controls.gear.position;
-    g.invGearPosition = 1 - controls.gear.position;
-    g.gearTarget = controls.gear.target;
-    g.flapsValue = controls.flaps.position / controls.flaps.maxPosition;
-    g.flapsPosition = controls.flaps.position;
-    g.flapsTarget = controls.flaps.target;
-    g.flapsPositionTarget = controls.flaps.positionTarget;
-    g.flapsMaxPosition = controls.flaps.maxPosition;
-    g.airbrakesPosition = controls.airbrakes.position;
-    g.optionalAnimatedPartPosition = controls.optionalAnimatedPart.position;
-    g.airbrakesTarget = controls.airbrakes.target;
-    g.parkingBrake = geofs.aircraft.instance.brakesOn;
-    g.groundContact = f.groundContact ? 1 : 0;
-    g.acceleration = M33.transform(M33.transpose(f.object3d._rotation), f.rigidBody.v_acceleration);
-    g.accX = g.acceleration[0];
-    g.accY = g.acceleration[1];
-    g.accZ = g.acceleration[2];
-    g.msDt = b;
-    g.rollingSpeed = f.groundContact ? f.velocityScalar : 0;
-    g.ktas = 1.94 * f.trueAirSpeed;
-    g.kias = g.ktas;
-    g.mach = f.trueAirSpeed / (331.3 + 0.606 * weather.atmosphere.airTempAtAltitude);
-    g.altitude = N;
-    g.altTenThousands = N % 1E5;
-    g.altThousands = N % 1E4;
-    g.altHundreds = N % 1E3;
-    g.altTens = N % 100;
-    g.altUnits = N % 10;
-    g.climbrate = mb;
-    g.aoa = ca;
-    g.turnrate = 60 * (f.htr[0] - g.heading) / a;
-    g.heading = f.htr[0];
-    g.heading360 = fixAngle360(f.htr[0]);
-    g.atilt = f.htr[1];
-    g.aroll = f.htr[2];
-    g.relativeWind = nb;
-    g.windSpeed = weather.currentWindSpeed;
-    g.windSpeedLabel = `${parseInt(weather.currentWindSpeed)} kts`;
-    g.view = camera.currentView;
-    g.envelopeTemp = E;
+        nb = fixAngle(weather.currentWindDirection - aircraftInstance.htr[0]),
+        ob = aircraftInstance.engine.rpm * setUp.RPM2PropAS * a;
+    animationValues.maxAngularVRatio = Ca;
+    animationValues.enginesOn = geofs.aircraft.instance.engine.on;
+    animationValues.prop = fixAngle360(animationValues.prop + ob);
+    animationValues.thrust = z;
+    animationValues.rpm = aircraftInstance.engine.rpm;
+    animationValues.throttle = controls.throttle;
+    animationValues.pitch = controls.pitch;
+    animationValues.rawPitch = controls.rawPitch;
+    animationValues.roll = controls.roll;
+    animationValues.yaw = controls.yaw;
+    animationValues.trim = controls.elevatorTrim;
+    animationValues.brakes = controls.brakes;
+    animationValues.gearPosition = controls.gear.position;
+    animationValues.invGearPosition = 1 - controls.gear.position;
+    animationValues.gearTarget = controls.gear.target;
+    animationValues.flapsValue = controls.flaps.position / controls.flaps.maxPosition;
+    animationValues.flapsPosition = controls.flaps.position;
+    animationValues.flapsTarget = controls.flaps.target;
+    animationValues.flapsPositionTarget = controls.flaps.positionTarget;
+    animationValues.flapsMaxPosition = controls.flaps.maxPosition;
+    animationValues.airbrakesPosition = controls.airbrakes.position;
+    animationValues.optionalAnimatedPartPosition = controls.optionalAnimatedPart.position;
+    animationValues.airbrakesTarget = controls.airbrakes.target;
+    animationValues.parkingBrake = geofs.aircraft.instance.brakesOn;
+    animationValues.groundContact = aircraftInstance.groundContact ? 1 : 0;
+    animationValues.acceleration = M33.transform(M33.transpose(aircraftInstance.object3d._rotation), aircraftInstance.rigidBody.v_acceleration);
+    animationValues.accX = animationValues.acceleration[0];
+    animationValues.accY = animationValues.acceleration[1];
+    animationValues.accZ = animationValues.acceleration[2];
+    animationValues.msDt = b;
+    animationValues.rollingSpeed = aircraftInstance.groundContact ? aircraftInstance.velocityScalar : 0;
+    //得到实际空速
+    animationValues.ktas = 1.94 * aircraftInstance.trueAirSpeed;
+    animationValues.kias = animationValues.ktas;
+    animationValues.mach = aircraftInstance.trueAirSpeed / (331.3 + 0.606 * weather.atmosphere.airTempAtAltitude);
+    animationValues.altitude = N;
+    animationValues.altTenThousands = N % 1E5;
+    animationValues.altThousands = N % 1E4;
+    animationValues.altHundreds = N % 1E3;
+    animationValues.altTens = N % 100;
+    animationValues.altUnits = N % 10;
+    animationValues.climbrate = mb;
+    animationValues.aoa = ca;
+    animationValues.turnrate = 60 * (aircraftInstance.htr[0] - animationValues.heading) / a;
+    animationValues.heading = aircraftInstance.htr[0]; //给animationValues赋值
+    animationValues.heading360 = fixAngle360(aircraftInstance.htr[0]);
+    animationValues.atilt = aircraftInstance.htr[1];
+    animationValues.aroll = aircraftInstance.htr[2];
+    animationValues.relativeWind = nb;
+    animationValues.windSpeed = weather.currentWindSpeed;
+    animationValues.windSpeedLabel = `${parseInt(weather.currentWindSpeed)} kts`;
+    animationValues.view = camera.currentView;
+    animationValues.envelopeTemp = E;
+    //相机具有速度
     if (camera.currentModeName == 'free' || camera.currentModeName == 'chase') {
-        const $a = geofs.utils.llaDistanceInMeters(camera.lla, f.llaLocation);
-        g.cameraAircraftSpeed = (g.cameraAircraftDistance - $a) / a;
-        g.cameraAircraftDistance = $a;
+        const $a = geofs.utils.llaDistanceInMeters(camera.lla, aircraftInstance.llaLocation);
+        animationValues.cameraAircraftSpeed = (animationValues.cameraAircraftDistance - $a) / a;
+        animationValues.cameraAircraftDistance = $a;
     } else {
-        g.cameraAircraftSpeed = 0,
-            g.cameraAircraftDistance = 0;
+        animationValues.cameraAircraftSpeed = 0,
+            animationValues.cameraAircraftDistance = 0;
     }
 };
 flight.recorder = {
@@ -412,26 +445,26 @@ flight.recorder.startRecording = function() {
 flight.recorder.stopRecording = function() {
     flight.recorder.recording = !1;
 };
-// flight.recorder.enterPlayback = function() {
-//     geofs.aircraft.instance.rigidBody.saveState();
-//     flight.recorder.stopRecording();
-//     $('.geofs-recordPlayer-slider').attr('max', flight.recorder.tape.length - 2);
-//     flight.recorder.setStep(0);
-//     $('.geofs-recordPlayer-slider').on('userchange', (a, b) => {
-//         flight.recorder.setStep(parseInt(b), !0);
-//     }).on('dragstart', flight.recorder.pausePlayback).on('dragend', flight.recorder.unpausePlayback);
-//     $('body').addClass('geofs-record-playing');
-//     flight.recorder.playing = !0;
-// };
-// flight.recorder.exitPlayback = function() {
-//     geofs.doPause();
-//     flight.recorder.playing = !1;
-//     geofs.aircraft.instance.rigidBody.restoreState();
-//     flight.recorder.setStep(flight.recorder.currentStep);
-//     geofs.aircraft.instance.object3d.resetRotationMatrix();
-//     $('body').removeClass('geofs-record-playing');
-//     flight.recorder.startRecording();
-// };
+flight.recorder.enterPlayback = function() {
+    geofs.aircraft.instance.rigidBody.saveState();
+    flight.recorder.stopRecording();
+    $('.geofs-recordPlayer-slider').attr('max', flight.recorder.tape.length - 2);
+    flight.recorder.setStep(0);
+    $('.geofs-recordPlayer-slider').on('userchange', (a, b) => {
+        flight.recorder.setStep(parseInt(b), !0);
+    }).on('dragstart', flight.recorder.pausePlayback).on('dragend', flight.recorder.unpausePlayback);
+    $('body').addClass('geofs-record-playing');
+    flight.recorder.playing = !0;
+};
+flight.recorder.exitPlayback = function() {
+    geofs.doPause();
+    flight.recorder.playing = !1;
+    geofs.aircraft.instance.rigidBody.restoreState();
+    flight.recorder.setStep(flight.recorder.currentStep);
+    geofs.aircraft.instance.object3d.resetRotationMatrix();
+    $('body').removeClass('geofs-record-playing');
+    flight.recorder.startRecording();
+};
 flight.recorder.pausePlayback = function() {
     flight.recorder.paused = !0;
 };

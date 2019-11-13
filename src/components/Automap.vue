@@ -1,6 +1,6 @@
 <template>
 <div class="mapDrawer">
-    <el-button class="creatLabel" title="创建飞行路径" @click="createPath" :style="{backgroundColor:color}" circle><i class="iconfont">&#xec73;</i></el-button>
+    <el-button class="creatLabel" title="创建飞行路径" @click="createPath" :style="{backgroundColor:color}" circle><i class="iconfont">&#xe617;</i></el-button>
     <el-button class="clearLabel" title="清除路径" @click="clearPath" circle><i class="iconfont">&#xe62b;</i></el-button>
     <div class="map" id="autopilotMap"></div>
     <div class="autopilot">

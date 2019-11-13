@@ -36,7 +36,6 @@
     <div class="menu_item" title="自动驾驶">
         <el-button @click="clickButton($event)" v-popover:autopilot id="autopilot" :style="{backgroundColor:color}" circle> <i class="iconfont">&#xe622;</i></el-button>
     </div>
-    <!-- 二种，信息量大的drawer，小的popover,二种生成方式不同 -->
     <el-drawer :title="format(current)" custom-class="drawer" :modal-append-to-body="false" :visible.sync="drawer" :wrapperClosable="true" :modal="false" direction="ltr">
         <Setting v-if="current==='setting'" />
         <!-- <component :is="componentId"></component>  不使用的原因，keep-alive-->
@@ -46,12 +45,11 @@
         <LocationDrawer v-if="current==='position'" />
         <AircraftDrawer v-if="current==='aircraft'" />
     </el-drawer>
-    <!-- Bug: 自动驾驶点击，启动，当自动驾驶启动时，自动驾驶按钮应有提问数标志表示启动着
-          点击自动驾驶关闭，应关闭，飞机快速迫降，目前无
-           如果按照这种引用，无法引用多次，会一个popover对应一个功能溶，冗余-->
-    <div class="autopilotPosition">
-        <Autopilot v-if="autopilotShow" />
+    <div class="autopilotPosition" v-if="autopilotShow"  @click="showPanel">
+         <i class="iconfontBig" v-if="show">&#xe626;</i>
+         <i class="iconfontBig" v-else>&#xe627;</i>
     </div>
+    <Autopilot v-if="show" />
     <el-popover width="80px" custom-class="el-popover" :title="format(current)" placement="right-start" ref="camera">
         <Camera v-if="current==='camera'" />
     </el-popover>
@@ -82,10 +80,14 @@ export default {
             drawer: false,
             autopilotShow: false,
             current: "",
-            color: ""
+            color: "",
+            show: false
         }
     },
     methods: {
+        showPanel() {
+            this.show = !this.show
+        },
         clickButton(e) {
             switch (e.target.id) {
                 case "aircraft":
@@ -117,7 +119,8 @@ export default {
                     geofs.resetFlight()
                     break;
                 case "autopilot":
-                    this.autopilotShow = ! this.autopilotShow;
+                    this.autopilotShow = !this.autopilotShow;
+                    this.show=false
                     controls.autopilot.toggle();
                     if (!controls.autopilot.on) {
                         this.color = "white"
@@ -177,14 +180,14 @@ export default {
     width: 300px !important;
     left: 4.2% !important;
 }
-
 .autopilotPosition {
-    width: 300px;
+    width: 30px;
     height: 30px;
     position: fixed;
-    right: 100px;
+    right: 10px;
     top: 30px;
-    z-index:10000;
+    z-index: 1000;
+    /* background-color:rgba(97,117,157) */
 }
 
 .menu_item_bottom {
