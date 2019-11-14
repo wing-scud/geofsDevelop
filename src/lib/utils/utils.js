@@ -111,22 +111,22 @@ var V3 = {
     bisect: function(a, b) {
         return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2]
     },
-    rotate: function(a, b, c) {
+    rotate: function(a, b, c) { //旋转
         var d = V3.dot(a, b);
         a = V3.sub(a, V3.scale(b, d));
         var e = V3.cross(b, a);
         return V3.add(V3.scale(b, d), V3.add(V3.scale(a, Math.cos(c)), V3.scale(e, Math.sin(c))))
     },
-    toRadians: function(a) {
+    toRadians: function(a) { //弧度
         return [a[0] * DEGREES_TO_RAD, a[1] * DEGREES_TO_RAD, a[2] * DEGREES_TO_RAD]
     },
-    toDegrees: function(a) {
+    toDegrees: function(a) { //角度
         return [a[0] * RAD_TO_DEGREES, a[1] * RAD_TO_DEGREES, a[2] * RAD_TO_DEGREES]
     },
     clamp: function(a, b, c) {
         return [clamp(a[0], b, c), clamp(a[1], b, c), clamp(a[2], b, c)]
     },
-    exponentialSmoothing: function(a, b, c) {
+    exponentialSmoothing: function(a, b, c) { //指数 平滑
         return [exponentialSmoothing(a + "0", b[0], c), exponentialSmoothing(a + "1", b[1], c), exponentialSmoothing(a + "2", b[2], c)]
     },
     sqrt: function(a) {
@@ -571,7 +571,7 @@ function ll2xy(a, b) {
     c[0] = a[1] / (1 / (Math.cos((b[0] + a[0]) * DEGREES_TO_RAD) * MERIDIONAL_RADIUS * DEGREES_TO_RAD));
     return c
 }
-
+// 限定范围 a 必须在 b c之间
 function clamp(a, b, c) {
     return a > c ? c : a < b ? b : a
 }
@@ -599,11 +599,13 @@ PID.prototype.set = function(a, b, c) {
     this._setPoint = a
 };
 PID.prototype.compute = function(a, b) {
+    //设置lastErr
     var c = this._setPoint - a;
     this._iTerm += clamp(c * b * this._ki, this._minOutput, this._maxOutput);
     clamp(c * b * this._ki, this._minOutput, this._maxOutput);
     b = (a - this._lastInput) / b;
     this._lastErr = c;
+    //上一次的输入，上次的空速
     this._lastInput = a;
     return clamp(this._kp * c + this._iTerm - this._kd * b, this._minOutput, this._maxOutput)
 };

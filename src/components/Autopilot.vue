@@ -2,7 +2,7 @@
 <div class="panel">
     <div class="blockAuto">
         <!-- <span>速度</span> -->
-        <el-slider v-model="kias" :min=0 :max=500 :marks="kiasMarks" style="width:130px">
+        <el-slider v-model="kias" :min=0 :max="kiasMax" :marks="kiasMarks" style="width:130px">
         </el-slider>
         <!-- <el-input v-model="kias" size="small" style="width:130px">
         </el-input> -->
@@ -16,7 +16,7 @@
     </div>
     <div class="blockAuto">
         <!-- <span>高度</span> -->
-        <el-slider v-model="height" :marks="heightMarks"  :min=0 :max=10000 style="width:130px">
+        <el-slider v-model="height" :marks="heightMarks"  :min=0 :max=6000 style="width:130px">
         </el-slider>
         <!-- <el-input v-model="height" size="small" style="width:130px">
         </el-input> -->
@@ -25,11 +25,13 @@
 </template>
 
 <script>
+import range from "../lib/utils/aircraftRange"
 import {
     fixAngle360,
     clamp
 } from "../lib/utils/utils"
 import controls from "../lib/modules/controls"
+import { async } from 'q'
 export default {
     name: 'Autopilot',
     data() {
@@ -37,25 +39,17 @@ export default {
             kias: 0,
             height: 0,
             heading: 0,
+            kiasMax:0,
             heightMarks: {
-                0: '低空',
-                5000: '高空',
-                10000: {
+                1500: '低空',
+                4000: {
                     style: {
                         color: '#1989FA'
                     },
-                    label: this.$createElement('strong', 'max')
+                    label: this.$createElement('strong', '高空')
                 }
             },
             kiasMarks: {
-                0: '低速',
-                300: '高速',
-                500: {
-                    style: {
-                        color: '#1989FA'
-                    },
-                    label: this.$createElement('strong', 'max')
-                }
             },
           headingMarks: {
             //     0: '低空',
@@ -69,7 +63,23 @@ export default {
             }
         }
     },
-    methods: {},
+    methods: {
+          setRange(val){
+              
+              let kias=range[val].maxKias
+              this.kiasMax=kias
+              this.kiasMarks[kias]={
+                    style: {
+                        color: '#1989FA'
+                    },
+                    label: this.$createElement('strong', 'max')
+                }
+                let low =parseInt(kias/3)
+                this.kiasMarks[low]="低速"
+                let high=parseInt(kias/1.5)
+                this.kiasMarks[high]="高速"
+        }
+    },
     watch: {
         kias: function (newValue, oldValue) {
             controls.autopilot.setKias(Number(newValue))
@@ -85,6 +95,7 @@ export default {
         this.kias = controls.autopilot.kias;
         this.heading = controls.autopilot.heading;
         this.height = controls.autopilot.altitude;
+         this.setRange(geofs.aircraft.instance.id)
     },
 };
 </script>
@@ -98,6 +109,7 @@ export default {
     flex-direction: row;
     margin-bottom: 5px;
     margin-left: 15px;
+    color:black
 }
 
 .el-input-number {
@@ -112,7 +124,14 @@ export default {
     z-index: 1;
     background-color: white
 }
-
+.el-slider__marks-text {
+    position: absolute;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    font-size: 14px;
+     color: black;
+    margin-top: 15px;
+}
 .panel {
     width: 150px;
     height: 30px;

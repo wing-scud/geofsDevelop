@@ -37,8 +37,9 @@
         <el-button @click="clickButton($event)" v-popover:autopilot id="autopilot" :style="{backgroundColor:color}" circle> <i class="iconfont">&#xe622;</i></el-button>
     </div>
     <!-- 二种，信息量大的drawer，小的popover,二种生成方式不同 -->
-    <el-drawer :title="format(current)" :custom-class="`width: ${current==='map'?'mapDrawer':'drawer'}`" :modal-append-to-body="false" :visible.sync="drawer" :wrapperClosable="true" :modal="false" direction="ltr">
-        <Setting v-if="current==='setting'" />
+    <el-drawer :title="format(current)" :custom-class="`width: ${'drawer'}`" :modal-append-to-body="false" :visible.sync="drawer"
+       :wrapperClosable="true" :modal="false" direction="ltr">
+        <Setting v-on:update="receive" v-if="current==='setting'" />
         <!-- <component :is="componentId"></component>  不使用的原因，keep-alive-->
         <keep-alive>
             <Automap v-if="current==='map'" />
@@ -88,6 +89,9 @@ export default {
     methods: {
         showPanel() {
             this.show = !this.show
+        },
+        receive(val){
+            this.drawer=false
         },
         clickButton(e) {
             switch (e.target.id) {
@@ -188,7 +192,7 @@ export default {
     right: 10px;
     top: 30px;
     z-index: 1000;
-    /* background-color:rgba(97,117,157) */
+    /*background-color:rgba(97,117,157)*/
 }
 
 .menu_item_bottom {
@@ -208,11 +212,6 @@ export default {
 .el-popover {
     left: 4.2% !important
 }
-
-.el-drawer {
-    /* background-color: rgba(1,27,36,0.6)	; */
-}
-
 .el-drawer__header {
     margin-bottom: 15px;
 }
@@ -237,10 +236,10 @@ export default {
     background: #EDEDED;
 }
 
-i,
-button span {
+i,button span {
     pointer-events: none;
 }
-</style><style scoped>
+</style>
+<style scoped>
 @import '../assets/css/font.css'
 </style>

@@ -22,7 +22,7 @@
                          <el-button type="warning" @click="geofs.resetPreferences()" round>恢复默认设置</el-button>
                     </div>
                     <div style="float: right;">
-                        <el-button type="primary" @click="geofs.savePreferencesPanel()" plain>关闭</el-button>
+                        <el-button type="primary" @click="close" plain>关闭</el-button>
                     </div>
                 </div>
 
@@ -45,6 +45,12 @@ export default {
   data() {
     return {
     };
+  },
+  methods:{
+      close(){
+          geofs.savePreferencesPanel()
+          this.$emit("update",false)
+      }
   },
   created() {
 

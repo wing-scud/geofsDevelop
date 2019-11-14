@@ -34,8 +34,11 @@ async function requestFileGet2(baseUrl, filename, resp, type) {
     const data = await fetch(baseUrl, {
         // agent,
         headers: {
-            Accept: 'application/vnd.quantized-mesh,application/octet-stream;q=0.9,*/*;q=0.01,*/*;access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkNTVhMGIzYi00ZDdjLTQ4NGEtODUzMC1iODcxMjdlNTlmM2MiLCJpZCI6MTcyMDAsImFzc2V0cyI6eyIxIjp7InR5cGUiOiJURVJSQUlOIiwiZXh0ZW5zaW9ucyI6W3RydWUsdHJ1ZSx0cnVlXSwicHVsbEFwYXJ0VGVycmFpbiI6ZmFsc2V9fSwic3JjIjoiMzAzZDdkZDItZTQ1ZC00Zjc0LTg0NTAtNTk0ZTVjMTlmOWJkIiwiaWF0IjoxNTczNjM1NjQ5LCJleHAiOjE1NzM2MzkyNDl9.vaIhh1LNg8k5o_zaiKODRBoqfzevUbkVBFwtXyA4wKI',
+            Accept: 'application/vnd.quantized-mesh,application/octet-stream;q=0.9,*/*;q=0.01,*/*;access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZjQyZDA3ZS1iMDk2LTQ1ZTktYjEzNi03ZmM2NTExNDNhODQiLCJpZCI6MTcyMDAsImFzc2V0cyI6eyIxIjp7InR5cGUiOiJURVJSQUlOIiwiZXh0ZW5zaW9ucyI6W3RydWUsdHJ1ZSx0cnVlXSwicHVsbEFwYXJ0VGVycmFpbiI6ZmFsc2V9fSwic3JjIjoiMzAzZDdkZDItZTQ1ZC00Zjc0LTg0NTAtNTk0ZTVjMTlmOWJkIiwiaWF0IjoxNTczNzE5MDY4LCJleHAiOjE1NzM3MjI2Njh9.Gvomg6RyDcPJsKRs3BLzmRx858NXQu0L4u80qmYTwHw',
             DNT: 1,
+            Origin: "https://sandcastle.cesium.com",
+            Referer: "https://sandcastle.cesium.com/templates/bucket.html",
+            "Sec-Fetch-Mode": "cors",
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
         },
     }).then((res) => {
@@ -59,8 +62,8 @@ async function requestFileGet2(baseUrl, filename, resp, type) {
     resp.send(data);
 }
 async function terrainProxy(req, resp) {
-    const path = req.originalUrl.split('/terrain/')[1];
-    const url = `https://assets.cesium.com/${ path}`;
+    const path = req.originalUrl.split('/terrain/')[1].split('?')[0];
+    const url = `https://assets.cesium.com/${path}` + "?extensions=metadata&v=1.2.0";
     const id = req.params.id === '1' ? '' : req.params.id;
     console.log(url);
     if (await existsFile(`terrain${id}`, url)) {

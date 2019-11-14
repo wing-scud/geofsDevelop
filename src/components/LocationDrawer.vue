@@ -42,21 +42,23 @@ export default {
             activeName: '2',
             destination:"",
             mountains:[
-                {windOverride:true,windSpeed:12,windDirection:90,coordinate:[32.89034750891853,-117.25156658170516,0,-85],name:"Torrey Pines Gliderport (Soaring)"}
-                , {windOverride:true,windSpeed:14,windDirection:90,coordinate:[44.58291179132744,-1.2190110965731453,0,-82],name:"Dune du Pyla (Soaring)"}
-                ,{windOverride:false,coordinate:[42.99043614854522,-0.19668640145259153,1400,134, true],name:"Argelès-Gazost, Val d'Azun (Paragliding)"}
+                {windOverride:true,windSpeed:12,windDirection:90,coordinate:[27.990458,86.93416,1000,false],name:"珠穆朗玛峰(雪山)"}
+                , {windOverride:true,windSpeed:14,windDirection:90,coordinate:[35.288147, -83.666558,500,false],name:"楠塔哈拉国家森林公园"}
+                // ,{windOverride:false,coordinate:[42.99043614854522,-0.19668640145259153,1400,134, true],name:"Argelès-Gazost, Val d'Azun (Paragliding)"}
            ],
             runways:[
-                {windOverride:false,coordinate:[42.36021520436057,-70.98767662157663,0,-103.54],name:"Logan Int'l (Boston) - 27"},
-                {windOverride:false,coordinate:[43.578924,-6.09867,550,104, true],name:"Miami Int'l - 8R"},
-                {windOverride:false,coordinate:[43.66555302435758,7.228367855065596,0,-135],name:"Aéroport Nice Côte d'Azur - 22L"}
+                // {windOverride:false,coordinate:[42.36021520436057,-70.98767662157663,0,-103.54],name:"Logan Int'l (Boston) - 27"},
+                // {windOverride:false,coordinate:[43.578924,-6.09867,550,104, true],name:"Miami Int'l - 8R"},
+                //滨海阿尔卑斯
+                {windOverride:false,coordinate:[43.66555302435758,7.228367855065596,0,-135],name:"滨海阿尔卑斯机场"}
             ],
             others:[
-                {windOverride:false,coordinate:[45.938149486108856,6.892803255304612,1500,37.89311560373897],name:"Chamonix - Alps - France"},
-                {windOverride:false,coordinate:[37.76577100453262,-122.36941785026704,455,-51.942644559501176],name:"San Francisco - USA"},
-                {windOverride:false,coordinate:[36.110353463200575,-113.24040648366983,1288,-140.62100383790101],name:"Grand Canyon - USA"},
-                {windOverride:false,coordinate:[55.93793884878086,-4.9214302700610455,302,350,0],name:"West Coast of Scotland"},
-                {windOverride:false,coordinate:[37.969320063220124,23.706062632829592,290,95.18337970067272],name:"Acropolis - Athens - Greece"},
+                // 苏州纳米城(城市) 120.782336,31.287121 平原 
+                {windOverride:false,coordinate:[31.287121,120.782336,1500,37.89311560373897],name:"苏州纳米城(城市)"},
+                {windOverride:false,coordinate:[31.297103,122.391435,455,-51.942644559501176],name:"黄海(海洋)"},
+                // {windOverride:false,coordinate:[36.110353463200575,-113.24040648366983,1288,-140.62100383790101],name:"Grand Canyon - USA"},
+                // {windOverride:false,coordinate:[55.93793884878086,-4.9214302700610455,302,350,0],name:"West Coast of Scotland"},
+                // {windOverride:false,coordinate:[37.969320063220124,23.706062632829592,290,95.18337970067272],name:"Acropolis - Athens - Greece"},
             ]
         }
     },
@@ -70,9 +72,21 @@ export default {
             }
             geofs.windOverride=location.windOverride
             geofs.flyTo(location.coordinate)
+            // controls.autopilot.setKias(110)
+            // controls.autopilot.setAltitude(1000)
+            //  controls.autopilot.turnOn()
+
         }
     }
 }
+/**
+ *   珠穆朗玛峰 86.934165,27.990458  雪山
+ *     苏州纳米城   120.782336,31.287121 平原 
+ *      黄海  海洋  122.391435,31.297103
+ * 
+ *        ：楠塔哈拉国家森林 Nantahala, NC   -83.666558,35.288147 小山脉
+ * 
+ */
 </script>
 <style scoped>
 .location{

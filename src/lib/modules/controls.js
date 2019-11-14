@@ -415,6 +415,7 @@ controls.update = function(a) {
     controls.pitch = controls.rawPitch + controls.elevatorTrim;
     b = 0;
     geofs.aircraft.instance.setup.reverse && (b = -1);
+    //如果是自动驾驶，此处看autopilot.update的throttle的设置
     controls.throttle = clamp(controls.throttle, b, 1);
     controls.animatePart("gear", a);
     controls.animatePart("flaps", a);
@@ -909,9 +910,24 @@ controls.autopilot.update = function(a) {
     fixedAngle = clamp(fixedAngle, -autopilot.maxPitchAngle, -autopilot.minPitchAngle);
     autopilot.pitchPID.set(-fixedAngle);
     controls.rawPitch = exponentialSmoothing("apPitch", autopilot.pitchPID.compute(-values.atilt, a) / kias, .9); //pitch 倾斜
+
+    /**
+     * _iTerm: 0
+        _kd: 0
+        _ki: 0
+        _kp: 0.1
+        _lastErr: 30.508620211984578  设置点和实际的差值 kias
+        _lastError: 0
+        _lastInput: 69.49137978801542
+        _maxOutput: undefined
+        _minOutput: undefined
+        _setPoint: 100  设置的大小
+     */
+    //设置_setPoint
     autopilot.throttlePID.set(autopilot.kias);
-    //计算油门，根据kias？？
+    //计算油门，根据kias？？ 平滑函数
     controls.throttle = exponentialSmoothing("apThrottle", autopilot.throttlePID.compute(values.kias, a), .9); //throttle 油门
+    //油门限定范围最大1 ，不能超出这个范围
     controls.throttle = clamp(controls.throttle, 0, 1)
 };
 export default controls;

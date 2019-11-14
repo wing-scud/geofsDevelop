@@ -28,49 +28,56 @@ let currentAltitudeTestContext = {},
     pastAltitudeTestContext = {};
 flight.tick = function(a, b) {
     //找到计算推力大小
-
+    //自动驾驶通过控制最终实际空速，设置rpm-》？》/找替换
+    // a,b 为随机的数》？有关于调用的 如物理延迟，没有计算意义
     //飞机组成   "elevator" -》升降舵 ，飞机的俯仰
     /**
      * flapright 襟翼 其基本效用是在飞行中增加升力、
      * "aileronleft" 副翼 飞机 转向 滚转
      * rudder 方向坨 偏航 
      */
+    /**
+     * 飞机的最大空速和空中和平地无区别
+     */
+
     let c = clamp(Math.floor(b / (geofs.PHYSICS_DELTA_MS || 10)), 1, 20),
         d = a / c,
         e = 1 / a,
         aircraftInstance = geofs.aircraft.instance,
         animationValues = geofs.animation.values,
         setUp = aircraftInstance.setup,
-        k = aircraftInstance.llaLocation[2];
+        llaLocationHeight = aircraftInstance.llaLocation[2];
     if (flight.recorder.playing == 1) { flight.recorder.stepInterpolation(); } else {
         //大气环境 变量高度更新
         weather.atmosphere.update(aircraftInstance.llaLocation[2]);
         for (let n = 0; n < c; n++) {
             //velocity 速率 周转率
-            aircraftInstance.velocity = aircraftInstance.rigidBody.v_linearVelocity;
-            aircraftInstance.velocityScalar = V3.length(aircraftInstance.velocity);
+            aircraftInstance.velocity = aircraftInstance.rigidBody.v_linearVelocity; //线速度
+            aircraftInstance.velocityScalar = V3.length(aircraftInstance.velocity); //缩放比例
             const v = aircraftInstance.velocityScalar * d;
-            aircraftInstance.airVelocity = V3.sub(aircraftInstance.velocity, weather.currentWindVector);
-            aircraftInstance.veldir = V3.normalize(aircraftInstance.airVelocity);
-            aircraftInstance.trueAirSpeed = V3.length(aircraftInstance.airVelocity);
+            aircraftInstance.airVelocity = V3.sub(aircraftInstance.velocity, weather.currentWindVector); //空速向量
+            aircraftInstance.veldir = V3.normalize(aircraftInstance.airVelocity); //归一化
+            //在这将改变后的真实速度转为，然后，转为kias，作为input输入autopilot的update，然后更新 throttle，循环调用。直到？throttle=0？
+            aircraftInstance.trueAirSpeed = V3.length(aircraftInstance.airVelocity); //得到长度
             var z = 0,
                 A = 1,
                 C = 1,
-                w = setUp.zeroThrustAltitude,
-                y = setUp.zeroRPMAltitude; //35000
+                w = setUp.zeroThrustAltitude, //0推力高度？
+                y = setUp.zeroRPMAltitude; //35000 0 rpm高度？？
             w ? A = clamp(w - animationValues.altitude, 0, w) / w : y && (C = clamp(y - animationValues.altitude, 0, y) / y);
             for (var D = geofs.aircraft.instance.engines, B = D.length, t = 0; t < B; t++) {
                 //不同的飞机存在多个发动机，
-                let m = D[t],
-                    O = controls.throttle,
+                //计算发动机的推力
+                let instanceEngine = D[t],
+                    throttle = controls.throttle,
                     Y = 1,
-                    fa = m.animations; //length=0
-                if (fa) {
-                    for (let ha = 0; ha < fa.length; ha++) {
-                        const K = fa[ha];
+                    engineAnimations = instanceEngine.animations; //length=0
+                if (engineAnimations) {
+                    for (let ha = 0; ha < engineAnimations.length; ha++) {
+                        const K = engineAnimations[ha];
                         switch (K.type) {
                             case 'throttle':
-                                O = animationValues[K.value] * K.ratio + K.offset;
+                                throttle = animationValues[K.value] * K.ratio + K.offset;
                                 break;
                             case 'pitch':
                                 Y = animationValues[K.value] * K.ratio + K.offset;
@@ -78,27 +85,36 @@ flight.tick = function(a, b) {
                     }
                 }
                 if (aircraftInstance.engine.on) {
-                    let Da = (setUp.maxRPM - setUp.minRPM) * O + setUp.minRPM;
+                    //根据autopilot得到的需要的油门，进行加速
+                    let Da = (setUp.maxRPM - setUp.minRPM) * throttle + setUp.minRPM;
                     Da *= C;
-                    m.rpm += (Da - m.rpm) * setUp.engineInertia * d;
-                    geofs.aircraft.instance.setup.reverse && (m.rpm < setUp.minRPM && m.rpm > 0 && !aircraftInstance.engine.startup && (m.rpm = -setUp.minRPM),
-                        m.rpm > -setUp.minRPM && m.rpm < 0 && !aircraftInstance.engine.startup && (m.rpm = setUp.minRPM));
-                } else { m.rpm = m.rpm < 1E-5 ? 0 : m.rpm - m.rpm * setUp.engineInertia * d; }
-                var Ea = Math.abs(m.rpm),
-                    ia = m.thrust;
-                m.afterBurnerThrust && O > 0.9 && (ia = m.afterBurnerThrust);
-                m.rpm < 0 && (ia = m.reverseThrust ? -m.reverseThrust : 0);
+                    //engineInertia发动机惯性，惯量  instanceEngine.rpm只在这改变然后转为Ea，在转为instance.engine.rpm
+                    // 6000
+                    instanceEngine.rpm += (Da - instanceEngine.rpm) * setUp.engineInertia * d;
+                    geofs.aircraft.instance.setup.reverse && (instanceEngine.rpm < setUp.minRPM && instanceEngine.rpm > 0 && !aircraftInstance.engine.startup && (instanceEngine.rpm = -setUp.minRPM),
+                        instanceEngine.rpm > -setUp.minRPM && instanceEngine.rpm < 0 && !aircraftInstance.engine.startup && (instanceEngine.rpm = setUp.minRPM));
+                } else { instanceEngine.rpm = instanceEngine.rpm < 1E-5 ? 0 : instanceEngine.rpm - instanceEngine.rpm * setUp.engineInertia * d; }
+                var Ea = Math.abs(instanceEngine.rpm),
+                    //发动机推力
+                    ia = instanceEngine.thrust;
+                //燃烧后推力
+                instanceEngine.afterBurnerThrust && throttle > 0.9 && (ia = instanceEngine.afterBurnerThrust);
+                instanceEngine.rpm < 0 && (ia = instanceEngine.reverseThrust ? -instanceEngine.reverseThrust : 0);
+                //推力
                 let Z = ia * clamp(Ea - setUp.minRPM, 0, setUp.maxRPM) * aircraftInstance.engine.invRPMRange;
                 Z *= A;
                 Z *= Y;
-                const ab = m.object3d.getWorldFrame()[m.forceDirection];
+                //getWorldFrame ??作用
+                const ab = instanceEngine.object3d.getWorldFrame()[instanceEngine.forceDirection];
                 //产生推力，进行进行水平运动 ，
-                aircraftInstance.rigidBody.applyForce(V3.scale(ab, Z), m.points.forceSourcePoint.worldPosition);
+                aircraftInstance.rigidBody.applyForce(V3.scale(ab, Z), instanceEngine.points.forceSourcePoint.worldPosition);
+                //z =thrust 推力
                 z += Z;
             }
             B > 0 && (aircraftInstance.engine.rpm = parseInt(Ea));
             var E = 0;
             t = 0;
+            //balloons 气球？？ 如果是热气球的话，运行这段代码》需要根据问题提供动力
             for (var F = geofs.aircraft.instance.balloons.length; t < F; t++) {
                 let M = geofs.aircraft.instance.balloons[t],
                     bb = clamp(controls[M.controller.name], 0, 1);
@@ -109,55 +125,58 @@ flight.tick = function(a, b) {
                 M.temperature = E;
                 aircraftInstance.rigidBody.applyForce([0, 0, (weather.atmosphere.airDensityAtAltitude - weather.atmosphere.airPressureAtAltitude / (GAS_CONSTANT * (E + KELVIN_OFFSET))) * M.volume * GRAVITY], M.points.forceSourcePoint.worldPosition);
             }
-            if (aircraftInstance.trueAirSpeed > 0.01) {
+            if (aircraftInstance.trueAirSpeed > 0.01) { //拖拽银因子 dragFactor
                 let aa = V3.scale(aircraftInstance.veldir, -(setUp.dragFactor * aircraftInstance.trueAirSpeed * aircraftInstance.trueAirSpeed * weather.atmosphere.airDensityAtAltitude));
+                //这个中心力？？
                 aircraftInstance.rigidBody.applyCentralForce(aa);
                 t = 0;
+                //计算各个部件的力
                 for (F = aircraftInstance.airfoils.length; t < F; t++) {
-                    let r = aircraftInstance.airfoils[t],
-                        ja = r.points.forceSourcePoint.worldPosition,
-                        cb = r.object3d.getWorldFrame(),
-                        G = aircraftInstance.rigidBody.getVelocityInLocalPoint(ja);
-                    if (r.propwash) {
-                        let Fa = aircraftInstance.engine.rpm * r.propwash,
+                    let airfoils = aircraftInstance.airfoils[t],
+                        worldPosition = airfoils.points.forceSourcePoint.worldPosition,
+                        cb = airfoils.object3d.getWorldFrame(),
+                        G = aircraftInstance.rigidBody.getVelocityInLocalPoint(worldPosition);
+                    if (airfoils.propwash) { //propwash反向偏航
+                        let Fa = aircraftInstance.engine.rpm * airfoils.propwash,
                             db = V3.dot(G, aircraftInstance.object3d.worldRotation[1]);
                         G = V3.add(G, V3.scale(aircraftInstance.object3d.worldRotation[1], clamp(Fa - db, 0, Fa)));
                     }
                     G = V3.sub(G, weather.currentWindVector);
                     G = V3.sub(G, weather.thermals.currentVector);
-                    r.velocity = V3.length(G);
+                    airfoils.velocity = V3.length(G);
                     let ka = V3.normalize(G),
-                        la = r.velocity * r.velocity,
-                        ma = cb[r.forceDirection],
+                        la = airfoils.velocity * airfoils.velocity,
+                        ma = cb[airfoils.forceDirection],
                         R = -V3.dot(ma, ka),
                         eb = V3.cross(ma, ka),
                         fb = V3.rotate(ma, eb, R);
-                    if (r.area) {
+                    if (airfoils.area) {
                         let ba = R * TWO_PI;
-                        if (r.stalls == 1) {
+                        if (airfoils.stalls == 1) {
                             //某一部件是否失衡
                             var ca = R * RAD_TO_DEGREES,
                                 S = Math.abs(ca);
-                            S > r.stallIncidence && (ui.hud.stallAlarm(!0),
-                                ba *= 1 - clamp(S - r.stallIncidence, 0, 0.9 * r.zeroLiftIncidence) / r.zeroLiftIncidence);
+                            S > airfoils.stallIncidence && (ui.hud.stallAlarm(!0),
+                                ba *= 1 - clamp(S - airfoils.stallIncidence, 0, 0.9 * airfoils.zeroLiftIncidence) / airfoils.zeroLiftIncidence);
                         }
+                        //airDensityAtAltitude 密度高度
                         aa = 0.5 * la * (MIN_DRAG_COEF + DRAG_CONSTANT * ba * ba) * weather.atmosphere.airDensityAtAltitude;
-                        var Ga = weather.atmosphere.airDensityAtAltitude * la * 0.5 * r.area * ba;
+                        var Ga = weather.atmosphere.airDensityAtAltitude * la * 0.5 * airfoils.area * ba;
                     } else {
-                        let Ha = r.liftFactor,
-                            gb = r.dragFactor;
-                        r.stalls == 1 && (ca = R * RAD_TO_DEGREES,
+                        let Ha = airfoils.liftFactor,
+                            gb = airfoils.dragFactor;
+                        airfoils.stalls == 1 && (ca = R * RAD_TO_DEGREES,
                             S = Math.abs(ca),
-                            S > r.stallIncidence && (ui.hud.stallAlarm(!0),
-                                Ha *= 0.9 - clamp(S - r.stallIncidence, 0, r.zeroLiftIncidence) / r.zeroLiftIncidence));
+                            S > airfoils.stallIncidence && (ui.hud.stallAlarm(!0),
+                                Ha *= 0.9 - clamp(S - airfoils.stallIncidence, 0, airfoils.zeroLiftIncidence) / airfoils.zeroLiftIncidence));
                         const Ia = R * la;
                         Ga = Ha * Ia * weather.atmosphere.airDensityAtAltitude;
                         aa = gb * Math.abs(Ia) * weather.atmosphere.airDensityAtAltitude;
                     }
                     //V3.scale作用，数组里每一项乘以b
-                    //不同部件施加某一方向的力，使其进行上升，左右运动
-                    aircraftInstance.rigidBody.applyForce(V3.scale(fb, Ga), ja);
-                    aircraftInstance.rigidBody.applyForce(V3.scale(ka, -aa), ja);
+                    //得到不同部件施加的某一方向的力，施加力，使其进行上升，左右运动
+                    aircraftInstance.rigidBody.applyForce(V3.scale(fb, Ga), worldPosition);
+                    aircraftInstance.rigidBody.applyForce(V3.scale(ka, -aa), worldPosition);
                 }
             }
             var na = 0;
@@ -234,6 +253,7 @@ flight.tick = function(a, b) {
                 }
                 if (T.length) {
                     aircraftInstance.groundContact = !0;
+                    //改变了llalocation
                     U > geofs.minPenetrationThreshold && (aircraftInstance.llaLocation[2] += U,
                         U = 0);
                     let ta = 0;
@@ -247,6 +267,7 @@ flight.tick = function(a, b) {
                         na = Math.max(na, Math.abs(W));
                         let X = 0;
                         if (u.type == 'raycast' || u.type == 'hardpoint') {
+                            //applyImpulse 改变线速度
                             X = (u.force - q.suspension.damping * W) * aircraftInstance.rigidBody.mass * d,
                                 X > 0 && aircraftInstance.rigidBody.applyImpulse(V3.scale(u.normal, X), p.worldPosition);
                         }
@@ -254,6 +275,7 @@ flight.tick = function(a, b) {
                             let Na = aircraftInstance.rigidBody.computeJacobian(0, W, p.worldPosition, u.normal),
                                 ua = V3.scale(u.normal, Na);
                             ua = V3.scale(ua, H.damping);
+                            //applyImpulse 改变线速度
                             aircraftInstance.rigidBody.applyImpulse(ua, p.worldPosition);
                             X = Na;
                         }
@@ -284,6 +306,7 @@ flight.tick = function(a, b) {
                                 var Aa = I / (ya * ya);
                                 Ra = clamp(Aa, H.dynamicFriction, 1);
                             }
+                            //applyImpulse 改变线速度
                             aircraftInstance.rigidBody.applyImpulse(V3.scale(wa, Pa * Ra), p.worldPosition);
                             aircraftInstance.rigidBody.applyImpulse(V3.scale(va, Qa * ea), p.worldPosition);
                         } else {
@@ -296,16 +319,20 @@ flight.tick = function(a, b) {
                                     Xa = 1;
                                 Ba > I && (Aa = I / (Ba * Ba),
                                     Xa = clamp(Aa, H.dynamicFriction, 1));
+                                //applyImpulse 改变线速度
                                 aircraftInstance.rigidBody.applyImpulse(V3.scale(Ua, Xa * Wa), p.worldPosition);
                             }
                         }
                     }
                 }
             }
+            //此处改变了线速度 主要改变
             aircraftInstance.rigidBody.integrateVelocities(d);
             aircraftInstance.rigidBody.integrateTransform(d);
             geofs.aircraft.instance.object3d.compute(aircraftInstance.llaLocation);
+            // for 循环结束
         }
+
         aircraftInstance.rigidBody.setCurrentAcceleration(e, a);
         aircraftInstance.placeParts();
         aircraftInstance.render();
@@ -345,7 +372,10 @@ flight.tick = function(a, b) {
         animationValues[Za] = fixAngle360((animationValues[Za] || 0) + x.angularVelocity);
     }
     let N = aircraftInstance.llaLocation[2] * METERS_TO_FEET,
-        mb = 60 * (N - k * METERS_TO_FEET) / a,
+        //爬升率，以英尺为单位 ，与高度有关 N,
+        //调试mb改变
+        //llaLocationHeight = aircraftInstance.llaLocation[2]; ????   a 传过来的函数 参数a
+        mb = 60 * (N - llaLocationHeight * METERS_TO_FEET) / a,
         nb = fixAngle(weather.currentWindDirection - aircraftInstance.htr[0]),
         ob = aircraftInstance.engine.rpm * setUp.RPM2PropAS * a;
     animationValues.maxAngularVRatio = Ca;
@@ -374,10 +404,12 @@ flight.tick = function(a, b) {
     animationValues.parkingBrake = geofs.aircraft.instance.brakesOn;
     animationValues.groundContact = aircraftInstance.groundContact ? 1 : 0;
     animationValues.acceleration = M33.transform(M33.transpose(aircraftInstance.object3d._rotation), aircraftInstance.rigidBody.v_acceleration);
+    //acceleration 加速度
     animationValues.accX = animationValues.acceleration[0];
     animationValues.accY = animationValues.acceleration[1];
     animationValues.accZ = animationValues.acceleration[2];
     animationValues.msDt = b;
+    //
     animationValues.rollingSpeed = aircraftInstance.groundContact ? aircraftInstance.velocityScalar : 0;
     //得到实际空速
     animationValues.ktas = 1.94 * aircraftInstance.trueAirSpeed;
@@ -389,6 +421,7 @@ flight.tick = function(a, b) {
     animationValues.altHundreds = N % 1E3;
     animationValues.altTens = N % 100;
     animationValues.altUnits = N % 10;
+    //爬升率
     animationValues.climbrate = mb;
     animationValues.aoa = ca;
     animationValues.turnrate = 60 * (aircraftInstance.htr[0] - animationValues.heading) / a;

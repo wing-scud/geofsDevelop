@@ -10,14 +10,14 @@ function rigidBody() {
     this.minAngularVelocity = 0.01;
 }
 rigidBody.prototype.reset = function() {
-    this.v_linearVelocity = [0, 0, 0];
-    this.v_angularVelocity = [0, 0, 0];
+    this.v_linearVelocity = [0, 0, 0]; //线速度
+    this.v_angularVelocity = [0, 0, 0]; //角速度
     this.v_totalForce = [0, 0, 0];
     this.v_totalTorque = [0, 0, 0];
     this.v_prevLinearVelocity = [0, 0, 0];
-    this.v_prevTotalTorque = [0, 0, 0];
-    this.v_acceleration = [0, 0, 0];
-    this.v_torque = [0, 0, 0];
+    this.v_prevTotalTorque = [0, 0, 0]; //
+    this.v_acceleration = [0, 0, 0]; //加速度
+    this.v_torque = [0, 0, 0]; //力扭矩
 };
 rigidBody.prototype.setMassProps = function(a, b) {
     b = b || 0.1;
@@ -45,6 +45,7 @@ rigidBody.prototype.setLinearVelocity = function(a) {
 rigidBody.prototype.setAngularVelocity = function(a) {
     this.v_angularVelocity = a;
 };
+
 rigidBody.prototype.getVelocityInLocalPoint = function(a) {
     return V3.add(this.v_linearVelocity, V3.cross(a, this.v_angularVelocity));
 };
@@ -62,12 +63,14 @@ rigidBody.prototype.applyForce = function(a, b) {
     this.applyCentralForce(a);
     this.applyTorque(V3.cross(a, b));
 };
+//改变线速度
 rigidBody.prototype.applyCentralImpulse = function(a) {
     this.v_linearVelocity = V3.add(this.v_linearVelocity, V3.scale(a, this.s_inverseMass));
 };
 rigidBody.prototype.applyTorqueImpulse = function(a) {
     this.v_angularVelocity = V3.add(this.v_angularVelocity, M33.multiplyV(this.m_worldInvInertiaTensor, a));
 };
+//改变线速度
 rigidBody.prototype.applyImpulse = function(a, b) {
     this.applyCentralImpulse(a);
     this.applyTorqueImpulse(V3.cross(a, b));
@@ -82,6 +85,8 @@ rigidBody.prototype.computeImpulse = function(a, b, c, d) {
     a = this.computeJacobian(a, b, c, d);
     return V3.scale(d, a);
 };
+//改变线速度，主要还是这个改变线速度
+//函数意思   速度整合 ，在这重新计算所有的速度，并统一
 rigidBody.prototype.integrateVelocities = function(a) {
     this.v_linearVelocity = V3.add(this.v_linearVelocity, V3.scale(this.v_totalForce, this.s_inverseMass * a));
     this.v_angularVelocity = V3.add(this.v_angularVelocity, M33.multiplyV(this.m_worldInvInertiaTensor, V3.scale(this.v_totalTorque, a)));
@@ -125,6 +130,7 @@ rigidBody.prototype.saveState = function() {
     this.savedLinearVelocity = V3.dup(this.v_linearVelocity);
     this.savedAngularVelocity = V3.dup(this.v_angularVelocity);
 };
+//改变线速度
 rigidBody.prototype.restoreState = function() {
     this.clearForces();
     this.v_linearVelocity = V3.dup(this.savedLinearVelocity);
