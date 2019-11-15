@@ -43,21 +43,21 @@ export default {
             destination:"",
             mountains:[
                 {windOverride:true,windSpeed:12,windDirection:90,coordinate:[27.990458,86.93416,1000,false],name:"珠穆朗玛峰(雪山)"}
-                , {windOverride:true,windSpeed:14,windDirection:90,coordinate:[35.288147, -83.666558,500,false],name:"楠塔哈拉国家森林公园"}
+                , {windOverride:true,windSpeed:14,windDirection:90,coordinate:[35.288147, -83.666558,500,false],name:"美国楠塔哈拉国家森林公园"}
                 // ,{windOverride:false,coordinate:[42.99043614854522,-0.19668640145259153,1400,134, true],name:"Argelès-Gazost, Val d'Azun (Paragliding)"}
            ],
             runways:[
                 // {windOverride:false,coordinate:[42.36021520436057,-70.98767662157663,0,-103.54],name:"Logan Int'l (Boston) - 27"},
                 // {windOverride:false,coordinate:[43.578924,-6.09867,550,104, true],name:"Miami Int'l - 8R"},
                 //滨海阿尔卑斯
-                {windOverride:false,coordinate:[43.66555302435758,7.228367855065596,0,-135],name:"滨海阿尔卑斯机场"}
+                {windOverride:false,coordinate:[43.66555302435758,7.228367855065596,0,-135],name:"美国阿尔卑斯机场"}
             ],
             others:[
                 // 苏州纳米城(城市) 120.782336,31.287121 平原 
                 {windOverride:false,coordinate:[31.287121,120.782336,1500,37.89311560373897],name:"苏州纳米城(城市)"},
                 {windOverride:false,coordinate:[31.297103,122.391435,455,-51.942644559501176],name:"黄海(海洋)"},
-                // {windOverride:false,coordinate:[36.110353463200575,-113.24040648366983,1288,-140.62100383790101],name:"Grand Canyon - USA"},
-                // {windOverride:false,coordinate:[55.93793884878086,-4.9214302700610455,302,350,0],name:"West Coast of Scotland"},
+                {windOverride:false,coordinate:[29.619023,94.944433,1288,-140.62100383790101],name:"雅鲁藏布大峡谷"},
+               {windOverride:false,coordinate:[36.110353463200575,-113.24040648366983,800,-140.62100383790101],name:"亚利桑那州大峡谷"},
                 // {windOverride:false,coordinate:[37.969320063220124,23.706062632829592,290,95.18337970067272],name:"Acropolis - Athens - Greece"},
             ]
         }

@@ -34,7 +34,7 @@ async function requestFileGet2(baseUrl, filename, resp, type) {
     const data = await fetch(baseUrl, {
         // agent,
         headers: {
-            Accept: 'application/vnd.quantized-mesh,application/octet-stream;q=0.9,*/*;q=0.01,*/*;access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZjQyZDA3ZS1iMDk2LTQ1ZTktYjEzNi03ZmM2NTExNDNhODQiLCJpZCI6MTcyMDAsImFzc2V0cyI6eyIxIjp7InR5cGUiOiJURVJSQUlOIiwiZXh0ZW5zaW9ucyI6W3RydWUsdHJ1ZSx0cnVlXSwicHVsbEFwYXJ0VGVycmFpbiI6ZmFsc2V9fSwic3JjIjoiMzAzZDdkZDItZTQ1ZC00Zjc0LTg0NTAtNTk0ZTVjMTlmOWJkIiwiaWF0IjoxNTczNzE5MDY4LCJleHAiOjE1NzM3MjI2Njh9.Gvomg6RyDcPJsKRs3BLzmRx858NXQu0L4u80qmYTwHw',
+            Accept: 'application/vnd.quantized-mesh,application/octet-stream;q=0.9,*/*;q=0.01,*/*;access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkZDYwNjk0ZS0xZmVhLTQ4NDktODZhYS01ZmMyYjFkZTA0ZDgiLCJpZCI6MTcyMDAsImFzc2V0cyI6eyIxIjp7InR5cGUiOiJURVJSQUlOIiwiZXh0ZW5zaW9ucyI6W3RydWUsdHJ1ZSx0cnVlXSwicHVsbEFwYXJ0VGVycmFpbiI6ZmFsc2V9fSwic3JjIjoiMzAzZDdkZDItZTQ1ZC00Zjc0LTg0NTAtNTk0ZTVjMTlmOWJkIiwiaWF0IjoxNTczNzc5MzQzLCJleHAiOjE1NzM3ODI5NDN9.OVnSX71jVC3eRBCzUHnpKTw-dhZeaAuk0YXs4S5MCBg',
             DNT: 1,
             Origin: "https://sandcastle.cesium.com",
             Referer: "https://sandcastle.cesium.com/templates/bucket.html",

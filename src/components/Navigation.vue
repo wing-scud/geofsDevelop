@@ -48,8 +48,8 @@
         <AircraftDrawer v-if="current==='aircraft'" />
     </el-drawer>
     <div class="autopilotPosition" v-if="autopilotShow"  @click="showPanel">
-         <i class="iconfontBig" v-if="show">&#xe626;</i>
-         <i class="iconfontBig" v-else>&#xe627;</i>
+         <i class="iconfontBigArrow" v-if="show">&#xec75;</i>
+         <i class="iconfontBigArrow" v-else>&#xec74;</i>
     </div>
     <Autopilot v-if="show" />
     <el-popover width="80px" custom-class="el-popover" :title="format(current)" placement="right-start" ref="camera">
