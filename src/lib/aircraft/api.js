@@ -99,9 +99,21 @@ api.initWorld = a => { //初始化世界，可添加模型
         },
     });
     // api.viewer.scene.moon.textureUrl = 'images/moonSmall.jpg';
+    //提供地形
     api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
-        baseProvider: new GeoVis.CesiumTerrainProvider({ url: `http://${window.location.hostname}:3030/terrain/1/` })
-    });
+         baseProvider: new GeoVis.CesiumTerrainProvider({ url: `http://${window.location.hostname}:81/terrain/taiwan/` })
+    }); 
+     //({ url: `http://${window.location.hostname}:3030/terrain/1/` })//({ url: `http://${window.location.hostname}:81/terrain/sanjielab/` })
+        //  new GeoVis.GeoserverTerrainProvider({
+        //     url: "http://syy.geovisweb.cn:10088/geoserver/wms",
+        //     layerName: "GlobalTerrain:pyramid32",
+        //     maxLevel: 11,
+        //     service: "WMS",
+        //     scale: 1,
+        //     landScale: 1,
+        //     oceanScale: 1,
+        //     waterMask: true
+        // })
     api.viewer.terrainProvider = api.flatRunwayTerrainProviderInstance;
     api.viewer.scene.globe.enableLighting = !1;
     api.viewer.scene.globe.oceanNormalMapUrl = 'shaders/oceanmap.jpg';
@@ -1248,7 +1260,7 @@ api.map.prototype = {
             if (c.originalEvent.button == 2 || geofs.isApp) {
                 b.closePopup();
                 const d = `${c.latlng.lat},${c.latlng.lng}`;
-                b.setContent(`<div class="geofs-map-popup"><ul><li><a href="http://flyto://${d}, 0, 0, true">On the ground</a></li><li><a href="http://flyto://${d}, 304, 0, true">At 1,000 feet</a></li><li><a href="http://flyto://${d}, 914, 0, true">At 3,000 feet</a></li><li><a href="http://flyto://${d}, 3048, 0, true">At 10,000 feet</a></li><li><a href="http://flyto://${d}, 6096, 0, true">At 20,000 feet</a></li><li><a href="http://flyto://${d}, 9144, 0, true">At 30,000 Feet</a></li></ul></div>`).setLatLng(c.latlng).openOn(a.map);
+                b.setContent(`<div class="geofs-map-popup"><ul><li><a href="http://flyto://${d}, 0, 0, true">地面</a></li><li><a href="http://flyto://${d}, 304, 0, true"> 300米 </a></li><li><a href="http://flyto://${d}, 914, 0, true"> 1000 米</a></li><li><a href="http://flyto://${d}, 3048, 0, true"> 3500 米</a></li><li><a href="http://flyto://${d}, 6096, 0, true"> 7000 米</a></li><li><a href="http://flyto://${d}, 9144, 0, true"> 10,000 米</a></li></ul></div>`).setLatLng(c.latlng).openOn(a.map);
                 c.originalEvent.preventDefault();
             }
         });

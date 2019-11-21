@@ -82,6 +82,7 @@ controls.init = function() {
     controls.joystick.init();
     //   controls.autopilot.initUI();
     controls.setMode(geofs.preferences.controlMode)
+
 };
 controls.initViewportDimensions = function() {
     var a = $(".geofs-canvas-mouse-overlay"),
@@ -421,6 +422,7 @@ controls.update = function(a) {
     controls.animatePart("flaps", a);
     controls.animatePart("airbrakes", a);
     controls.animatePart("optionalAnimatedPart", a)
+    
 };
 controls.setPartAnimationDelta = function(a) {
     a.delta = a.positionTarget ? a.positionTarget - a.position : a.target - a.position
@@ -879,12 +881,11 @@ controls.autopilot.turnOn = function() {
         controls.autopilot.pitchPID.reset();
         controls.autopilot.rollPID.reset();
         controls.autopilot.throttlePID.reset();
-        // controls.autopilot.setAltitude(a.altitude);
-        // controls.autopilot.setHeading(a.heading);
-        // controls.autopilot.setKias(a.kias);
-        controls.autopilot.setClimbrate(0);
-        controls.autopilot.on = !0;
-        // $(document).trigger("autopilotOn")
+        controls.autopilot.setAltitude(a.altitude);
+        controls.autopilot.setHeading(a.heading);
+         controls.autopilot.setKias(a.kias);
+         controls.autopilot.setClimbrate(0);   
+         controls.autopilot.on = !0;
     }
 };
 controls.autopilot.turnOff = function() {

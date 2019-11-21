@@ -34,11 +34,11 @@
         <el-button id="more" circle><i class="iconfont"> &#xe601;</i></el-button>
     </div>
     <div class="menu_item" title="自动驾驶">
-        <el-button @click="clickButton($event)" v-popover:autopilot id="autopilot" :style="{backgroundColor:color}" circle> <i class="iconfont">&#xe622;</i></el-button>
+        <el-button @click="clickButton($event)" v-popover:autopilot id="autopilot" :style="{backgroundColor:autopilotShow?'#87CEEB':'white'}" circle> <i class="iconfont">&#xe622;</i></el-button>
     </div>
     <!-- 二种，信息量大的drawer，小的popover,二种生成方式不同 -->
-    <el-drawer :title="format(current)" :custom-class="`width: ${'drawer'}`" :modal-append-to-body="false" :visible.sync="drawer"
-       :wrapperClosable="true" :modal="false" direction="ltr">
+    <el-drawer :title="format(current)" custom-class="drawer" :modal-append-to-body="false" :visible.sync="drawer"
+       :wrapperClosable="false" :modal="false" direction="ltr">
         <Setting v-on:update="receive" v-if="current==='setting'" />
         <!-- <component :is="componentId"></component>  不使用的原因，keep-alive-->
         <keep-alive>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import range from "../lib/utils/aircraftRange"
 import Automap from "./Automap"
 import AircraftDrawer from "./AircraftDrawer"
 import Autopilot from "./Autopilot"
@@ -76,6 +77,17 @@ export default {
         Setting,
         Automap,
         Camera
+    },
+    mounted(){ 
+           if (!controls.autopilot.on) {
+                this.autopilotShow=false
+              } else {
+                this.autopilotShow=true
+            }
+        setTimeout(() => {
+            this.autopilotShow = !this.autopilotShow;
+            controls.autopilot.toggle();
+        }, 1300);
     },
     data() {
         return {
@@ -125,12 +137,11 @@ export default {
                     break;
                 case "autopilot":
                     this.autopilotShow = !this.autopilotShow;
-                    this.show=false
                     controls.autopilot.toggle();
                     if (!controls.autopilot.on) {
-                        this.color = "white"
+                        this.autopilotShow=false
                     } else {
-                        this.color = "#87CEEB"
+                        this.autopilotShow=true
                     }
                     break;
             }
@@ -163,6 +174,17 @@ export default {
             }
         },
     },
+    watch:{
+        // 'controls.autopilot.on':function(){
+        //             if (!controls.autopilot.on) {
+        //         this.autopilotShow=false
+        //        this.color = "white"
+        //       } else {
+        //         this.autopilotShow=true
+        //         this.color = "#87CEEB"
+        //     }
+        // }
+    }
 }
 </script>
 
@@ -172,18 +194,24 @@ export default {
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.247059) 0px 14px 45px, rgba(0, 0, 0, 0.219608) 0px 10px 18px !important;
 }
-
+.v-modal{
+    width:0;
+    height:0;
+}
 .menu_item {
     margin: 0 10% 5px 10%;
     width: 40px;
     height: 39px;
     padding-top: 10px;
 }
-
-.drawer {
-    padding-left: 15px;
+.el-dialog__wrapper{
     width: 300px !important;
-    left: 4.2% !important;
+    left: 60px !important;
+    border-left:1px solid #0000002b;
+}
+.drawer {
+    padding-left:5px;
+    width: 300px !important;
 }
 .autopilotPosition {
     width: 30px;

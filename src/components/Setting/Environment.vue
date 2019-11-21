@@ -15,6 +15,10 @@
         <span class="">天气</span>
         <el-slider v-model="quality" :min=0 :max=100 :step=1 />
     </div>
+    <!-- <div class="block">
+        <span class="">云层</span>
+        <el-slider v-model="qualityCloud" :min=0 :max=100 :step=1 />
+    </div> -->
 </div>
 </template>
 
@@ -27,7 +31,8 @@ export default {
             manual: false,
             localTime:0,
             season: 0,
-            quality: 0
+            quality: 0,
+            qualityCloud:0
         };
     },
     created() {
@@ -35,6 +40,7 @@ export default {
         this.localTime = this.returnTime(geofs.preferences.weather.localTime);
         this.season = geofs.preferences.weather.season;
         this.quality = geofs.preferences.weather.quality;
+       // this.qualityCloud= geofs.preferences.weather.quality
     },
     methods: {
         returnTime(val){
@@ -52,8 +58,6 @@ export default {
             let temp=parseInt(val/25)
             return arrays[temp]
         },
-        //原始的数据更新，均是html直接与js绑定，然后调用weather.set更新，
-        //现在需要通过v-model
     },
     watch: {
         manual: function (newValue, oldValue) {
@@ -72,6 +76,10 @@ export default {
             geofs.preferences.weather.quality = newValue
             weather.set()
         },
+        // qualityCloud:function (newValue, oldValue) {
+        //      geofs.preferences.weather.advanced.clouds=newValue
+        //      weather.setAdvanced()
+        // },
 
     }
 };

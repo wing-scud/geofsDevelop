@@ -30,7 +30,12 @@ weather.minimumCloudCover = 10;
 weather.updateRate = 6E4;
 weather.timeRatio = 1;
 weather.seasonRatio = 1;
+
+
+
 weather.defaults = {
+
+
     ceiling: 1E3,
     cloudCoverThickness: 200,
     cloudCover: 0,
@@ -90,7 +95,6 @@ weather.refresh = function(a) {
     else {
         var c = geofs.runways.getNearestRunway(a);
         //请求天气？？？？
-
         c ? $.ajax(weather.dataProxy + c.icao, {
             success: b,
             error: b
@@ -104,10 +108,25 @@ weather.generateFromPreferences = function() {
         d = geofs.preferences.weather.quality,
         e = d / 100,
         f = geofs.preferences.weather.season;
-    weather.manualDefinition && weather.roundedLatitude == a && weather.manualQuality == d && weather.manualSeason == f && weather.manualTimeOfDay == b || (weather.roundedLatitude = a,
+       weather.manualDefinition && weather.roundedLatitude == a && weather.manualQuality == d && weather.manualSeason == f && weather.manualTimeOfDay == b || (weather.roundedLatitude = a,
         weather.manualQuality = d,
         weather.manualSeason = f,
         weather.manualTimeOfDay = b,
+        // weather.manualDefinition={
+        //     AIR_TEMP_SL: 24.095000000000002,
+        //     cloudCover: 100,
+        //     fogBottom: 0,
+        //     fogCeiling: 0,
+        //     fogDensity: 17.22,
+        //     precipitationAmount: 18,
+        //     precipitationType: "rain",
+        //     thunderstorm: 0,
+        //     visibility: 10000,
+        //     windDirection: 202.27577496138423,
+        //     windLayerHeight: 7000,
+        //     windLayerNb: 3,
+        //     windSpeedMS: 9.833333333333334,
+        // });
         weather.manualDefinition = {
             cloudCover: Math.min(100, 2 * d),
             fogDensity: (1 - 2 * Math.abs(c - .5)) * (.1 < e ? 1 - e : 0) * 100,
@@ -131,10 +150,25 @@ weather.set = function(a, b) {
     weather.setDateAndTime(b);
     geofs.fx.dayNightManager.init();
     geofs.preferences.weather.manual ? ($(".geofs-manualWeather").show(),
-        a = weather.generateFromPreferences(),
-        $(".geofs-metarDisplay").html("").parent().hide()) : ($(".geofs-manualWeather").hide(),
-        $(".geofs-metarDisplay").html(a.METAR).parent().show());
+    a = weather.generateFromPreferences(),
+    $(".geofs-metarDisplay").html("").parent().hide()) : ($(".geofs-manualWeather").hide(),
+    $(".geofs-metarDisplay").html(a.METAR).parent().show());
     weather.definition = $.extend({}, weather.defaults, a);
+//    weather.definition = $.extend({}, weather.defaults, {
+//     AIR_TEMP_SL: 24.095000000000002,
+// cloudCover: 90,
+// fogBottom: 0,
+// fogCeiling: 0,
+// fogDensity: 17.22,
+// precipitationAmount: 18,
+// precipitationType: "rain",
+// thunderstorm: 0,
+// visibility: 10000,
+// windDirection: 202.27577496138423,
+// windLayerHeight: 7000,
+// windLayerNb: 3,
+// windSpeedMS: 9.833333333333334,
+// });
     a = .01 * weather.definition.precipitationAmount;
     0 < weather.definition.windSpeedMS ? (weather.initWind(weather.definition.windDirection, weather.definition.windSpeedMS),
         weather.windActive = !0,

@@ -860,7 +860,8 @@ instruments.definitions = {
     },
     wind: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/wind-body.png",
+            url:  "images/instruments/wind-body.png",
+        //    url: PAGE_PATH + "images/instruments/wind-body.png",
             opacity: .5,
             scale: {
                 x: .5,
@@ -884,13 +885,15 @@ instruments.definitions = {
             },
             rescale: !0,
             rescalePosition: !0,
+            //风速表
             overlays: [{
                 animations: [{
                     type: "rotate",
                     value: "relativeWind",
                     ratio: -1
                 }],
-                url: PAGE_PATH + "images/instruments/wind-hand.png",
+                url:  "images/instruments/wind-hand.png",
+               // url: PAGE_PATH + "images/instruments/wind-hand.png",
                 anchor: {
                     x: 100,
                     y: 100
@@ -904,6 +907,7 @@ instruments.definitions = {
                     y: 0
                 }
             }, {
+                //文字
                 animations: [{
                     type: "text",
                     value: "windSpeedLabel"
@@ -927,7 +931,8 @@ instruments.definitions = {
     },
     spoilers: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/spoilers.png",
+            url:"",
+           // url: PAGE_PATH + "images/instruments/spoilers.png",
             visibility: !0,
             anchor: {
                 x: 85,
@@ -956,7 +961,8 @@ instruments.definitions = {
     },
     brakes: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/brakes.png",
+            url:"",
+           // url: PAGE_PATH + "images/instruments/brakes.png",
             visibility: !0,
             anchor: {
                 x: 73,
@@ -985,7 +991,8 @@ instruments.definitions = {
     },
     gear: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/gear.png",
+            url:"",
+          //  url: PAGE_PATH + "images/instruments/gear.png",
             anchor: {
                 x: 60,
                 y: 0
@@ -1011,7 +1018,8 @@ instruments.definitions = {
                     type: "show",
                     when: [0]
                 }],
-                url: PAGE_PATH + "images/instruments/led-green.png",
+                url:"",
+                //url: PAGE_PATH + "images/instruments/led-green.png",
                 anchor: {
                     x: 0,
                     y: 0
@@ -1030,7 +1038,8 @@ instruments.definitions = {
                     type: "show",
                     when: [1]
                 }],
-                url: PAGE_PATH + "images/instruments/led-red.png",
+                url:"",
+               // url: PAGE_PATH + "images/instruments/led-red.png",
                 anchor: {
                     x: 0,
                     y: 0
@@ -1049,7 +1058,8 @@ instruments.definitions = {
                     type: "show",
                     whenNot: [0, 1]
                 }],
-                url: PAGE_PATH + "images/instruments/led-orange.png",
+                url:"",
+               // url: PAGE_PATH + "images/instruments/led-orange.png",
                 anchor: {
                     x: 0,
                     y: 0
@@ -1067,7 +1077,8 @@ instruments.definitions = {
     },
     flaps: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/flaps.png",
+            url:"",
+           // url: PAGE_PATH + "images/instruments/flaps.png",
             anchor: {
                 x: 74,
                 y: 0
@@ -1093,7 +1104,8 @@ instruments.definitions = {
                     value: "flapsValue",
                     ratio: -90
                 }],
-                url: PAGE_PATH + "images/instruments/flaps-hand.png",
+                url:"",
+               // url: PAGE_PATH + "images/instruments/flaps-hand.png",
                 anchor: {
                     x: 0,
                     y: 5
@@ -1147,6 +1159,7 @@ instruments.definitionsMobile = {
                 }
             }, {
                 text: "kts",
+                //海里/小时
                 class: "geofs-instrument-display-label",
                 anchor: {
                     x: 0,

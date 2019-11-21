@@ -2,7 +2,7 @@
 <div class="panel">
     <div class="blockAuto">
         <!-- <span>速度</span> -->
-        <el-slider v-model="kias" :min=0 :max="kiasMax" :marks="kiasMarks" style="width:150px">
+        <el-slider v-model="kias" :min=0 :max="this.$store.getters.getKias" :marks="kiasMarks" style="width:150px">
         </el-slider>
         <!-- <el-input v-model="kias" size="small" style="width:130px">
         </el-input> -->
@@ -16,7 +16,7 @@
     </div>
     <div class="blockAuto">
         <!-- <span>高度</span> -->
-        <el-slider v-model="height" :marks="heightMarks" :min=0 :max=6000 style="width:150px">
+        <el-slider v-model="height" :marks="heightMarks" :min=0 :max=10000 style="width:150px">
         </el-slider>
         <!-- <el-input v-model="height" size="small" style="width:130px">
         </el-input> -->
@@ -47,22 +47,22 @@ export default {
                     style: {
                         color: 'white'
                     },
-                    label: this.$createElement('normal', '低空')
+                    label: this.$createElement('span', '低空')
                 },
                 4000: {
                     style: {
                         color: 'white'
                     },
-                    label: this.$createElement('normal', '高空')
+                    label: this.$createElement('span', '高空')
                 }
             },
             kiasMarks: {},
             headingMarks: {
-                 180:  {
+                180: {
                     style: {
                         color: 'white'
                     },
-                    label: this.$createElement('normal', '偏航')
+                    label: this.$createElement('span', '偏航')
                 }
             }
         }
@@ -72,8 +72,8 @@ export default {
             return val - 180;
         },
         setRange(val) {
-            let kias = range[val].maxKias
-            this.kiasMax = kias
+            let kias = val
+            this.kiasMarks={}
             this.kiasMarks[kias] = {
                 style: {
                     color: 'white'
@@ -85,14 +85,14 @@ export default {
                 style: {
                     color: 'white'
                 },
-                label: this.$createElement('normal', '低速')
+                label: this.$createElement('span', '低速')
             }
             let high = parseInt(kias / 1.5)
             this.kiasMarks[high] = {
                 style: {
                     color: 'white'
                 },
-                label: this.$createElement('normal', '高速')
+                label: this.$createElement('span', '高速')
             }
         }
     },
@@ -106,12 +106,17 @@ export default {
         heading: function (newValue, oldValue) {
             controls.autopilot.setHeading(Number(newValue))
         },
+        '$store.state.kias': function (newValue, oldValue) {
+            this.setRange(newValue)
+        }
     },
     created() {
         this.kias = controls.autopilot.kias;
         this.heading = controls.autopilot.heading;
         this.height = controls.autopilot.altitude;
-        this.setRange(geofs.aircraft.instance.id)
+        this.$store.dispatch("setKias", range[geofs.aircraft.instance.id].maxKias)
+        let val = this.$store.getters.getKias
+        this.setRange(val)
     },
 };
 </script>
