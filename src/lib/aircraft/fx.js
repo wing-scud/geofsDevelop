@@ -1,13 +1,23 @@
-//环境？云，雾，时间（白天黑夜)，微粒 
-import geofs from '../geofs';
+//粒子效果
 import weather from '../modules/weather'
 import camera from "../modules/camera"
 import Object3D from "../modules/Object3D"
-import { V3, V2 ,M33,PAGE_PATH,RAD_TO_DEGREES ,DEGREES_TO_RAD,TWO_PI
-    ,ll2xy,xy2ll,clamp,xyz2lla,lla2xyz} from '../utils/utils'
-    //papi 精密航道指示器
-function fxGeofs(geofs)
-{
+import {
+    V3,
+    V2,
+    M33,
+    PAGE_PATH,
+    RAD_TO_DEGREES,
+    DEGREES_TO_RAD,
+    TWO_PI,
+    ll2xy,
+    xy2ll,
+    clamp,
+    xyz2lla,
+    lla2xyz
+} from '../utils/utils'
+//papi 精密航道指示器
+function fxGeofs(geofs) {
     geofs.fx = geofs.fx || {};
     geofs.fx.texture2url = {
         smoke: PAGE_PATH + "images/particles/smoke-light.png",
@@ -100,7 +110,8 @@ function fxGeofs(geofs)
             var a = {
                 opacity: this._currentOpacity,
                 scale: this._currentScale,
-                rotation: this._currentRotation
+                rotation: this._currentRotation,
+                disableDepthTestDistance: Number.POSITIVE_INFINITY
             };
             a = $.extend(a, geofs.fx.particleBillboardOptions);
             this._billboard = new geofs.api.billboard(this.currentLocation, this._options.url, a)
@@ -173,16 +184,14 @@ function fxGeofs(geofs)
         b = M33.rotationZ(b, a.headingRad);
         this.stepX = xy2ll(V2.scale(b[0], this.localStepXm), a.threshold1);
         this.stepY = xy2ll(V2.scale(b[1], this.localStepYm), a.threshold1);
-        if (geofs.preferences.showPapi) {
-            var c = xy2ll(V2.scale(b[0], 9), a.threshold1),
-                d = V2.add(a.threshold1, xy2ll(V2.scale(b[0], a.widthMeters / 2 + 15), a.threshold1));
-            d = V2.add(d, V2.scale(this.stepY, 5));
-            this.addPapi(d, c);
-            c = xy2ll(V2.scale(b[0], -9), a.threshold2);
-            d = V2.add(a.threshold2, xy2ll(V2.scale(b[0], -a.widthMeters / 2 - 15), a.threshold2));
-            d = V2.add(d, V2.scale(this.stepY, -5));
-            this.addPapi(d, c)
-        }
+        var c = xy2ll(V2.scale(b[0], 9), a.threshold1),
+            d = V2.add(a.threshold1, xy2ll(V2.scale(b[0], a.widthMeters / 2 + 15), a.threshold1));
+        d = V2.add(d, V2.scale(this.stepY, 5));
+        this.addPapi(d, c);
+        c = xy2ll(V2.scale(b[0], -9), a.threshold2);
+        d = V2.add(a.threshold2, xy2ll(V2.scale(b[0], -a.widthMeters / 2 - 15), a.threshold2));
+        d = V2.add(d, V2.scale(this.stepY, -5));
+        this.addPapi(d, c)
     };
     geofs.runwaysLights.turnAllOff = function() {
         for (var a in geofs.fx.litRunways)
@@ -198,7 +207,9 @@ function fxGeofs(geofs)
             geofs.fx.litRunways[b.id] || (geofs.fx.litRunways[b.id] = new geofs.runwaysLights(b))
         }
         for (a in geofs.fx.litRunways)
-            geofs.runways.nearRunways[a] || geofs.fx.litRunways[a].destroy();
+            geofs.runways.nearRunways[a] || (geofs.fx.litRunways[a].destroy(),
+                geofs.fx.litRunways[a] = null,
+                delete geofs.fx.litRunways[a]);
         geofs.isNight ? geofs.runwaysLights.turnAllOn() : geofs.runwaysLights.turnAllOff()
     };
     geofs.runwaysLights.prototype = {
@@ -239,7 +250,9 @@ function fxGeofs(geofs)
         turnOff: function() {
             if (this.on) {
                 for (var a = 0; a < this.lights.length; a++)
-                    this.lights[a].destroy();
+                    this.lights[a].destroy(),
+                    this.lights[a] = null;
+                this.lights = [];
                 this.on = !1
             }
         },
@@ -261,42 +274,45 @@ function fxGeofs(geofs)
         },
         addLight: function(a, b) {
             a[2] = .2;
-            this.lights.push(new geofs.light(a, b, geofs.fx.lightBillboardOptions))
+            this.lights.push(new geofs.fx.light(a, b, geofs.fx.lightBillboardOptions))
         },
         destroy: function() {
             if (this.lights) {
                 for (var a = 0; a < this.lights.length; a++)
                     this.lights[a].destroy();
-                this.lights = []
+                this.lights = null
             }
             if (this.papis) {
                 for (a = 0; a < this.papis.length; a++)
                     this.papis[a].destroy();
-                this.papis = []
+                this.papis = null
             }
+            this.runway = null
         }
     };
     geofs.fx.papi = function(a, b) {
+        var c = this;
         this.lights = [];
-        for (var c = 0; 4 > c; c++)
+        for (var d = 0; 4 > d; d++)
             a[2] = .5,
-            this.lights[c] = {
-                white: new geofs.light(a, "whitepapi", geofs.fx.papiBillboardOptions),
-                red: new geofs.light(a, "redpapi", geofs.fx.papiBillboardOptions)
+            this.lights[d] = {
+                white: new geofs.fx.light(a, "whitepapi", geofs.fx.papiBillboardOptions),
+                red: new geofs.fx.light(a, "redpapi", geofs.fx.papiBillboardOptions)
             },
             a = V2.add(a, b);
         this.location = a;
-        var d = this;
-        a = Cesium.sampleTerrainMostDetailed(geofs.api.viewer.terrainProvider, [Cesium.Cartographic.fromDegrees(a[1], a[0])]);
-        Cesium.when(a, function(a) {
-            // debugger
-            d.location[2] = a[0].height
+        geofs.api.viewer.terrainProvider.readyPromise.then(function() {
+            var b = Cesium.sampleTerrainMostDetailed(geofs.api.viewer.terrainProvider, [Cesium.Cartographic.fromDegrees(a[1], a[0])]);
+            Cesium.when(b, function(a) {
+                c.location[2] = a[0].height
+            })
         });
         this.refresh()
     };
     geofs.fx.papi.prototype = {
         refresh: function() {
             var a = this;
+            clearInterval(this.papiInterval);
             this.papiInterval = setInterval(function() {
                 var b = geofs.utils.llaDistanceInMeters([geofs.aircraft.instance.llaLocation[0], geofs.aircraft.instance.llaLocation[1], a.location[2]], a.location, a.location),
                     c = Math.atan2(geofs.aircraft.instance.llaLocation[2] - a.location[2], b) * RAD_TO_DEGREES;
@@ -318,7 +334,25 @@ function fxGeofs(geofs)
             clearInterval(this.papiInterval);
             for (var a = 0; 4 > a; a++)
                 this.lights[a].red.destroy(),
-                this.lights[a].white.destroy()
+                this.lights[a].white.destroy();
+            this.lights = this.location = null
+        }
+    };
+    geofs.fx.light = function(a, b, c) {
+        a = a || [0, 0, 0];
+        this._billboard = new geofs.api.billboard(a, geofs.fx.texture2url[b], c)
+    };
+    geofs.fx.light.prototype = {
+        setVisibility: function(a) {
+            this._billboard.setVisibility(a);
+            return !0
+        },
+        setLocation: function(a) {
+            this._billboard.setLocation(a)
+        },
+        destroy: function() {
+            this._billboard.destroy();
+            this._billboard = null
         }
     };
     geofs.fx.dayNightManager = {
@@ -336,7 +370,7 @@ function fxGeofs(geofs)
             valueRamp: [-.6, -.6, -.6, 0, 0]
         },
         groundBrightnessShift: {
-            valueRamp: [-.9, -.9, -.9, 0, 0]
+            valueRamp: [-1.5, -1.5, -1.5, 0, 0]
         },
         groundAtmoSaturationShift: {
             valueRamp: [-.6, -.6, 0, 0, 0]
@@ -422,13 +456,26 @@ function fxGeofs(geofs)
             opacity: 1,
             cutoff: .95
         },
+        getCanvas: function() {
+            this.canvases || (this.canvases = {},
+                this.canvases.a = document.createElement("canvas"),
+                this.canvases.a.width = 100,
+                this.canvases.a.height = 1,
+                this.canvases.b = document.createElement("canvas"),
+                this.canvases.b.width = 100,
+                this.canvases.b.height = 1);
+            if (this.canvases.a.used)
+                return this.canvases.a.used = !1,
+                    this.canvases.b;
+            this.canvases.a.used = !0;
+            return this.canvases.a
+        },
         getColorRamp: function(a) {
             this.ramp = Object.assign({}, this.defaultRamp, this.ramp, a);
-            a = document.createElement("canvas");
-            a.width = 100;
-            a.height = 1;
-            var b = a.getContext("2d"),
-                c = b.createLinearGradient(0, 0, 100, 0);
+            a = this.getCanvas();
+            var b = a.getContext("2d");
+            b.clearRect(0, 0, a.width, a.height);
+            var c = b.createLinearGradient(0, 0, 100, 0);
             c.addColorStop(0, this.ramp.color.withAlpha(this.ramp.opacity).toCssColorString());
             c.addColorStop(this.ramp.cutoff, this.ramp.color.withAlpha(this.ramp.opacity).toCssColorString());
             c.addColorStop(1, this.ramp.color.withAlpha(0).toCssColorString());
@@ -441,16 +488,18 @@ function fxGeofs(geofs)
             this.material || (this.material = Cesium.Material.fromType("ElevationRamp"));
             this.material.uniforms.image = this.getColorRamp(c);
             this.material.uniforms.minimumHeight = a || 0;
+            b < a && (b = a);
             this.material.uniforms.maximumHeight = b;
             geofs.api.viewer.scene.globe.material = this.material
         },
         setColor: function(a) {
             this.ramp = Object.assign({}, this.defaultRamp, this.ramp);
             this.ramp.color = a;
-            this.material && (this.material.uniforms.image = this.getColorRamp(this.ramp))
+            this.material && (this.material.uniforms.image = this.getColorRamp(this.ramp));
+            geofs.api.viewer.scene.globe.material = this.material
         },
         setCeiling: function(a) {
-            geofs.api.viewer.scene.globe.material && (geofs.api.viewer.scene.globe.material.uniforms.maximumHeight = a)
+            geofs.api.viewer.scene.globe.material && (this.material.uniforms.maximumHeight = a)
         },
         destroy: function() {
             this.material = geofs.api.viewer.scene.globe.material = null
@@ -589,6 +638,11 @@ function fxGeofs(geofs)
             geofs.fx.cloudManager.instance && (this.maxNumberOfClouds = a,
                 this.spawnClouds())
         },
+        setCeiling: function(a) {
+            this.fullCover && this.fullCover.update();
+            for (var b in this.clouds)
+                this.clouds[b].setCeiling(a)
+        },
         destroyLastCloud: function() {
             geofs.fx.cloudManager.instance.currentID--;
             this.clouds[geofs.fx.cloudManager.instance.currentID].destroy()
@@ -625,7 +679,7 @@ function fxGeofs(geofs)
             brightnessDelta: 0
         },
         types: [{
-            billboard: PAGE_PATH+"images/weather/clouds/1.png",
+            billboard: PAGE_PATH + "images/weather/clouds/1.png",
             belowCeiling: 500,
             aboveCeiling: 1E3,
             minScale: 6,
@@ -633,7 +687,7 @@ function fxGeofs(geofs)
             maxRadius: 5E4,
             opacity: .9
         }, {
-            billboard: PAGE_PATH+"images/weather/clouds/6.png",
+            billboard: PAGE_PATH + "images/weather/clouds/6.png",
             belowCeiling: 500,
             aboveCeiling: 1E3,
             minScale: 10,
@@ -641,7 +695,7 @@ function fxGeofs(geofs)
             maxRadius: 5E4,
             opacity: .9
         }, {
-            billboard: PAGE_PATH+"images/weather/clouds/1.png",
+            billboard: PAGE_PATH + "images/weather/clouds/1.png",
             belowCeiling: 500,
             aboveCeiling: 1500,
             maxRadius: 1E5,
@@ -649,7 +703,7 @@ function fxGeofs(geofs)
             maxScale: 15,
             opacity: .9
         }, {
-            billboard: PAGE_PATH+"images/weather/clouds/5.png",
+            billboard: PAGE_PATH + "images/weather/clouds/5.png",
             belowCeiling: 500,
             aboveCeiling: 1E3,
             maxRadius: 1E5,
@@ -657,7 +711,7 @@ function fxGeofs(geofs)
             maxScale: 10,
             opacity: .9
         }, {
-            billboard:PAGE_PATH+"images/weather/clouds/cumuloniumbus.png",
+            billboard: PAGE_PATH + "images/weather/clouds/cumuloniumbus.png",
             belowCeiling: 500,
             aboveCeiling: 100,
             maxRadius: 1E5,
@@ -665,7 +719,7 @@ function fxGeofs(geofs)
             maxScale: 10,
             opacity: .9
         }, {
-            model: geofs.url+"/models/clouds/flat1.gltf",
+            model: PAGE_PATH + "models/clouds/flat1.gltf",
             belowCeiling: 2E3,
             aboveCeiling: 9E3,
             minScale: 4E4,
@@ -674,7 +728,7 @@ function fxGeofs(geofs)
             rotationMultiplier: 360,
             opacity: 1
         }, {
-            model: geofs.url+"/models/clouds/flat2.gltf",
+            model: PAGE_PATH + "models/clouds/flat2.gltf",
             belowCeiling: 2E3,
             aboveCeiling: 9E3,
             minScale: 4E4,
@@ -707,6 +761,10 @@ function fxGeofs(geofs)
                 b.location = a,
                 this._entity = new geofs.api.Model(this._type.model, b));
             this.update()
+        },
+        setCeiling: function(a) {
+            a = a || weather.definition.ceiling;
+            this._entity.setLocation([this._entity._lla[0], this._entity._lla[1], Math.random() * (this._type.aboveCeiling - this._type.belowCeiling) + (a + this._type.belowCeiling)])
         },
         setColor: function(a) {
             this._entity.setColor(a)
@@ -749,10 +807,10 @@ function fxGeofs(geofs)
         this.create(a)
     };
     geofs.fx.CloudCover.prototype = {
-        texture: "models/clouds/cover.jpg",
+        texture: PAGE_PATH + "models/clouds/cover.jpg",
         size: 1,
         options: {
-            url: PAGE_PATH+"models/clouds/cover.gltf",
+            url: PAGE_PATH + "models/clouds/cover.gltf",
             scale: 4E5
         },
         create: function(a) {
@@ -785,16 +843,15 @@ function fxGeofs(geofs)
             this.entity = null
         }
     };
-    //rain  显示雨的效果
     geofs.fx.precipitation = {
         types: {
             snow: {
                 speed: .001,
-                model: PAGE_PATH+"models/precipitations/snow.gltf"
+                model: PAGE_PATH + "models/precipitations/snow.gltf"
             },
             rain: {
                 speed: .1,
-                model: PAGE_PATH+"models/precipitations/rain.gltf?bla=1"
+                model: PAGE_PATH + "models/precipitations/rain.gltf?bla=1"
             }
         },
         visible: !0,
@@ -804,7 +861,8 @@ function fxGeofs(geofs)
                 geofs.fx.precipitation.type = a,
                 geofs.fx.precipitation.amount = b,
                 geofs.fx.precipitation.apiModel = new geofs.api.Model(geofs.fx.precipitation.types[a].model),
-                geofs.fx.precipitation.motionOffset = 0)
+                geofs.fx.precipitation.motionOffset = 0);
+            geofs.fx.precipitation.apiModel = new geofs.api.Model(geofs.fx.precipitation.types[a].model)
         },
         update: function(a, b) {
             if (geofs.fx.precipitation.apiModel && this.visible) {
@@ -878,7 +936,7 @@ function fxGeofs(geofs)
         var d = geofs.api.viewer.entities.add({
             position: Cesium.Cartesian3.fromDegrees(0, 0, 1E6),
             billboard: {
-                image:PAGE_PATH+ "images/retro/sun.png",
+                image: PAGE_PATH + "images/retro/sun.png",
                 show: !0,
                 pixelOffset: new Cesium.Cartesian2(0, 0),
                 eyeOffset: new Cesium.Cartesian3(0, 0, 0),
@@ -899,9 +957,6 @@ function fxGeofs(geofs)
         geofs.api.viewer.scene.fog.density = 8E-5;
         geofs.runways.redraw();
         b();
-        $(document).on("flyto", function() {
-            b()
-        })
-    };
+    }
 }
 export default fxGeofs;

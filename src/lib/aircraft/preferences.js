@@ -171,6 +171,12 @@ function hackGeoFS(geofs) {
             headMotion: !1,
         },
         weather: {
+            advanced: {
+                clouds: 0,
+                fog: 0,
+                windSpeed: 0,
+                windDirection: 0
+            },
             sun: !1,
             localTime: 12,
             season: 0,

@@ -45,7 +45,6 @@ function Overlay(a, b) {
     };
     this.children = [];
     this.definition = $.extend(!0, {}, this.definition, a);
-    console.log(this.definition['url'] + " url")
     this.position = this.definition.position;
     this.size = this.definition.size;
     this.iconFrame = {

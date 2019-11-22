@@ -1,24 +1,32 @@
 /* @preserve
- * Leaflet 1.3.1+Detached: ba6f97fff8647e724e4dfe66d2ed7da11f908989.ba6f97f, a JS library for interactive maps. http://leafletjs.com
- * (c) 2010-2017 Vladimir Agafonkin, (c) 2010-2011 CloudMade
+ * Leaflet 1.5.1, a JS library for interactive maps. http://leafletjs.com
+ * (c) 2010-2018 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
 ! function(t, i) {
     "object" == typeof exports && "undefined" != typeof module ? i(exports) : "function" == typeof define && define.amd ? define(["exports"], i) : i(t.L = {})
 }(this, function(t) {
     "use strict";
+    var i = Object.freeze;
 
-    function i(t) {
+    function h(t) {
         var i, e, n, o;
         for (e = 1,
-            n = arguments.length; e < n; e++) {
-            o = arguments[e];
-            for (i in o)
-                t[i] = o[i]
-        }
+            n = arguments.length; e < n; e++)
+            for (i in o = arguments[e])
+                t[i] = o[i];
         return t
     }
+    Object.freeze = function(t) {
+        return t
+    };
+    var s = Object.create || function(t) {
+        return e.prototype = t,
+            new e
+    };
 
-    function e(t, i) {
+    function e() {}
+
+    function a(t, i) {
         var e = Array.prototype.slice;
         if (t.bind)
             return t.bind.apply(t, e.call(arguments, 1));
@@ -27,9 +35,10 @@
             return t.apply(i, n.length ? n.concat(e.call(arguments)) : arguments)
         }
     }
+    var n = 0;
 
-    function n(t) {
-        return t._leaflet_id = t._leaflet_id || ++ti,
+    function u(t) {
+        return t._leaflet_id = t._leaflet_id || ++n,
             t._leaflet_id
     }
 
@@ -47,857 +56,159 @@
             }
     }
 
-    function s(t, i, e) {
+    function r(t, i, e) {
         var n = i[1],
             o = i[0],
             s = n - o;
         return t === n && e ? t : ((t - o) % s + s) % s + o
     }
 
-    function r() {
+    function l() {
         return !1
     }
 
-    function a(t, i) {
-        var e = Math.pow(10, void 0 === i ? 6 : i);
-        return Math.round(t * e) / e
+    function c(t, i) {
+        return i = void 0 === i ? 6 : i, +(Math.round(t + "e+" + i) + "e-" + i)
     }
 
-    function h(t) {
+    function _(t) {
         return t.trim ? t.trim() : t.replace(/^\s+|\s+$/g, "")
     }
 
-    function u(t) {
-        return h(t).split(/\s+/)
+    function d(t) {
+        return _(t).split(/\s+/)
     }
 
-    function l(t, i) {
-        t.hasOwnProperty("options") || (t.options = t.options ? Qt(t.options) : {});
-        for (var e in i)
+    function p(t, i) {
+        for (var e in t.hasOwnProperty("options") || (t.options = t.options ? s(t.options) : {}),
+                i)
             t.options[e] = i[e];
         return t.options
     }
 
-    function c(t, i, e) {
+    function m(t, i, e) {
         var n = [];
         for (var o in t)
             n.push(encodeURIComponent(e ? o.toUpperCase() : o) + "=" + encodeURIComponent(t[o]));
         return (i && -1 !== i.indexOf("?") ? "&" : "?") + n.join("&")
     }
+    var f = /\{ *([\w_-]+) *\}/g;
 
-    function _(t, i) {
-        return t.replace(ii, function(t, e) {
-            var n = i[e];
-            if (void 0 === n)
+    function g(t, n) {
+        return t.replace(f, function(t, i) {
+            var e = n[i];
+            if (void 0 === e)
                 throw new Error("No value provided for variable " + t);
-            return "function" == typeof n && (n = n(i)),
-                n
+            return "function" == typeof e && (e = e(n)),
+                e
         })
     }
+    var v = Array.isArray || function(t) {
+        return "[object Array]" === Object.prototype.toString.call(t)
+    };
 
-    function d(t, i) {
+    function y(t, i) {
         for (var e = 0; e < t.length; e++)
             if (t[e] === i)
                 return e;
         return -1
     }
+    var x = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
-    function p(t) {
+    function w(t) {
         return window["webkit" + t] || window["moz" + t] || window["ms" + t]
     }
+    var P = 0;
 
-    function m(t) {
+    function b(t) {
         var i = +new Date,
-            e = Math.max(0, 16 - (i - oi));
-        return oi = i + e,
+            e = Math.max(0, 16 - (i - P));
+        return P = i + e,
             window.setTimeout(t, e)
     }
+    var T = window.requestAnimationFrame || w("RequestAnimationFrame") || b,
+        z = window.cancelAnimationFrame || w("CancelAnimationFrame") || w("CancelRequestAnimationFrame") || function(t) {
+            window.clearTimeout(t)
+        };
 
-    function f(t, i, n) {
-        if (!n || si !== m)
-            return si.call(window, e(t, i));
+    function M(t, i, e) {
+        if (!e || T !== b)
+            return T.call(window, a(t, i));
         t.call(i)
     }
 
-    function g(t) {
-        t && ri.call(window, t)
+    function C(t) {
+        t && z.call(window, t)
     }
+    var S = (Object.freeze || Object)({
+        freeze: i,
+        extend: h,
+        create: s,
+        bind: a,
+        lastId: n,
+        stamp: u,
+        throttle: o,
+        wrapNum: r,
+        falseFn: l,
+        formatNum: c,
+        trim: _,
+        splitWords: d,
+        setOptions: p,
+        getParamString: m,
+        template: g,
+        isArray: v,
+        indexOf: y,
+        emptyImageUrl: x,
+        requestFn: T,
+        cancelFn: z,
+        requestAnimFrame: M,
+        cancelAnimFrame: C
+    });
 
-    function v() {}
-
-    function y(t) {
-        if ("undefined" != typeof L && L && L.Mixin) {
-            t = ei(t) ? t : [t];
-            for (var i = 0; i < t.length; i++)
-                t[i] === L.Mixin.Events && console.warn("Deprecated include of L.Mixin.Events: this property will be removed in future releases, please inherit from L.Evented instead.", (new Error).stack)
-        }
-    }
-
-    function x(t, i, e) {
-        this.x = e ? Math.round(t) : t,
-            this.y = e ? Math.round(i) : i
-    }
-
-    function w(t, i, e) {
-        return t instanceof x ? t : ei(t) ? new x(t[0], t[1]) : void 0 === t || null === t ? t : "object" == typeof t && "x" in t && "y" in t ? new x(t.x, t.y) : new x(t, i, e)
-    }
-
-    function P(t, i) {
-        if (t)
-            for (var e = i ? [t, i] : t, n = 0, o = e.length; n < o; n++)
-                this.extend(e[n])
-    }
-
-    function b(t, i) {
-        return !t || t instanceof P ? t : new P(t, i)
-    }
-
-    function T(t, i) {
-        if (t)
-            for (var e = i ? [t, i] : t, n = 0, o = e.length; n < o; n++)
-                this.extend(e[n])
-    }
-
-    function z(t, i) {
-        return t instanceof T ? t : new T(t, i)
-    }
-
-    function M(t, i, e) {
-        if (isNaN(t) || isNaN(i))
-            throw new Error("Invalid LatLng object: (" + t + ", " + i + ")");
-        this.lat = +t,
-            this.lng = +i,
-            void 0 !== e && (this.alt = +e)
-    }
-
-    function C(t, i, e) {
-        return t instanceof M ? t : ei(t) && "object" != typeof t[0] ? 3 === t.length ? new M(t[0], t[1], t[2]) : 2 === t.length ? new M(t[0], t[1]) : null : void 0 === t || null === t ? t : "object" == typeof t && "lat" in t ? new M(t.lat, "lng" in t ? t.lng : t.lon, t.alt) : void 0 === i ? null : new M(t, i, e)
-    }
-
-    function Z(t, i, e, n) {
-        if (ei(t))
-            return this._a = t[0],
-                this._b = t[1],
-                this._c = t[2],
-                void(this._d = t[3]);
-        this._a = t,
-            this._b = i,
-            this._c = e,
-            this._d = n
-    }
-
-    function S(t, i, e, n) {
-        return new Z(t, i, e, n)
-    }
-
-    function E(t) {
-        return document.createElementNS("http://www.w3.org/2000/svg", t)
-    }
-
-    function k(t, i) {
-        var e, n, o, s, r, a, h = "";
-        for (e = 0,
-            o = t.length; e < o; e++) {
-            for (n = 0,
-                s = (r = t[e]).length; n < s; n++)
-                a = r[n],
-                h += (n ? "L" : "M") + a.x + " " + a.y;
-            h += i ? Xi ? "z" : "x" : ""
-        }
-        return h || "M0 0"
-    }
-
-    function A(t) {
-        return navigator.userAgent.toLowerCase().indexOf(t) >= 0
-    }
-
-    function I(t, i, e, n) {
-        return "touchstart" === i ? O(t, e, n) : "touchmove" === i ? W(t, e, n) : "touchend" === i && H(t, e, n),
-            this
-    }
-
-    function B(t, i, e) {
-        var n = t["_leaflet_" + i + e];
-        return "touchstart" === i ? t.removeEventListener(Qi, n, !1) : "touchmove" === i ? t.removeEventListener(te, n, !1) : "touchend" === i && (t.removeEventListener(ie, n, !1),
-                t.removeEventListener(ee, n, !1)),
-            this
-    }
-
-    function O(t, i, n) {
-        var o = e(function(t) {
-            if ("mouse" !== t.pointerType && t.MSPOINTER_TYPE_MOUSE && t.pointerType !== t.MSPOINTER_TYPE_MOUSE) {
-                if (!(ne.indexOf(t.target.tagName) < 0))
-                    return;
-                $(t)
+    function Z() {}
+    Z.extend = function(t) {
+            function i() {
+                this.initialize && this.initialize.apply(this, arguments),
+                    this.callInitHooks()
             }
-            j(t, i)
-        });
-        t["_leaflet_touchstart" + n] = o,
-            t.addEventListener(Qi, o, !1),
-            se || (document.documentElement.addEventListener(Qi, R, !0),
-                document.documentElement.addEventListener(te, D, !0),
-                document.documentElement.addEventListener(ie, N, !0),
-                document.documentElement.addEventListener(ee, N, !0),
-                se = !0)
-    }
-
-    function R(t) {
-        oe[t.pointerId] = t,
-            re++
-    }
-
-    function D(t) {
-        oe[t.pointerId] && (oe[t.pointerId] = t)
-    }
-
-    function N(t) {
-        delete oe[t.pointerId],
-            re--
-    }
-
-    function j(t, i) {
-        t.touches = [];
-        for (var e in oe)
-            t.touches.push(oe[e]);
-        t.changedTouches = [t],
-            i(t)
-    }
-
-    function W(t, i, e) {
-        var n = function(t) {
-            (t.pointerType !== t.MSPOINTER_TYPE_MOUSE && "mouse" !== t.pointerType || 0 !== t.buttons) && j(t, i)
-        };
-        t["_leaflet_touchmove" + e] = n,
-            t.addEventListener(te, n, !1)
-    }
-
-    function H(t, i, e) {
-        var n = function(t) {
-            j(t, i)
-        };
-        t["_leaflet_touchend" + e] = n,
-            t.addEventListener(ie, n, !1),
-            t.addEventListener(ee, n, !1)
-    }
-
-    function F(t, i, e) {
-        function n(t) {
-            var i;
-            if (Ui) {
-                if (!Pi || "mouse" === t.pointerType)
-                    return;
-                i = re
-            } else
-                i = t.touches.length;
-            if (!(i > 1)) {
-                var e = Date.now(),
-                    n = e - (s || e);
-                r = t.touches ? t.touches[0] : t,
-                    a = n > 0 && n <= h,
-                    s = e
-            }
-        }
-
-        function o(t) {
-            if (a && !r.cancelBubble) {
-                if (Ui) {
-                    if (!Pi || "mouse" === t.pointerType)
-                        return;
-                    var e, n, o = {};
-                    for (n in r)
-                        e = r[n],
-                        o[n] = e && e.bind ? e.bind(r) : e;
-                    r = o
-                }
-                r.type = "dblclick",
-                    i(r),
-                    s = null
-            }
-        }
-        var s, r, a = !1,
-            h = 250;
-        return t[ue + ae + e] = n,
-            t[ue + he + e] = o,
-            t[ue + "dblclick" + e] = i,
-            t.addEventListener(ae, n, !1),
-            t.addEventListener(he, o, !1),
-            t.addEventListener("dblclick", i, !1),
-            this
-    }
-
-    function U(t, i) {
-        var e = t[ue + ae + i],
-            n = t[ue + he + i],
-            o = t[ue + "dblclick" + i];
-        return t.removeEventListener(ae, e, !1),
-            t.removeEventListener(he, n, !1),
-            Pi || t.removeEventListener("dblclick", o, !1),
-            this
-    }
-
-    function V(t, i, e, n) {
-        if ("object" == typeof i)
-            for (var o in i)
-                G(t, o, i[o], e);
-        else
-            for (var s = 0, r = (i = u(i)).length; s < r; s++)
-                G(t, i[s], e, n);
-        return this
-    }
-
-    function q(t, i, e, n) {
-        if ("object" == typeof i)
-            for (var o in i)
-                K(t, o, i[o], e);
-        else if (i)
-            for (var s = 0, r = (i = u(i)).length; s < r; s++)
-                K(t, i[s], e, n);
-        else {
-            for (var a in t[le])
-                K(t, a, t[le][a]);
-            delete t[le]
-        }
-        return this
-    }
-
-    function G(t, i, e, o) {
-        var s = i + n(e) + (o ? "_" + n(o) : "");
-        if (t[le] && t[le][s])
-            return this;
-        var r = function(i) {
-                return e.call(o || t, i || window.event)
-            },
-            a = r;
-        Ui && 0 === i.indexOf("touch") ? I(t, i, r, s) : !Vi || "dblclick" !== i || !F || Ui && Si ? "addEventListener" in t ? "mousewheel" === i ? t.addEventListener("onwheel" in t ? "wheel" : "mousewheel", r, !1) : "mouseenter" === i || "mouseleave" === i ? (r = function(i) {
-                    i = i || window.event,
-                        ot(t, i) && a(i)
-                },
-                t.addEventListener("mouseenter" === i ? "mouseover" : "mouseout", r, !1)) : ("click" === i && Ti && (r = function(t) {
-                    st(t, a)
-                }),
-                t.addEventListener(i, r, !1)) : "attachEvent" in t && t.attachEvent("on" + i, r) : F(t, r, s),
-            t[le] = t[le] || {},
-            t[le][s] = r
-    }
-
-    function K(t, i, e, o) {
-        var s = i + n(e) + (o ? "_" + n(o) : ""),
-            r = t[le] && t[le][s];
-        if (!r)
-            return this;
-        Ui && 0 === i.indexOf("touch") ? B(t, i, s) : !Vi || "dblclick" !== i || !U || Ui && Si ? "removeEventListener" in t ? "mousewheel" === i ? t.removeEventListener("onwheel" in t ? "wheel" : "mousewheel", r, !1) : t.removeEventListener("mouseenter" === i ? "mouseover" : "mouseleave" === i ? "mouseout" : i, r, !1) : "detachEvent" in t && t.detachEvent("on" + i, r) : U(t, s),
-            t[le][s] = null
-    }
-
-    function Y(t) {
-        return t.stopPropagation ? t.stopPropagation() : t.originalEvent ? t.originalEvent._stopped = !0 : t.cancelBubble = !0,
-            nt(t),
-            this
-    }
-
-    function X(t) {
-        return G(t, "mousewheel", Y),
-            this
-    }
-
-    function J(t) {
-        return V(t, "mousedown touchstart dblclick", Y),
-            G(t, "click", et),
-            this
-    }
-
-    function $(t) {
-        return t.preventDefault ? t.preventDefault() : t.returnValue = !1,
-            this
-    }
-
-    function Q(t) {
-        return $(t),
-            Y(t),
-            this
-    }
-
-    function tt(t, i) {
-        if (!i)
-            return new x(t.clientX, t.clientY);
-        var e = i.getBoundingClientRect(),
-            n = e.width / i.offsetWidth || 1,
-            o = e.height / i.offsetHeight || 1;
-        return new x(t.clientX / n - e.left - i.clientLeft, t.clientY / o - e.top - i.clientTop)
-    }
-
-    function it(t) {
-        return Pi ? t.wheelDeltaY / 2 : t.deltaY && 0 === t.deltaMode ? -t.deltaY / ce : t.deltaY && 1 === t.deltaMode ? 20 * -t.deltaY : t.deltaY && 2 === t.deltaMode ? 60 * -t.deltaY : t.deltaX || t.deltaZ ? 0 : t.wheelDelta ? (t.wheelDeltaY || t.wheelDelta) / 2 : t.detail && Math.abs(t.detail) < 32765 ? 20 * -t.detail : t.detail ? t.detail / -32765 * 60 : 0
-    }
-
-    function et(t) {
-        _e[t.type] = !0
-    }
-
-    function nt(t) {
-        var i = _e[t.type];
-        return _e[t.type] = !1,
-            i
-    }
-
-    function ot(t, i) {
-        var e = i.relatedTarget;
-        if (!e)
-            return !0;
-        try {
-            for (; e && e !== t;)
-                e = e.parentNode
-        } catch (t) {
-            return !1
-        }
-        return e !== t
-    }
-
-    function st(t, i) {
-        var e = t.timeStamp || t.originalEvent && t.originalEvent.timeStamp,
-            n = pi && e - pi;
-        n && n > 100 && n < 500 || t.target._simulatedClick && !t._simulated ? Q(t) : (pi = e,
-            i(t))
-    }
-
-    function rt(t) {
-        return "string" == typeof t ? document.getElementById(t) : t
-    }
-
-    function at(t, i) {
-        var e = t.style[i] || t.currentStyle && t.currentStyle[i];
-        if ((!e || "auto" === e) && document.defaultView) {
-            var n = document.defaultView.getComputedStyle(t, null);
-            e = n ? n[i] : null
-        }
-        return "auto" === e ? null : e
-    }
-
-    function ht(t, i, e) {
-        var n = document.createElement(t);
-        return n.className = i || "",
-            e && e.appendChild(n),
-            n
-    }
-
-    function ut(t) {
-        var i = t.parentNode;
-        i && i.removeChild(t)
-    }
-
-    function lt(t) {
-        for (; t.firstChild;)
-            t.removeChild(t.firstChild)
-    }
-
-    function ct(t) {
-        var i = t.parentNode;
-        i.lastChild !== t && i.appendChild(t)
-    }
-
-    function _t(t) {
-        var i = t.parentNode;
-        i.firstChild !== t && i.insertBefore(t, i.firstChild)
-    }
-
-    function dt(t, i) {
-        if (void 0 !== t.classList)
-            return t.classList.contains(i);
-        var e = gt(t);
-        return e.length > 0 && new RegExp("(^|\\s)" + i + "(\\s|$)").test(e)
-    }
-
-    function pt(t, i) {
-        if (void 0 !== t.classList)
-            for (var e = u(i), n = 0, o = e.length; n < o; n++)
-                t.classList.add(e[n]);
-        else if (!dt(t, i)) {
-            var s = gt(t);
-            ft(t, (s ? s + " " : "") + i)
-        }
-    }
-
-    function mt(t, i) {
-        void 0 !== t.classList ? t.classList.remove(i) : ft(t, h((" " + gt(t) + " ").replace(" " + i + " ", " ")))
-    }
-
-    function ft(t, i) {
-        void 0 === t.className.baseVal ? t.className = i : t.className.baseVal = i
-    }
-
-    function gt(t) {
-        return void 0 === t.className.baseVal ? t.className : t.className.baseVal
-    }
-
-    function vt(t, i) {
-        "opacity" in t.style ? t.style.opacity = i : "filter" in t.style && yt(t, i)
-    }
-
-    function yt(t, i) {
-        var e = !1,
-            n = "DXImageTransform.Microsoft.Alpha";
-        try {
-            e = t.filters.item(n)
-        } catch (t) {
-            if (1 === i)
-                return
-        }
-        i = Math.round(100 * i),
-            e ? (e.Enabled = 100 !== i,
-                e.Opacity = i) : t.style.filter += " progid:" + n + "(opacity=" + i + ")"
-    }
-
-    function xt(t) {
-        for (var i = document.documentElement.style, e = 0; e < t.length; e++)
-            if (t[e] in i)
-                return t[e];
-        return !1
-    }
-
-    function wt(t, i, e) {
-        var n = i || new x(0, 0);
-        t.style[pe] = (Oi ? "translate(" + n.x + "px," + n.y + "px)" : "translate3d(" + n.x + "px," + n.y + "px,0)") + (e ? " scale(" + e + ")" : "")
-    }
-
-    function Lt(t, i) {
-        t._leaflet_pos = i,
-            Ni ? wt(t, i) : (t.style.left = i.x + "px",
-                t.style.top = i.y + "px")
-    }
-
-    function Pt(t) {
-        return t._leaflet_pos || new x(0, 0)
-    }
-
-    function bt() {
-        V(window, "dragstart", $)
-    }
-
-    function Tt() {
-        q(window, "dragstart", $)
-    }
-
-    function zt(t) {
-        for (; - 1 === t.tabIndex;)
-            t = t.parentNode;
-        t.style && (Mt(),
-            ve = t,
-            ye = t.style.outline,
-            t.style.outline = "none",
-            V(window, "keydown", Mt))
-    }
-
-    function Mt() {
-        ve && (ve.style.outline = ye,
-            ve = void 0,
-            ye = void 0,
-            q(window, "keydown", Mt))
-    }
-
-    function Ct(t, i) {
-        if (!i || !t.length)
-            return t.slice();
-        var e = i * i;
-        return t = kt(t, e),
-            t = St(t, e)
-    }
-
-    function Zt(t, i, e) {
-        return Math.sqrt(Rt(t, i, e, !0))
-    }
-
-    function St(t, i) {
-        var e = t.length,
-            n = new(typeof Uint8Array != void 0 + "" ? Uint8Array : Array)(e);
-        n[0] = n[e - 1] = 1,
-            Et(t, n, i, 0, e - 1);
-        var o, s = [];
-        for (o = 0; o < e; o++)
-            n[o] && s.push(t[o]);
-        return s
-    }
-
-    function Et(t, i, e, n, o) {
-        var s, r, a, h = 0;
-        for (r = n + 1; r <= o - 1; r++)
-            (a = Rt(t[r], t[n], t[o], !0)) > h && (s = r,
-                h = a);
-        h > e && (i[s] = 1,
-            Et(t, i, e, n, s),
-            Et(t, i, e, s, o))
-    }
-
-    function kt(t, i) {
-        for (var e = [t[0]], n = 1, o = 0, s = t.length; n < s; n++)
-            Ot(t[n], t[o]) > i && (e.push(t[n]),
-                o = n);
-        return o < s - 1 && e.push(t[s - 1]),
-            e
-    }
-
-    function At(t, i, e, n, o) {
-        var s, r, a, h = n ? Se : Bt(t, e),
-            u = Bt(i, e);
-        for (Se = u;;) {
-            if (!(h | u))
-                return [t, i];
-            if (h & u)
-                return !1;
-            a = Bt(r = It(t, i, s = h || u, e, o), e),
-                s === h ? (t = r,
-                    h = a) : (i = r,
-                    u = a)
-        }
-    }
-
-    function It(t, i, e, n, o) {
-        var s, r, a = i.x - t.x,
-            h = i.y - t.y,
-            u = n.min,
-            l = n.max;
-        return 8 & e ? (s = t.x + a * (l.y - t.y) / h,
-                r = l.y) : 4 & e ? (s = t.x + a * (u.y - t.y) / h,
-                r = u.y) : 2 & e ? (s = l.x,
-                r = t.y + h * (l.x - t.x) / a) : 1 & e && (s = u.x,
-                r = t.y + h * (u.x - t.x) / a),
-            new x(s, r, o)
-    }
-
-    function Bt(t, i) {
-        var e = 0;
-        return t.x < i.min.x ? e |= 1 : t.x > i.max.x && (e |= 2),
-            t.y < i.min.y ? e |= 4 : t.y > i.max.y && (e |= 8),
-            e
-    }
-
-    function Ot(t, i) {
-        var e = i.x - t.x,
-            n = i.y - t.y;
-        return e * e + n * n
-    }
-
-    function Rt(t, i, e, n) {
-        var o, s = i.x,
-            r = i.y,
-            a = e.x - s,
-            h = e.y - r,
-            u = a * a + h * h;
-        return u > 0 && ((o = ((t.x - s) * a + (t.y - r) * h) / u) > 1 ? (s = e.x,
-                r = e.y) : o > 0 && (s += a * o,
-                r += h * o)),
-            a = t.x - s,
-            h = t.y - r,
-            n ? a * a + h * h : new x(s, r)
-    }
-
-    function Dt(t) {
-        return !ei(t[0]) || "object" != typeof t[0][0] && void 0 !== t[0][0]
-    }
-
-    function Nt(t) {
-        return console.warn("Deprecated use of _flat, please use L.LineUtil.isFlat instead."),
-            Dt(t)
-    }
-
-    function jt(t, i, e) {
-        var n, o, s, r, a, h, u, l, c, _ = [1, 4, 2, 8];
-        for (o = 0,
-            u = t.length; o < u; o++)
-            t[o]._code = Bt(t[o], i);
-        for (r = 0; r < 4; r++) {
-            for (l = _[r],
-                n = [],
-                o = 0,
-                s = (u = t.length) - 1; o < u; s = o++)
-                a = t[o],
-                h = t[s],
-                a._code & l ? h._code & l || ((c = It(h, a, l, i, e))._code = Bt(c, i),
-                    n.push(c)) : (h._code & l && ((c = It(h, a, l, i, e))._code = Bt(c, i),
-                        n.push(c)),
-                    n.push(a));
-            t = n
-        }
-        return t
-    }
-
-    function Wt(t, i) {
-        var e, n, o, s, r = "Feature" === t.type ? t.geometry : t,
-            a = r ? r.coordinates : null,
-            h = [],
-            u = i && i.pointToLayer,
-            l = i && i.coordsToLatLng || Ht;
-        if (!a && !r)
-            return null;
-        switch (r.type) {
-            case "Point":
-                return e = l(a),
-                    u ? u(t, e) : new Xe(e);
-            case "MultiPoint":
-                for (o = 0,
-                    s = a.length; o < s; o++)
-                    e = l(a[o]),
-                    h.push(u ? u(t, e) : new Xe(e));
-                return new qe(h);
-            case "LineString":
-            case "MultiLineString":
-                return n = Ft(a, "LineString" === r.type ? 0 : 1, l),
-                    new tn(n, i);
-            case "Polygon":
-            case "MultiPolygon":
-                return n = Ft(a, "Polygon" === r.type ? 1 : 2, l),
-                    new en(n, i);
-            case "GeometryCollection":
-                for (o = 0,
-                    s = r.geometries.length; o < s; o++) {
-                    var c = Wt({
-                        geometry: r.geometries[o],
-                        type: "Feature",
-                        properties: t.properties
-                    }, i);
-                    c && h.push(c)
-                }
-                return new qe(h);
-            default:
-                throw new Error("Invalid GeoJSON object.")
-        }
-    }
-
-    function Ht(t) {
-        return new M(t[1], t[0], t[2])
-    }
-
-    function Ft(t, i, e) {
-        for (var n, o = [], s = 0, r = t.length; s < r; s++)
-            n = i ? Ft(t[s], i - 1, e) : (e || Ht)(t[s]),
-            o.push(n);
-        return o
-    }
-
-    function Ut(t, i) {
-        return i = "number" == typeof i ? i : 6,
-            void 0 !== t.alt ? [a(t.lng, i), a(t.lat, i), a(t.alt, i)] : [a(t.lng, i), a(t.lat, i)]
-    }
-
-    function Vt(t, i, e, n) {
-        for (var o = [], s = 0, r = t.length; s < r; s++)
-            o.push(i ? Vt(t[s], i - 1, e, n) : Ut(t[s], n));
-        return !i && e && o.push(o[0]),
-            o
-    }
-
-    function qt(t, e) {
-        return t.feature ? i({}, t.feature, {
-            geometry: e
-        }) : Gt(e)
-    }
-
-    function Gt(t) {
-        return "Feature" === t.type || "FeatureCollection" === t.type ? t : {
-            type: "Feature",
-            properties: {},
-            geometry: t
-        }
-    }
-
-    function Kt(t, i) {
-        return new nn(t, i)
-    }
-
-    function Yt(t, i) {
-        return new dn(t, i)
-    }
-
-    function Xt(t) {
-        return Yi ? new fn(t) : null
-    }
-
-    function Jt(t) {
-        return Xi || Ji ? new xn(t) : null
-    }
-    var $t = Object.freeze;
-    Object.freeze = function(t) {
-        return t
-    };
-    var Qt = Object.create || function() {
-            function t() {}
-            return function(i) {
-                return t.prototype = i,
-                    new t
-            }
-        }(),
-        ti = 0,
-        ii = /\{ *([\w_-]+) *\}/g,
-        ei = Array.isArray || function(t) {
-            return "[object Array]" === Object.prototype.toString.call(t)
-        },
-        ni = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
-        oi = 0,
-        si = window.requestAnimationFrame || p("RequestAnimationFrame") || m,
-        ri = window.cancelAnimationFrame || p("CancelAnimationFrame") || p("CancelRequestAnimationFrame") || function(t) {
-            window.clearTimeout(t)
-        },
-        ai = (Object.freeze || Object)({
-            freeze: $t,
-            extend: i,
-            create: Qt,
-            bind: e,
-            lastId: ti,
-            stamp: n,
-            throttle: o,
-            wrapNum: s,
-            falseFn: r,
-            formatNum: a,
-            trim: h,
-            splitWords: u,
-            setOptions: l,
-            getParamString: c,
-            template: _,
-            isArray: ei,
-            indexOf: d,
-            emptyImageUrl: ni,
-            requestFn: si,
-            cancelFn: ri,
-            requestAnimFrame: f,
-            cancelAnimFrame: g
-        });
-    v.extend = function(t) {
-            var e = function() {
-                    this.initialize && this.initialize.apply(this, arguments),
-                        this.callInitHooks()
-                },
-                n = e.__super__ = this.prototype,
-                o = Qt(n);
-            o.constructor = e,
-                e.prototype = o;
-            for (var s in this)
-                this.hasOwnProperty(s) && "prototype" !== s && "__super__" !== s && (e[s] = this[s]);
-            return t.statics && (i(e, t.statics),
+            var e = i.__super__ = this.prototype,
+                n = s(e);
+            for (var o in (n.constructor = i).prototype = n,
+                    this)
+                this.hasOwnProperty(o) && "prototype" !== o && "__super__" !== o && (i[o] = this[o]);
+            return t.statics && (h(i, t.statics),
                     delete t.statics),
-                t.includes && (y(t.includes),
-                    i.apply(null, [o].concat(t.includes)),
+                t.includes && (function(t) {
+                        if ("undefined" == typeof L || !L || !L.Mixin)
+                            return;
+                        t = v(t) ? t : [t];
+                        for (var i = 0; i < t.length; i++)
+                            t[i] === L.Mixin.Events && console.warn("Deprecated include of L.Mixin.Events: this property will be removed in future releases, please inherit from L.Evented instead.", (new Error).stack)
+                    }(t.includes),
+                    h.apply(null, [n].concat(t.includes)),
                     delete t.includes),
-                o.options && (t.options = i(Qt(o.options), t.options)),
-                i(o, t),
-                o._initHooks = [],
-                o.callInitHooks = function() {
+                n.options && (t.options = h(s(n.options), t.options)),
+                h(n, t),
+                n._initHooks = [],
+                n.callInitHooks = function() {
                     if (!this._initHooksCalled) {
-                        n.callInitHooks && n.callInitHooks.call(this),
+                        e.callInitHooks && e.callInitHooks.call(this),
                             this._initHooksCalled = !0;
-                        for (var t = 0, i = o._initHooks.length; t < i; t++)
-                            o._initHooks[t].call(this)
+                        for (var t = 0, i = n._initHooks.length; t < i; t++)
+                            n._initHooks[t].call(this)
                     }
                 },
-                e
+                i
         },
-        v.include = function(t) {
-            return i(this.prototype, t),
+        Z.include = function(t) {
+            return h(this.prototype, t),
                 this
         },
-        v.mergeOptions = function(t) {
-            return i(this.prototype.options, t),
+        Z.mergeOptions = function(t) {
+            return h(this.prototype.options, t),
                 this
         },
-        v.addInitHook = function(t) {
+        Z.addInitHook = function(t) {
             var i = Array.prototype.slice.call(arguments, 1),
                 e = "function" == typeof t ? t : function() {
                     this[t].apply(this, i)
@@ -906,13 +217,13 @@
                 this.prototype._initHooks.push(e),
                 this
         };
-    var hi = {
+    var E = {
         on: function(t, i, e) {
             if ("object" == typeof t)
                 for (var n in t)
                     this._on(n, t[n], i);
             else
-                for (var o = 0, s = (t = u(t)).length; o < s; o++)
+                for (var o = 0, s = (t = d(t)).length; o < s; o++)
                     this._on(t[o], i, e);
             return this
         },
@@ -922,7 +233,7 @@
                     for (var n in t)
                         this._off(n, t[n], i);
                 else
-                    for (var o = 0, s = (t = u(t)).length; o < s; o++)
+                    for (var o = 0, s = (t = d(t)).length; o < s; o++)
                         this._off(t[o], i, e);
             else
                 delete this._events;
@@ -950,39 +261,39 @@
                         n)
                         for (o = 0,
                             s = n.length; o < s; o++) {
-                            var a = n[o];
-                            if (a.ctx === e && a.fn === i)
-                                return a.fn = r,
+                            var r = n[o];
+                            if (r.ctx === e && r.fn === i)
+                                return r.fn = l,
                                     this._firingCount && (this._events[t] = n = n.slice()),
                                     void n.splice(o, 1)
                         }
                 } else {
                     for (o = 0,
                         s = n.length; o < s; o++)
-                        n[o].fn = r;
+                        n[o].fn = l;
                     delete this._events[t]
                 }
         },
-        fire: function(t, e, n) {
-            if (!this.listens(t, n))
+        fire: function(t, i, e) {
+            if (!this.listens(t, e))
                 return this;
-            var o = i({}, e, {
+            var n = h({}, i, {
                 type: t,
                 target: this,
-                sourceTarget: e && e.sourceTarget || this
+                sourceTarget: i && i.sourceTarget || this
             });
             if (this._events) {
-                var s = this._events[t];
-                if (s) {
+                var o = this._events[t];
+                if (o) {
                     this._firingCount = this._firingCount + 1 || 1;
-                    for (var r = 0, a = s.length; r < a; r++) {
-                        var h = s[r];
-                        h.fn.call(h.ctx || this, o)
+                    for (var s = 0, r = o.length; s < r; s++) {
+                        var a = o[s];
+                        a.fn.call(a.ctx || this, n)
                     }
                     this._firingCount--
                 }
             }
-            return n && this._propagateEvent(o),
+            return e && this._propagateEvent(n),
                 this
         },
         listens: function(t, i) {
@@ -995,46 +306,90 @@
                         return !0;
             return !1
         },
-        once: function(t, i, n) {
+        once: function(t, i, e) {
             if ("object" == typeof t) {
-                for (var o in t)
-                    this.once(o, t[o], i);
+                for (var n in t)
+                    this.once(n, t[n], i);
                 return this
             }
-            var s = e(function() {
-                this.off(t, i, n).off(t, s, n)
+            var o = a(function() {
+                this.off(t, i, e).off(t, o, e)
             }, this);
-            return this.on(t, i, n).on(t, s, n)
+            return this.on(t, i, e).on(t, o, e)
         },
         addEventParent: function(t) {
             return this._eventParents = this._eventParents || {},
-                this._eventParents[n(t)] = t,
+                this._eventParents[u(t)] = t,
                 this
         },
         removeEventParent: function(t) {
-            return this._eventParents && delete this._eventParents[n(t)],
+            return this._eventParents && delete this._eventParents[u(t)],
                 this
         },
         _propagateEvent: function(t) {
-            for (var e in this._eventParents)
-                this._eventParents[e].fire(t.type, i({
+            for (var i in this._eventParents)
+                this._eventParents[i].fire(t.type, h({
                     layer: t.target,
                     propagatedFrom: t.target
                 }, t), !0)
         }
     };
-    hi.addEventListener = hi.on,
-        hi.removeEventListener = hi.clearAllEventListeners = hi.off,
-        hi.addOneTimeEventListener = hi.once,
-        hi.fireEvent = hi.fire,
-        hi.hasEventListeners = hi.listens;
+    E.addEventListener = E.on,
+        E.removeEventListener = E.clearAllEventListeners = E.off,
+        E.addOneTimeEventListener = E.once,
+        E.fireEvent = E.fire,
+        E.hasEventListeners = E.listens;
+    var k = Z.extend(E);
 
-    x.prototype = {
+    function B(t, i, e) {
+        this.x = e ? Math.round(t) : t,
+            this.y = e ? Math.round(i) : i
+    }
+    var A = Math.trunc || function(t) {
+        return 0 < t ? Math.floor(t) : Math.ceil(t)
+    };
+
+    function I(t, i, e) {
+        return t instanceof B ? t : v(t) ? new B(t[0], t[1]) : null == t ? t : "object" == typeof t && "x" in t && "y" in t ? new B(t.x, t.y) : new B(t, i, e)
+    }
+
+    function O(t, i) {
+        if (t)
+            for (var e = i ? [t, i] : t, n = 0, o = e.length; n < o; n++)
+                this.extend(e[n])
+    }
+
+    function R(t, i) {
+        return !t || t instanceof O ? t : new O(t, i)
+    }
+
+    function N(t, i) {
+        if (t)
+            for (var e = i ? [t, i] : t, n = 0, o = e.length; n < o; n++)
+                this.extend(e[n])
+    }
+
+    function D(t, i) {
+        return t instanceof N ? t : new N(t, i)
+    }
+
+    function j(t, i, e) {
+        if (isNaN(t) || isNaN(i))
+            throw new Error("Invalid LatLng object: (" + t + ", " + i + ")");
+        this.lat = +t,
+            this.lng = +i,
+            void 0 !== e && (this.alt = +e)
+    }
+
+    function W(t, i, e) {
+        return t instanceof j ? t : v(t) && "object" != typeof t[0] ? 3 === t.length ? new j(t[0], t[1], t[2]) : 2 === t.length ? new j(t[0], t[1]) : null : null == t ? t : "object" == typeof t && "lat" in t ? new j(t.lat, "lng" in t ? t.lng : t.lon, t.alt) : void 0 === i ? null : new j(t, i, e)
+    }
+    B.prototype = {
             clone: function() {
-                return new x(this.x, this.y)
+                return new B(this.x, this.y)
             },
             add: function(t) {
-                return this.clone()._add(w(t))
+                return this.clone()._add(I(t))
             },
             _add: function(t) {
                 return this.x += t.x,
@@ -1042,7 +397,7 @@
                     this
             },
             subtract: function(t) {
-                return this.clone()._subtract(w(t))
+                return this.clone()._subtract(I(t))
             },
             _subtract: function(t) {
                 return this.x -= t.x,
@@ -1066,10 +421,10 @@
                     this
             },
             scaleBy: function(t) {
-                return new x(this.x * t.x, this.y * t.y)
+                return new B(this.x * t.x, this.y * t.y)
             },
             unscaleBy: function(t) {
-                return new x(this.x / t.x, this.y / t.y)
+                return new B(this.x / t.x, this.y / t.y)
             },
             round: function() {
                 return this.clone()._round()
@@ -1099,29 +454,29 @@
                 return this.clone()._trunc()
             },
             _trunc: function() {
-                return this.x = li(this.x),
-                    this.y = li(this.y),
+                return this.x = A(this.x),
+                    this.y = A(this.y),
                     this
             },
             distanceTo: function(t) {
-                var i = (t = w(t)).x - this.x,
+                var i = (t = I(t)).x - this.x,
                     e = t.y - this.y;
                 return Math.sqrt(i * i + e * e)
             },
             equals: function(t) {
-                return (t = w(t)).x === this.x && t.y === this.y
+                return (t = I(t)).x === this.x && t.y === this.y
             },
             contains: function(t) {
-                return t = w(t),
+                return t = I(t),
                     Math.abs(t.x) <= Math.abs(this.x) && Math.abs(t.y) <= Math.abs(this.y)
             },
             toString: function() {
-                return "Point(" + a(this.x) + ", " + a(this.y) + ")"
+                return "Point(" + c(this.x) + ", " + c(this.y) + ")"
             }
         },
-        P.prototype = {
+        O.prototype = {
             extend: function(t) {
-                return t = w(t),
+                return t = I(t),
                     this.min || this.max ? (this.min.x = Math.min(t.x, this.min.x),
                         this.max.x = Math.max(t.x, this.max.x),
                         this.min.y = Math.min(t.y, this.min.y),
@@ -1130,13 +485,13 @@
                     this
             },
             getCenter: function(t) {
-                return new x((this.min.x + this.max.x) / 2, (this.min.y + this.max.y) / 2, t)
+                return new B((this.min.x + this.max.x) / 2, (this.min.y + this.max.y) / 2, t)
             },
             getBottomLeft: function() {
-                return new x(this.min.x, this.max.y)
+                return new B(this.min.x, this.max.y)
             },
             getTopRight: function() {
-                return new x(this.max.x, this.min.y)
+                return new B(this.max.x, this.min.y)
             },
             getTopLeft: function() {
                 return this.min
@@ -1149,12 +504,12 @@
             },
             contains: function(t) {
                 var i, e;
-                return (t = "number" == typeof t[0] || t instanceof x ? w(t) : b(t)) instanceof P ? (i = t.min,
+                return (t = "number" == typeof t[0] || t instanceof B ? I(t) : R(t)) instanceof O ? (i = t.min,
                         e = t.max) : i = e = t,
                     i.x >= this.min.x && e.x <= this.max.x && i.y >= this.min.y && e.y <= this.max.y
             },
             intersects: function(t) {
-                t = b(t);
+                t = R(t);
                 var i = this.min,
                     e = this.max,
                     n = t.min,
@@ -1164,7 +519,7 @@
                 return s && r
             },
             overlaps: function(t) {
-                t = b(t);
+                t = R(t);
                 var i = this.min,
                     e = this.max,
                     n = t.min,
@@ -1177,16 +532,15 @@
                 return !(!this.min || !this.max)
             }
         },
-        T.prototype = {
+        N.prototype = {
             extend: function(t) {
                 var i, e, n = this._southWest,
                     o = this._northEast;
-                if (t instanceof M)
-                    i = t,
-                    e = t;
+                if (t instanceof j)
+                    e = i = t;
                 else {
-                    if (!(t instanceof T))
-                        return t ? this.extend(C(t) || z(t)) : this;
+                    if (!(t instanceof N))
+                        return t ? this.extend(W(t) || D(t)) : this;
                     if (i = t._southWest,
                         e = t._northEast, !i || !e)
                         return this
@@ -1194,8 +548,8 @@
                 return n || o ? (n.lat = Math.min(i.lat, n.lat),
                         n.lng = Math.min(i.lng, n.lng),
                         o.lat = Math.max(e.lat, o.lat),
-                        o.lng = Math.max(e.lng, o.lng)) : (this._southWest = new M(i.lat, i.lng),
-                        this._northEast = new M(e.lat, e.lng)),
+                        o.lng = Math.max(e.lng, o.lng)) : (this._southWest = new j(i.lat, i.lng),
+                        this._northEast = new j(e.lat, e.lng)),
                     this
             },
             pad: function(t) {
@@ -1203,10 +557,10 @@
                     e = this._northEast,
                     n = Math.abs(i.lat - e.lat) * t,
                     o = Math.abs(i.lng - e.lng) * t;
-                return new T(new M(i.lat - n, i.lng - o), new M(e.lat + n, e.lng + o))
+                return new N(new j(i.lat - n, i.lng - o), new j(e.lat + n, e.lng + o))
             },
             getCenter: function() {
-                return new M((this._southWest.lat + this._northEast.lat) / 2, (this._southWest.lng + this._northEast.lng) / 2)
+                return new j((this._southWest.lat + this._northEast.lat) / 2, (this._southWest.lng + this._northEast.lng) / 2)
             },
             getSouthWest: function() {
                 return this._southWest
@@ -1215,10 +569,10 @@
                 return this._northEast
             },
             getNorthWest: function() {
-                return new M(this.getNorth(), this.getWest())
+                return new j(this.getNorth(), this.getWest())
             },
             getSouthEast: function() {
-                return new M(this.getSouth(), this.getEast())
+                return new j(this.getSouth(), this.getEast())
             },
             getWest: function() {
                 return this._southWest.lng
@@ -1233,15 +587,15 @@
                 return this._northEast.lat
             },
             contains: function(t) {
-                t = "number" == typeof t[0] || t instanceof M || "lat" in t ? C(t) : z(t);
+                t = "number" == typeof t[0] || t instanceof j || "lat" in t ? W(t) : D(t);
                 var i, e, n = this._southWest,
                     o = this._northEast;
-                return t instanceof T ? (i = t.getSouthWest(),
+                return t instanceof N ? (i = t.getSouthWest(),
                         e = t.getNorthEast()) : i = e = t,
                     i.lat >= n.lat && e.lat <= o.lat && i.lng >= n.lng && e.lng <= o.lng
             },
             intersects: function(t) {
-                t = z(t);
+                t = D(t);
                 var i = this._southWest,
                     e = this._northEast,
                     n = t.getSouthWest(),
@@ -1251,7 +605,7 @@
                 return s && r
             },
             overlaps: function(t) {
-                t = z(t);
+                t = D(t);
                 var i = this._southWest,
                     e = this._northEast,
                     n = t.getSouthWest(),
@@ -1264,37 +618,14 @@
                 return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(",")
             },
             equals: function(t, i) {
-                return !!t && (t = z(t),
+                return !!t && (t = D(t),
                     this._southWest.equals(t.getSouthWest(), i) && this._northEast.equals(t.getNorthEast(), i))
             },
             isValid: function() {
                 return !(!this._southWest || !this._northEast)
             }
-        },
-        M.prototype = {
-            equals: function(t, i) {
-                return !!t && (t = C(t),
-                    Math.max(Math.abs(this.lat - t.lat), Math.abs(this.lng - t.lng)) <= (void 0 === i ? 1e-9 : i))
-            },
-            toString: function(t) {
-                return "LatLng(" + a(this.lat, t) + ", " + a(this.lng, t) + ")"
-            },
-            distanceTo: function(t) {
-                return _i.distance(this, C(t))
-            },
-            wrap: function() {
-                return _i.wrapLatLng(this)
-            },
-            toBounds: function(t) {
-                var i = 180 * t / 40075017,
-                    e = i / Math.cos(Math.PI / 180 * this.lat);
-                return z([this.lat - i, this.lng - e], [this.lat + i, this.lng + e])
-            },
-            clone: function() {
-                return new M(this.lat, this.lng, this.alt)
-            }
         };
-    var ci = {
+    var H, F = {
             latLngToPoint: function(t, i) {
                 var e = this.projection.project(t),
                     n = this.scale(i);
@@ -1322,26 +653,48 @@
                     return null;
                 var i = this.projection.bounds,
                     e = this.scale(t);
-                return new P(this.transformation.transform(i.min, e), this.transformation.transform(i.max, e))
+                return new O(this.transformation.transform(i.min, e), this.transformation.transform(i.max, e))
             },
-            infinite: !1,
+            infinite: !(j.prototype = {
+                equals: function(t, i) {
+                    return !!t && (t = W(t),
+                        Math.max(Math.abs(this.lat - t.lat), Math.abs(this.lng - t.lng)) <= (void 0 === i ? 1e-9 : i))
+                },
+                toString: function(t) {
+                    return "LatLng(" + c(this.lat, t) + ", " + c(this.lng, t) + ")"
+                },
+                distanceTo: function(t) {
+                    return U.distance(this, W(t))
+                },
+                wrap: function() {
+                    return U.wrapLatLng(this)
+                },
+                toBounds: function(t) {
+                    var i = 180 * t / 40075017,
+                        e = i / Math.cos(Math.PI / 180 * this.lat);
+                    return D([this.lat - i, this.lng - e], [this.lat + i, this.lng + e])
+                },
+                clone: function() {
+                    return new j(this.lat, this.lng, this.alt)
+                }
+            }),
             wrapLatLng: function(t) {
-                var i = this.wrapLng ? s(t.lng, this.wrapLng, !0) : t.lng;
-                return new M(this.wrapLat ? s(t.lat, this.wrapLat, !0) : t.lat, i, t.alt)
+                var i = this.wrapLng ? r(t.lng, this.wrapLng, !0) : t.lng;
+                return new j(this.wrapLat ? r(t.lat, this.wrapLat, !0) : t.lat, i, t.alt)
             },
             wrapLatLngBounds: function(t) {
                 var i = t.getCenter(),
                     e = this.wrapLatLng(i),
                     n = i.lat - e.lat,
                     o = i.lng - e.lng;
-                if (0 === n && 0 === o)
+                if (0 == n && 0 == o)
                     return t;
                 var s = t.getSouthWest(),
                     r = t.getNorthEast();
-                return new T(new M(s.lat - n, s.lng - o), new M(r.lat - n, r.lng - o))
+                return new N(new j(s.lat - n, s.lng - o), new j(r.lat - n, r.lng - o))
             }
         },
-        _i = i({}, ci, {
+        U = h({}, F, {
             wrapLng: [-180, 180],
             R: 6371e3,
             distance: function(t, i) {
@@ -1355,26 +708,41 @@
                 return this.R * h
             }
         }),
-        di = {
-            R: 6378137,
+        V = 6378137,
+        q = {
+            R: V,
             MAX_LATITUDE: 85.0511287798,
             project: function(t) {
                 var i = Math.PI / 180,
                     e = this.MAX_LATITUDE,
                     n = Math.max(Math.min(e, t.lat), -e),
                     o = Math.sin(n * i);
-                return new x(this.R * t.lng * i, this.R * Math.log((1 + o) / (1 - o)) / 2)
+                return new B(this.R * t.lng * i, this.R * Math.log((1 + o) / (1 - o)) / 2)
             },
             unproject: function(t) {
                 var i = 180 / Math.PI;
-                return new M((2 * Math.atan(Math.exp(t.y / this.R)) - Math.PI / 2) * i, t.x * i / this.R)
+                return new j((2 * Math.atan(Math.exp(t.y / this.R)) - Math.PI / 2) * i, t.x * i / this.R)
             },
-            bounds: function() {
-                var t = 6378137 * Math.PI;
-                return new P([-t, -t], [t, t])
-            }()
+            bounds: (H = V * Math.PI,
+                new O([-H, -H], [H, H]))
         };
-    Z.prototype = {
+
+    function G(t, i, e, n) {
+        if (v(t))
+            return this._a = t[0],
+                this._b = t[1],
+                this._c = t[2],
+                void(this._d = t[3]);
+        this._a = t,
+            this._b = i,
+            this._c = e,
+            this._d = n
+    }
+
+    function K(t, i, e, n) {
+        return new G(t, i, e, n)
+    }
+    G.prototype = {
         transform: function(t, i) {
             return this._transform(t.clone(), i)
         },
@@ -1386,52 +754,66 @@
         },
         untransform: function(t, i) {
             return i = i || 1,
-                new x((t.x / i - this._b) / this._a, (t.y / i - this._d) / this._c)
+                new B((t.x / i - this._b) / this._a, (t.y / i - this._d) / this._c)
         }
     };
-    var pi, mi, fi, gi, vi = i({}, _i, {
+    var Y, X = h({}, U, {
             code: "EPSG:3857",
-            projection: di,
-            transformation: function() {
-                var t = .5 / (Math.PI * di.R);
-                return S(t, .5, -t, .5)
-            }()
+            projection: q,
+            transformation: (Y = .5 / (Math.PI * q.R),
+                K(Y, .5, -Y, .5))
         }),
-        yi = i({}, vi, {
+        J = h({}, X, {
             code: "EPSG:900913"
-        }),
-        xi = document.documentElement.style,
-        wi = "ActiveXObject" in window,
-        Li = wi && !document.addEventListener,
-        Pi = "msLaunchUri" in navigator && !("documentMode" in document),
-        bi = A("webkit"),
-        Ti = A("android"),
-        zi = A("android 2") || A("android 3"),
-        Mi = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10),
-        Ci = Ti && A("Google") && Mi < 537 && !("AudioNode" in window),
-        Zi = !!window.opera,
-        Si = A("chrome"),
-        Ei = A("gecko") && !bi && !Zi && !wi,
-        ki = !Si && A("safari"),
-        Ai = A("phantom"),
-        Ii = "OTransition" in xi,
-        Bi = 0 === navigator.platform.indexOf("Win"),
-        Oi = wi && "transition" in xi,
-        Ri = "WebKitCSSMatrix" in window && "m11" in new window.WebKitCSSMatrix && !zi,
-        Di = "MozPerspective" in xi,
-        Ni = !window.L_DISABLE_3D && (Oi || Ri || Di) && !Ii && !Ai,
-        ji = "undefined" != typeof orientation || A("mobile"),
-        Wi = ji && bi,
-        Hi = ji && Ri,
-        Fi = !window.PointerEvent && window.MSPointerEvent,
-        Ui = !(!window.PointerEvent && !Fi),
-        Vi = !window.L_NO_TOUCH && (Ui || "ontouchstart" in window || window.DocumentTouch && document instanceof window.DocumentTouch),
-        qi = ji && Zi,
-        Gi = ji && Ei,
-        Ki = (window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI) > 1,
-        Yi = !!document.createElement("canvas").getContext,
-        Xi = !(!document.createElementNS || !E("svg").createSVGRect),
-        Ji = !Xi && function() {
+        });
+
+    function $(t) {
+        return document.createElementNS("http://www.w3.org/2000/svg", t)
+    }
+
+    function Q(t, i) {
+        var e, n, o, s, r, a, h = "";
+        for (e = 0,
+            o = t.length; e < o; e++) {
+            for (n = 0,
+                s = (r = t[e]).length; n < s; n++)
+                h += (n ? "L" : "M") + (a = r[n]).x + " " + a.y;
+            h += i ? Zt ? "z" : "x" : ""
+        }
+        return h || "M0 0"
+    }
+    var tt = document.documentElement.style,
+        it = "ActiveXObject" in window,
+        et = it && !document.addEventListener,
+        nt = "msLaunchUri" in navigator && !("documentMode" in document),
+        ot = kt("webkit"),
+        st = kt("android"),
+        rt = kt("android 2") || kt("android 3"),
+        at = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10),
+        ht = st && kt("Google") && at < 537 && !("AudioNode" in window),
+        ut = !!window.opera,
+        lt = kt("chrome"),
+        ct = kt("gecko") && !ot && !ut && !it,
+        _t = !lt && kt("safari"),
+        dt = kt("phantom"),
+        pt = "OTransition" in tt,
+        mt = 0 === navigator.platform.indexOf("Win"),
+        ft = it && "transition" in tt,
+        gt = "WebKitCSSMatrix" in window && "m11" in new window.WebKitCSSMatrix && !rt,
+        vt = "MozPerspective" in tt,
+        yt = !window.L_DISABLE_3D && (ft || gt || vt) && !pt && !dt,
+        xt = "undefined" != typeof orientation || kt("mobile"),
+        wt = xt && ot,
+        Pt = xt && gt,
+        Lt = !window.PointerEvent && window.MSPointerEvent,
+        bt = !(!window.PointerEvent && !Lt),
+        Tt = !window.L_NO_TOUCH && (bt || "ontouchstart" in window || window.DocumentTouch && document instanceof window.DocumentTouch),
+        zt = xt && ut,
+        Mt = xt && ct,
+        Ct = 1 < (window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI),
+        St = !!document.createElement("canvas").getContext,
+        Zt = !(!document.createElementNS || !$("svg").createSVGRect),
+        Et = !Zt && function() {
             try {
                 var t = document.createElement("div");
                 t.innerHTML = '<v:shape adj="1"/>';
@@ -1441,130 +823,521 @@
             } catch (t) {
                 return !1
             }
-        }(),
-        $i = (Object.freeze || Object)({
-            ie: wi,
-            ielt9: Li,
-            edge: Pi,
-            webkit: bi,
-            android: Ti,
-            android23: zi,
-            androidStock: Ci,
-            opera: Zi,
-            chrome: Si,
-            gecko: Ei,
-            safari: ki,
-            phantom: Ai,
-            opera12: Ii,
-            win: Bi,
-            ie3d: Oi,
-            webkit3d: Ri,
-            gecko3d: Di,
-            any3d: Ni,
-            mobile: ji,
-            mobileWebkit: Wi,
-            mobileWebkit3d: Hi,
-            msPointer: Fi,
-            pointer: Ui,
-            touch: Vi,
-            mobileOpera: qi,
-            mobileGecko: Gi,
-            retina: Ki,
-            canvas: Yi,
-            svg: Xi,
-            vml: Ji
+        }();
+
+    function kt(t) {
+        return 0 <= navigator.userAgent.toLowerCase().indexOf(t)
+    }
+    var Bt = (Object.freeze || Object)({
+            ie: it,
+            ielt9: et,
+            edge: nt,
+            webkit: ot,
+            android: st,
+            android23: rt,
+            androidStock: ht,
+            opera: ut,
+            chrome: lt,
+            gecko: ct,
+            safari: _t,
+            phantom: dt,
+            opera12: pt,
+            win: mt,
+            ie3d: ft,
+            webkit3d: gt,
+            gecko3d: vt,
+            any3d: yt,
+            mobile: xt,
+            mobileWebkit: wt,
+            mobileWebkit3d: Pt,
+            msPointer: Lt,
+            pointer: bt,
+            touch: Tt,
+            mobileOpera: zt,
+            mobileGecko: Mt,
+            retina: Ct,
+            canvas: St,
+            svg: Zt,
+            vml: Et
         }),
-        Qi = Fi ? "MSPointerDown" : "pointerdown",
-        te = Fi ? "MSPointerMove" : "pointermove",
-        ie = Fi ? "MSPointerUp" : "pointerup",
-        ee = Fi ? "MSPointerCancel" : "pointercancel",
-        ne = ["INPUT", "SELECT", "OPTION"],
-        oe = {},
-        se = !1,
-        re = 0,
-        ae = Fi ? "MSPointerDown" : Ui ? "pointerdown" : "touchstart",
-        he = Fi ? "MSPointerUp" : Ui ? "pointerup" : "touchend",
-        ue = "_leaflet_",
-        le = "_leaflet_events",
-        ce = Bi && Si ? 2 * window.devicePixelRatio : Ei ? window.devicePixelRatio : 1,
-        _e = {},
-        de = (Object.freeze || Object)({
-            on: V,
-            off: q,
-            stopPropagation: Y,
-            disableScrollPropagation: X,
-            disableClickPropagation: J,
-            preventDefault: $,
-            stop: Q,
-            getMousePosition: tt,
-            getWheelDelta: it,
-            fakeStop: et,
-            skipped: nt,
-            isExternalTarget: ot,
-            addListener: V,
-            removeListener: q
-        }),
-        pe = xt(["transform", "WebkitTransform", "OTransform", "MozTransform", "msTransform"]),
-        me = xt(["webkitTransition", "transition", "OTransition", "MozTransition", "msTransition"]),
-        fe = "webkitTransition" === me || "OTransition" === me ? me + "End" : "transitionend";
+        At = Lt ? "MSPointerDown" : "pointerdown",
+        It = Lt ? "MSPointerMove" : "pointermove",
+        Ot = Lt ? "MSPointerUp" : "pointerup",
+        Rt = Lt ? "MSPointerCancel" : "pointercancel",
+        Nt = ["INPUT", "SELECT", "OPTION"],
+        Dt = {},
+        jt = !1,
+        Wt = 0;
+
+    function Ht(t, i, e, n) {
+        return "touchstart" === i ? function(t, i, e) {
+                var n = a(function(t) {
+                    if ("mouse" !== t.pointerType && t.MSPOINTER_TYPE_MOUSE && t.pointerType !== t.MSPOINTER_TYPE_MOUSE) {
+                        if (!(Nt.indexOf(t.target.tagName) < 0))
+                            return;
+                        Di(t)
+                    }
+                    qt(t, i)
+                });
+                t["_leaflet_touchstart" + e] = n,
+                    t.addEventListener(At, n, !1),
+                    jt || (document.documentElement.addEventListener(At, Ft, !0),
+                        document.documentElement.addEventListener(It, Ut, !0),
+                        document.documentElement.addEventListener(Ot, Vt, !0),
+                        document.documentElement.addEventListener(Rt, Vt, !0),
+                        jt = !0)
+            }(t, e, n) : "touchmove" === i ? function(t, i, e) {
+                var n = function(t) {
+                    (t.pointerType !== t.MSPOINTER_TYPE_MOUSE && "mouse" !== t.pointerType || 0 !== t.buttons) && qt(t, i)
+                };
+                t["_leaflet_touchmove" + e] = n,
+                    t.addEventListener(It, n, !1)
+            }(t, e, n) : "touchend" === i && function(t, i, e) {
+                var n = function(t) {
+                    qt(t, i)
+                };
+                t["_leaflet_touchend" + e] = n,
+                    t.addEventListener(Ot, n, !1),
+                    t.addEventListener(Rt, n, !1)
+            }(t, e, n),
+            this
+    }
+
+    function Ft(t) {
+        Dt[t.pointerId] = t,
+            Wt++
+    }
+
+    function Ut(t) {
+        Dt[t.pointerId] && (Dt[t.pointerId] = t)
+    }
+
+    function Vt(t) {
+        delete Dt[t.pointerId],
+            Wt--
+    }
+
+    function qt(t, i) {
+        for (var e in t.touches = [],
+                Dt)
+            t.touches.push(Dt[e]);
+        t.changedTouches = [t],
+            i(t)
+    }
+    var Gt = Lt ? "MSPointerDown" : bt ? "pointerdown" : "touchstart",
+        Kt = Lt ? "MSPointerUp" : bt ? "pointerup" : "touchend",
+        Yt = "_leaflet_";
+
+    function Xt(t, o, i) {
+        var s, r, a = !1;
+
+        function e(t) {
+            var i;
+            if (bt) {
+                if (!nt || "mouse" === t.pointerType)
+                    return;
+                i = Wt
+            } else
+                i = t.touches.length;
+            if (!(1 < i)) {
+                var e = Date.now(),
+                    n = e - (s || e);
+                r = t.touches ? t.touches[0] : t,
+                    a = 0 < n && n <= 250,
+                    s = e
+            }
+        }
+
+        function n(t) {
+            if (a && !r.cancelBubble) {
+                if (bt) {
+                    if (!nt || "mouse" === t.pointerType)
+                        return;
+                    var i, e, n = {};
+                    for (e in r)
+                        i = r[e],
+                        n[e] = i && i.bind ? i.bind(r) : i;
+                    r = n
+                }
+                r.type = "dblclick",
+                    r.button = 0,
+                    o(r),
+                    s = null
+            }
+        }
+        return t[Yt + Gt + i] = e,
+            t[Yt + Kt + i] = n,
+            t[Yt + "dblclick" + i] = o,
+            t.addEventListener(Gt, e, !1),
+            t.addEventListener(Kt, n, !1),
+            t.addEventListener("dblclick", o, !1),
+            this
+    }
+
+    function Jt(t, i) {
+        var e = t[Yt + Gt + i],
+            n = t[Yt + Kt + i],
+            o = t[Yt + "dblclick" + i];
+        return t.removeEventListener(Gt, e, !1),
+            t.removeEventListener(Kt, n, !1),
+            nt || t.removeEventListener("dblclick", o, !1),
+            this
+    }
+    var $t, Qt, ti, ii, ei, ni = yi(["transform", "webkitTransform", "OTransform", "MozTransform", "msTransform"]),
+        oi = yi(["webkitTransition", "transition", "OTransition", "MozTransition", "msTransition"]),
+        si = "webkitTransition" === oi || "OTransition" === oi ? oi + "End" : "transitionend";
+
+    function ri(t) {
+        return "string" == typeof t ? document.getElementById(t) : t
+    }
+
+    function ai(t, i) {
+        var e = t.style[i] || t.currentStyle && t.currentStyle[i];
+        if ((!e || "auto" === e) && document.defaultView) {
+            var n = document.defaultView.getComputedStyle(t, null);
+            e = n ? n[i] : null
+        }
+        return "auto" === e ? null : e
+    }
+
+    function hi(t, i, e) {
+        var n = document.createElement(t);
+        return n.className = i || "",
+            e && e.appendChild(n),
+            n
+    }
+
+    function ui(t) {
+        var i = t.parentNode;
+        i && i.removeChild(t)
+    }
+
+    function li(t) {
+        for (; t.firstChild;)
+            t.removeChild(t.firstChild)
+    }
+
+    function ci(t) {
+        var i = t.parentNode;
+        i && i.lastChild !== t && i.appendChild(t)
+    }
+
+    function _i(t) {
+        var i = t.parentNode;
+        i && i.firstChild !== t && i.insertBefore(t, i.firstChild)
+    }
+
+    function di(t, i) {
+        if (void 0 !== t.classList)
+            return t.classList.contains(i);
+        var e = gi(t);
+        return 0 < e.length && new RegExp("(^|\\s)" + i + "(\\s|$)").test(e)
+    }
+
+    function pi(t, i) {
+        if (void 0 !== t.classList)
+            for (var e = d(i), n = 0, o = e.length; n < o; n++)
+                t.classList.add(e[n]);
+        else if (!di(t, i)) {
+            var s = gi(t);
+            fi(t, (s ? s + " " : "") + i)
+        }
+    }
+
+    function mi(t, i) {
+        void 0 !== t.classList ? t.classList.remove(i) : fi(t, _((" " + gi(t) + " ").replace(" " + i + " ", " ")))
+    }
+
+    function fi(t, i) {
+        void 0 === t.className.baseVal ? t.className = i : t.className.baseVal = i
+    }
+
+    function gi(t) {
+        return t.correspondingElement && (t = t.correspondingElement),
+            void 0 === t.className.baseVal ? t.className : t.className.baseVal
+    }
+
+    function vi(t, i) {
+        "opacity" in t.style ? t.style.opacity = i : "filter" in t.style && function(t, i) {
+            var e = !1,
+                n = "DXImageTransform.Microsoft.Alpha";
+            try {
+                e = t.filters.item(n)
+            } catch (t) {
+                if (1 === i)
+                    return
+            }
+            i = Math.round(100 * i),
+                e ? (e.Enabled = 100 !== i,
+                    e.Opacity = i) : t.style.filter += " progid:" + n + "(opacity=" + i + ")"
+        }(t, i)
+    }
+
+    function yi(t) {
+        for (var i = document.documentElement.style, e = 0; e < t.length; e++)
+            if (t[e] in i)
+                return t[e];
+        return !1
+    }
+
+    function xi(t, i, e) {
+        var n = i || new B(0, 0);
+        t.style[ni] = (ft ? "translate(" + n.x + "px," + n.y + "px)" : "translate3d(" + n.x + "px," + n.y + "px,0)") + (e ? " scale(" + e + ")" : "")
+    }
+
+    function wi(t, i) {
+        t._leaflet_pos = i,
+            yt ? xi(t, i) : (t.style.left = i.x + "px",
+                t.style.top = i.y + "px")
+    }
+
+    function Pi(t) {
+        return t._leaflet_pos || new B(0, 0)
+    }
     if ("onselectstart" in document)
-        mi = function() {
-            V(window, "selectstart", $)
+        $t = function() {
+            Ei(window, "selectstart", Di)
         },
-        fi = function() {
-            q(window, "selectstart", $)
+        Qt = function() {
+            Bi(window, "selectstart", Di)
         };
     else {
-        var ge = xt(["userSelect", "WebkitUserSelect", "OUserSelect", "MozUserSelect", "msUserSelect"]);
-        mi = function() {
-                if (ge) {
+        var Li = yi(["userSelect", "WebkitUserSelect", "OUserSelect", "MozUserSelect", "msUserSelect"]);
+        $t = function() {
+                if (Li) {
                     var t = document.documentElement.style;
-                    gi = t[ge],
-                        t[ge] = "none"
+                    ti = t[Li],
+                        t[Li] = "none"
                 }
             },
-            fi = function() {
-                ge && (document.documentElement.style[ge] = gi,
-                    gi = void 0)
+            Qt = function() {
+                Li && (document.documentElement.style[Li] = ti,
+                    ti = void 0)
             }
     }
-    var ve, ye, xe = (Object.freeze || Object)({
-            TRANSFORM: pe,
-            TRANSITION: me,
-            TRANSITION_END: fe,
-            get: rt,
-            getStyle: at,
-            create: ht,
-            remove: ut,
-            empty: lt,
-            toFront: ct,
-            toBack: _t,
-            hasClass: dt,
-            addClass: pt,
-            removeClass: mt,
-            setClass: ft,
-            getClass: gt,
-            setOpacity: vt,
-            testProp: xt,
-            setTransform: wt,
-            setPosition: Lt,
-            getPosition: Pt,
-            disableTextSelection: mi,
-            enableTextSelection: fi,
-            disableImageDrag: bt,
-            enableImageDrag: Tt,
-            preventOutline: zt,
-            restoreOutline: Mt
+
+    function bi() {
+        Ei(window, "dragstart", Di)
+    }
+
+    function Ti() {
+        Bi(window, "dragstart", Di)
+    }
+
+    function zi(t) {
+        for (; - 1 === t.tabIndex;)
+            t = t.parentNode;
+        t.style && (Mi(),
+            ei = (ii = t).style.outline,
+            t.style.outline = "none",
+            Ei(window, "keydown", Mi))
+    }
+
+    function Mi() {
+        ii && (ii.style.outline = ei,
+            ei = ii = void 0,
+            Bi(window, "keydown", Mi))
+    }
+
+    function Ci(t) {
+        for (; !((t = t.parentNode).offsetWidth && t.offsetHeight || t === document.body);)
+        ;
+        return t
+    }
+
+    function Si(t) {
+        var i = t.getBoundingClientRect();
+        return {
+            x: i.width / t.offsetWidth || 1,
+            y: i.height / t.offsetHeight || 1,
+            boundingClientRect: i
+        }
+    }
+    var Zi = (Object.freeze || Object)({
+        TRANSFORM: ni,
+        TRANSITION: oi,
+        TRANSITION_END: si,
+        get: ri,
+        getStyle: ai,
+        create: hi,
+        remove: ui,
+        empty: li,
+        toFront: ci,
+        toBack: _i,
+        hasClass: di,
+        addClass: pi,
+        removeClass: mi,
+        setClass: fi,
+        getClass: gi,
+        setOpacity: vi,
+        testProp: yi,
+        setTransform: xi,
+        setPosition: wi,
+        getPosition: Pi,
+        disableTextSelection: $t,
+        enableTextSelection: Qt,
+        disableImageDrag: bi,
+        enableImageDrag: Ti,
+        preventOutline: zi,
+        restoreOutline: Mi,
+        getSizedParentNode: Ci,
+        getScale: Si
+    });
+
+    function Ei(t, i, e, n) {
+        if ("object" == typeof i)
+            for (var o in i)
+                Ai(t, o, i[o], e);
+        else
+            for (var s = 0, r = (i = d(i)).length; s < r; s++)
+                Ai(t, i[s], e, n);
+        return this
+    }
+    var ki = "_leaflet_events";
+
+    function Bi(t, i, e, n) {
+        if ("object" == typeof i)
+            for (var o in i)
+                Ii(t, o, i[o], e);
+        else if (i)
+            for (var s = 0, r = (i = d(i)).length; s < r; s++)
+                Ii(t, i[s], e, n);
+        else {
+            for (var a in t[ki])
+                Ii(t, a, t[ki][a]);
+            delete t[ki]
+        }
+        return this
+    }
+
+    function Ai(i, t, e, n) {
+        var o = t + u(e) + (n ? "_" + u(n) : "");
+        if (i[ki] && i[ki][o])
+            return this;
+        var s = function(t) {
+                return e.call(n || i, t || window.event)
+            },
+            r = s;
+        bt && 0 === t.indexOf("touch") ? Ht(i, t, s, o) : !Tt || "dblclick" !== t || bt && lt ? "addEventListener" in i ? "mousewheel" === t ? i.addEventListener("onwheel" in i ? "wheel" : "mousewheel", s, !1) : "mouseenter" === t || "mouseleave" === t ? (s = function(t) {
+                    t = t || window.event,
+                        Ki(i, t) && r(t)
+                },
+                i.addEventListener("mouseenter" === t ? "mouseover" : "mouseout", s, !1)) : ("click" === t && st && (s = function(t) {
+                    ! function(t, i) {
+                        var e = t.timeStamp || t.originalEvent && t.originalEvent.timeStamp,
+                            n = Ui && e - Ui;
+                        if (n && 100 < n && n < 500 || t.target._simulatedClick && !t._simulated)
+                            return ji(t);
+                        Ui = e,
+                            i(t)
+                    }(t, r)
+                }),
+                i.addEventListener(t, s, !1)) : "attachEvent" in i && i.attachEvent("on" + t, s) : Xt(i, s, o),
+            i[ki] = i[ki] || {},
+            i[ki][o] = s
+    }
+
+    function Ii(t, i, e, n) {
+        var o = i + u(e) + (n ? "_" + u(n) : ""),
+            s = t[ki] && t[ki][o];
+        if (!s)
+            return this;
+        bt && 0 === i.indexOf("touch") ? function(t, i, e) {
+                var n = t["_leaflet_" + i + e];
+                "touchstart" === i ? t.removeEventListener(At, n, !1) : "touchmove" === i ? t.removeEventListener(It, n, !1) : "touchend" === i && (t.removeEventListener(Ot, n, !1),
+                    t.removeEventListener(Rt, n, !1))
+            }(t, i, o) : !Tt || "dblclick" !== i || bt && lt ? "removeEventListener" in t ? "mousewheel" === i ? t.removeEventListener("onwheel" in t ? "wheel" : "mousewheel", s, !1) : t.removeEventListener("mouseenter" === i ? "mouseover" : "mouseleave" === i ? "mouseout" : i, s, !1) : "detachEvent" in t && t.detachEvent("on" + i, s) : Jt(t, o),
+            t[ki][o] = null
+    }
+
+    function Oi(t) {
+        return t.stopPropagation ? t.stopPropagation() : t.originalEvent ? t.originalEvent._stopped = !0 : t.cancelBubble = !0,
+            Gi(t),
+            this
+    }
+
+    function Ri(t) {
+        return Ai(t, "mousewheel", Oi),
+            this
+    }
+
+    function Ni(t) {
+        return Ei(t, "mousedown touchstart dblclick", Oi),
+            Ai(t, "click", qi),
+            this
+    }
+
+    function Di(t) {
+        return t.preventDefault ? t.preventDefault() : t.returnValue = !1,
+            this
+    }
+
+    function ji(t) {
+        return Di(t),
+            Oi(t),
+            this
+    }
+
+    function Wi(t, i) {
+        if (!i)
+            return new B(t.clientX, t.clientY);
+        var e = Si(i),
+            n = e.boundingClientRect;
+        return new B((t.clientX - n.left) / e.x - i.clientLeft, (t.clientY - n.top) / e.y - i.clientTop)
+    }
+    var Hi = mt && lt ? 2 * window.devicePixelRatio : ct ? window.devicePixelRatio : 1;
+
+    function Fi(t) {
+        return nt ? t.wheelDeltaY / 2 : t.deltaY && 0 === t.deltaMode ? -t.deltaY / Hi : t.deltaY && 1 === t.deltaMode ? 20 * -t.deltaY : t.deltaY && 2 === t.deltaMode ? 60 * -t.deltaY : t.deltaX || t.deltaZ ? 0 : t.wheelDelta ? (t.wheelDeltaY || t.wheelDelta) / 2 : t.detail && Math.abs(t.detail) < 32765 ? 20 * -t.detail : t.detail ? t.detail / -32765 * 60 : 0
+    }
+    var Ui, Vi = {};
+
+    function qi(t) {
+        Vi[t.type] = !0
+    }
+
+    function Gi(t) {
+        var i = Vi[t.type];
+        return Vi[t.type] = !1,
+            i
+    }
+
+    function Ki(t, i) {
+        var e = i.relatedTarget;
+        if (!e)
+            return !0;
+        try {
+            for (; e && e !== t;)
+                e = e.parentNode
+        } catch (t) {
+            return !1
+        }
+        return e !== t
+    }
+    var Yi = (Object.freeze || Object)({
+            on: Ei,
+            off: Bi,
+            stopPropagation: Oi,
+            disableScrollPropagation: Ri,
+            disableClickPropagation: Ni,
+            preventDefault: Di,
+            stop: ji,
+            getMousePosition: Wi,
+            getWheelDelta: Fi,
+            fakeStop: qi,
+            skipped: Gi,
+            isExternalTarget: Ki,
+            addListener: Ei,
+            removeListener: Bi
         }),
-        we = ui.extend({
-          
+        Xi = k.extend({
             run: function(t, i, e, n) {
                 this.stop(),
                     this._el = t,
                     this._inProgress = !0,
                     this._duration = e || .25,
                     this._easeOutPower = 1 / Math.max(n || .5, .2),
-                    this._startPos = Pt(t),
+                    this._startPos = Pi(t),
                     this._offset = i.subtract(this._startPos),
                     this._startTime = +new Date,
                     this.fire("start"),
@@ -1575,7 +1348,7 @@
                     this._complete())
             },
             _animate: function() {
-                this._animId = f(this._animate, this),
+                this._animId = M(this._animate, this),
                     this._step()
             },
             _step: function(t) {
@@ -1587,11 +1360,11 @@
             _runFrame: function(t, i) {
                 var e = this._startPos.add(this._offset.multiplyBy(t));
                 i && e._round(),
-                    Lt(this._el, e),
+                    wi(this._el, e),
                     this.fire("step")
             },
             _complete: function() {
-                g(this._animId),
+                C(this._animId),
                     this._inProgress = !1,
                     this.fire("end")
             },
@@ -1599,9 +1372,9 @@
                 return 1 - Math.pow(1 - t, this._easeOutPower)
             }
         }),
-        Le = ui.extend({
+        Ji = k.extend({
             options: {
-                crs: vi,
+                crs: X,
                 center: void 0,
                 zoom: void 0,
                 minZoom: void 0,
@@ -1619,41 +1392,43 @@
                 trackResize: !0
             },
             initialize: function(t, i) {
-                i = l(this, i),
-                    this._initContainer(t),
-                    this._initLayout(),
-                    this._onResize = e(this._onResize, this),
-                    this._initEvents(),
-                    i.maxBounds && this.setMaxBounds(i.maxBounds),
-                    void 0 !== i.zoom && (this._zoom = this._limitZoom(i.zoom)),
-                    i.center && void 0 !== i.zoom && this.setView(C(i.center), i.zoom, {
-                        reset: !0
-                    }),
+                i = p(this, i),
                     this._handlers = [],
                     this._layers = {},
                     this._zoomBoundLayers = {},
                     this._sizeChanged = !0,
+                    this._initContainer(t),
+                    this._initLayout(),
+                    this._onResize = a(this._onResize, this),
+                    this._initEvents(),
+                    i.maxBounds && this.setMaxBounds(i.maxBounds),
+                    void 0 !== i.zoom && (this._zoom = this._limitZoom(i.zoom)),
+                    i.center && void 0 !== i.zoom && this.setView(W(i.center), i.zoom, {
+                        reset: !0
+                    }),
                     this.callInitHooks(),
-                    this._zoomAnimated = me && Ni && !qi && this.options.zoomAnimation,
+                    this._zoomAnimated = oi && yt && !zt && this.options.zoomAnimation,
                     this._zoomAnimated && (this._createAnimProxy(),
-                        V(this._proxy, fe, this._catchTransitionEnd, this)),
+                        Ei(this._proxy, si, this._catchTransitionEnd, this)),
                     this._addLayers(this.options.layers)
             },
-            setView: function(t, e, n) {
-                return e = void 0 === e ? this._zoom : this._limitZoom(e),
-                    t = this._limitCenter(C(t), e, this.options.maxBounds),
-                    n = n || {},
-                    this._stop(),
-                    this._loaded && !n.reset && !0 !== n && (void 0 !== n.animate && (n.zoom = i({
-                                animate: n.animate
-                            }, n.zoom),
-                            n.pan = i({
-                                animate: n.animate,
-                                duration: n.duration
-                            }, n.pan)),
-                        this._zoom !== e ? this._tryAnimatedZoom && this._tryAnimatedZoom(t, e, n.zoom) : this._tryAnimatedPan(t, n.pan)) ? (clearTimeout(this._sizeTimer),
-                        this) : (this._resetView(t, e),
-                        this)
+            setView: function(t, i, e) {
+                if ((i = void 0 === i ? this._zoom : this._limitZoom(i),
+                        t = this._limitCenter(W(t), i, this.options.maxBounds),
+                        e = e || {},
+                        this._stop(),
+                        this._loaded && !e.reset && !0 !== e) && (void 0 !== e.animate && (e.zoom = h({
+                                animate: e.animate
+                            }, e.zoom),
+                            e.pan = h({
+                                animate: e.animate,
+                                duration: e.duration
+                            }, e.pan)),
+                        this._zoom !== i ? this._tryAnimatedZoom && this._tryAnimatedZoom(t, i, e.zoom) : this._tryAnimatedPan(t, e.pan)))
+                    return clearTimeout(this._sizeTimer),
+                        this;
+                return this._resetView(t, i),
+                    this
             },
             setZoom: function(t, i) {
                 return this._loaded ? this.setView(this.getCenter(), t, {
@@ -1662,17 +1437,17 @@
                     this)
             },
             zoomIn: function(t, i) {
-                return t = t || (Ni ? this.options.zoomDelta : 1),
+                return t = t || (yt ? this.options.zoomDelta : 1),
                     this.setZoom(this._zoom + t, i)
             },
             zoomOut: function(t, i) {
-                return t = t || (Ni ? this.options.zoomDelta : 1),
+                return t = t || (yt ? this.options.zoomDelta : 1),
                     this.setZoom(this._zoom - t, i)
             },
             setZoomAround: function(t, i, e) {
                 var n = this.getZoomScale(i),
                     o = this.getSize().divideBy(2),
-                    s = (t instanceof x ? t : this.latLngToContainerPoint(t)).subtract(o).multiplyBy(1 - 1 / n),
+                    s = (t instanceof B ? t : this.latLngToContainerPoint(t)).subtract(o).multiplyBy(1 - 1 / n),
                     r = this.containerPointToLatLng(o.add(s));
                 return this.setView(r, i, {
                     zoom: e
@@ -1680,9 +1455,9 @@
             },
             _getBoundsCenterZoom: function(t, i) {
                 i = i || {},
-                    t = t.getBounds ? t.getBounds() : z(t);
-                var e = w(i.paddingTopLeft || i.padding || [0, 0]),
-                    n = w(i.paddingBottomRight || i.padding || [0, 0]),
+                    t = t.getBounds ? t.getBounds() : D(t);
+                var e = I(i.paddingTopLeft || i.padding || [0, 0]),
+                    n = I(i.paddingBottomRight || i.padding || [0, 0]),
                     o = this.getBoundsZoom(t, !1, e.add(n));
                 if ((o = "number" == typeof i.maxZoom ? Math.min(i.maxZoom, o) : o) === 1 / 0)
                     return {
@@ -1698,7 +1473,7 @@
                 }
             },
             fitBounds: function(t, i) {
-                if (!(t = z(t)).isValid())
+                if (!(t = D(t)).isValid())
                     throw new Error("Bounds are not valid.");
                 var e = this._getBoundsCenterZoom(t, i);
                 return this.setView(e.center, e.zoom, i)
@@ -1715,19 +1490,18 @@
                 })
             },
             panBy: function(t, i) {
-                if (t = w(t).round(),
-                    i = i || {}, !t.x && !t.y)
+                if (i = i || {}, !(t = I(t).round()).x && !t.y)
                     return this.fire("moveend");
                 if (!0 !== i.animate && !this.getSize().contains(t))
                     return this._resetView(this.unproject(this.project(this.getCenter()).add(t)), this.getZoom()),
                         this;
-                if (this._panAnim || (this._panAnim = new we,
+                if (this._panAnim || (this._panAnim = new Xi,
                         this._panAnim.on({
                             step: this._onPanTransitionStep,
                             end: this._onPanTransitionEnd
                         }, this)),
                     i.noMoveStart || this.fire("movestart"), !1 !== i.animate) {
-                    pt(this._mapPane, "leaflet-pan-anim");
+                    pi(this._mapPane, "leaflet-pan-anim");
                     var e = this._getMapPanePos().subtract(t).round();
                     this._panAnim.run(this._mapPane, e, i.duration || .25, i.easeLinearity)
                 } else
@@ -1735,65 +1509,59 @@
                     this.fire("move").fire("moveend");
                 return this
             },
-            flyTo: function(t, i, e) {
-                function n(t) {
-                    var i = (g * g - m * m + (t ? -1 : 1) * x * x * v * v) / (2 * (t ? g : m) * x * v),
+            flyTo: function(n, o, t) {
+                if (!1 === (t = t || {}).animate || !yt)
+                    return this.setView(n, o, t);
+                this._stop();
+                var s = this.project(this.getCenter()),
+                    r = this.project(n),
+                    i = this.getSize(),
+                    a = this._zoom;
+                n = W(n),
+                    o = void 0 === o ? a : o;
+                var h = Math.max(i.x, i.y),
+                    u = h * this.getZoomScale(a, o),
+                    l = r.distanceTo(s) || 1,
+                    c = 1.42,
+                    _ = c * c;
+
+                function e(t) {
+                    var i = (u * u - h * h + (t ? -1 : 1) * _ * _ * l * l) / (2 * (t ? u : h) * _ * l),
                         e = Math.sqrt(i * i + 1) - i;
                     return e < 1e-9 ? -18 : Math.log(e)
                 }
 
-                function o(t) {
+                function d(t) {
                     return (Math.exp(t) - Math.exp(-t)) / 2
                 }
 
-                function s(t) {
+                function p(t) {
                     return (Math.exp(t) + Math.exp(-t)) / 2
                 }
+                var m = e(0);
 
-                function r(t) {
-                    return o(t) / s(t)
+                function f(t) {
+                    return h * (p(m) * function(t) {
+                        return d(t) / p(t)
+                    }(m + c * t) - d(m)) / _
                 }
-
-                function a(t) {
-                    return m * (s(w) / s(w + y * t))
-                }
-
-                function h(t) {
-                    return m * (s(w) * r(w + y * t) - o(w)) / x
-                }
-
-                function u(t) {
-                    return 1 - Math.pow(1 - t, 1.5)
-                }
-
-                function l() {
-                    var e = (Date.now() - L) / b,
-                        n = u(e) * P;
-                    e <= 1 ? (this._flyToFrame = f(l, this),
-                        this._move(this.unproject(c.add(_.subtract(c).multiplyBy(h(n) / v)), p), this.getScaleZoom(m / a(n), p), {
-                            flyTo: !0
-                        })) : this._move(t, i)._moveEnd(!0)
-                }
-                if (!1 === (e = e || {}).animate || !Ni)
-                    return this.setView(t, i, e);
-                this._stop();
-                var c = this.project(this.getCenter()),
-                    _ = this.project(t),
-                    d = this.getSize(),
-                    p = this._zoom;
-                t = C(t),
-                    i = void 0 === i ? p : i;
-                var m = Math.max(d.x, d.y),
-                    g = m * this.getZoomScale(p, i),
-                    v = _.distanceTo(c) || 1,
-                    y = 1.42,
-                    x = y * y,
-                    w = n(0),
-                    L = Date.now(),
-                    P = (n(1) - w) / y,
-                    b = e.duration ? 1e3 * e.duration : 1e3 * P * .8;
-                return this._moveStart(!0, e.noMoveStart),
-                    l.call(this),
+                var g = Date.now(),
+                    v = (e(1) - m) / c,
+                    y = t.duration ? 1e3 * t.duration : 1e3 * v * .8;
+                return this._moveStart(!0, t.noMoveStart),
+                    function t() {
+                        var i = (Date.now() - g) / y,
+                            e = function(t) {
+                                return 1 - Math.pow(1 - t, 1.5)
+                            }(i) * v;
+                        i <= 1 ? (this._flyToFrame = M(t, this),
+                            this._move(this.unproject(s.add(r.subtract(s).multiplyBy(f(e) / l)), a), this.getScaleZoom(h / function(t) {
+                                return h * (p(m) / p(m + c * t))
+                            }(e), a), {
+                                flyTo: !0
+                            })) : this._move(n, o)._moveEnd(!0)
+                    }
+                    .call(this),
                     this
             },
             flyToBounds: function(t, i) {
@@ -1801,7 +1569,7 @@
                 return this.flyTo(e.center, e.zoom, i)
             },
             setMaxBounds: function(t) {
-                return (t = z(t)).isValid() ? (this.options.maxBounds && this.off("moveend", this._panInsideMaxBounds),
+                return (t = D(t)).isValid() ? (this.options.maxBounds && this.off("moveend", this._panInsideMaxBounds),
                     this.options.maxBounds = t,
                     this._loaded && this._panInsideMaxBounds(),
                     this.on("moveend", this._panInsideMaxBounds)) : (this.options.maxBounds = null,
@@ -1822,34 +1590,56 @@
             panInsideBounds: function(t, i) {
                 this._enforcingBounds = !0;
                 var e = this.getCenter(),
-                    n = this._limitCenter(e, this._zoom, z(t));
+                    n = this._limitCenter(e, this._zoom, D(t));
                 return e.equals(n) || this.panTo(n, i),
                     this._enforcingBounds = !1,
                     this
             },
+            panInside: function(t, i) {
+                var e = I((i = i || {}).paddingTopLeft || i.padding || [0, 0]),
+                    n = I(i.paddingBottomRight || i.padding || [0, 0]),
+                    o = this.getCenter(),
+                    s = this.project(o),
+                    r = this.project(t),
+                    a = this.getPixelBounds(),
+                    h = a.getSize().divideBy(2),
+                    u = R([a.min.add(e), a.max.subtract(n)]);
+                if (!u.contains(r)) {
+                    this._enforcingBounds = !0;
+                    var l = s.subtract(r),
+                        c = I(r.x + l.x, r.y + l.y);
+                    (r.x < u.min.x || r.x > u.max.x) && (c.x = s.x - l.x,
+                        0 < l.x ? c.x += h.x - e.x : c.x -= h.x - n.x),
+                    (r.y < u.min.y || r.y > u.max.y) && (c.y = s.y - l.y,
+                        0 < l.y ? c.y += h.y - e.y : c.y -= h.y - n.y),
+                    this.panTo(this.unproject(c), i),
+                        this._enforcingBounds = !1
+                }
+                return this
+            },
             invalidateSize: function(t) {
                 if (!this._loaded)
                     return this;
-                t = i({
+                t = h({
                     animate: !1,
                     pan: !0
                 }, !0 === t ? {
                     animate: !0
                 } : t);
-                var n = this.getSize();
+                var i = this.getSize();
                 this._sizeChanged = !0,
                     this._lastCenter = null;
-                var o = this.getSize(),
-                    s = n.divideBy(2).round(),
-                    r = o.divideBy(2).round(),
-                    a = s.subtract(r);
-                return a.x || a.y ? (t.animate && t.pan ? this.panBy(a) : (t.pan && this._rawPanBy(a),
+                var e = this.getSize(),
+                    n = i.divideBy(2).round(),
+                    o = e.divideBy(2).round(),
+                    s = n.subtract(o);
+                return s.x || s.y ? (t.animate && t.pan ? this.panBy(s) : (t.pan && this._rawPanBy(s),
                         this.fire("move"),
                         t.debounceMoveend ? (clearTimeout(this._sizeTimer),
-                            this._sizeTimer = setTimeout(e(this.fire, this, "moveend"), 200)) : this.fire("moveend")),
+                            this._sizeTimer = setTimeout(a(this.fire, this, "moveend"), 200)) : this.fire("moveend")),
                     this.fire("resize", {
-                        oldSize: n,
-                        newSize: o
+                        oldSize: i,
+                        newSize: e
                     })) : this
             },
             stop: function() {
@@ -1858,7 +1648,7 @@
                     this._stop()
             },
             locate: function(t) {
-                if (t = this._locateOptions = i({
+                if (t = this._locateOptions = h({
                         timeout: 1e4,
                         watch: !1
                     }, t), !("geolocation" in navigator))
@@ -1867,9 +1657,9 @@
                             message: "Geolocation not supported."
                         }),
                         this;
-                var n = e(this._handleGeolocationResponse, this),
-                    o = e(this._handleGeolocationError, this);
-                return t.watch ? this._locationWatchId = navigator.geolocation.watchPosition(n, o, t) : navigator.geolocation.getCurrentPosition(n, o, t),
+                var i = a(this._handleGeolocationResponse, this),
+                    e = a(this._handleGeolocationError, this);
+                return t.watch ? this._locationWatchId = navigator.geolocation.watchPosition(i, e, t) : navigator.geolocation.getCurrentPosition(i, e, t),
                     this
             },
             stopLocate: function() {
@@ -1887,8 +1677,8 @@
                     })
             },
             _handleGeolocationResponse: function(t) {
-                var i = new M(t.coords.latitude, t.coords.longitude),
-                    e = i.toBounds(t.coords.accuracy),
+                var i = new j(t.coords.latitude, t.coords.longitude),
+                    e = i.toBounds(2 * t.coords.accuracy),
                     n = this._locateOptions;
                 if (n.setView) {
                     var o = this.getBoundsZoom(e);
@@ -1922,17 +1712,19 @@
                     this._container._leaflet_id = void 0,
                         this._containerId = void 0
                 }
-                void 0 !== this._locationWatchId && this.stopLocate(),
-                    this._stop(),
-                    ut(this._mapPane),
-                    this._clearControlPos && this._clearControlPos(),
-                    this._clearHandlers(),
-                    this._loaded && this.fire("unload");
                 var t;
-                for (t in this._layers)
+                for (t in void 0 !== this._locationWatchId && this.stopLocate(),
+                    this._stop(),
+                    ui(this._mapPane),
+                    this._clearControlPos && this._clearControlPos(),
+                    this._resizeRequest && (C(this._resizeRequest),
+                        this._resizeRequest = null),
+                    this._clearHandlers(),
+                    this._loaded && this.fire("unload"),
+                    this._layers)
                     this._layers[t].remove();
                 for (t in this._panes)
-                    ut(this._panes[t]);
+                    ui(this._panes[t]);
                 return this._layers = [],
                     this._panes = [],
                     delete this._mapPane,
@@ -1940,7 +1732,7 @@
                     this
             },
             createPane: function(t, i) {
-                var e = ht("div", "leaflet-pane" + (t ? " leaflet-" + t.replace("Pane", "") + "-pane" : ""), i || this._mapPane);
+                var e = hi("div", "leaflet-pane" + (t ? " leaflet-" + t.replace("Pane", "") + "-pane" : ""), i || this._mapPane);
                 return t && (this._panes[t] = e),
                     e
             },
@@ -1953,7 +1745,7 @@
             },
             getBounds: function() {
                 var t = this.getPixelBounds();
-                return new T(this.unproject(t.getBottomLeft()), this.unproject(t.getTopRight()))
+                return new N(this.unproject(t.getBottomLeft()), this.unproject(t.getTopRight()))
             },
             getMinZoom: function() {
                 return void 0 === this.options.minZoom ? this._layersMinZoom || 0 : this.options.minZoom
@@ -1962,16 +1754,16 @@
                 return void 0 === this.options.maxZoom ? void 0 === this._layersMaxZoom ? 1 / 0 : this._layersMaxZoom : this.options.maxZoom
             },
             getBoundsZoom: function(t, i, e) {
-                t = z(t),
-                    e = w(e || [0, 0]);
+                t = D(t),
+                    e = I(e || [0, 0]);
                 var n = this.getZoom() || 0,
                     o = this.getMinZoom(),
                     s = this.getMaxZoom(),
                     r = t.getNorthWest(),
                     a = t.getSouthEast(),
                     h = this.getSize().subtract(e),
-                    u = b(this.project(a, n), this.project(r, n)).getSize(),
-                    l = Ni ? this.options.zoomSnap : 1,
+                    u = R(this.project(a, n), this.project(r, n)).getSize(),
+                    l = yt ? this.options.zoomSnap : 1,
                     c = h.x / u.x,
                     _ = h.y / u.y,
                     d = i ? Math.max(c, _) : Math.min(c, _);
@@ -1981,13 +1773,13 @@
                     Math.max(o, Math.min(s, n))
             },
             getSize: function() {
-                return this._size && !this._sizeChanged || (this._size = new x(this._container.clientWidth || 0, this._container.clientHeight || 0),
+                return this._size && !this._sizeChanged || (this._size = new B(this._container.clientWidth || 0, this._container.clientHeight || 0),
                         this._sizeChanged = !1),
                     this._size.clone()
             },
             getPixelBounds: function(t, i) {
                 var e = this._getTopLeftPoint(t, i);
-                return new P(e, e.add(this.getSize()))
+                return new O(e, e.add(this.getSize()))
             },
             getPixelOrigin: function() {
                 return this._checkIfLoaded(),
@@ -2018,43 +1810,43 @@
             },
             project: function(t, i) {
                 return i = void 0 === i ? this._zoom : i,
-                    this.options.crs.latLngToPoint(C(t), i)
+                    this.options.crs.latLngToPoint(W(t), i)
             },
             unproject: function(t, i) {
                 return i = void 0 === i ? this._zoom : i,
-                    this.options.crs.pointToLatLng(w(t), i)
+                    this.options.crs.pointToLatLng(I(t), i)
             },
             layerPointToLatLng: function(t) {
-                var i = w(t).add(this.getPixelOrigin());
+                var i = I(t).add(this.getPixelOrigin());
                 return this.unproject(i)
             },
             latLngToLayerPoint: function(t) {
-                return this.project(C(t))._round()._subtract(this.getPixelOrigin())
+                return this.project(W(t))._round()._subtract(this.getPixelOrigin())
             },
             wrapLatLng: function(t) {
-                return this.options.crs.wrapLatLng(C(t))
+                return this.options.crs.wrapLatLng(W(t))
             },
             wrapLatLngBounds: function(t) {
-                return this.options.crs.wrapLatLngBounds(z(t))
+                return this.options.crs.wrapLatLngBounds(D(t))
             },
             distance: function(t, i) {
-                return this.options.crs.distance(C(t), C(i))
+                return this.options.crs.distance(W(t), W(i))
             },
             containerPointToLayerPoint: function(t) {
-                return w(t).subtract(this._getMapPanePos())
+                return I(t).subtract(this._getMapPanePos())
             },
             layerPointToContainerPoint: function(t) {
-                return w(t).add(this._getMapPanePos())
+                return I(t).add(this._getMapPanePos())
             },
             containerPointToLatLng: function(t) {
-                var i = this.containerPointToLayerPoint(w(t));
+                var i = this.containerPointToLayerPoint(I(t));
                 return this.layerPointToLatLng(i)
             },
             latLngToContainerPoint: function(t) {
-                return this.layerPointToContainerPoint(this.latLngToLayerPoint(C(t)))
+                return this.layerPointToContainerPoint(this.latLngToLayerPoint(W(t)))
             },
             mouseEventToContainerPoint: function(t) {
-                return tt(t, this._container)
+                return Wi(t, this._container)
             },
             mouseEventToLayerPoint: function(t) {
                 return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(t))
@@ -2063,19 +1855,19 @@
                 return this.layerPointToLatLng(this.mouseEventToLayerPoint(t))
             },
             _initContainer: function(t) {
-                var i = this._container = rt(t);
+                var i = this._container = ri(t);
                 if (!i)
                     throw new Error("Map container not found.");
                 if (i._leaflet_id)
                     throw new Error("Map container is already initialized.");
-                V(i, "scroll", this._onScroll, this),
-                    this._containerId = n(i)
+                Ei(i, "scroll", this._onScroll, this),
+                    this._containerId = u(i)
             },
             _initLayout: function() {
                 var t = this._container;
-                this._fadeAnimated = this.options.fadeAnimation && Ni,
-                    pt(t, "leaflet-container" + (Vi ? " leaflet-touch" : "") + (Ki ? " leaflet-retina" : "") + (Li ? " leaflet-oldie" : "") + (ki ? " leaflet-safari" : "") + (this._fadeAnimated ? " leaflet-fade-anim" : ""));
-                var i = at(t, "position");
+                this._fadeAnimated = this.options.fadeAnimation && yt,
+                    pi(t, "leaflet-container" + (Tt ? " leaflet-touch" : "") + (Ct ? " leaflet-retina" : "") + (et ? " leaflet-oldie" : "") + (_t ? " leaflet-safari" : "") + (this._fadeAnimated ? " leaflet-fade-anim" : ""));
+                var i = ai(t, "position");
                 "absolute" !== i && "relative" !== i && "fixed" !== i && (t.style.position = "relative"),
                     this._initPanes(),
                     this._initControlPos && this._initControlPos()
@@ -2084,18 +1876,18 @@
                 var t = this._panes = {};
                 this._paneRenderers = {},
                     this._mapPane = this.createPane("mapPane", this._container),
-                    Lt(this._mapPane, new x(0, 0)),
+                    wi(this._mapPane, new B(0, 0)),
                     this.createPane("tilePane"),
                     this.createPane("shadowPane"),
                     this.createPane("overlayPane"),
                     this.createPane("markerPane"),
                     this.createPane("tooltipPane"),
                     this.createPane("popupPane"),
-                    this.options.markerZoomAnimation || (pt(t.markerPane, "leaflet-zoom-hide"),
-                        pt(t.shadowPane, "leaflet-zoom-hide"))
+                    this.options.markerZoomAnimation || (pi(t.markerPane, "leaflet-zoom-hide"),
+                        pi(t.shadowPane, "leaflet-zoom-hide"))
             },
             _resetView: function(t, i) {
-                Lt(this._mapPane, new x(0, 0));
+                wi(this._mapPane, new B(0, 0));
                 var e = !this._loaded;
                 this._loaded = !0,
                     i = this._limitZoom(i),
@@ -2124,12 +1916,12 @@
                     this.fire("moveend")
             },
             _stop: function() {
-                return g(this._flyToFrame),
+                return C(this._flyToFrame),
                     this._panAnim && this._panAnim.stop(),
                     this
             },
             _rawPanBy: function(t) {
-                Lt(this._mapPane, this._getMapPanePos().subtract(t))
+                wi(this._mapPane, this._getMapPanePos().subtract(t))
             },
             _getZoomSpan: function() {
                 return this.getMaxZoom() - this.getMinZoom()
@@ -2142,16 +1934,15 @@
                     throw new Error("Set map center and zoom first.")
             },
             _initEvents: function(t) {
-                this._targets = {},
-                    this._targets[n(this._container)] = this;
-                var i = t ? q : V;
-                i(this._container, "click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu keypress", this._handleDOMEvent, this),
+                this._targets = {};
+                var i = t ? Bi : Ei;
+                i((this._targets[u(this._container)] = this)._container, "click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu keypress keydown keyup", this._handleDOMEvent, this),
                     this.options.trackResize && i(window, "resize", this._onResize, this),
-                    Ni && this.options.transform3DLimit && (t ? this.off : this.on).call(this, "moveend", this._onMoveEnd)
+                    yt && this.options.transform3DLimit && (t ? this.off : this.on).call(this, "moveend", this._onMoveEnd)
             },
             _onResize: function() {
-                g(this._resizeRequest),
-                    this._resizeRequest = f(function() {
+                C(this._resizeRequest),
+                    this._resizeRequest = M(function() {
                         this.invalidateSize({
                             debounceMoveend: !0
                         })
@@ -2166,54 +1957,54 @@
                 Math.max(Math.abs(t.x), Math.abs(t.y)) >= this.options.transform3DLimit && this._resetView(this.getCenter(), this.getZoom())
             },
             _findEventTargets: function(t, i) {
-                for (var e, o = [], s = "mouseout" === i || "mouseover" === i, r = t.target || t.srcElement, a = !1; r;) {
-                    if ((e = this._targets[n(r)]) && ("click" === i || "preclick" === i) && !t._simulated && this._draggableMoved(e)) {
-                        a = !0;
+                for (var e, n = [], o = "mouseout" === i || "mouseover" === i, s = t.target || t.srcElement, r = !1; s;) {
+                    if ((e = this._targets[u(s)]) && ("click" === i || "preclick" === i) && !t._simulated && this._draggableMoved(e)) {
+                        r = !0;
                         break
                     }
                     if (e && e.listens(i, !0)) {
-                        if (s && !ot(r, t))
+                        if (o && !Ki(s, t))
                             break;
-                        if (o.push(e),
-                            s)
+                        if (n.push(e),
+                            o)
                             break
                     }
-                    if (r === this._container)
+                    if (s === this._container)
                         break;
-                    r = r.parentNode
+                    s = s.parentNode
                 }
-                return o.length || a || s || !ot(r, t) || (o = [this]),
-                    o
+                return n.length || r || o || !Ki(s, t) || (n = [this]),
+                    n
             },
             _handleDOMEvent: function(t) {
-                if (this._loaded && !nt(t)) {
+                if (this._loaded && !Gi(t)) {
                     var i = t.type;
-                    "mousedown" !== i && "keypress" !== i || zt(t.target || t.srcElement),
+                    "mousedown" !== i && "keypress" !== i && "keyup" !== i && "keydown" !== i || zi(t.target || t.srcElement),
                         this._fireDOMEvent(t, i)
                 }
             },
             _mouseEvents: ["click", "dblclick", "mouseover", "mouseout", "contextmenu"],
-            _fireDOMEvent: function(t, e, n) {
+            _fireDOMEvent: function(t, i, e) {
                 if ("click" === t.type) {
-                    var o = i({}, t);
-                    o.type = "preclick",
-                        this._fireDOMEvent(o, o.type, n)
+                    var n = h({}, t);
+                    n.type = "preclick",
+                        this._fireDOMEvent(n, n.type, e)
                 }
-                if (!t._stopped && (n = (n || []).concat(this._findEventTargets(t, e))).length) {
-                    var s = n[0];
-                    "contextmenu" === e && s.listens(e, !0) && $(t);
-                    var r = {
+                if (!t._stopped && (e = (e || []).concat(this._findEventTargets(t, i))).length) {
+                    var o = e[0];
+                    "contextmenu" === i && o.listens(i, !0) && Di(t);
+                    var s = {
                         originalEvent: t
                     };
-                    if ("keypress" !== t.type) {
-                        var a = s.getLatLng && (!s._radius || s._radius <= 10);
-                        r.containerPoint = a ? this.latLngToContainerPoint(s.getLatLng()) : this.mouseEventToContainerPoint(t),
-                            r.layerPoint = this.containerPointToLayerPoint(r.containerPoint),
-                            r.latlng = a ? s.getLatLng() : this.layerPointToLatLng(r.layerPoint)
+                    if ("keypress" !== t.type && "keydown" !== t.type && "keyup" !== t.type) {
+                        var r = o.getLatLng && (!o._radius || o._radius <= 10);
+                        s.containerPoint = r ? this.latLngToContainerPoint(o.getLatLng()) : this.mouseEventToContainerPoint(t),
+                            s.layerPoint = this.containerPointToLayerPoint(s.containerPoint),
+                            s.latlng = r ? o.getLatLng() : this.layerPointToLatLng(s.layerPoint)
                     }
-                    for (var h = 0; h < n.length; h++)
-                        if (n[h].fire(e, r, !0),
-                            r.originalEvent._stopped || !1 === n[h].options.bubblingMouseEvents && -1 !== d(this._mouseEvents, e))
+                    for (var a = 0; a < e.length; a++)
+                        if (e[a].fire(i, s, !0),
+                            s.originalEvent._stopped || !1 === e[a].options.bubblingMouseEvents && -1 !== y(this._mouseEvents, i))
                             return
                 }
             },
@@ -2231,7 +2022,7 @@
                     this
             },
             _getMapPanePos: function() {
-                return Pt(this._mapPane) || new x(0, 0)
+                return Pi(this._mapPane) || new B(0, 0)
             },
             _moved: function() {
                 var t = this._getMapPanePos();
@@ -2250,7 +2041,7 @@
             },
             _latLngBoundsToNewLayerBounds: function(t, i, e) {
                 var n = this._getNewPixelOrigin(e, i);
-                return b([this.project(t.getSouthWest(), i)._subtract(n), this.project(t.getNorthWest(), i)._subtract(n), this.project(t.getSouthEast(), i)._subtract(n), this.project(t.getNorthEast(), i)._subtract(n)])
+                return R([this.project(t.getSouthWest(), i)._subtract(n), this.project(t.getNorthWest(), i)._subtract(n), this.project(t.getSouthEast(), i)._subtract(n), this.project(t.getNorthEast(), i)._subtract(n)])
             },
             _getCenterLayerPoint: function() {
                 return this.containerPointToLayerPoint(this.getSize()._divideBy(2))
@@ -2263,7 +2054,7 @@
                     return t;
                 var n = this.project(t, i),
                     o = this.getSize().divideBy(2),
-                    s = new P(n.subtract(o), n.add(o)),
+                    s = new O(n.subtract(o), n.add(o)),
                     r = this._getBoundsOffset(s, e, i);
                 return r.round().equals([0, 0]) ? t : this.unproject(n.add(r), i)
             },
@@ -2271,22 +2062,22 @@
                 if (!i)
                     return t;
                 var e = this.getPixelBounds(),
-                    n = new P(e.min.add(t), e.max.add(t));
+                    n = new O(e.min.add(t), e.max.add(t));
                 return t.add(this._getBoundsOffset(n, i))
             },
             _getBoundsOffset: function(t, i, e) {
-                var n = b(this.project(i.getNorthEast(), e), this.project(i.getSouthWest(), e)),
+                var n = R(this.project(i.getNorthEast(), e), this.project(i.getSouthWest(), e)),
                     o = n.min.subtract(t.min),
                     s = n.max.subtract(t.max);
-                return new x(this._rebound(o.x, -s.x), this._rebound(o.y, -s.y))
+                return new B(this._rebound(o.x, -s.x), this._rebound(o.y, -s.y))
             },
             _rebound: function(t, i) {
-                return t + i > 0 ? Math.round(t - i) / 2 : Math.max(0, Math.ceil(t)) - Math.max(0, Math.floor(i))
+                return 0 < t + i ? Math.round(t - i) / 2 : Math.max(0, Math.ceil(t)) - Math.max(0, Math.floor(i))
             },
             _limitZoom: function(t) {
                 var i = this.getMinZoom(),
                     e = this.getMaxZoom(),
-                    n = Ni ? this.options.zoomSnap : 1;
+                    n = yt ? this.options.zoomSnap : 1;
                 return n && (t = Math.round(t / n) * n),
                     Math.max(i, Math.min(e, t))
             },
@@ -2294,7 +2085,7 @@
                 this.fire("move")
             },
             _onPanTransitionEnd: function() {
-                mt(this._mapPane, "leaflet-pan-anim"),
+                mi(this._mapPane, "leaflet-pan-anim"),
                     this.fire("moveend")
             },
             _tryAnimatedPan: function(t, i) {
@@ -2302,27 +2093,27 @@
                 return !(!0 !== (i && i.animate) && !this.getSize().contains(e)) && (this.panBy(e, i), !0)
             },
             _createAnimProxy: function() {
-                var t = this._proxy = ht("div", "leaflet-proxy leaflet-zoom-animated");
+                var t = this._proxy = hi("div", "leaflet-proxy leaflet-zoom-animated");
                 this._panes.mapPane.appendChild(t),
                     this.on("zoomanim", function(t) {
-                        var i = pe,
+                        var i = ni,
                             e = this._proxy.style[i];
-                        wt(this._proxy, this.project(t.center, t.zoom), this.getZoomScale(t.zoom, 1)),
+                        xi(this._proxy, this.project(t.center, t.zoom), this.getZoomScale(t.zoom, 1)),
                             e === this._proxy.style[i] && this._animatingZoom && this._onZoomTransitionEnd()
                     }, this),
                     this.on("load moveend", function() {
                         var t = this.getCenter(),
                             i = this.getZoom();
-                        wt(this._proxy, this.project(t, i), this.getZoomScale(i, 1))
+                        xi(this._proxy, this.project(t, i), this.getZoomScale(i, 1))
                     }, this),
                     this._on("unload", this._destroyAnimProxy, this)
             },
             _destroyAnimProxy: function() {
-                ut(this._proxy),
+                ui(this._proxy),
                     delete this._proxy
             },
             _catchTransitionEnd: function(t) {
-                this._animatingZoom && t.propertyName.indexOf("transform") >= 0 && this._onZoomTransitionEnd()
+                this._animatingZoom && 0 <= t.propertyName.indexOf("transform") && this._onZoomTransitionEnd()
             },
             _nothingToAnimate: function() {
                 return !this._container.getElementsByClassName("leaflet-zoom-animated").length
@@ -2334,74 +2125,77 @@
                     return !1;
                 var n = this.getZoomScale(i),
                     o = this._getCenterOffset(t)._divideBy(1 - 1 / n);
-                return !(!0 !== e.animate && !this.getSize().contains(o)) && (f(function() {
+                return !(!0 !== e.animate && !this.getSize().contains(o)) && (M(function() {
                     this._moveStart(!0, !1)._animateZoom(t, i, !0)
                 }, this), !0)
             },
-            _animateZoom: function(t, i, n, o) {
-                this._mapPane && (n && (this._animatingZoom = !0,
+            _animateZoom: function(t, i, e, n) {
+                this._mapPane && (e && (this._animatingZoom = !0,
                         this._animateToCenter = t,
                         this._animateToZoom = i,
-                        pt(this._mapPane, "leaflet-zoom-anim")),
+                        pi(this._mapPane, "leaflet-zoom-anim")),
                     this.fire("zoomanim", {
                         center: t,
                         zoom: i,
-                        noUpdate: o
+                        noUpdate: n
                     }),
-                    setTimeout(e(this._onZoomTransitionEnd, this), 250))
+                    setTimeout(a(this._onZoomTransitionEnd, this), 250))
             },
             _onZoomTransitionEnd: function() {
-                this._animatingZoom && (this._mapPane && mt(this._mapPane, "leaflet-zoom-anim"),
+                this._animatingZoom && (this._mapPane && mi(this._mapPane, "leaflet-zoom-anim"),
                     this._animatingZoom = !1,
                     this._move(this._animateToCenter, this._animateToZoom),
-                    f(function() {
+                    M(function() {
                         this._moveEnd(!0)
                     }, this))
             }
-        }),
-        Pe = v.extend({
-            options: {
-                position: "topright"
-            },
-            initialize: function(t) {
-                l(this, t)
-            },
-            getPosition: function() {
-                return this.options.position
-            },
-            setPosition: function(t) {
-                var i = this._map;
-                return i && i.removeControl(this),
-                    this.options.position = t,
-                    i && i.addControl(this),
-                    this
-            },
-            getContainer: function() {
-                return this._container
-            },
-            addTo: function(t) {
-                this.remove(),
-                    this._map = t;
-                var i = this._container = this.onAdd(t),
-                    e = this.getPosition(),
-                    n = t._controlCorners[e];
-                return pt(i, "leaflet-control"), -1 !== e.indexOf("bottom") ? n.insertBefore(i, n.firstChild) : n.appendChild(i),
-                    this
-            },
-            remove: function() {
-                return this._map ? (ut(this._container),
+        });
+
+    function $i(t) {
+        return new Qi(t)
+    }
+    var Qi = Z.extend({
+        options: {
+            position: "topright"
+        },
+        initialize: function(t) {
+            p(this, t)
+        },
+        getPosition: function() {
+            return this.options.position
+        },
+        setPosition: function(t) {
+            var i = this._map;
+            return i && i.removeControl(this),
+                this.options.position = t,
+                i && i.addControl(this),
+                this
+        },
+        getContainer: function() {
+            return this._container
+        },
+        addTo: function(t) {
+            this.remove(),
+                this._map = t;
+            var i = this._container = this.onAdd(t),
+                e = this.getPosition(),
+                n = t._controlCorners[e];
+            return pi(i, "leaflet-control"), -1 !== e.indexOf("bottom") ? n.insertBefore(i, n.firstChild) : n.appendChild(i),
+                this._map.on("unload", this.remove, this),
+                this
+        },
+        remove: function() {
+            return this._map && (ui(this._container),
                     this.onRemove && this.onRemove(this._map),
-                    this._map = null,
-                    this) : this
-            },
-            _refocusOnMap: function(t) {
-                this._map && t && t.screenX > 0 && t.screenY > 0 && this._map.getContainer().focus()
-            }
-        }),
-        be = function(t) {
-            return new Pe(t)
-        };
-    Le.include({
+                    this._map.off("unload", this.remove, this),
+                    this._map = null),
+                this
+        },
+        _refocusOnMap: function(t) {
+            this._map && t && 0 < t.screenX && 0 < t.screenY && this._map.getContainer().focus()
+        }
+    });
+    Ji.include({
         addControl: function(t) {
             return t.addTo(this),
                 this
@@ -2411,13 +2205,14 @@
                 this
         },
         _initControlPos: function() {
-            function t(t, o) {
-                var s = e + t + " " + e + o;
-                i[t + o] = ht("div", s, n)
+            var n = this._controlCorners = {},
+                o = "leaflet-",
+                s = this._controlContainer = hi("div", o + "control-container", this._container);
+
+            function t(t, i) {
+                var e = o + t + " " + o + i;
+                n[t + i] = hi("div", e, s)
             }
-            var i = this._controlCorners = {},
-                e = "leaflet-",
-                n = this._controlContainer = ht("div", e + "control-container", this._container);
             t("top", "left"),
                 t("top", "right"),
                 t("bottom", "left"),
@@ -2425,13 +2220,13 @@
         },
         _clearControlPos: function() {
             for (var t in this._controlCorners)
-                ut(this._controlCorners[t]);
-            ut(this._controlContainer),
+                ui(this._controlCorners[t]);
+            ui(this._controlContainer),
                 delete this._controlCorners,
                 delete this._controlContainer
         }
     });
-    var Te = Pe.extend({
+    var te = Qi.extend({
             options: {
                 collapsed: !0,
                 position: "topright",
@@ -2443,12 +2238,12 @@
                 }
             },
             initialize: function(t, i, e) {
-                l(this, e),
-                    this._layerControlInputs = [],
-                    this._layers = [],
-                    this._lastZIndex = 0,
-                    this._handlingClick = !1;
-                for (var n in t)
+                for (var n in p(this, e),
+                        this._layerControlInputs = [],
+                        this._layers = [],
+                        this._lastZIndex = 0,
+                        this._handlingClick = !1,
+                        t)
                     this._addLayer(t[n], n);
                 for (n in i)
                     this._addLayer(i[n], n, !0)
@@ -2456,14 +2251,13 @@
             onAdd: function(t) {
                 this._initLayout(),
                     this._update(),
-                    this._map = t,
-                    t.on("zoomend", this._checkDisabledLayers, this);
+                    (this._map = t).on("zoomend", this._checkDisabledLayers, this);
                 for (var i = 0; i < this._layers.length; i++)
                     this._layers[i].layer.on("add remove", this._onLayerChange, this);
                 return this._container
             },
             addTo: function(t) {
-                return Pe.prototype.addTo.call(this, t),
+                return Qi.prototype.addTo.call(this, t),
                     this._expandIfNotCollapsed()
             },
             onRemove: function() {
@@ -2481,60 +2275,60 @@
             },
             removeLayer: function(t) {
                 t.off("add remove", this._onLayerChange, this);
-                var i = this._getLayer(n(t));
+                var i = this._getLayer(u(t));
                 return i && this._layers.splice(this._layers.indexOf(i), 1),
                     this._map ? this._update() : this
             },
             expand: function() {
-                pt(this._container, "leaflet-control-layers-expanded"),
-                    this._form.style.height = null;
+                pi(this._container, "leaflet-control-layers-expanded"),
+                    this._section.style.height = null;
                 var t = this._map.getSize().y - (this._container.offsetTop + 50);
-                return t < this._form.clientHeight ? (pt(this._form, "leaflet-control-layers-scrollbar"),
-                        this._form.style.height = t + "px") : mt(this._form, "leaflet-control-layers-scrollbar"),
+                return t < this._section.clientHeight ? (pi(this._section, "leaflet-control-layers-scrollbar"),
+                        this._section.style.height = t + "px") : mi(this._section, "leaflet-control-layers-scrollbar"),
                     this._checkDisabledLayers(),
                     this
             },
             collapse: function() {
-                return mt(this._container, "leaflet-control-layers-expanded"),
+                return mi(this._container, "leaflet-control-layers-expanded"),
                     this
             },
             _initLayout: function() {
                 var t = "leaflet-control-layers",
-                    i = this._container = ht("div", t),
+                    i = this._container = hi("div", t),
                     e = this.options.collapsed;
                 i.setAttribute("aria-haspopup", !0),
-                    J(i),
-                    X(i);
-                var n = this._form = ht("form", t + "-list");
+                    Ni(i),
+                    Ri(i);
+                var n = this._section = hi("section", t + "-list");
                 e && (this._map.on("click", this.collapse, this),
-                    Ti || V(i, {
+                    st || Ei(i, {
                         mouseenter: this.expand,
                         mouseleave: this.collapse
                     }, this));
-                var o = this._layersLink = ht("a", t + "-toggle", i);
+                var o = this._layersLink = hi("a", t + "-toggle", i);
                 o.href = "#",
                     o.title = "Layers",
-                    Vi ? (V(o, "click", Q),
-                        V(o, "click", this.expand, this)) : V(o, "focus", this.expand, this),
+                    Tt ? (Ei(o, "click", ji),
+                        Ei(o, "click", this.expand, this)) : Ei(o, "focus", this.expand, this),
                     e || this.expand(),
-                    this._baseLayersList = ht("div", t + "-base", n),
-                    this._separator = ht("div", t + "-separator", n),
-                    this._overlaysList = ht("div", t + "-overlays", n),
+                    this._baseLayersList = hi("div", t + "-base", n),
+                    this._separator = hi("div", t + "-separator", n),
+                    this._overlaysList = hi("div", t + "-overlays", n),
                     i.appendChild(n)
             },
             _getLayer: function(t) {
                 for (var i = 0; i < this._layers.length; i++)
-                    if (this._layers[i] && n(this._layers[i].layer) === t)
+                    if (this._layers[i] && u(this._layers[i].layer) === t)
                         return this._layers[i]
             },
-            _addLayer: function(t, i, n) {
+            _addLayer: function(t, i, e) {
                 this._map && t.on("add remove", this._onLayerChange, this),
                     this._layers.push({
                         layer: t,
                         name: i,
-                        overlay: n
+                        overlay: e
                     }),
-                    this.options.sortLayers && this._layers.sort(e(function(t, i) {
+                    this.options.sortLayers && this._layers.sort(a(function(t, i) {
                         return this.options.sortFunction(t.layer, i.layer, t.name, i.name)
                     }, this)),
                     this.options.autoZIndex && t.setZIndex && (this._lastZIndex++,
@@ -2544,8 +2338,8 @@
             _update: function() {
                 if (!this._container)
                     return this;
-                lt(this._baseLayersList),
-                    lt(this._overlaysList),
+                li(this._baseLayersList),
+                    li(this._overlaysList),
                     this._layerControlInputs = [];
                 var t, i, e, n, o = 0;
                 for (e = 0; e < this._layers.length; e++)
@@ -2554,14 +2348,14 @@
                     i = i || n.overlay,
                     t = t || !n.overlay,
                     o += n.overlay ? 0 : 1;
-                return this.options.hideSingleBase && (t = t && o > 1,
+                return this.options.hideSingleBase && (t = t && 1 < o,
                         this._baseLayersList.style.display = t ? "" : "none"),
                     this._separator.style.display = i && t ? "" : "none",
                     this
             },
             _onLayerChange: function(t) {
                 this._handlingClick || this._update();
-                var i = this._getLayer(n(t.target)),
+                var i = this._getLayer(u(t.target)),
                     e = i.overlay ? "add" === t.type ? "overlayadd" : "overlayremove" : "add" === t.type ? "baselayerchange" : null;
                 e && this._map.fire(e, i)
             },
@@ -2573,19 +2367,19 @@
             },
             _addItem: function(t) {
                 var i, e = document.createElement("label"),
-                    o = this._map.hasLayer(t.layer);
+                    n = this._map.hasLayer(t.layer);
                 t.overlay ? ((i = document.createElement("input")).type = "checkbox",
                         i.className = "leaflet-control-layers-selector",
-                        i.defaultChecked = o) : i = this._createRadioElement("leaflet-base-layers", o),
+                        i.defaultChecked = n) : i = this._createRadioElement("leaflet-base-layers_" + u(this), n),
                     this._layerControlInputs.push(i),
-                    i.layerId = n(t.layer),
-                    V(i, "click", this._onInputClick, this);
-                var s = document.createElement("span");
-                s.innerHTML = " " + t.name;
-                var r = document.createElement("div");
-                return e.appendChild(r),
-                    r.appendChild(i),
-                    r.appendChild(s),
+                    i.layerId = u(t.layer),
+                    Ei(i, "click", this._onInputClick, this);
+                var o = document.createElement("span");
+                o.innerHTML = " " + t.name;
+                var s = document.createElement("div");
+                return e.appendChild(s),
+                    s.appendChild(i),
+                    s.appendChild(o),
                     (t.overlay ? this._overlaysList : this._baseLayersList).appendChild(e),
                     this._checkDisabledLayers(),
                     e
@@ -2595,7 +2389,7 @@
                     n = [],
                     o = [];
                 this._handlingClick = !0;
-                for (var s = e.length - 1; s >= 0; s--)
+                for (var s = e.length - 1; 0 <= s; s--)
                     t = e[s],
                     i = this._getLayer(t.layerId).layer,
                     t.checked ? n.push(i) : t.checked || o.push(i);
@@ -2607,7 +2401,7 @@
                     this._refocusOnMap()
             },
             _checkDisabledLayers: function() {
-                for (var t, i, e = this._layerControlInputs, n = this._map.getZoom(), o = e.length - 1; o >= 0; o--)
+                for (var t, i, e = this._layerControlInputs, n = this._map.getZoom(), o = e.length - 1; 0 <= o; o--)
                     t = e[o],
                     i = this._getLayer(t.layerId).layer,
                     t.disabled = void 0 !== i.options.minZoom && n < i.options.minZoom || void 0 !== i.options.maxZoom && n > i.options.maxZoom
@@ -2623,7 +2417,7 @@
                 return this.collapse()
             }
         }),
-        ze = Pe.extend({
+        ie = Qi.extend({
             options: {
                 position: "topleft",
                 zoomInText: "+",
@@ -2633,7 +2427,7 @@
             },
             onAdd: function(t) {
                 var i = "leaflet-control-zoom",
-                    e = ht("div", i + " leaflet-bar"),
+                    e = hi("div", i + " leaflet-bar"),
                     n = this.options;
                 return this._zoomInButton = this._createButton(n.zoomInText, n.zoomInTitle, i + "-in", e, this._zoomIn),
                     this._zoomOutButton = this._createButton(n.zoomOutText, n.zoomOutTitle, i + "-out", e, this._zoomOut),
@@ -2661,35 +2455,33 @@
                 !this._disabled && this._map._zoom > this._map.getMinZoom() && this._map.zoomOut(this._map.options.zoomDelta * (t.shiftKey ? 3 : 1))
             },
             _createButton: function(t, i, e, n, o) {
-                var s = ht("a", e, n);
+                var s = hi("a", e, n);
                 return s.innerHTML = t,
                     s.href = "#",
                     s.title = i,
                     s.setAttribute("role", "button"),
                     s.setAttribute("aria-label", i),
-                    J(s),
-                    V(s, "click", Q),
-                    V(s, "click", o, this),
-                    V(s, "click", this._refocusOnMap, this),
+                    Ni(s),
+                    Ei(s, "click", ji),
+                    Ei(s, "click", o, this),
+                    Ei(s, "click", this._refocusOnMap, this),
                     s
             },
             _updateDisabled: function() {
                 var t = this._map,
                     i = "leaflet-disabled";
-                mt(this._zoomInButton, i),
-                    mt(this._zoomOutButton, i),
-                    (this._disabled || t._zoom === t.getMinZoom()) && pt(this._zoomOutButton, i),
-                    (this._disabled || t._zoom === t.getMaxZoom()) && pt(this._zoomInButton, i)
+                mi(this._zoomInButton, i),
+                    mi(this._zoomOutButton, i), !this._disabled && t._zoom !== t.getMinZoom() || pi(this._zoomOutButton, i), !this._disabled && t._zoom !== t.getMaxZoom() || pi(this._zoomInButton, i)
             }
         });
-    Le.mergeOptions({
+    Ji.mergeOptions({
             zoomControl: !0
         }),
-        Le.addInitHook(function() {
-            this.options.zoomControl && (this.zoomControl = new ze,
+        Ji.addInitHook(function() {
+            this.options.zoomControl && (this.zoomControl = new ie,
                 this.addControl(this.zoomControl))
         });
-    var Me = Pe.extend({
+    var ee = Qi.extend({
             options: {
                 position: "bottomleft",
                 maxWidth: 100,
@@ -2697,19 +2489,20 @@
                 imperial: !0
             },
             onAdd: function(t) {
-                var i = ht("div", "leaflet-control-scale"),
-                    e = this.options;
-                return this._addScales(e, "leaflet-control-scale-line", i),
-                    t.on(e.updateWhenIdle ? "moveend" : "move", this._update, this),
+                var i = "leaflet-control-scale",
+                    e = hi("div", i),
+                    n = this.options;
+                return this._addScales(n, i + "-line", e),
+                    t.on(n.updateWhenIdle ? "moveend" : "move", this._update, this),
                     t.whenReady(this._update, this),
-                    i
+                    e
             },
             onRemove: function(t) {
                 t.off(this.options.updateWhenIdle ? "moveend" : "move", this._update, this)
             },
             _addScales: function(t, i, e) {
-                t.metric && (this._mScale = ht("div", i, e)),
-                    t.imperial && (this._iScale = ht("div", i, e))
+                t.metric && (this._mScale = hi("div", i, e)),
+                    t.imperial && (this._iScale = hi("div", i, e))
             },
             _update: function() {
                 var t = this._map,
@@ -2728,7 +2521,7 @@
             },
             _updateImperial: function(t) {
                 var i, e, n, o = 3.2808399 * t;
-                o > 5280 ? (i = o / 5280,
+                5280 < o ? (i = o / 5280,
                     e = this._getRoundNum(i),
                     this._updateScale(this._iScale, e + " mi", e / i)) : (n = this._getRoundNum(o),
                     this._updateScale(this._iScale, n + " ft", n / o))
@@ -2740,24 +2533,22 @@
             _getRoundNum: function(t) {
                 var i = Math.pow(10, (Math.floor(t) + "").length - 1),
                     e = t / i;
-                return e = e >= 10 ? 10 : e >= 5 ? 5 : e >= 3 ? 3 : e >= 2 ? 2 : 1,
-                    i * e
+                return i * (e = 10 <= e ? 10 : 5 <= e ? 5 : 3 <= e ? 3 : 2 <= e ? 2 : 1)
             }
         }),
-        Ce = Pe.extend({
+        ne = Qi.extend({
             options: {
                 position: "bottomright",
-                prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'
+                prefix: '<a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'
             },
             initialize: function(t) {
-                l(this, t),
+                p(this, t),
                     this._attributions = {}
             },
             onAdd: function(t) {
-                t.attributionControl = this,
-                    this._container = ht("div", "leaflet-control-attribution"),
-                    J(this._container);
-                for (var i in t._layers)
+                for (var i in (t.attributionControl = this)._container = hi("div", "leaflet-control-attribution"),
+                        Ni(this._container),
+                        t._layers)
                     t._layers[i].getAttribution && this.addAttribution(t._layers[i].getAttribution());
                 return this._update(),
                     this._container
@@ -2768,15 +2559,15 @@
                     this
             },
             addAttribution: function(t) {
-                return t ? (this._attributions[t] || (this._attributions[t] = 0),
-                    this._attributions[t]++,
-                    this._update(),
-                    this) : this
+                return t && (this._attributions[t] || (this._attributions[t] = 0),
+                        this._attributions[t]++,
+                        this._update()),
+                    this
             },
             removeAttribution: function(t) {
-                return t ? (this._attributions[t] && (this._attributions[t]--,
+                return t && this._attributions[t] && (this._attributions[t]--,
                         this._update()),
-                    this) : this
+                    this
             },
             _update: function() {
                 if (this._map) {
@@ -2790,119 +2581,122 @@
                 }
             }
         });
-    Le.mergeOptions({
+    Ji.mergeOptions({
             attributionControl: !0
         }),
-        Le.addInitHook(function() {
-            this.options.attributionControl && (new Ce).addTo(this)
+        Ji.addInitHook(function() {
+            this.options.attributionControl && (new ne).addTo(this)
         });
-    Pe.Layers = Te,
-        Pe.Zoom = ze,
-        Pe.Scale = Me,
-        Pe.Attribution = Ce,
-        be.layers = function(t, i, e) {
-            return new Te(t, i, e)
+    Qi.Layers = te,
+        Qi.Zoom = ie,
+        Qi.Scale = ee,
+        Qi.Attribution = ne,
+        $i.layers = function(t, i, e) {
+            return new te(t, i, e)
         },
-        be.zoom = function(t) {
-            return new ze(t)
+        $i.zoom = function(t) {
+            return new ie(t)
         },
-        be.scale = function(t) {
-            return new Me(t)
+        $i.scale = function(t) {
+            return new ee(t)
         },
-        be.attribution = function(t) {
-            return new Ce(t)
+        $i.attribution = function(t) {
+            return new ne(t)
         };
-    var Ze = v.extend({
+    var oe = Z.extend({
         initialize: function(t) {
             this._map = t
         },
         enable: function() {
-            return this._enabled ? this : (this._enabled = !0,
-                this.addHooks(),
-                this)
+            return this._enabled || (this._enabled = !0,
+                    this.addHooks()),
+                this
         },
         disable: function() {
-            return this._enabled ? (this._enabled = !1,
-                this.removeHooks(),
-                this) : this
+            return this._enabled && (this._enabled = !1,
+                    this.removeHooks()),
+                this
         },
         enabled: function() {
             return !!this._enabled
         }
     });
-    Ze.addTo = function(t, i) {
+    oe.addTo = function(t, i) {
         return t.addHandler(i, this),
             this
     };
-    var Se, Ee = {
-            Events: hi
+    var se, re = {
+            Events: E
         },
-        ke = Vi ? "touchstart mousedown" : "mousedown",
-        Ae = {
+        ae = Tt ? "touchstart mousedown" : "mousedown",
+        he = {
             mousedown: "mouseup",
             touchstart: "touchend",
             pointerdown: "touchend",
             MSPointerDown: "touchend"
         },
-        Ie = {
+        ue = {
             mousedown: "mousemove",
             touchstart: "touchmove",
             pointerdown: "touchmove",
             MSPointerDown: "touchmove"
         },
-        Be = ui.extend({
+        le = k.extend({
             options: {
                 clickTolerance: 3
             },
             initialize: function(t, i, e, n) {
-                l(this, n),
+                p(this, n),
                     this._element = t,
                     this._dragStartTarget = i || t,
                     this._preventOutline = e
             },
             enable: function() {
-                this._enabled || (V(this._dragStartTarget, ke, this._onDown, this),
+                this._enabled || (Ei(this._dragStartTarget, ae, this._onDown, this),
                     this._enabled = !0)
             },
             disable: function() {
-                this._enabled && (Be._dragging === this && this.finishDrag(),
-                    q(this._dragStartTarget, ke, this._onDown, this),
+                this._enabled && (le._dragging === this && this.finishDrag(),
+                    Bi(this._dragStartTarget, ae, this._onDown, this),
                     this._enabled = !1,
                     this._moved = !1)
             },
             _onDown: function(t) {
-                if (!t._simulated && this._enabled && (this._moved = !1, !dt(this._element, "leaflet-zoom-anim") && !(Be._dragging || t.shiftKey || 1 !== t.which && 1 !== t.button && !t.touches || (Be._dragging = this,
-                        this._preventOutline && zt(this._element),
-                        bt(),
-                        mi(),
+                if (!t._simulated && this._enabled && (this._moved = !1, !di(this._element, "leaflet-zoom-anim") && !(le._dragging || t.shiftKey || 1 !== t.which && 1 !== t.button && !t.touches || ((le._dragging = this)._preventOutline && zi(this._element),
+                        bi(),
+                        $t(),
                         this._moving)))) {
                     this.fire("down");
-                    var i = t.touches ? t.touches[0] : t;
-                    this._startPoint = new x(i.clientX, i.clientY),
-                        V(document, Ie[t.type], this._onMove, this),
-                        V(document, Ae[t.type], this._onUp, this)
+                    var i = t.touches ? t.touches[0] : t,
+                        e = Ci(this._element);
+                    this._startPoint = new B(i.clientX, i.clientY),
+                        this._parentScale = Si(e),
+                        Ei(document, ue[t.type], this._onMove, this),
+                        Ei(document, he[t.type], this._onUp, this)
                 }
             },
             _onMove: function(t) {
                 if (!t._simulated && this._enabled)
-                    if (t.touches && t.touches.length > 1)
+                    if (t.touches && 1 < t.touches.length)
                         this._moved = !0;
                     else {
                         var i = t.touches && 1 === t.touches.length ? t.touches[0] : t,
-                            e = new x(i.clientX, i.clientY).subtract(this._startPoint);
-                        (e.x || e.y) && (Math.abs(e.x) + Math.abs(e.y) < this.options.clickTolerance || ($(t),
+                            e = new B(i.clientX, i.clientY)._subtract(this._startPoint);
+                        (e.x || e.y) && (Math.abs(e.x) + Math.abs(e.y) < this.options.clickTolerance || (e.x /= this._parentScale.x,
+                            e.y /= this._parentScale.y,
+                            Di(t),
                             this._moved || (this.fire("dragstart"),
                                 this._moved = !0,
-                                this._startPos = Pt(this._element).subtract(e),
-                                pt(document.body, "leaflet-dragging"),
+                                this._startPos = Pi(this._element).subtract(e),
+                                pi(document.body, "leaflet-dragging"),
                                 this._lastTarget = t.target || t.srcElement,
                                 window.SVGElementInstance && this._lastTarget instanceof SVGElementInstance && (this._lastTarget = this._lastTarget.correspondingUseElement),
-                                pt(this._lastTarget, "leaflet-drag-target")),
+                                pi(this._lastTarget, "leaflet-drag-target")),
                             this._newPos = this._startPos.add(e),
                             this._moving = !0,
-                            g(this._animRequest),
+                            C(this._animRequest),
                             this._lastEvent = t,
-                            this._animRequest = f(this._updatePosition, this, !0)))
+                            this._animRequest = M(this._updatePosition, this, !0)))
                     }
             },
             _updatePosition: function() {
@@ -2910,58 +2704,178 @@
                     originalEvent: this._lastEvent
                 };
                 this.fire("predrag", t),
-                    Lt(this._element, this._newPos),
+                    wi(this._element, this._newPos),
                     this.fire("drag", t)
             },
             _onUp: function(t) {
                 !t._simulated && this._enabled && this.finishDrag()
             },
             finishDrag: function() {
-                mt(document.body, "leaflet-dragging"),
-                    this._lastTarget && (mt(this._lastTarget, "leaflet-drag-target"),
-                        this._lastTarget = null);
-                for (var t in Ie)
-                    q(document, Ie[t], this._onMove, this),
-                    q(document, Ae[t], this._onUp, this);
-                Tt(),
-                    fi(),
-                    this._moved && this._moving && (g(this._animRequest),
+                for (var t in mi(document.body, "leaflet-dragging"),
+                        this._lastTarget && (mi(this._lastTarget, "leaflet-drag-target"),
+                            this._lastTarget = null),
+                        ue)
+                    Bi(document, ue[t], this._onMove, this),
+                    Bi(document, he[t], this._onUp, this);
+                Ti(),
+                    Qt(),
+                    this._moved && this._moving && (C(this._animRequest),
                         this.fire("dragend", {
                             distance: this._newPos.distanceTo(this._startPos)
                         })),
                     this._moving = !1,
-                    Be._dragging = !1
+                    le._dragging = !1
             }
+        });
+
+    function ce(t, i) {
+        if (!i || !t.length)
+            return t.slice();
+        var e = i * i;
+        return t = function(t, i) {
+            var e = t.length,
+                n = new(typeof Uint8Array != void 0 + "" ? Uint8Array : Array)(e);
+            n[0] = n[e - 1] = 1,
+                function t(i, e, n, o, s) {
+                    var r, a, h, u = 0;
+                    for (a = o + 1; a <= s - 1; a++)
+                        h = fe(i[a], i[o], i[s], !0),
+                        u < h && (r = a,
+                            u = h);
+                    n < u && (e[r] = 1,
+                        t(i, e, n, o, r),
+                        t(i, e, n, r, s))
+                }(t, n, i, 0, e - 1);
+            var o, s = [];
+            for (o = 0; o < e; o++)
+                n[o] && s.push(t[o]);
+            return s
+        }(t = function(t, i) {
+            for (var e = [t[0]], n = 1, o = 0, s = t.length; n < s; n++)
+                r = t[n],
+                a = t[o],
+                void 0,
+                h = a.x - r.x,
+                u = a.y - r.y,
+                i < h * h + u * u && (e.push(t[n]),
+                    o = n);
+            var r, a, h, u;
+            o < s - 1 && e.push(t[s - 1]);
+            return e
+        }(t, e), e)
+    }
+
+    function _e(t, i, e) {
+        return Math.sqrt(fe(t, i, e, !0))
+    }
+
+    function de(t, i, e, n, o) {
+        var s, r, a, h = n ? se : me(t, e),
+            u = me(i, e);
+        for (se = u;;) {
+            if (!(h | u))
+                return [t, i];
+            if (h & u)
+                return !1;
+            a = me(r = pe(t, i, s = h || u, e, o), e),
+                s === h ? (t = r,
+                    h = a) : (i = r,
+                    u = a)
+        }
+    }
+
+    function pe(t, i, e, n, o) {
+        var s, r, a = i.x - t.x,
+            h = i.y - t.y,
+            u = n.min,
+            l = n.max;
+        return 8 & e ? (s = t.x + a * (l.y - t.y) / h,
+                r = l.y) : 4 & e ? (s = t.x + a * (u.y - t.y) / h,
+                r = u.y) : 2 & e ? (s = l.x,
+                r = t.y + h * (l.x - t.x) / a) : 1 & e && (s = u.x,
+                r = t.y + h * (u.x - t.x) / a),
+            new B(s, r, o)
+    }
+
+    function me(t, i) {
+        var e = 0;
+        return t.x < i.min.x ? e |= 1 : t.x > i.max.x && (e |= 2),
+            t.y < i.min.y ? e |= 4 : t.y > i.max.y && (e |= 8),
+            e
+    }
+
+    function fe(t, i, e, n) {
+        var o, s = i.x,
+            r = i.y,
+            a = e.x - s,
+            h = e.y - r,
+            u = a * a + h * h;
+        return 0 < u && (1 < (o = ((t.x - s) * a + (t.y - r) * h) / u) ? (s = e.x,
+                r = e.y) : 0 < o && (s += a * o,
+                r += h * o)),
+            a = t.x - s,
+            h = t.y - r,
+            n ? a * a + h * h : new B(s, r)
+    }
+
+    function ge(t) {
+        return !v(t[0]) || "object" != typeof t[0][0] && void 0 !== t[0][0]
+    }
+
+    function ve(t) {
+        return console.warn("Deprecated use of _flat, please use L.LineUtil.isFlat instead."),
+            ge(t)
+    }
+    var ye = (Object.freeze || Object)({
+        simplify: ce,
+        pointToSegmentDistance: _e,
+        closestPointOnSegment: function(t, i, e) {
+            return fe(t, i, e)
+        },
+        clipSegment: de,
+        _getEdgeIntersection: pe,
+        _getBitCode: me,
+        _sqClosestPointOnSegment: fe,
+        isFlat: ge,
+        _flat: ve
+    });
+
+    function xe(t, i, e) {
+        var n, o, s, r, a, h, u, l, c, _ = [1, 4, 2, 8];
+        for (o = 0,
+            u = t.length; o < u; o++)
+            t[o]._code = me(t[o], i);
+        for (r = 0; r < 4; r++) {
+            for (l = _[r],
+                n = [],
+                o = 0,
+                s = (u = t.length) - 1; o < u; s = o++)
+                a = t[o],
+                h = t[s],
+                a._code & l ? h._code & l || ((c = pe(h, a, l, i, e))._code = me(c, i),
+                    n.push(c)) : (h._code & l && ((c = pe(h, a, l, i, e))._code = me(c, i),
+                        n.push(c)),
+                    n.push(a));
+            t = n
+        }
+        return t
+    }
+    var we, Pe = (Object.freeze || Object)({
+            clipPolygon: xe
         }),
-        Oe = (Object.freeze || Object)({
-            simplify: Ct,
-            pointToSegmentDistance: Zt,
-            closestPointOnSegment: function(t, i, e) {
-                return Rt(t, i, e)
-            },
-            clipSegment: At,
-            _getEdgeIntersection: It,
-            _getBitCode: Bt,
-            _sqClosestPointOnSegment: Rt,
-            isFlat: Dt,
-            _flat: Nt
-        }),
-        Re = (Object.freeze || Object)({
-            clipPolygon: jt
-        }),
-        De = {
+        Le = {
             project: function(t) {
-                return new x(t.lng, t.lat)
+                return new B(t.lng, t.lat)
             },
             unproject: function(t) {
-                return new M(t.y, t.x)
+                return new j(t.y, t.x)
             },
-            bounds: new P([-180, -90], [180, 90])
+            bounds: new O([-180, -90], [180, 90])
         },
-        Ne = {
+        be = {
             R: 6378137,
             R_MINOR: 6356752.314245179,
-            bounds: new P([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
+            bounds: new O([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
             project: function(t) {
                 var i = Math.PI / 180,
                     e = this.R,
@@ -2971,37 +2885,35 @@
                     r = s * Math.sin(n),
                     a = Math.tan(Math.PI / 4 - n / 2) / Math.pow((1 - r) / (1 + r), s / 2);
                 return n = -e * Math.log(Math.max(a, 1e-10)),
-                    new x(t.lng * i * e, n)
+                    new B(t.lng * i * e, n)
             },
             unproject: function(t) {
-                for (var i, e = 180 / Math.PI, n = this.R, o = this.R_MINOR / n, s = Math.sqrt(1 - o * o), r = Math.exp(-t.y / n), a = Math.PI / 2 - 2 * Math.atan(r), h = 0, u = .1; h < 15 && Math.abs(u) > 1e-7; h++)
+                for (var i, e = 180 / Math.PI, n = this.R, o = this.R_MINOR / n, s = Math.sqrt(1 - o * o), r = Math.exp(-t.y / n), a = Math.PI / 2 - 2 * Math.atan(r), h = 0, u = .1; h < 15 && 1e-7 < Math.abs(u); h++)
                     i = s * Math.sin(a),
                     i = Math.pow((1 - i) / (1 + i), s / 2),
                     a += u = Math.PI / 2 - 2 * Math.atan(r * i) - a;
-                return new M(a * e, t.x * e / n)
+                return new j(a * e, t.x * e / n)
             }
         },
-        je = (Object.freeze || Object)({
-            LonLat: De,
-            Mercator: Ne,
-            SphericalMercator: di
+        Te = (Object.freeze || Object)({
+            LonLat: Le,
+            Mercator: be,
+            SphericalMercator: q
         }),
-        We = i({}, _i, {
+        ze = h({}, U, {
             code: "EPSG:3395",
-            projection: Ne,
-            transformation: function() {
-                var t = .5 / (Math.PI * Ne.R);
-                return S(t, .5, -t, .5)
-            }()
+            projection: be,
+            transformation: (we = .5 / (Math.PI * be.R),
+                K(we, .5, -we, .5))
         }),
-        He = i({}, _i, {
+        Me = h({}, U, {
             code: "EPSG:4326",
-            projection: De,
-            transformation: S(1 / 180, 1, -1 / 180, .5)
+            projection: Le,
+            transformation: K(1 / 180, 1, -1 / 180, .5)
         }),
-        Fe = i({}, ci, {
-            projection: De,
-            transformation: S(1, 0, -1, 0),
+        Ce = h({}, F, {
+            projection: Le,
+            transformation: K(1, 0, -1, 0),
             scale: function(t) {
                 return Math.pow(2, t)
             },
@@ -3015,13 +2927,13 @@
             },
             infinite: !0
         });
-    ci.Earth = _i,
-        ci.EPSG3395 = We,
-        ci.EPSG3857 = vi,
-        ci.EPSG900913 = yi,
-        ci.EPSG4326 = He,
-        ci.Simple = Fe;
-    var Ue = ui.extend({
+    F.Earth = U,
+        F.EPSG3395 = ze,
+        F.EPSG3857 = X,
+        F.EPSG900913 = J,
+        F.EPSG4326 = Me,
+        F.Simple = Ce;
+    var Se = k.extend({
         options: {
             pane: "overlayPane",
             attribution: null,
@@ -3042,11 +2954,10 @@
             return this._map.getPane(t ? this.options[t] || t : this.options.pane)
         },
         addInteractiveTarget: function(t) {
-            return this._map._targets[n(t)] = this,
-                this
+            return this._map._targets[u(t)] = this
         },
         removeInteractiveTarget: function(t) {
-            return delete this._map._targets[n(t)],
+            return delete this._map._targets[u(t)],
                 this
         },
         getAttribution: function() {
@@ -3073,31 +2984,30 @@
             }
         }
     });
-    Le.include({
+    Ji.include({
         addLayer: function(t) {
             if (!t._layerAdd)
                 throw new Error("The provided object is not a Layer.");
-            var i = n(t);
-            return this._layers[i] ? this : (this._layers[i] = t,
-                t._mapToAdd = this,
-                t.beforeAdd && t.beforeAdd(this),
-                this.whenReady(t._layerAdd, t),
-                this)
+            var i = u(t);
+            return this._layers[i] || ((this._layers[i] = t)._mapToAdd = this,
+                    t.beforeAdd && t.beforeAdd(this),
+                    this.whenReady(t._layerAdd, t)),
+                this
         },
         removeLayer: function(t) {
-            var i = n(t);
-            return this._layers[i] ? (this._loaded && t.onRemove(this),
-                t.getAttribution && this.attributionControl && this.attributionControl.removeAttribution(t.getAttribution()),
-                delete this._layers[i],
-                this._loaded && (this.fire("layerremove", {
-                        layer: t
-                    }),
-                    t.fire("remove")),
-                t._map = t._mapToAdd = null,
-                this) : this
+            var i = u(t);
+            return this._layers[i] && (this._loaded && t.onRemove(this),
+                    t.getAttribution && this.attributionControl && this.attributionControl.removeAttribution(t.getAttribution()),
+                    delete this._layers[i],
+                    this._loaded && (this.fire("layerremove", {
+                            layer: t
+                        }),
+                        t.fire("remove")),
+                    t._map = t._mapToAdd = null),
+                this
         },
         hasLayer: function(t) {
-            return !!t && n(t) in this._layers
+            return !!t && u(t) in this._layers
         },
         eachLayer: function(t, i) {
             for (var e in this._layers)
@@ -3105,15 +3015,15 @@
             return this
         },
         _addLayers: function(t) {
-            for (var i = 0, e = (t = t ? ei(t) ? t : [t] : []).length; i < e; i++)
+            for (var i = 0, e = (t = t ? v(t) ? t : [t] : []).length; i < e; i++)
                 this.addLayer(t[i])
         },
         _addZoomLimit: function(t) {
-            !isNaN(t.options.maxZoom) && isNaN(t.options.minZoom) || (this._zoomBoundLayers[n(t)] = t,
+            !isNaN(t.options.maxZoom) && isNaN(t.options.minZoom) || (this._zoomBoundLayers[u(t)] = t,
                 this._updateZoomLevels())
         },
         _removeZoomLimit: function(t) {
-            var i = n(t);
+            var i = u(t);
             this._zoomBoundLayers[i] && (delete this._zoomBoundLayers[i],
                 this._updateZoomLevels())
         },
@@ -3133,12 +3043,12 @@
                 void 0 === this.options.minZoom && this._layersMinZoom && this.getZoom() < this._layersMinZoom && this.setZoom(this._layersMinZoom)
         }
     });
-    var Ve = Ue.extend({
+    var Ze = Se.extend({
             initialize: function(t, i) {
-                l(this, i),
-                    this._layers = {};
                 var e, n;
-                if (t)
+                if (p(this, i),
+                    this._layers = {},
+                    t)
                     for (e = 0,
                         n = t.length; e < n; e++)
                         this.addLayer(t[e])
@@ -3190,13 +3100,13 @@
                 return this.invoke("setZIndex", t)
             },
             getLayerId: function(t) {
-                return n(t)
+                return u(t)
             }
         }),
-        qe = Ve.extend({
+        Ee = Ze.extend({
             addLayer: function(t) {
                 return this.hasLayer(t) ? this : (t.addEventParent(this),
-                    Ve.prototype.addLayer.call(this, t),
+                    Ze.prototype.addLayer.call(this, t),
                     this.fire("layeradd", {
                         layer: t
                     }))
@@ -3204,7 +3114,7 @@
             removeLayer: function(t) {
                 return this.hasLayer(t) ? (t in this._layers && (t = this._layers[t]),
                     t.removeEventParent(this),
-                    Ve.prototype.removeLayer.call(this, t),
+                    Ze.prototype.removeLayer.call(this, t),
                     this.fire("layerremove", {
                         layer: t
                     })) : this
@@ -3219,7 +3129,7 @@
                 return this.invoke("bringToBack")
             },
             getBounds: function() {
-                var t = new T;
+                var t = new N;
                 for (var i in this._layers) {
                     var e = this._layers[i];
                     t.extend(e.getBounds ? e.getBounds() : e.getLatLng())
@@ -3227,13 +3137,13 @@
                 return t
             }
         }),
-        Ge = v.extend({
+        ke = Z.extend({
             options: {
                 popupAnchor: [0, 0],
                 tooltipAnchor: [0, 0]
             },
             initialize: function(t) {
-                l(this, t)
+                p(this, t)
             },
             createIcon: function(t) {
                 return this._createIcon("icon", t)
@@ -3256,8 +3166,8 @@
                 var e = this.options,
                     n = e[i + "Size"];
                 "number" == typeof n && (n = [n, n]);
-                var o = w(n),
-                    s = w("shadow" === i && e.shadowAnchor || e.iconAnchor || o && o.divideBy(2, !0));
+                var o = I(n),
+                    s = I("shadow" === i && e.shadowAnchor || e.iconAnchor || o && o.divideBy(2, !0));
                 t.className = "leaflet-marker-" + i + " " + (e.className || ""),
                     s && (t.style.marginLeft = -s.x + "px",
                         t.style.marginTop = -s.y + "px"),
@@ -3265,15 +3175,14 @@
                         t.style.height = o.y + "px")
             },
             _createImg: function(t, i) {
-                return i = i || document.createElement("img"),
-                    i.src = t,
+                return (i = i || document.createElement("img")).src = t,
                     i
             },
             _getIconUrl: function(t) {
-                return Ki && this.options[t + "RetinaUrl"] || this.options[t + "Url"]
+                return Ct && this.options[t + "RetinaUrl"] || this.options[t + "Url"]
             }
-        }),
-        Ke = Ge.extend({
+        });
+    var Be = ke.extend({
             options: {
                 iconUrl: "marker-icon.png",
                 iconRetinaUrl: "marker-icon-2x.png",
@@ -3285,30 +3194,30 @@
                 shadowSize: [41, 41]
             },
             _getIconUrl: function(t) {
-                return Ke.imagePath || (Ke.imagePath = this._detectIconPath()),
-                    (this.options.imagePath || Ke.imagePath) + Ge.prototype._getIconUrl.call(this, t)
+                return Be.imagePath || (Be.imagePath = this._detectIconPath()),
+                    (this.options.imagePath || Be.imagePath) + ke.prototype._getIconUrl.call(this, t)
             },
             _detectIconPath: function() {
-                var t = ht("div", "leaflet-default-icon-path", document.body),
-                    i = at(t, "background-image") || at(t, "backgroundImage");
+                var t = hi("div", "leaflet-default-icon-path", document.body),
+                    i = ai(t, "background-image") || ai(t, "backgroundImage");
                 return document.body.removeChild(t),
                     i = null === i || 0 !== i.indexOf("url") ? "" : i.replace(/^url\(["']?/, "").replace(/marker-icon\.png["']?\)$/, "")
             }
         }),
-        Ye = Ze.extend({
+        Ae = oe.extend({
             initialize: function(t) {
                 this._marker = t
             },
             addHooks: function() {
                 var t = this._marker._icon;
-                this._draggable || (this._draggable = new Be(t, t, !0)),
+                this._draggable || (this._draggable = new le(t, t, !0)),
                     this._draggable.on({
                         dragstart: this._onDragStart,
                         predrag: this._onPreDrag,
                         drag: this._onDrag,
                         dragend: this._onDragEnd
                     }, this).enable(),
-                    pt(t, "leaflet-marker-draggable")
+                    pi(t, "leaflet-marker-draggable")
             },
             removeHooks: function() {
                 this._draggable.off({
@@ -3317,7 +3226,7 @@
                         drag: this._onDrag,
                         dragend: this._onDragEnd
                     }, this).disable(),
-                    this._marker._icon && mt(this._marker._icon, "leaflet-marker-draggable")
+                    this._marker._icon && mi(this._marker._icon, "leaflet-marker-draggable")
             },
             moved: function() {
                 return this._draggable && this._draggable._moved
@@ -3327,20 +3236,20 @@
                     e = i._map,
                     n = this._marker.options.autoPanSpeed,
                     o = this._marker.options.autoPanPadding,
-                    s = L.DomUtil.getPosition(i._icon),
+                    s = Pi(i._icon),
                     r = e.getPixelBounds(),
                     a = e.getPixelOrigin(),
-                    h = b(r.min._subtract(a).add(o), r.max._subtract(a).subtract(o));
+                    h = R(r.min._subtract(a).add(o), r.max._subtract(a).subtract(o));
                 if (!h.contains(s)) {
-                    var u = w((Math.max(h.max.x, s.x) - h.max.x) / (r.max.x - h.max.x) - (Math.min(h.min.x, s.x) - h.min.x) / (r.min.x - h.min.x), (Math.max(h.max.y, s.y) - h.max.y) / (r.max.y - h.max.y) - (Math.min(h.min.y, s.y) - h.min.y) / (r.min.y - h.min.y)).multiplyBy(n);
+                    var u = I((Math.max(h.max.x, s.x) - h.max.x) / (r.max.x - h.max.x) - (Math.min(h.min.x, s.x) - h.min.x) / (r.min.x - h.min.x), (Math.max(h.max.y, s.y) - h.max.y) / (r.max.y - h.max.y) - (Math.min(h.min.y, s.y) - h.min.y) / (r.min.y - h.min.y)).multiplyBy(n);
                     e.panBy(u, {
                             animate: !1
                         }),
                         this._draggable._newPos._add(u),
                         this._draggable._startPos._add(u),
-                        L.DomUtil.setPosition(i._icon, this._draggable._newPos),
+                        wi(i._icon, this._draggable._newPos),
                         this._onDrag(t),
-                        this._panRequest = f(this._adjustPan.bind(this, t))
+                        this._panRequest = M(this._adjustPan.bind(this, t))
                 }
             },
             _onDragStart: function() {
@@ -3348,34 +3257,30 @@
                     this._marker.closePopup().fire("movestart").fire("dragstart")
             },
             _onPreDrag: function(t) {
-                this._marker.options.autoPan && (g(this._panRequest),
-                    this._panRequest = f(this._adjustPan.bind(this, t)))
+                this._marker.options.autoPan && (C(this._panRequest),
+                    this._panRequest = M(this._adjustPan.bind(this, t)))
             },
             _onDrag: function(t) {
                 var i = this._marker,
                     e = i._shadow,
-                    n = Pt(i._icon),
+                    n = Pi(i._icon),
                     o = i._map.layerPointToLatLng(n);
-                e && Lt(e, n),
+                e && wi(e, n),
                     i._latlng = o,
                     t.latlng = o,
                     t.oldLatLng = this._oldLatLng,
                     i.fire("move", t).fire("drag", t)
             },
             _onDragEnd: function(t) {
-                g(this._panRequest),
+                C(this._panRequest),
                     delete this._oldLatLng,
                     this._marker.fire("moveend").fire("dragend", t)
             }
         }),
-        Xe = Ue.extend({
+        Ie = Se.extend({
             options: {
-                icon: new Ke,
+                icon: new Be,
                 interactive: !0,
-                draggable: !1,
-                autoPan: !1,
-                autoPanPadding: [50, 50],
-                autoPanSpeed: 10,
                 keyboard: !0,
                 title: "",
                 alt: "",
@@ -3384,11 +3289,16 @@
                 riseOnHover: !1,
                 riseOffset: 250,
                 pane: "markerPane",
-                bubblingMouseEvents: !1
+                shadowPane: "shadowPane",
+                bubblingMouseEvents: !1,
+                draggable: !1,
+                autoPan: !1,
+                autoPanPadding: [50, 50],
+                autoPanSpeed: 10
             },
             initialize: function(t, i) {
-                l(this, i),
-                    this._latlng = C(t)
+                p(this, i),
+                    this._latlng = W(t)
             },
             onAdd: function(t) {
                 this._zoomAnimated = this._zoomAnimated && t.options.markerZoomAnimation,
@@ -3415,7 +3325,7 @@
             },
             setLatLng: function(t) {
                 var i = this._latlng;
-                return this._latlng = C(t),
+                return this._latlng = W(t),
                     this.update(),
                     this.fire("move", {
                         oldLatLng: i,
@@ -3425,6 +3335,9 @@
             setZIndexOffset: function(t) {
                 return this.options.zIndexOffset = t,
                     this.update()
+            },
+            getIcon: function() {
+                return this.options.icon
             },
             setIcon: function(t) {
                 return this.options.icon = t,
@@ -3452,7 +3365,7 @@
                         n = !0,
                         t.title && (e.title = t.title),
                         "IMG" === e.tagName && (e.alt = t.alt || "")),
-                    pt(e, i),
+                    pi(e, i),
                     t.keyboard && (e.tabIndex = "0"),
                     this._icon = e,
                     t.riseOnHover && this.on({
@@ -3463,30 +3376,30 @@
                     s = !1;
                 o !== this._shadow && (this._removeShadow(),
                         s = !0),
-                    o && (pt(o, i),
+                    o && (pi(o, i),
                         o.alt = ""),
                     this._shadow = o,
                     t.opacity < 1 && this._updateOpacity(),
                     n && this.getPane().appendChild(this._icon),
                     this._initInteraction(),
-                    o && s && this.getPane("shadowPane").appendChild(this._shadow)
+                    o && s && this.getPane(t.shadowPane).appendChild(this._shadow)
             },
             _removeIcon: function() {
                 this.options.riseOnHover && this.off({
                         mouseover: this._bringToFront,
                         mouseout: this._resetZIndex
                     }),
-                    ut(this._icon),
+                    ui(this._icon),
                     this.removeInteractiveTarget(this._icon),
                     this._icon = null
             },
             _removeShadow: function() {
-                this._shadow && ut(this._shadow),
+                this._shadow && ui(this._shadow),
                     this._shadow = null
             },
             _setPos: function(t) {
-                Lt(this._icon, t),
-                    this._shadow && Lt(this._shadow, t),
+                wi(this._icon, t),
+                    this._shadow && wi(this._shadow, t),
                     this._zIndex = t.y + this.options.zIndexOffset,
                     this._resetZIndex()
             },
@@ -3498,13 +3411,13 @@
                 this._setPos(i)
             },
             _initInteraction: function() {
-                if (this.options.interactive && (pt(this._icon, "leaflet-interactive"),
+                if (this.options.interactive && (pi(this._icon, "leaflet-interactive"),
                         this.addInteractiveTarget(this._icon),
-                        Ye)) {
+                        Ae)) {
                     var t = this.options.draggable;
                     this.dragging && (t = this.dragging.enabled(),
                             this.dragging.disable()),
-                        this.dragging = new Ye(this),
+                        this.dragging = new Ae(this),
                         t && this.dragging.enable()
                 }
             },
@@ -3515,8 +3428,8 @@
             },
             _updateOpacity: function() {
                 var t = this.options.opacity;
-                vt(this._icon, t),
-                    this._shadow && vt(this._shadow, t)
+                this._icon && vi(this._icon, t),
+                    this._shadow && vi(this._shadow, t)
             },
             _bringToFront: function() {
                 this._updateZIndex(this.options.riseOffset)
@@ -3530,8 +3443,8 @@
             _getTooltipAnchor: function() {
                 return this.options.icon.options.tooltipAnchor
             }
-        }),
-        Je = Ue.extend({
+        });
+    var Oe = Se.extend({
             options: {
                 stroke: !0,
                 color: "#3388ff",
@@ -3564,8 +3477,9 @@
                     this
             },
             setStyle: function(t) {
-                return l(this, t),
-                    this._renderer && this._renderer._updateStyle(this),
+                return p(this, t),
+                    this._renderer && (this._renderer._updateStyle(this),
+                        this.options.stroke && t.hasOwnProperty("weight") && this._updateBounds()),
                     this
             },
             bringToFront: function() {
@@ -3587,18 +3501,18 @@
                 return (this.options.stroke ? this.options.weight / 2 : 0) + this._renderer.options.tolerance
             }
         }),
-        $e = Je.extend({
+        Re = Oe.extend({
             options: {
                 fill: !0,
                 radius: 10
             },
             initialize: function(t, i) {
-                l(this, i),
-                    this._latlng = C(t),
+                p(this, i),
+                    this._latlng = W(t),
                     this._radius = this.options.radius
             },
             setLatLng: function(t) {
-                return this._latlng = C(t),
+                return this._latlng = W(t),
                     this.redraw(),
                     this.fire("move", {
                         latlng: this._latlng
@@ -3616,7 +3530,7 @@
             },
             setStyle: function(t) {
                 var i = t && t.radius || this._radius;
-                return Je.prototype.setStyle.call(this, t),
+                return Oe.prototype.setStyle.call(this, t),
                     this.setRadius(i),
                     this
             },
@@ -3629,7 +3543,7 @@
                     i = this._radiusY || t,
                     e = this._clickTolerance(),
                     n = [t + e, i + e];
-                this._pxBounds = new P(this._point.subtract(n), this._point.add(n))
+                this._pxBounds = new O(this._point.subtract(n), this._point.add(n))
             },
             _update: function() {
                 this._map && this._updatePath()
@@ -3643,376 +3557,456 @@
             _containsPoint: function(t) {
                 return t.distanceTo(this._point) <= this._radius + this._clickTolerance()
             }
-        }),
-        Qe = $e.extend({
-            initialize: function(t, e, n) {
-                if ("number" == typeof e && (e = i({}, n, {
-                        radius: e
-                    })),
-                    l(this, e),
-                    this._latlng = C(t),
-                    isNaN(this.options.radius))
-                    throw new Error("Circle radius cannot be NaN");
-                this._mRadius = this.options.radius
-            },
-            setRadius: function(t) {
-                return this._mRadius = t,
-                    this.redraw()
-            },
-            getRadius: function() {
-                return this._mRadius
-            },
-            getBounds: function() {
-                var t = [this._radius, this._radiusY || this._radius];
-                return new T(this._map.layerPointToLatLng(this._point.subtract(t)), this._map.layerPointToLatLng(this._point.add(t)))
-            },
-            setStyle: Je.prototype.setStyle,
-            _project: function() {
-                var t = this._latlng.lng,
-                    i = this._latlng.lat,
-                    e = this._map,
-                    n = e.options.crs;
-                if (n.distance === _i.distance) {
-                    var o = Math.PI / 180,
-                        s = this._mRadius / _i.R / o,
-                        r = e.project([i + s, t]),
-                        a = e.project([i - s, t]),
-                        h = r.add(a).divideBy(2),
-                        u = e.unproject(h).lat,
-                        l = Math.acos((Math.cos(s * o) - Math.sin(i * o) * Math.sin(u * o)) / (Math.cos(i * o) * Math.cos(u * o))) / o;
-                    (isNaN(l) || 0 === l) && (l = s / Math.cos(Math.PI / 180 * i)),
-                    this._point = h.subtract(e.getPixelOrigin()),
-                        this._radius = isNaN(l) ? 0 : h.x - e.project([u, t - l]).x,
-                        this._radiusY = h.y - r.y
-                } else {
-                    var c = n.unproject(n.project(this._latlng).subtract([this._mRadius, 0]));
-                    this._point = e.latLngToLayerPoint(this._latlng),
-                        this._radius = this._point.x - e.latLngToLayerPoint(c).x
-                }
-                this._updateBounds()
-            }
-        }),
-        tn = Je.extend({
-            options: {
-                smoothFactor: 1,
-                noClip: !1
-            },
-            initialize: function(t, i) {
-                l(this, i),
-                    this._setLatLngs(t)
-            },
-            getLatLngs: function() {
-                return this._latlngs
-            },
-            setLatLngs: function(t) {
-                return this._setLatLngs(t),
-                    this.redraw()
-            },
-            isEmpty: function() {
-                return !this._latlngs.length
-            },
-            closestLayerPoint: function(t) {
-                for (var i, e, n = 1 / 0, o = null, s = Rt, r = 0, a = this._parts.length; r < a; r++)
-                    for (var h = this._parts[r], u = 1, l = h.length; u < l; u++) {
-                        var c = s(t, i = h[u - 1], e = h[u], !0);
-                        c < n && (n = c,
-                            o = s(t, i, e))
-                    }
-                return o && (o.distance = Math.sqrt(n)),
-                    o
-            },
-            getCenter: function() {
-                if (!this._map)
-                    throw new Error("Must add layer to map before using getCenter()");
-                var t, i, e, n, o, s, r, a = this._rings[0],
-                    h = a.length;
-                if (!h)
-                    return null;
-                for (t = 0,
-                    i = 0; t < h - 1; t++)
-                    i += a[t].distanceTo(a[t + 1]) / 2;
-                if (0 === i)
-                    return this._map.layerPointToLatLng(a[0]);
-                for (t = 0,
-                    n = 0; t < h - 1; t++)
-                    if (o = a[t],
-                        s = a[t + 1],
-                        e = o.distanceTo(s),
-                        (n += e) > i)
-                        return r = (n - i) / e,
-                            this._map.layerPointToLatLng([s.x - r * (s.x - o.x), s.y - r * (s.y - o.y)])
-            },
-            getBounds: function() {
-                return this._bounds
-            },
-            addLatLng: function(t, i) {
-                return i = i || this._defaultShape(),
-                    t = C(t),
-                    i.push(t),
-                    this._bounds.extend(t),
-                    this.redraw()
-            },
-            _setLatLngs: function(t) {
-                this._bounds = new T,
-                    this._latlngs = this._convertLatLngs(t)
-            },
-            _defaultShape: function() {
-                return Dt(this._latlngs) ? this._latlngs : this._latlngs[0]
-            },
-            _convertLatLngs: function(t) {
-                for (var i = [], e = Dt(t), n = 0, o = t.length; n < o; n++)
-                    e ? (i[n] = C(t[n]),
-                        this._bounds.extend(i[n])) : i[n] = this._convertLatLngs(t[n]);
-                return i
-            },
-            _project: function() {
-                var t = new P;
-                this._rings = [],
-                    this._projectLatlngs(this._latlngs, this._rings, t);
-                var i = this._clickTolerance(),
-                    e = new x(i, i);
-                this._bounds.isValid() && t.isValid() && (t.min._subtract(e),
-                    t.max._add(e),
-                    this._pxBounds = t)
-            },
-            _projectLatlngs: function(t, i, e) {
-                var n, o, s = t[0] instanceof M,
-                    r = t.length;
-                if (s) {
-                    for (o = [],
-                        n = 0; n < r; n++)
-                        o[n] = this._map.latLngToLayerPoint(t[n]),
-                        e.extend(o[n]);
-                    i.push(o)
-                } else
-                    for (n = 0; n < r; n++)
-                        this._projectLatlngs(t[n], i, e)
-            },
-            _clipPoints: function() {
-                var t = this._renderer._bounds;
-                if (this._parts = [],
-                    this._pxBounds && this._pxBounds.intersects(t))
-                    if (this.options.noClip)
-                        this._parts = this._rings;
-                    else {
-                        var i, e, n, o, s, r, a, h = this._parts;
-                        for (i = 0,
-                            n = 0,
-                            o = this._rings.length; i < o; i++)
-                            for (e = 0,
-                                s = (a = this._rings[i]).length; e < s - 1; e++)
-                                (r = At(a[e], a[e + 1], t, e, !0)) && (h[n] = h[n] || [],
-                                    h[n].push(r[0]),
-                                    r[1] === a[e + 1] && e !== s - 2 || (h[n].push(r[1]),
-                                        n++))
-                    }
-            },
-            _simplifyPoints: function() {
-                for (var t = this._parts, i = this.options.smoothFactor, e = 0, n = t.length; e < n; e++)
-                    t[e] = Ct(t[e], i)
-            },
-            _update: function() {
-                this._map && (this._clipPoints(),
-                    this._simplifyPoints(),
-                    this._updatePath())
-            },
-            _updatePath: function() {
-                this._renderer._updatePoly(this)
-            },
-            _containsPoint: function(t, i) {
-                var e, n, o, s, r, a, h = this._clickTolerance();
-                if (!this._pxBounds || !this._pxBounds.contains(t))
-                    return !1;
-                for (e = 0,
-                    s = this._parts.length; e < s; e++)
-                    for (n = 0,
-                        o = (r = (a = this._parts[e]).length) - 1; n < r; o = n++)
-                        if ((i || 0 !== n) && Zt(t, a[o], a[n]) <= h)
-                            return !0;
-                return !1
-            }
         });
-    tn._flat = Nt;
-    var en = tn.extend({
-            options: {
-                fill: !0
-            },
-            isEmpty: function() {
-                return !this._latlngs.length || !this._latlngs[0].length
-            },
-            getCenter: function() {
-                if (!this._map)
-                    throw new Error("Must add layer to map before using getCenter()");
-                var t, i, e, n, o, s, r, a, h, u = this._rings[0],
-                    l = u.length;
-                if (!l)
-                    return null;
-                for (s = r = a = 0,
-                    t = 0,
-                    i = l - 1; t < l; i = t++)
-                    e = u[t],
-                    n = u[i],
-                    o = e.y * n.x - n.y * e.x,
-                    r += (e.x + n.x) * o,
-                    a += (e.y + n.y) * o,
-                    s += 3 * o;
-                return h = 0 === s ? u[0] : [r / s, a / s],
-                    this._map.layerPointToLatLng(h)
-            },
-            _convertLatLngs: function(t) {
-                var i = tn.prototype._convertLatLngs.call(this, t),
-                    e = i.length;
-                return e >= 2 && i[0] instanceof M && i[0].equals(i[e - 1]) && i.pop(),
-                    i
-            },
-            _setLatLngs: function(t) {
-                tn.prototype._setLatLngs.call(this, t),
-                    Dt(this._latlngs) && (this._latlngs = [this._latlngs])
-            },
-            _defaultShape: function() {
-                return Dt(this._latlngs[0]) ? this._latlngs[0] : this._latlngs[0][0]
-            },
-            _clipPoints: function() {
-                var t = this._renderer._bounds,
-                    i = this.options.weight,
-                    e = new x(i, i);
-                if (t = new P(t.min.subtract(e), t.max.add(e)),
-                    this._parts = [],
-                    this._pxBounds && this._pxBounds.intersects(t))
-                    if (this.options.noClip)
-                        this._parts = this._rings;
-                    else
-                        for (var n, o = 0, s = this._rings.length; o < s; o++)
-                            (n = jt(this._rings[o], t, !0)).length && this._parts.push(n)
-            },
-            _updatePath: function() {
-                this._renderer._updatePoly(this, !0)
-            },
-            _containsPoint: function(t) {
-                var i, e, n, o, s, r, a, h, u = !1;
-                if (!this._pxBounds.contains(t))
-                    return !1;
-                for (o = 0,
-                    a = this._parts.length; o < a; o++)
-                    for (s = 0,
-                        r = (h = (i = this._parts[o]).length) - 1; s < h; r = s++)
-                        e = i[s],
-                        n = i[r],
-                        e.y > t.y != n.y > t.y && t.x < (n.x - e.x) * (t.y - e.y) / (n.y - e.y) + e.x && (u = !u);
-                return u || tn.prototype._containsPoint.call(this, t, !0)
+    var Ne = Re.extend({
+        initialize: function(t, i, e) {
+            if ("number" == typeof i && (i = h({}, e, {
+                    radius: i
+                })),
+                p(this, i),
+                this._latlng = W(t),
+                isNaN(this.options.radius))
+                throw new Error("Circle radius cannot be NaN");
+            this._mRadius = this.options.radius
+        },
+        setRadius: function(t) {
+            return this._mRadius = t,
+                this.redraw()
+        },
+        getRadius: function() {
+            return this._mRadius
+        },
+        getBounds: function() {
+            var t = [this._radius, this._radiusY || this._radius];
+            return new N(this._map.layerPointToLatLng(this._point.subtract(t)), this._map.layerPointToLatLng(this._point.add(t)))
+        },
+        setStyle: Oe.prototype.setStyle,
+        _project: function() {
+            var t = this._latlng.lng,
+                i = this._latlng.lat,
+                e = this._map,
+                n = e.options.crs;
+            if (n.distance === U.distance) {
+                var o = Math.PI / 180,
+                    s = this._mRadius / U.R / o,
+                    r = e.project([i + s, t]),
+                    a = e.project([i - s, t]),
+                    h = r.add(a).divideBy(2),
+                    u = e.unproject(h).lat,
+                    l = Math.acos((Math.cos(s * o) - Math.sin(i * o) * Math.sin(u * o)) / (Math.cos(i * o) * Math.cos(u * o))) / o;
+                !isNaN(l) && 0 !== l || (l = s / Math.cos(Math.PI / 180 * i)),
+                    this._point = h.subtract(e.getPixelOrigin()),
+                    this._radius = isNaN(l) ? 0 : h.x - e.project([u, t - l]).x,
+                    this._radiusY = h.y - r.y
+            } else {
+                var c = n.unproject(n.project(this._latlng).subtract([this._mRadius, 0]));
+                this._point = e.latLngToLayerPoint(this._latlng),
+                    this._radius = this._point.x - e.latLngToLayerPoint(c).x
             }
-        }),
-        nn = qe.extend({
-            initialize: function(t, i) {
-                l(this, i),
-                    this._layers = {},
-                    t && this.addData(t)
-            },
-            addData: function(t) {
-                var i, e, n, o = ei(t) ? t : t.features;
-                if (o) {
-                    for (i = 0,
-                        e = o.length; i < e; i++)
-                        ((n = o[i]).geometries || n.geometry || n.features || n.coordinates) && this.addData(n);
-                    return this
+            this._updateBounds()
+        }
+    });
+    var De = Oe.extend({
+        options: {
+            smoothFactor: 1,
+            noClip: !1
+        },
+        initialize: function(t, i) {
+            p(this, i),
+                this._setLatLngs(t)
+        },
+        getLatLngs: function() {
+            return this._latlngs
+        },
+        setLatLngs: function(t) {
+            return this._setLatLngs(t),
+                this.redraw()
+        },
+        isEmpty: function() {
+            return !this._latlngs.length
+        },
+        closestLayerPoint: function(t) {
+            for (var i, e, n = 1 / 0, o = null, s = fe, r = 0, a = this._parts.length; r < a; r++)
+                for (var h = this._parts[r], u = 1, l = h.length; u < l; u++) {
+                    var c = s(t, i = h[u - 1], e = h[u], !0);
+                    c < n && (n = c,
+                        o = s(t, i, e))
                 }
-                var s = this.options;
-                if (s.filter && !s.filter(t))
-                    return this;
-                var r = Wt(t, s);
-                return r ? (r.feature = Gt(t),
-                    r.defaultOptions = r.options,
-                    this.resetStyle(r),
-                    s.onEachFeature && s.onEachFeature(t, r),
-                    this.addLayer(r)) : this
-            },
-            resetStyle: function(t) {
-                return t.options = i({}, t.defaultOptions),
-                    this._setLayerStyle(t, this.options.style),
-                    this
-            },
-            setStyle: function(t) {
-                return this.eachLayer(function(i) {
-                    this._setLayerStyle(i, t)
-                }, this)
-            },
-            _setLayerStyle: function(t, i) {
-                "function" == typeof i && (i = i(t.feature)),
-                    t.setStyle && t.setStyle(i)
+            return o && (o.distance = Math.sqrt(n)),
+                o
+        },
+        getCenter: function() {
+            if (!this._map)
+                throw new Error("Must add layer to map before using getCenter()");
+            var t, i, e, n, o, s, r, a = this._rings[0],
+                h = a.length;
+            if (!h)
+                return null;
+            for (i = t = 0; t < h - 1; t++)
+                i += a[t].distanceTo(a[t + 1]) / 2;
+            if (0 === i)
+                return this._map.layerPointToLatLng(a[0]);
+            for (n = t = 0; t < h - 1; t++)
+                if (o = a[t],
+                    s = a[t + 1],
+                    i < (n += e = o.distanceTo(s)))
+                    return r = (n - i) / e,
+                        this._map.layerPointToLatLng([s.x - r * (s.x - o.x), s.y - r * (s.y - o.y)])
+        },
+        getBounds: function() {
+            return this._bounds
+        },
+        addLatLng: function(t, i) {
+            return i = i || this._defaultShape(),
+                t = W(t),
+                i.push(t),
+                this._bounds.extend(t),
+                this.redraw()
+        },
+        _setLatLngs: function(t) {
+            this._bounds = new N,
+                this._latlngs = this._convertLatLngs(t)
+        },
+        _defaultShape: function() {
+            return ge(this._latlngs) ? this._latlngs : this._latlngs[0]
+        },
+        _convertLatLngs: function(t) {
+            for (var i = [], e = ge(t), n = 0, o = t.length; n < o; n++)
+                e ? (i[n] = W(t[n]),
+                    this._bounds.extend(i[n])) : i[n] = this._convertLatLngs(t[n]);
+            return i
+        },
+        _project: function() {
+            var t = new O;
+            this._rings = [],
+                this._projectLatlngs(this._latlngs, this._rings, t),
+                this._bounds.isValid() && t.isValid() && (this._rawPxBounds = t,
+                    this._updateBounds())
+        },
+        _updateBounds: function() {
+            var t = this._clickTolerance(),
+                i = new B(t, t);
+            this._pxBounds = new O([this._rawPxBounds.min.subtract(i), this._rawPxBounds.max.add(i)])
+        },
+        _projectLatlngs: function(t, i, e) {
+            var n, o, s = t[0] instanceof j,
+                r = t.length;
+            if (s) {
+                for (o = [],
+                    n = 0; n < r; n++)
+                    o[n] = this._map.latLngToLayerPoint(t[n]),
+                    e.extend(o[n]);
+                i.push(o)
+            } else
+                for (n = 0; n < r; n++)
+                    this._projectLatlngs(t[n], i, e)
+        },
+        _clipPoints: function() {
+            var t = this._renderer._bounds;
+            if (this._parts = [],
+                this._pxBounds && this._pxBounds.intersects(t))
+                if (this.options.noClip)
+                    this._parts = this._rings;
+                else {
+                    var i, e, n, o, s, r, a, h = this._parts;
+                    for (n = i = 0,
+                        o = this._rings.length; i < o; i++)
+                        for (e = 0,
+                            s = (a = this._rings[i]).length; e < s - 1; e++)
+                            (r = de(a[e], a[e + 1], t, e, !0)) && (h[n] = h[n] || [],
+                                h[n].push(r[0]),
+                                r[1] === a[e + 1] && e !== s - 2 || (h[n].push(r[1]),
+                                    n++))
+                }
+        },
+        _simplifyPoints: function() {
+            for (var t = this._parts, i = this.options.smoothFactor, e = 0, n = t.length; e < n; e++)
+                t[e] = ce(t[e], i)
+        },
+        _update: function() {
+            this._map && (this._clipPoints(),
+                this._simplifyPoints(),
+                this._updatePath())
+        },
+        _updatePath: function() {
+            this._renderer._updatePoly(this)
+        },
+        _containsPoint: function(t, i) {
+            var e, n, o, s, r, a, h = this._clickTolerance();
+            if (!this._pxBounds || !this._pxBounds.contains(t))
+                return !1;
+            for (e = 0,
+                s = this._parts.length; e < s; e++)
+                for (n = 0,
+                    o = (r = (a = this._parts[e]).length) - 1; n < r; o = n++)
+                    if ((i || 0 !== n) && _e(t, a[o], a[n]) <= h)
+                        return !0;
+            return !1
+        }
+    });
+    De._flat = ve;
+    var je = De.extend({
+        options: {
+            fill: !0
+        },
+        isEmpty: function() {
+            return !this._latlngs.length || !this._latlngs[0].length
+        },
+        getCenter: function() {
+            if (!this._map)
+                throw new Error("Must add layer to map before using getCenter()");
+            var t, i, e, n, o, s, r, a, h, u = this._rings[0],
+                l = u.length;
+            if (!l)
+                return null;
+            for (s = r = a = 0,
+                t = 0,
+                i = l - 1; t < l; i = t++)
+                e = u[t],
+                n = u[i],
+                o = e.y * n.x - n.y * e.x,
+                r += (e.x + n.x) * o,
+                a += (e.y + n.y) * o,
+                s += 3 * o;
+            return h = 0 === s ? u[0] : [r / s, a / s],
+                this._map.layerPointToLatLng(h)
+        },
+        _convertLatLngs: function(t) {
+            var i = De.prototype._convertLatLngs.call(this, t),
+                e = i.length;
+            return 2 <= e && i[0] instanceof j && i[0].equals(i[e - 1]) && i.pop(),
+                i
+        },
+        _setLatLngs: function(t) {
+            De.prototype._setLatLngs.call(this, t),
+                ge(this._latlngs) && (this._latlngs = [this._latlngs])
+        },
+        _defaultShape: function() {
+            return ge(this._latlngs[0]) ? this._latlngs[0] : this._latlngs[0][0]
+        },
+        _clipPoints: function() {
+            var t = this._renderer._bounds,
+                i = this.options.weight,
+                e = new B(i, i);
+            if (t = new O(t.min.subtract(e), t.max.add(e)),
+                this._parts = [],
+                this._pxBounds && this._pxBounds.intersects(t))
+                if (this.options.noClip)
+                    this._parts = this._rings;
+                else
+                    for (var n, o = 0, s = this._rings.length; o < s; o++)
+                        (n = xe(this._rings[o], t, !0)).length && this._parts.push(n)
+        },
+        _updatePath: function() {
+            this._renderer._updatePoly(this, !0)
+        },
+        _containsPoint: function(t) {
+            var i, e, n, o, s, r, a, h, u = !1;
+            if (!this._pxBounds || !this._pxBounds.contains(t))
+                return !1;
+            for (o = 0,
+                a = this._parts.length; o < a; o++)
+                for (s = 0,
+                    r = (h = (i = this._parts[o]).length) - 1; s < h; r = s++)
+                    e = i[s],
+                    n = i[r],
+                    e.y > t.y != n.y > t.y && t.x < (n.x - e.x) * (t.y - e.y) / (n.y - e.y) + e.x && (u = !u);
+            return u || De.prototype._containsPoint.call(this, t, !0)
+        }
+    });
+    var We = Ee.extend({
+        initialize: function(t, i) {
+            p(this, i),
+                this._layers = {},
+                t && this.addData(t)
+        },
+        addData: function(t) {
+            var i, e, n, o = v(t) ? t : t.features;
+            if (o) {
+                for (i = 0,
+                    e = o.length; i < e; i++)
+                    ((n = o[i]).geometries || n.geometry || n.features || n.coordinates) && this.addData(n);
+                return this
             }
-        }),
-        on = {
+            var s = this.options;
+            if (s.filter && !s.filter(t))
+                return this;
+            var r = He(t, s);
+            return r ? (r.feature = Ke(t),
+                r.defaultOptions = r.options,
+                this.resetStyle(r),
+                s.onEachFeature && s.onEachFeature(t, r),
+                this.addLayer(r)) : this
+        },
+        resetStyle: function(t) {
+            return t.options = h({}, t.defaultOptions),
+                this._setLayerStyle(t, this.options.style),
+                this
+        },
+        setStyle: function(i) {
+            return this.eachLayer(function(t) {
+                this._setLayerStyle(t, i)
+            }, this)
+        },
+        _setLayerStyle: function(t, i) {
+            t.setStyle && ("function" == typeof i && (i = i(t.feature)),
+                t.setStyle(i))
+        }
+    });
+
+    function He(t, i) {
+        var e, n, o, s, r = "Feature" === t.type ? t.geometry : t,
+            a = r ? r.coordinates : null,
+            h = [],
+            u = i && i.pointToLayer,
+            l = i && i.coordsToLatLng || Fe;
+        if (!a && !r)
+            return null;
+        switch (r.type) {
+            case "Point":
+                return e = l(a),
+                    u ? u(t, e) : new Ie(e);
+            case "MultiPoint":
+                for (o = 0,
+                    s = a.length; o < s; o++)
+                    e = l(a[o]),
+                    h.push(u ? u(t, e) : new Ie(e));
+                return new Ee(h);
+            case "LineString":
+            case "MultiLineString":
+                return n = Ue(a, "LineString" === r.type ? 0 : 1, l),
+                    new De(n, i);
+            case "Polygon":
+            case "MultiPolygon":
+                return n = Ue(a, "Polygon" === r.type ? 1 : 2, l),
+                    new je(n, i);
+            case "GeometryCollection":
+                for (o = 0,
+                    s = r.geometries.length; o < s; o++) {
+                    var c = He({
+                        geometry: r.geometries[o],
+                        type: "Feature",
+                        properties: t.properties
+                    }, i);
+                    c && h.push(c)
+                }
+                return new Ee(h);
+            default:
+                throw new Error("Invalid GeoJSON object.")
+        }
+    }
+
+    function Fe(t) {
+        return new j(t[1], t[0], t[2])
+    }
+
+    function Ue(t, i, e) {
+        for (var n, o = [], s = 0, r = t.length; s < r; s++)
+            n = i ? Ue(t[s], i - 1, e) : (e || Fe)(t[s]),
+            o.push(n);
+        return o
+    }
+
+    function Ve(t, i) {
+        return i = "number" == typeof i ? i : 6,
+            void 0 !== t.alt ? [c(t.lng, i), c(t.lat, i), c(t.alt, i)] : [c(t.lng, i), c(t.lat, i)]
+    }
+
+    function qe(t, i, e, n) {
+        for (var o = [], s = 0, r = t.length; s < r; s++)
+            o.push(i ? qe(t[s], i - 1, e, n) : Ve(t[s], n));
+        return !i && e && o.push(o[0]),
+            o
+    }
+
+    function Ge(t, i) {
+        return t.feature ? h({}, t.feature, {
+            geometry: i
+        }) : Ke(i)
+    }
+
+    function Ke(t) {
+        return "Feature" === t.type || "FeatureCollection" === t.type ? t : {
+            type: "Feature",
+            properties: {},
+            geometry: t
+        }
+    }
+    var Ye = {
+        toGeoJSON: function(t) {
+            return Ge(this, {
+                type: "Point",
+                coordinates: Ve(this.getLatLng(), t)
+            })
+        }
+    };
+
+    function Xe(t, i) {
+        return new We(t, i)
+    }
+    Ie.include(Ye),
+        Ne.include(Ye),
+        Re.include(Ye),
+        De.include({
             toGeoJSON: function(t) {
-                return qt(this, {
-                    type: "Point",
-                    coordinates: Ut(this.getLatLng(), t)
-                })
-            }
-        };
-    Xe.include(on),
-        Qe.include(on),
-        $e.include(on),
-        tn.include({
-            toGeoJSON: function(t) {
-                var i = !Dt(this._latlngs),
-                    e = Vt(this._latlngs, i ? 1 : 0, !1, t);
-                return qt(this, {
+                var i = !ge(this._latlngs);
+                return Ge(this, {
                     type: (i ? "Multi" : "") + "LineString",
-                    coordinates: e
+                    coordinates: qe(this._latlngs, i ? 1 : 0, !1, t)
                 })
             }
         }),
-        en.include({
+        je.include({
             toGeoJSON: function(t) {
-                var i = !Dt(this._latlngs),
-                    e = i && !Dt(this._latlngs[0]),
-                    n = Vt(this._latlngs, e ? 2 : i ? 1 : 0, !0, t);
+                var i = !ge(this._latlngs),
+                    e = i && !ge(this._latlngs[0]),
+                    n = qe(this._latlngs, e ? 2 : i ? 1 : 0, !0, t);
                 return i || (n = [n]),
-                    qt(this, {
+                    Ge(this, {
                         type: (e ? "Multi" : "") + "Polygon",
                         coordinates: n
                     })
             }
         }),
-        Ve.include({
-            toMultiPoint: function(t) {
-                var i = [];
-                return this.eachLayer(function(e) {
-                        i.push(e.toGeoJSON(t).geometry.coordinates)
+        Ze.include({
+            toMultiPoint: function(i) {
+                var e = [];
+                return this.eachLayer(function(t) {
+                        e.push(t.toGeoJSON(i).geometry.coordinates)
                     }),
-                    qt(this, {
+                    Ge(this, {
                         type: "MultiPoint",
-                        coordinates: i
+                        coordinates: e
                     })
             },
-            toGeoJSON: function(t) {
-                var i = this.feature && this.feature.geometry && this.feature.geometry.type;
-                if ("MultiPoint" === i)
-                    return this.toMultiPoint(t);
-                var e = "GeometryCollection" === i,
-                    n = [];
-                return this.eachLayer(function(i) {
-                        if (i.toGeoJSON) {
-                            var o = i.toGeoJSON(t);
-                            if (e)
-                                n.push(o.geometry);
+            toGeoJSON: function(n) {
+                var t = this.feature && this.feature.geometry && this.feature.geometry.type;
+                if ("MultiPoint" === t)
+                    return this.toMultiPoint(n);
+                var o = "GeometryCollection" === t,
+                    s = [];
+                return this.eachLayer(function(t) {
+                        if (t.toGeoJSON) {
+                            var i = t.toGeoJSON(n);
+                            if (o)
+                                s.push(i.geometry);
                             else {
-                                var s = Gt(o);
-                                "FeatureCollection" === s.type ? n.push.apply(n, s.features) : n.push(s)
+                                var e = Ke(i);
+                                "FeatureCollection" === e.type ? s.push.apply(s, e.features) : s.push(e)
                             }
                         }
                     }),
-                    e ? qt(this, {
-                        geometries: n,
+                    o ? Ge(this, {
+                        geometries: s,
                         type: "GeometryCollection"
                     }) : {
                         type: "FeatureCollection",
-                        features: n
+                        features: s
                     }
             }
         });
-    var sn = Kt,
-        rn = Ue.extend({
+    var Je = Xe,
+        $e = Se.extend({
             options: {
                 opacity: 1,
                 alt: "",
@@ -4024,19 +4018,19 @@
             },
             initialize: function(t, i, e) {
                 this._url = t,
-                    this._bounds = z(i),
-                    l(this, e)
+                    this._bounds = D(i),
+                    p(this, e)
             },
             onAdd: function() {
                 this._image || (this._initImage(),
                         this.options.opacity < 1 && this._updateOpacity()),
-                    this.options.interactive && (pt(this._image, "leaflet-interactive"),
+                    this.options.interactive && (pi(this._image, "leaflet-interactive"),
                         this.addInteractiveTarget(this._image)),
                     this.getPane().appendChild(this._image),
                     this._reset()
             },
             onRemove: function() {
-                ut(this._image),
+                ui(this._image),
                     this.options.interactive && this.removeInteractiveTarget(this._image)
             },
             setOpacity: function(t) {
@@ -4049,11 +4043,11 @@
                     this
             },
             bringToFront: function() {
-                return this._map && ct(this._image),
+                return this._map && ci(this._image),
                     this
             },
             bringToBack: function() {
-                return this._map && _t(this._image),
+                return this._map && _i(this._image),
                     this
             },
             setUrl: function(t) {
@@ -4062,7 +4056,7 @@
                     this
             },
             setBounds: function(t) {
-                return this._bounds = z(t),
+                return this._bounds = D(t),
                     this._map && this._reset(),
                     this
             },
@@ -4087,15 +4081,14 @@
             },
             _initImage: function() {
                 var t = "IMG" === this._url.tagName,
-                    i = this._image = t ? this._url : ht("img");
-                pt(i, "leaflet-image-layer"),
-                    this._zoomAnimated && pt(i, "leaflet-zoom-animated"),
-                    this.options.className && pt(i, this.options.className),
-                    i.onselectstart = r,
-                    i.onmousemove = r,
-                    i.onload = e(this.fire, this, "load"),
-                    i.onerror = e(this._overlayOnError, this, "error"),
-                    this.options.crossOrigin && (i.crossOrigin = ""),
+                    i = this._image = t ? this._url : hi("img");
+                pi(i, "leaflet-image-layer"),
+                    this._zoomAnimated && pi(i, "leaflet-zoom-animated"),
+                    this.options.className && pi(i, this.options.className),
+                    i.onselectstart = l,
+                    i.onmousemove = l,
+                    i.onload = a(this.fire, this, "load"),
+                    i.onerror = a(this._overlayOnError, this, "error"), !this.options.crossOrigin && "" !== this.options.crossOrigin || (i.crossOrigin = !0 === this.options.crossOrigin ? "" : this.options.crossOrigin),
                     this.options.zIndex && this._updateZIndex(),
                     t ? this._url = i.src : (i.src = this._url,
                         i.alt = this.options.alt)
@@ -4103,18 +4096,18 @@
             _animateZoom: function(t) {
                 var i = this._map.getZoomScale(t.zoom),
                     e = this._map._latLngBoundsToNewLayerBounds(this._bounds, t.zoom, t.center).min;
-                wt(this._image, e, i)
+                xi(this._image, e, i)
             },
             _reset: function() {
                 var t = this._image,
-                    i = new P(this._map.latLngToLayerPoint(this._bounds.getNorthWest()), this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
+                    i = new O(this._map.latLngToLayerPoint(this._bounds.getNorthWest()), this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
                     e = i.getSize();
-                Lt(t, i.min),
+                wi(t, i.min),
                     t.style.width = e.x + "px",
                     t.style.height = e.y + "px"
             },
             _updateOpacity: function() {
-                vt(this._image, this.options.opacity)
+                vi(this._image, this.options.opacity)
             },
             _updateZIndex: function() {
                 this._image && void 0 !== this.options.zIndex && null !== this.options.zIndex && (this._image.style.zIndex = this.options.zIndex)
@@ -4126,64 +4119,74 @@
                     this._image.src = t)
             }
         }),
-        an = rn.extend({
+        Qe = $e.extend({
             options: {
                 autoplay: !0,
-                loop: !0
+                loop: !0,
+                keepAspectRatio: !0
             },
             _initImage: function() {
                 var t = "VIDEO" === this._url.tagName,
-                    i = this._image = t ? this._url : ht("video");
-                if (pt(i, "leaflet-image-layer"),
-                    this._zoomAnimated && pt(i, "leaflet-zoom-animated"),
-                    i.onselectstart = r,
-                    i.onmousemove = r,
-                    i.onloadeddata = e(this.fire, this, "load"),
+                    i = this._image = t ? this._url : hi("video");
+                if (pi(i, "leaflet-image-layer"),
+                    this._zoomAnimated && pi(i, "leaflet-zoom-animated"),
+                    i.onselectstart = l,
+                    i.onmousemove = l,
+                    i.onloadeddata = a(this.fire, this, "load"),
                     t) {
-                    for (var n = i.getElementsByTagName("source"), o = [], s = 0; s < n.length; s++)
-                        o.push(n[s].src);
-                    this._url = n.length > 0 ? o : [i.src]
+                    for (var e = i.getElementsByTagName("source"), n = [], o = 0; o < e.length; o++)
+                        n.push(e[o].src);
+                    this._url = 0 < e.length ? n : [i.src]
                 } else {
-                    ei(this._url) || (this._url = [this._url]),
+                    v(this._url) || (this._url = [this._url]), !this.options.keepAspectRatio && i.style.hasOwnProperty("objectFit") && (i.style.objectFit = "fill"),
                         i.autoplay = !!this.options.autoplay,
                         i.loop = !!this.options.loop;
-                    for (var a = 0; a < this._url.length; a++) {
-                        var h = ht("source");
-                        h.src = this._url[a],
-                            i.appendChild(h)
+                    for (var s = 0; s < this._url.length; s++) {
+                        var r = hi("source");
+                        r.src = this._url[s],
+                            i.appendChild(r)
                     }
                 }
             }
-        }),
-        hn = Ue.extend({
+        });
+    var tn = $e.extend({
+        _initImage: function() {
+            var t = this._image = this._url;
+            pi(t, "leaflet-image-layer"),
+                this._zoomAnimated && pi(t, "leaflet-zoom-animated"),
+                t.onselectstart = l,
+                t.onmousemove = l
+        }
+    });
+    var en = Se.extend({
             options: {
                 offset: [0, 7],
                 className: "",
                 pane: "popupPane"
             },
             initialize: function(t, i) {
-                l(this, t),
+                p(this, t),
                     this._source = i
             },
             onAdd: function(t) {
                 this._zoomAnimated = t._zoomAnimated,
                     this._container || this._initLayout(),
-                    t._fadeAnimated && vt(this._container, 0),
+                    t._fadeAnimated && vi(this._container, 0),
                     clearTimeout(this._removeTimeout),
                     this.getPane().appendChild(this._container),
                     this.update(),
-                    t._fadeAnimated && vt(this._container, 1),
+                    t._fadeAnimated && vi(this._container, 1),
                     this.bringToFront()
             },
             onRemove: function(t) {
-                t._fadeAnimated ? (vt(this._container, 0),
-                    this._removeTimeout = setTimeout(e(ut, void 0, this._container), 200)) : ut(this._container)
+                t._fadeAnimated ? (vi(this._container, 0),
+                    this._removeTimeout = setTimeout(a(ui, void 0, this._container), 200)) : ui(this._container)
             },
             getLatLng: function() {
                 return this._latlng
             },
             setLatLng: function(t) {
-                return this._latlng = C(t),
+                return this._latlng = W(t),
                     this._map && (this._updatePosition(),
                         this._adjustPan()),
                     this
@@ -4219,12 +4222,32 @@
                 return !!this._map && this._map.hasLayer(this)
             },
             bringToFront: function() {
-                return this._map && ct(this._container),
+                return this._map && ci(this._container),
                     this
             },
             bringToBack: function() {
-                return this._map && _t(this._container),
+                return this._map && _i(this._container),
                     this
+            },
+            _prepareOpen: function(t, i, e) {
+                if (i instanceof Se || (e = i,
+                        i = t),
+                    i instanceof Ee)
+                    for (var n in t._layers) {
+                        i = t._layers[n];
+                        break
+                    }
+                if (!e)
+                    if (i.getCenter)
+                        e = i.getCenter();
+                    else {
+                        if (!i.getLatLng)
+                            throw new Error("Unable to get source layer LatLng.");
+                        e = i.getLatLng()
+                    }
+                return this._source = i,
+                    this.update(),
+                    e
             },
             _updateContent: function() {
                 if (this._content) {
@@ -4243,9 +4266,9 @@
             _updatePosition: function() {
                 if (this._map) {
                     var t = this._map.latLngToLayerPoint(this._latlng),
-                        i = w(this.options.offset),
+                        i = I(this.options.offset),
                         e = this._getAnchor();
-                    this._zoomAnimated ? Lt(this._container, t.add(e)) : i = i.add(t).add(e);
+                    this._zoomAnimated ? wi(this._container, t.add(e)) : i = i.add(t).add(e);
                     var n = this._containerBottom = -i.y,
                         o = this._containerLeft = -Math.round(this._containerWidth / 2) + i.x;
                     this._container.style.bottom = n + "px",
@@ -4256,7 +4279,7 @@
                 return [0, 0]
             }
         }),
-        un = hn.extend({
+        nn = en.extend({
             options: {
                 maxWidth: 300,
                 minWidth: 50,
@@ -4276,27 +4299,27 @@
                     this
             },
             onAdd: function(t) {
-                hn.prototype.onAdd.call(this, t),
+                en.prototype.onAdd.call(this, t),
                     t.fire("popupopen", {
                         popup: this
                     }),
                     this._source && (this._source.fire("popupopen", {
                             popup: this
                         }, !0),
-                        this._source instanceof Je || this._source.on("preclick", Y))
+                        this._source instanceof Oe || this._source.on("preclick", Oi))
             },
             onRemove: function(t) {
-                hn.prototype.onRemove.call(this, t),
+                en.prototype.onRemove.call(this, t),
                     t.fire("popupclose", {
                         popup: this
                     }),
                     this._source && (this._source.fire("popupclose", {
                             popup: this
                         }, !0),
-                        this._source instanceof Je || this._source.off("preclick", Y))
+                        this._source instanceof Oe || this._source.off("preclick", Oi))
             },
             getEvents: function() {
-                var t = hn.prototype.getEvents.call(this);
+                var t = en.prototype.getEvents.call(this);
                 return (void 0 !== this.options.closeOnClick ? this.options.closeOnClick : this._map.options.closePopupOnClick) && (t.preclick = this._close),
                     this.options.keepInView && (t.moveend = this._adjustPan),
                     t
@@ -4306,19 +4329,19 @@
             },
             _initLayout: function() {
                 var t = "leaflet-popup",
-                    i = this._container = ht("div", t + " " + (this.options.className || "") + " leaflet-zoom-animated"),
-                    e = this._wrapper = ht("div", t + "-content-wrapper", i);
-                if (this._contentNode = ht("div", t + "-content", e),
-                    J(e),
-                    X(this._contentNode),
-                    V(e, "contextmenu", Y),
-                    this._tipContainer = ht("div", t + "-tip-container", i),
-                    this._tip = ht("div", t + "-tip", this._tipContainer),
+                    i = this._container = hi("div", t + " " + (this.options.className || "") + " leaflet-zoom-animated"),
+                    e = this._wrapper = hi("div", t + "-content-wrapper", i);
+                if (this._contentNode = hi("div", t + "-content", e),
+                    Ni(e),
+                    Ri(this._contentNode),
+                    Ei(e, "contextmenu", Oi),
+                    this._tipContainer = hi("div", t + "-tip-container", i),
+                    this._tip = hi("div", t + "-tip", this._tipContainer),
                     this.options.closeButton) {
-                    var n = this._closeButton = ht("a", t + "-close-button", i);
+                    var n = this._closeButton = hi("a", t + "-close-button", i);
                     n.href = "#close",
                         n.innerHTML = "&#215;",
-                        V(n, "click", this._onCloseButtonClick, this)
+                        Ei(n, "click", this._onCloseButtonClick, this)
                 }
             },
             _updateLayout: function() {
@@ -4333,28 +4356,30 @@
                     i.whiteSpace = "",
                     i.height = "";
                 var n = t.offsetHeight,
-                    o = this.options.maxHeight;
-                o && n > o ? (i.height = o + "px",
-                        pt(t, "leaflet-popup-scrolled")) : mt(t, "leaflet-popup-scrolled"),
+                    o = this.options.maxHeight,
+                    s = "leaflet-popup-scrolled";
+                o && o < n ? (i.height = o + "px",
+                        pi(t, s)) : mi(t, s),
                     this._containerWidth = this._container.offsetWidth
             },
             _animateZoom: function(t) {
                 var i = this._map._latLngToNewLayerPoint(this._latlng, t.zoom, t.center),
                     e = this._getAnchor();
-                Lt(this._container, i.add(e))
+                wi(this._container, i.add(e))
             },
             _adjustPan: function() {
-                if (!(!this.options.autoPan || this._map._panAnim && this._map._panAnim._inProgress)) {
+                if (this.options.autoPan) {
+                    this._map._panAnim && this._map._panAnim.stop();
                     var t = this._map,
-                        i = parseInt(at(this._container, "marginBottom"), 10) || 0,
+                        i = parseInt(ai(this._container, "marginBottom"), 10) || 0,
                         e = this._container.offsetHeight + i,
                         n = this._containerWidth,
-                        o = new x(this._containerLeft, -e - this._containerBottom);
-                    o._add(Pt(this._container));
+                        o = new B(this._containerLeft, -e - this._containerBottom);
+                    o._add(Pi(this._container));
                     var s = t.layerPointToContainerPoint(o),
-                        r = w(this.options.autoPanPadding),
-                        a = w(this.options.autoPanPaddingTopLeft || r),
-                        h = w(this.options.autoPanPaddingBottomRight || r),
+                        r = I(this.options.autoPanPadding),
+                        a = I(this.options.autoPanPaddingTopLeft || r),
+                        h = I(this.options.autoPanPaddingBottomRight || r),
                         u = t.getSize(),
                         l = 0,
                         c = 0;
@@ -4367,18 +4392,18 @@
             },
             _onCloseButtonClick: function(t) {
                 this._close(),
-                    Q(t)
+                    ji(t)
             },
             _getAnchor: function() {
-                return w(this._source && this._source._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0])
+                return I(this._source && this._source._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0])
             }
         });
-    Le.mergeOptions({
+    Ji.mergeOptions({
             closePopupOnClick: !0
         }),
-        Le.include({
+        Ji.include({
             openPopup: function(t, i, e) {
-                return t instanceof un || (t = new un(e).setContent(t)),
+                return t instanceof nn || (t = new nn(e).setContent(t)),
                     i && t.setLatLng(i),
                     this.hasLayer(t) ? this : (this._popup && this._popup.options.autoClose && this.closePopup(),
                         this._popup = t,
@@ -4391,11 +4416,10 @@
                     this
             }
         }),
-        Ue.include({
+        Se.include({
             bindPopup: function(t, i) {
-                return t instanceof un ? (l(t, i),
-                        this._popup = t,
-                        t._source = this) : (this._popup && !i || (this._popup = new un(i, this)),
+                return t instanceof nn ? (p(t, i),
+                        (this._popup = t)._source = this) : (this._popup && !i || (this._popup = new nn(i, this)),
                         this._popup.setContent(t)),
                     this._popupHandlersAdded || (this.on({
                             click: this._openPopup,
@@ -4418,16 +4442,7 @@
                     this
             },
             openPopup: function(t, i) {
-                if (t instanceof Ue || (i = t,
-                        t = this),
-                    t instanceof qe)
-                    for (var e in this._layers) {
-                        t = this._layers[e];
-                        break
-                    }
-                return i || (i = t.getCenter ? t.getCenter() : t.getLatLng()),
-                    this._popup && this._map && (this._popup._source = t,
-                        this._popup.update(),
+                return this._popup && this._map && (i = this._popup._prepareOpen(this, t, i),
                         this._map.openPopup(this._popup, i)),
                     this
             },
@@ -4451,8 +4466,8 @@
             },
             _openPopup: function(t) {
                 var i = t.layer || t.target;
-                this._popup && this._map && (Q(t),
-                    i instanceof Je ? this.openPopup(t.layer || t.target, t.latlng) : this._map.hasLayer(this._popup) && this._popup._source === i ? this.closePopup() : this.openPopup(i, t.latlng))
+                this._popup && this._map && (ji(t),
+                    i instanceof Oe ? this.openPopup(t.layer || t.target, t.latlng) : this._map.hasLayer(this._popup) && this._popup._source === i ? this.closePopup() : this.openPopup(i, t.latlng))
             },
             _movePopup: function(t) {
                 this._popup.setLatLng(t.latlng)
@@ -4461,7 +4476,7 @@
                 13 === t.originalEvent.keyCode && this._openPopup(t)
             }
         });
-    var ln = hn.extend({
+    var on = en.extend({
         options: {
             pane: "tooltipPane",
             offset: [0, 0],
@@ -4472,7 +4487,7 @@
             opacity: .9
         },
         onAdd: function(t) {
-            hn.prototype.onAdd.call(this, t),
+            en.prototype.onAdd.call(this, t),
                 this.setOpacity(this.options.opacity),
                 t.fire("tooltipopen", {
                     tooltip: this
@@ -4482,7 +4497,7 @@
                 }, !0)
         },
         onRemove: function(t) {
-            hn.prototype.onRemove.call(this, t),
+            en.prototype.onRemove.call(this, t),
                 t.fire("tooltipclose", {
                     tooltip: this
                 }),
@@ -4491,8 +4506,8 @@
                 }, !0)
         },
         getEvents: function() {
-            var t = hn.prototype.getEvents.call(this);
-            return Vi && !this.options.permanent && (t.preclick = this._close),
+            var t = en.prototype.getEvents.call(this);
+            return Tt && !this.options.permanent && (t.preclick = this._close),
                 t
         },
         _close: function() {
@@ -4500,7 +4515,7 @@
         },
         _initLayout: function() {
             var t = "leaflet-tooltip " + (this.options.className || "") + " leaflet-zoom-" + (this._zoomAnimated ? "animated" : "hide");
-            this._contentNode = this._container = ht("div", t)
+            this._contentNode = this._container = hi("div", t)
         },
         _updateLayout: function() {},
         _adjustPan: function() {},
@@ -4512,17 +4527,17 @@
                 s = this.options.direction,
                 r = e.offsetWidth,
                 a = e.offsetHeight,
-                h = w(this.options.offset),
+                h = I(this.options.offset),
                 u = this._getAnchor();
-            "top" === s ? t = t.add(w(-r / 2 + h.x, -a + h.y + u.y, !0)) : "bottom" === s ? t = t.subtract(w(r / 2 - h.x, -h.y, !0)) : "center" === s ? t = t.subtract(w(r / 2 + h.x, a / 2 - u.y + h.y, !0)) : "right" === s || "auto" === s && o.x < n.x ? (s = "right",
-                    t = t.add(w(h.x + u.x, u.y - a / 2 + h.y, !0))) : (s = "left",
-                    t = t.subtract(w(r + u.x - h.x, a / 2 - u.y - h.y, !0))),
-                mt(e, "leaflet-tooltip-right"),
-                mt(e, "leaflet-tooltip-left"),
-                mt(e, "leaflet-tooltip-top"),
-                mt(e, "leaflet-tooltip-bottom"),
-                pt(e, "leaflet-tooltip-" + s),
-                Lt(e, t)
+            t = "top" === s ? t.add(I(-r / 2 + h.x, -a + h.y + u.y, !0)) : "bottom" === s ? t.subtract(I(r / 2 - h.x, -h.y, !0)) : "center" === s ? t.subtract(I(r / 2 + h.x, a / 2 - u.y + h.y, !0)) : "right" === s || "auto" === s && o.x < n.x ? (s = "right",
+                    t.add(I(h.x + u.x, u.y - a / 2 + h.y, !0))) : (s = "left",
+                    t.subtract(I(r + u.x - h.x, a / 2 - u.y - h.y, !0))),
+                mi(e, "leaflet-tooltip-right"),
+                mi(e, "leaflet-tooltip-left"),
+                mi(e, "leaflet-tooltip-top"),
+                mi(e, "leaflet-tooltip-bottom"),
+                pi(e, "leaflet-tooltip-" + s),
+                wi(e, t)
         },
         _updatePosition: function() {
             var t = this._map.latLngToLayerPoint(this._latlng);
@@ -4530,19 +4545,19 @@
         },
         setOpacity: function(t) {
             this.options.opacity = t,
-                this._container && vt(this._container, t)
+                this._container && vi(this._container, t)
         },
         _animateZoom: function(t) {
             var i = this._map._latLngToNewLayerPoint(this._latlng, t.zoom, t.center);
             this._setPosition(i)
         },
         _getAnchor: function() {
-            return w(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0])
+            return I(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0])
         }
     });
-    Le.include({
+    Ji.include({
             openTooltip: function(t, i, e) {
-                return t instanceof ln || (t = new ln(e).setContent(t)),
+                return t instanceof on || (t = new on(e).setContent(t)),
                     i && t.setLatLng(i),
                     this.hasLayer(t) ? this : this.addLayer(t)
             },
@@ -4551,11 +4566,10 @@
                     this
             }
         }),
-        Ue.include({
+        Se.include({
             bindTooltip: function(t, i) {
-                return t instanceof ln ? (l(t, i),
-                        this._tooltip = t,
-                        t._source = this) : (this._tooltip && !i || (this._tooltip = new ln(i, this)),
+                return t instanceof on ? (p(t, i),
+                        (this._tooltip = t)._source = this) : (this._tooltip && !i || (this._tooltip = new on(i, this)),
                         this._tooltip.setContent(t)),
                     this._initTooltipInteractions(),
                     this._tooltip.options.permanent && this._map && this._map.hasLayer(this) && this.openTooltip(),
@@ -4577,30 +4591,21 @@
                     this._tooltip.options.permanent ? e.add = this._openTooltip : (e.mouseover = this._openTooltip,
                             e.mouseout = this.closeTooltip,
                             this._tooltip.options.sticky && (e.mousemove = this._moveTooltip),
-                            Vi && (e.click = this._openTooltip)),
+                            Tt && (e.click = this._openTooltip)),
                         this[i](e),
                         this._tooltipHandlersAdded = !t
                 }
             },
             openTooltip: function(t, i) {
-                if (t instanceof Ue || (i = t,
-                        t = this),
-                    t instanceof qe)
-                    for (var e in this._layers) {
-                        t = this._layers[e];
-                        break
-                    }
-                return i || (i = t.getCenter ? t.getCenter() : t.getLatLng()),
-                    this._tooltip && this._map && (this._tooltip._source = t,
-                        this._tooltip.update(),
+                return this._tooltip && this._map && (i = this._tooltip._prepareOpen(this, t, i),
                         this._map.openTooltip(this._tooltip, i),
-                        this._tooltip.options.interactive && this._tooltip._container && (pt(this._tooltip._container, "leaflet-clickable"),
+                        this._tooltip.options.interactive && this._tooltip._container && (pi(this._tooltip._container, "leaflet-clickable"),
                             this.addInteractiveTarget(this._tooltip._container))),
                     this
             },
             closeTooltip: function() {
                 return this._tooltip && (this._tooltip._close(),
-                        this._tooltip.options.interactive && this._tooltip._container && (mt(this._tooltip._container, "leaflet-clickable"),
+                        this._tooltip.options.interactive && this._tooltip._container && (mi(this._tooltip._container, "leaflet-clickable"),
                             this.removeInteractiveTarget(this._tooltip._container))),
                     this
             },
@@ -4630,7 +4635,7 @@
                     this._tooltip.setLatLng(n)
             }
         });
-    var cn = Ge.extend({
+    var sn = ke.extend({
         options: {
             iconSize: [12, 12],
             html: !1,
@@ -4640,9 +4645,10 @@
         createIcon: function(t) {
             var i = t && "DIV" === t.tagName ? t : document.createElement("div"),
                 e = this.options;
-            if (i.innerHTML = !1 !== e.html ? e.html : "",
+            if (e.html instanceof Element ? (li(i),
+                    i.appendChild(e.html)) : i.innerHTML = !1 !== e.html ? e.html : "",
                 e.bgPos) {
-                var n = w(e.bgPos);
+                var n = I(e.bgPos);
                 i.style.backgroundPosition = -n.x + "px " + -n.y + "px"
             }
             return this._setIconStyles(i, "icon"),
@@ -4652,580 +4658,588 @@
             return null
         }
     });
-    Ge.Default = Ke;
-    var _n = Ue.extend({
-            options: {
-                tileSize: 256,
-                opacity: 1,
-                updateWhenIdle: ji,
-                updateWhenZooming: !0,
-                updateInterval: 200,
-                zIndex: 1,
-                bounds: null,
-                minZoom: 0,
-                maxZoom: void 0,
-                maxNativeZoom: void 0,
-                minNativeZoom: void 0,
-                noWrap: !1,
-                pane: "tilePane",
-                className: "",
-                keepBuffer: 2
-            },
-            initialize: function(t) {
-                l(this, t)
-            },
-            onAdd: function() {
-                this._initContainer(),
-                    this._levels = {},
-                    this._tiles = {},
-                    this._resetView(),
-                    this._update()
-            },
-            beforeAdd: function(t) {
-                t._addZoomLimit(this)
-            },
-            onRemove: function(t) {
-                this._removeAllTiles(),
-                    ut(this._container),
-                    t._removeZoomLimit(this),
-                    this._container = null,
-                    this._tileZoom = void 0
-            },
-            bringToFront: function() {
-                return this._map && (ct(this._container),
-                        this._setAutoZIndex(Math.max)),
-                    this
-            },
-            bringToBack: function() {
-                return this._map && (_t(this._container),
-                        this._setAutoZIndex(Math.min)),
-                    this
-            },
-            getContainer: function() {
-                return this._container
-            },
-            setOpacity: function(t) {
-                return this.options.opacity = t,
-                    this._updateOpacity(),
-                    this
-            },
-            setZIndex: function(t) {
-                return this.options.zIndex = t,
-                    this._updateZIndex(),
-                    this
-            },
-            isLoading: function() {
-                return this._loading
-            },
-            redraw: function() {
-                return this._map && (this._removeAllTiles(),
-                        this._update()),
-                    this
-            },
-            getEvents: function() {
-                var t = {
-                    viewprereset: this._invalidateAll,
-                    viewreset: this._resetView,
-                    zoom: this._resetView,
-                    moveend: this._onMoveEnd
-                };
-                return this.options.updateWhenIdle || (this._onMove || (this._onMove = o(this._onMoveEnd, this.options.updateInterval, this)),
-                        t.move = this._onMove),
-                    this._zoomAnimated && (t.zoomanim = this._animateZoom),
-                    t
-            },
-            createTile: function() {
-                return document.createElement("div")
-            },
-            getTileSize: function() {
-                var t = this.options.tileSize;
-                return t instanceof x ? t : new x(t, t)
-            },
-            _updateZIndex: function() {
-                this._container && void 0 !== this.options.zIndex && null !== this.options.zIndex && (this._container.style.zIndex = this.options.zIndex)
-            },
-            _setAutoZIndex: function(t) {
-                for (var i, e = this.getPane().children, n = -t(-1 / 0, 1 / 0), o = 0, s = e.length; o < s; o++)
-                    i = e[o].style.zIndex,
-                    e[o] !== this._container && i && (n = t(n, +i));
-                isFinite(n) && (this.options.zIndex = n + t(-1, 1),
-                    this._updateZIndex())
-            },
-            _updateOpacity: function() {
-                if (this._map && !Li) {
-                    vt(this._container, this.options.opacity);
-                    var t = +new Date,
-                        i = !1,
-                        e = !1;
-                    for (var n in this._tiles) {
-                        var o = this._tiles[n];
-                        if (o.current && o.loaded) {
-                            var s = Math.min(1, (t - o.loaded) / 200);
-                            vt(o.el, s),
-                                s < 1 ? i = !0 : (o.active ? e = !0 : this._onOpaqueTile(o),
-                                    o.active = !0)
-                        }
-                    }
-                    e && !this._noPrune && this._pruneTiles(),
-                        i && (g(this._fadeFrame),
-                            this._fadeFrame = f(this._updateOpacity, this))
-                }
-            },
-            _onOpaqueTile: r,
-            _initContainer: function() {
-                this._container || (this._container = ht("div", "leaflet-layer " + (this.options.className || "")),
-                    this._updateZIndex(),
-                    this.options.opacity < 1 && this._updateOpacity(),
-                    this.getPane().appendChild(this._container))
-            },
-            _updateLevels: function() {
-                var t = this._tileZoom,
-                    i = this.options.maxZoom;
-                if (void 0 !== t) {
-                    for (var e in this._levels)
-                        this._levels[e].el.children.length || e === t ? (this._levels[e].el.style.zIndex = i - Math.abs(t - e),
-                            this._onUpdateLevel(e)) : (ut(this._levels[e].el),
-                            this._removeTilesAtZoom(e),
-                            this._onRemoveLevel(e),
-                            delete this._levels[e]);
-                    var n = this._levels[t],
-                        o = this._map;
-                    return n || ((n = this._levels[t] = {}).el = ht("div", "leaflet-tile-container leaflet-zoom-animated", this._container),
-                            n.el.style.zIndex = i,
-                            n.origin = o.project(o.unproject(o.getPixelOrigin()), t).round(),
-                            n.zoom = t,
-                            this._setZoomTransform(n, o.getCenter(), o.getZoom()),
-                            n.el.offsetWidth,
-                            this._onCreateLevel(n)),
-                        this._level = n,
-                        n
-                }
-            },
-            _onUpdateLevel: r,
-            _onRemoveLevel: r,
-            _onCreateLevel: r,
-            _pruneTiles: function() {
-                if (this._map) {
-                    var t, i, e = this._map.getZoom();
-                    if (e > this.options.maxZoom || e < this.options.minZoom)
-                        this._removeAllTiles();
-                    else {
-                        for (t in this._tiles)
-                            (i = this._tiles[t]).retain = i.current;
-                        for (t in this._tiles)
-                            if ((i = this._tiles[t]).current && !i.active) {
-                                var n = i.coords;
-                                this._retainParent(n.x, n.y, n.z, n.z - 5) || this._retainChildren(n.x, n.y, n.z, n.z + 2)
-                            }
-                        for (t in this._tiles)
-                            this._tiles[t].retain || this._removeTile(t)
+    ke.Default = Be;
+    var rn = Se.extend({
+        options: {
+            tileSize: 256,
+            opacity: 1,
+            updateWhenIdle: xt,
+            updateWhenZooming: !0,
+            updateInterval: 200,
+            zIndex: 1,
+            bounds: null,
+            minZoom: 0,
+            maxZoom: void 0,
+            maxNativeZoom: void 0,
+            minNativeZoom: void 0,
+            noWrap: !1,
+            pane: "tilePane",
+            className: "",
+            keepBuffer: 2
+        },
+        initialize: function(t) {
+            p(this, t)
+        },
+        onAdd: function() {
+            this._initContainer(),
+                this._levels = {},
+                this._tiles = {},
+                this._resetView(),
+                this._update()
+        },
+        beforeAdd: function(t) {
+            t._addZoomLimit(this)
+        },
+        onRemove: function(t) {
+            this._removeAllTiles(),
+                ui(this._container),
+                t._removeZoomLimit(this),
+                this._container = null,
+                this._tileZoom = void 0
+        },
+        bringToFront: function() {
+            return this._map && (ci(this._container),
+                    this._setAutoZIndex(Math.max)),
+                this
+        },
+        bringToBack: function() {
+            return this._map && (_i(this._container),
+                    this._setAutoZIndex(Math.min)),
+                this
+        },
+        getContainer: function() {
+            return this._container
+        },
+        setOpacity: function(t) {
+            return this.options.opacity = t,
+                this._updateOpacity(),
+                this
+        },
+        setZIndex: function(t) {
+            return this.options.zIndex = t,
+                this._updateZIndex(),
+                this
+        },
+        isLoading: function() {
+            return this._loading
+        },
+        redraw: function() {
+            return this._map && (this._removeAllTiles(),
+                    this._update()),
+                this
+        },
+        getEvents: function() {
+            var t = {
+                viewprereset: this._invalidateAll,
+                viewreset: this._resetView,
+                zoom: this._resetView,
+                moveend: this._onMoveEnd
+            };
+            return this.options.updateWhenIdle || (this._onMove || (this._onMove = o(this._onMoveEnd, this.options.updateInterval, this)),
+                    t.move = this._onMove),
+                this._zoomAnimated && (t.zoomanim = this._animateZoom),
+                t
+        },
+        createTile: function() {
+            return document.createElement("div")
+        },
+        getTileSize: function() {
+            var t = this.options.tileSize;
+            return t instanceof B ? t : new B(t, t)
+        },
+        _updateZIndex: function() {
+            this._container && void 0 !== this.options.zIndex && null !== this.options.zIndex && (this._container.style.zIndex = this.options.zIndex)
+        },
+        _setAutoZIndex: function(t) {
+            for (var i, e = this.getPane().children, n = -t(-1 / 0, 1 / 0), o = 0, s = e.length; o < s; o++)
+                i = e[o].style.zIndex,
+                e[o] !== this._container && i && (n = t(n, +i));
+            isFinite(n) && (this.options.zIndex = n + t(-1, 1),
+                this._updateZIndex())
+        },
+        _updateOpacity: function() {
+            if (this._map && !et) {
+                vi(this._container, this.options.opacity);
+                var t = +new Date,
+                    i = !1,
+                    e = !1;
+                for (var n in this._tiles) {
+                    var o = this._tiles[n];
+                    if (o.current && o.loaded) {
+                        var s = Math.min(1, (t - o.loaded) / 200);
+                        vi(o.el, s),
+                            s < 1 ? i = !0 : (o.active ? e = !0 : this._onOpaqueTile(o),
+                                o.active = !0)
                     }
                 }
-            },
-            _removeTilesAtZoom: function(t) {
-                for (var i in this._tiles)
-                    this._tiles[i].coords.z === t && this._removeTile(i)
-            },
-            _removeAllTiles: function() {
-                for (var t in this._tiles)
-                    this._removeTile(t)
-            },
-            _invalidateAll: function() {
-                for (var t in this._levels)
-                    ut(this._levels[t].el),
-                    this._onRemoveLevel(t),
-                    delete this._levels[t];
-                this._removeAllTiles(),
-                    this._tileZoom = void 0
-            },
-            _retainParent: function(t, i, e, n) {
-                var o = Math.floor(t / 2),
-                    s = Math.floor(i / 2),
-                    r = e - 1,
-                    a = new x(+o, +s);
-                a.z = +r;
-                var h = this._tileCoordsToKey(a),
-                    u = this._tiles[h];
-                return u && u.active ? (u.retain = !0, !0) : (u && u.loaded && (u.retain = !0),
-                    r > n && this._retainParent(o, s, r, n))
-            },
-            _retainChildren: function(t, i, e, n) {
-                for (var o = 2 * t; o < 2 * t + 2; o++)
-                    for (var s = 2 * i; s < 2 * i + 2; s++) {
-                        var r = new x(o, s);
-                        r.z = e + 1;
-                        var a = this._tileCoordsToKey(r),
-                            h = this._tiles[a];
-                        h && h.active ? h.retain = !0 : (h && h.loaded && (h.retain = !0),
-                            e + 1 < n && this._retainChildren(o, s, e + 1, n))
-                    }
-            },
-            _resetView: function(t) {
-                var i = t && (t.pinch || t.flyTo);
-                this._setView(this._map.getCenter(), this._map.getZoom(), i, i)
-            },
-            _animateZoom: function(t) {
-                this._setView(t.center, t.zoom, !0, t.noUpdate)
-            },
-            _clampZoom: function(t) {
-                var i = this.options;
-                return void 0 !== i.minNativeZoom && t < i.minNativeZoom ? i.minNativeZoom : void 0 !== i.maxNativeZoom && i.maxNativeZoom < t ? i.maxNativeZoom : t
-            },
-            _setView: function(t, i, e, n) {
-                var o = this._clampZoom(Math.round(i));
-                (void 0 !== this.options.maxZoom && o > this.options.maxZoom || void 0 !== this.options.minZoom && o < this.options.minZoom) && (o = void 0);
-                var s = this.options.updateWhenZooming && o !== this._tileZoom;
-                n && !s || (this._tileZoom = o,
-                        this._abortLoading && this._abortLoading(),
-                        this._updateLevels(),
-                        this._resetGrid(),
-                        void 0 !== o && this._update(t),
-                        e || this._pruneTiles(),
-                        this._noPrune = !!e),
-                    this._setZoomTransforms(t, i)
-            },
-            _setZoomTransforms: function(t, i) {
+                e && !this._noPrune && this._pruneTiles(),
+                    i && (C(this._fadeFrame),
+                        this._fadeFrame = M(this._updateOpacity, this))
+            }
+        },
+        _onOpaqueTile: l,
+        _initContainer: function() {
+            this._container || (this._container = hi("div", "leaflet-layer " + (this.options.className || "")),
+                this._updateZIndex(),
+                this.options.opacity < 1 && this._updateOpacity(),
+                this.getPane().appendChild(this._container))
+        },
+        _updateLevels: function() {
+            var t = this._tileZoom,
+                i = this.options.maxZoom;
+            if (void 0 !== t) {
                 for (var e in this._levels)
-                    this._setZoomTransform(this._levels[e], t, i)
-            },
-            _setZoomTransform: function(t, i, e) {
-                var n = this._map.getZoomScale(e, t.zoom),
-                    o = t.origin.multiplyBy(n).subtract(this._map._getNewPixelOrigin(i, e)).round();
-                Ni ? wt(t.el, o, n) : Lt(t.el, o)
-            },
-            _resetGrid: function() {
-                var t = this._map,
-                    i = t.options.crs,
-                    e = this._tileSize = this.getTileSize(),
-                    n = this._tileZoom,
-                    o = this._map.getPixelWorldBounds(this._tileZoom);
-                o && (this._globalTileRange = this._pxBoundsToTileRange(o)),
-                    this._wrapX = i.wrapLng && !this.options.noWrap && [Math.floor(t.project([0, i.wrapLng[0]], n).x / e.x), Math.ceil(t.project([0, i.wrapLng[1]], n).x / e.y)],
-                    this._wrapY = i.wrapLat && !this.options.noWrap && [Math.floor(t.project([i.wrapLat[0], 0], n).y / e.x), Math.ceil(t.project([i.wrapLat[1], 0], n).y / e.y)]
-            },
-            _onMoveEnd: function() {
-                this._map && !this._map._animatingZoom && this._update()
-            },
-            _getTiledPixelBounds: function(t) {
-                var i = this._map,
-                    e = i._animatingZoom ? Math.max(i._animateToZoom, i.getZoom()) : i.getZoom(),
-                    n = i.getZoomScale(e, this._tileZoom),
-                    o = i.project(t, this._tileZoom).floor(),
-                    s = i.getSize().divideBy(2 * n);
-                return new P(o.subtract(s), o.add(s))
-            },
-            _update: function(t) {
-                var i = this._map;
-                if (i) {
-                    var e = this._clampZoom(i.getZoom());
-                    if (void 0 === t && (t = i.getCenter()),
-                        void 0 !== this._tileZoom) {
-                        var n = this._getTiledPixelBounds(t),
-                            o = this._pxBoundsToTileRange(n),
-                            s = o.getCenter(),
-                            r = [],
-                            a = this.options.keepBuffer,
-                            h = new P(o.getBottomLeft().subtract([a, -a]), o.getTopRight().add([a, -a]));
-                        if (!(isFinite(o.min.x) && isFinite(o.min.y) && isFinite(o.max.x) && isFinite(o.max.y)))
-                            throw new Error("Attempted to load an infinite number of tiles");
-                        for (var u in this._tiles) {
-                            var l = this._tiles[u].coords;
-                            l.z === this._tileZoom && h.contains(new x(l.x, l.y)) || (this._tiles[u].current = !1)
+                    this._levels[e].el.children.length || e === t ? (this._levels[e].el.style.zIndex = i - Math.abs(t - e),
+                        this._onUpdateLevel(e)) : (ui(this._levels[e].el),
+                        this._removeTilesAtZoom(e),
+                        this._onRemoveLevel(e),
+                        delete this._levels[e]);
+                var n = this._levels[t],
+                    o = this._map;
+                return n || ((n = this._levels[t] = {}).el = hi("div", "leaflet-tile-container leaflet-zoom-animated", this._container),
+                        n.el.style.zIndex = i,
+                        n.origin = o.project(o.unproject(o.getPixelOrigin()), t).round(),
+                        n.zoom = t,
+                        this._setZoomTransform(n, o.getCenter(), o.getZoom()),
+                        n.el.offsetWidth,
+                        this._onCreateLevel(n)),
+                    this._level = n
+            }
+        },
+        _onUpdateLevel: l,
+        _onRemoveLevel: l,
+        _onCreateLevel: l,
+        _pruneTiles: function() {
+            if (this._map) {
+                var t, i, e = this._map.getZoom();
+                if (e > this.options.maxZoom || e < this.options.minZoom)
+                    this._removeAllTiles();
+                else {
+                    for (t in this._tiles)
+                        (i = this._tiles[t]).retain = i.current;
+                    for (t in this._tiles)
+                        if ((i = this._tiles[t]).current && !i.active) {
+                            var n = i.coords;
+                            this._retainParent(n.x, n.y, n.z, n.z - 5) || this._retainChildren(n.x, n.y, n.z, n.z + 2)
                         }
-                        if (Math.abs(e - this._tileZoom) > 1)
-                            this._setView(t, e);
-                        else {
-                            for (var c = o.min.y; c <= o.max.y; c++)
-                                for (var _ = o.min.x; _ <= o.max.x; _++) {
-                                    var d = new x(_, c);
-                                    if (d.z = this._tileZoom,
-                                        this._isValidTile(d)) {
-                                        var p = this._tiles[this._tileCoordsToKey(d)];
-                                        p ? p.current = !0 : r.push(d)
-                                    }
+                    for (t in this._tiles)
+                        this._tiles[t].retain || this._removeTile(t)
+                }
+            }
+        },
+        _removeTilesAtZoom: function(t) {
+            for (var i in this._tiles)
+                this._tiles[i].coords.z === t && this._removeTile(i)
+        },
+        _removeAllTiles: function() {
+            for (var t in this._tiles)
+                this._removeTile(t)
+        },
+        _invalidateAll: function() {
+            for (var t in this._levels)
+                ui(this._levels[t].el),
+                this._onRemoveLevel(t),
+                delete this._levels[t];
+            this._removeAllTiles(),
+                this._tileZoom = void 0
+        },
+        _retainParent: function(t, i, e, n) {
+            var o = Math.floor(t / 2),
+                s = Math.floor(i / 2),
+                r = e - 1,
+                a = new B(+o, +s);
+            a.z = +r;
+            var h = this._tileCoordsToKey(a),
+                u = this._tiles[h];
+            return u && u.active ? u.retain = !0 : (u && u.loaded && (u.retain = !0),
+                n < r && this._retainParent(o, s, r, n))
+        },
+        _retainChildren: function(t, i, e, n) {
+            for (var o = 2 * t; o < 2 * t + 2; o++)
+                for (var s = 2 * i; s < 2 * i + 2; s++) {
+                    var r = new B(o, s);
+                    r.z = e + 1;
+                    var a = this._tileCoordsToKey(r),
+                        h = this._tiles[a];
+                    h && h.active ? h.retain = !0 : (h && h.loaded && (h.retain = !0),
+                        e + 1 < n && this._retainChildren(o, s, e + 1, n))
+                }
+        },
+        _resetView: function(t) {
+            var i = t && (t.pinch || t.flyTo);
+            this._setView(this._map.getCenter(), this._map.getZoom(), i, i)
+        },
+        _animateZoom: function(t) {
+            this._setView(t.center, t.zoom, !0, t.noUpdate)
+        },
+        _clampZoom: function(t) {
+            var i = this.options;
+            return void 0 !== i.minNativeZoom && t < i.minNativeZoom ? i.minNativeZoom : void 0 !== i.maxNativeZoom && i.maxNativeZoom < t ? i.maxNativeZoom : t
+        },
+        _setView: function(t, i, e, n) {
+            var o = this._clampZoom(Math.round(i));
+            (void 0 !== this.options.maxZoom && o > this.options.maxZoom || void 0 !== this.options.minZoom && o < this.options.minZoom) && (o = void 0);
+            var s = this.options.updateWhenZooming && o !== this._tileZoom;
+            n && !s || (this._tileZoom = o,
+                    this._abortLoading && this._abortLoading(),
+                    this._updateLevels(),
+                    this._resetGrid(),
+                    void 0 !== o && this._update(t),
+                    e || this._pruneTiles(),
+                    this._noPrune = !!e),
+                this._setZoomTransforms(t, i)
+        },
+        _setZoomTransforms: function(t, i) {
+            for (var e in this._levels)
+                this._setZoomTransform(this._levels[e], t, i)
+        },
+        _setZoomTransform: function(t, i, e) {
+            var n = this._map.getZoomScale(e, t.zoom),
+                o = t.origin.multiplyBy(n).subtract(this._map._getNewPixelOrigin(i, e)).round();
+            yt ? xi(t.el, o, n) : wi(t.el, o)
+        },
+        _resetGrid: function() {
+            var t = this._map,
+                i = t.options.crs,
+                e = this._tileSize = this.getTileSize(),
+                n = this._tileZoom,
+                o = this._map.getPixelWorldBounds(this._tileZoom);
+            o && (this._globalTileRange = this._pxBoundsToTileRange(o)),
+                this._wrapX = i.wrapLng && !this.options.noWrap && [Math.floor(t.project([0, i.wrapLng[0]], n).x / e.x), Math.ceil(t.project([0, i.wrapLng[1]], n).x / e.y)],
+                this._wrapY = i.wrapLat && !this.options.noWrap && [Math.floor(t.project([i.wrapLat[0], 0], n).y / e.x), Math.ceil(t.project([i.wrapLat[1], 0], n).y / e.y)]
+        },
+        _onMoveEnd: function() {
+            this._map && !this._map._animatingZoom && this._update()
+        },
+        _getTiledPixelBounds: function(t) {
+            var i = this._map,
+                e = i._animatingZoom ? Math.max(i._animateToZoom, i.getZoom()) : i.getZoom(),
+                n = i.getZoomScale(e, this._tileZoom),
+                o = i.project(t, this._tileZoom).floor(),
+                s = i.getSize().divideBy(2 * n);
+            return new O(o.subtract(s), o.add(s))
+        },
+        _update: function(t) {
+            var i = this._map;
+            if (i) {
+                var e = this._clampZoom(i.getZoom());
+                if (void 0 === t && (t = i.getCenter()),
+                    void 0 !== this._tileZoom) {
+                    var n = this._getTiledPixelBounds(t),
+                        o = this._pxBoundsToTileRange(n),
+                        s = o.getCenter(),
+                        r = [],
+                        a = this.options.keepBuffer,
+                        h = new O(o.getBottomLeft().subtract([a, -a]), o.getTopRight().add([a, -a]));
+                    if (!(isFinite(o.min.x) && isFinite(o.min.y) && isFinite(o.max.x) && isFinite(o.max.y)))
+                        throw new Error("Attempted to load an infinite number of tiles");
+                    for (var u in this._tiles) {
+                        var l = this._tiles[u].coords;
+                        l.z === this._tileZoom && h.contains(new B(l.x, l.y)) || (this._tiles[u].current = !1)
+                    }
+                    if (1 < Math.abs(e - this._tileZoom))
+                        this._setView(t, e);
+                    else {
+                        for (var c = o.min.y; c <= o.max.y; c++)
+                            for (var _ = o.min.x; _ <= o.max.x; _++) {
+                                var d = new B(_, c);
+                                if (d.z = this._tileZoom,
+                                    this._isValidTile(d)) {
+                                    var p = this._tiles[this._tileCoordsToKey(d)];
+                                    p ? p.current = !0 : r.push(d)
                                 }
-                            if (r.sort(function(t, i) {
-                                    return t.distanceTo(s) - i.distanceTo(s)
-                                }),
-                                0 !== r.length) {
-                                this._loading || (this._loading = !0,
-                                    this.fire("loading"));
-                                var m = document.createDocumentFragment();
-                                for (_ = 0; _ < r.length; _++)
-                                    this._addTile(r[_], m);
-                                this._level.el.appendChild(m)
                             }
+                        if (r.sort(function(t, i) {
+                                return t.distanceTo(s) - i.distanceTo(s)
+                            }),
+                            0 !== r.length) {
+                            this._loading || (this._loading = !0,
+                                this.fire("loading"));
+                            var m = document.createDocumentFragment();
+                            for (_ = 0; _ < r.length; _++)
+                                this._addTile(r[_], m);
+                            this._level.el.appendChild(m)
                         }
                     }
                 }
-            },
-            _isValidTile: function(t) {
-                var i = this._map.options.crs;
-                if (!i.infinite) {
-                    var e = this._globalTileRange;
-                    if (!i.wrapLng && (t.x < e.min.x || t.x > e.max.x) || !i.wrapLat && (t.y < e.min.y || t.y > e.max.y))
-                        return !1
-                }
-                if (!this.options.bounds)
-                    return !0;
-                var n = this._tileCoordsToBounds(t);
-                return z(this.options.bounds).overlaps(n)
-            },
-            _keyToBounds: function(t) {
-                return this._tileCoordsToBounds(this._keyToTileCoords(t))
-            },
-            _tileCoordsToNwSe: function(t) {
-                var i = this._map,
-                    e = this.getTileSize(),
-                    n = t.scaleBy(e),
-                    o = n.add(e);
-                return [i.unproject(n, t.z), i.unproject(o, t.z)]
-            },
-            _tileCoordsToBounds: function(t) {
-                var i = this._tileCoordsToNwSe(t),
-                    e = new T(i[0], i[1]);
-                return this.options.noWrap || (e = this._map.wrapLatLngBounds(e)),
-                    e
-            },
-            _tileCoordsToKey: function(t) {
-                return t.x + ":" + t.y + ":" + t.z
-            },
-            _keyToTileCoords: function(t) {
-                var i = t.split(":"),
-                    e = new x(+i[0], +i[1]);
-                return e.z = +i[2],
-                    e
-            },
-            _removeTile: function(t) {
-                var i = this._tiles[t];
-                i && (Ci || i.el.setAttribute("src", ni),
-                    ut(i.el),
-                    delete this._tiles[t],
-                    this.fire("tileunload", {
-                        tile: i.el,
-                        coords: this._keyToTileCoords(t)
-                    }))
-            },
-            _initTile: function(t) {
-                pt(t, "leaflet-tile");
-                var i = this.getTileSize();
-                t.style.width = i.x + "px",
-                    t.style.height = i.y + "px",
-                    t.onselectstart = r,
-                    t.onmousemove = r,
-                    Li && this.options.opacity < 1 && vt(t, this.options.opacity),
-                    Ti && !zi && (t.style.WebkitBackfaceVisibility = "hidden")
-            },
-            _addTile: function(t, i) {
-                var n = this._getTilePos(t),
-                    o = this._tileCoordsToKey(t),
-                    s = this.createTile(this._wrapCoords(t), e(this._tileReady, this, t));
-                this._initTile(s),
-                    this.createTile.length < 2 && f(e(this._tileReady, this, t, null, s)),
-                    Lt(s, n),
-                    this._tiles[o] = {
-                        el: s,
-                        coords: t,
-                        current: !0
-                    },
-                    i.appendChild(s),
-                    this.fire("tileloadstart", {
-                        tile: s,
-                        coords: t
-                    })
-            },
-            _tileReady: function(t, i, n) {
-                if (this._map) {
-                    i && this.fire("tileerror", {
-                        error: i,
-                        tile: n,
-                        coords: t
-                    });
-                    var o = this._tileCoordsToKey(t);
-                    (n = this._tiles[o]) && (n.loaded = +new Date,
-                        this._map._fadeAnimated ? (vt(n.el, 0),
-                            g(this._fadeFrame),
-                            this._fadeFrame = f(this._updateOpacity, this)) : (n.active = !0,
-                            this._pruneTiles()),
-                        i || (pt(n.el, "leaflet-tile-loaded"),
-                            this.fire("tileload", {
-                                tile: n.el,
-                                coords: t
-                            })),
-                        this._noTilesToLoad() && (this._loading = !1,
-                            this.fire("load"),
-                            Li || !this._map._fadeAnimated ? f(this._pruneTiles, this) : setTimeout(e(this._pruneTiles, this), 250)))
-                }
-            },
-            _getTilePos: function(t) {
-                return t.scaleBy(this.getTileSize()).subtract(this._level.origin)
-            },
-            _wrapCoords: function(t) {
-                var i = new x(this._wrapX ? s(t.x, this._wrapX) : t.x, this._wrapY ? s(t.y, this._wrapY) : t.y);
-                return i.z = t.z,
-                    i
-            },
-            _pxBoundsToTileRange: function(t) {
-                var i = this.getTileSize();
-                return new P(t.min.unscaleBy(i).floor(), t.max.unscaleBy(i).ceil().subtract([1, 1]))
-            },
-            _noTilesToLoad: function() {
-                for (var t in this._tiles)
-                    if (!this._tiles[t].loaded)
-                        return !1;
-                return !0
             }
-        }),
-        dn = _n.extend({
-            options: {
-                minZoom: 0,
-                maxZoom: 18,
-                subdomains: "abc",
-                errorTileUrl: "",
-                zoomOffset: 0,
-                tms: !1,
-                zoomReverse: !1,
-                detectRetina: !1,
-                crossOrigin: !1
-            },
-            initialize: function(t, i) {
+        },
+        _isValidTile: function(t) {
+            var i = this._map.options.crs;
+            if (!i.infinite) {
+                var e = this._globalTileRange;
+                if (!i.wrapLng && (t.x < e.min.x || t.x > e.max.x) || !i.wrapLat && (t.y < e.min.y || t.y > e.max.y))
+                    return !1
+            }
+            if (!this.options.bounds)
+                return !0;
+            var n = this._tileCoordsToBounds(t);
+            return D(this.options.bounds).overlaps(n)
+        },
+        _keyToBounds: function(t) {
+            return this._tileCoordsToBounds(this._keyToTileCoords(t))
+        },
+        _tileCoordsToNwSe: function(t) {
+            var i = this._map,
+                e = this.getTileSize(),
+                n = t.scaleBy(e),
+                o = n.add(e);
+            return [i.unproject(n, t.z), i.unproject(o, t.z)]
+        },
+        _tileCoordsToBounds: function(t) {
+            var i = this._tileCoordsToNwSe(t),
+                e = new N(i[0], i[1]);
+            return this.options.noWrap || (e = this._map.wrapLatLngBounds(e)),
+                e
+        },
+        _tileCoordsToKey: function(t) {
+            return t.x + ":" + t.y + ":" + t.z
+        },
+        _keyToTileCoords: function(t) {
+            var i = t.split(":"),
+                e = new B(+i[0], +i[1]);
+            return e.z = +i[2],
+                e
+        },
+        _removeTile: function(t) {
+            var i = this._tiles[t];
+            i && (ui(i.el),
+                delete this._tiles[t],
+                this.fire("tileunload", {
+                    tile: i.el,
+                    coords: this._keyToTileCoords(t)
+                }))
+        },
+        _initTile: function(t) {
+            pi(t, "leaflet-tile");
+            var i = this.getTileSize();
+            t.style.width = i.x + "px",
+                t.style.height = i.y + "px",
+                t.onselectstart = l,
+                t.onmousemove = l,
+                et && this.options.opacity < 1 && vi(t, this.options.opacity),
+                st && !rt && (t.style.WebkitBackfaceVisibility = "hidden")
+        },
+        _addTile: function(t, i) {
+            var e = this._getTilePos(t),
+                n = this._tileCoordsToKey(t),
+                o = this.createTile(this._wrapCoords(t), a(this._tileReady, this, t));
+            this._initTile(o),
+                this.createTile.length < 2 && M(a(this._tileReady, this, t, null, o)),
+                wi(o, e),
+                this._tiles[n] = {
+                    el: o,
+                    coords: t,
+                    current: !0
+                },
+                i.appendChild(o),
+                this.fire("tileloadstart", {
+                    tile: o,
+                    coords: t
+                })
+        },
+        _tileReady: function(t, i, e) {
+            i && this.fire("tileerror", {
+                error: i,
+                tile: e,
+                coords: t
+            });
+            var n = this._tileCoordsToKey(t);
+            (e = this._tiles[n]) && (e.loaded = +new Date,
+                this._map._fadeAnimated ? (vi(e.el, 0),
+                    C(this._fadeFrame),
+                    this._fadeFrame = M(this._updateOpacity, this)) : (e.active = !0,
+                    this._pruneTiles()),
+                i || (pi(e.el, "leaflet-tile-loaded"),
+                    this.fire("tileload", {
+                        tile: e.el,
+                        coords: t
+                    })),
+                this._noTilesToLoad() && (this._loading = !1,
+                    this.fire("load"),
+                    et || !this._map._fadeAnimated ? M(this._pruneTiles, this) : setTimeout(a(this._pruneTiles, this), 250)))
+        },
+        _getTilePos: function(t) {
+            return t.scaleBy(this.getTileSize()).subtract(this._level.origin)
+        },
+        _wrapCoords: function(t) {
+            var i = new B(this._wrapX ? r(t.x, this._wrapX) : t.x, this._wrapY ? r(t.y, this._wrapY) : t.y);
+            return i.z = t.z,
+                i
+        },
+        _pxBoundsToTileRange: function(t) {
+            var i = this.getTileSize();
+            return new O(t.min.unscaleBy(i).floor(), t.max.unscaleBy(i).ceil().subtract([1, 1]))
+        },
+        _noTilesToLoad: function() {
+            for (var t in this._tiles)
+                if (!this._tiles[t].loaded)
+                    return !1;
+            return !0
+        }
+    });
+    var an = rn.extend({
+        options: {
+            minZoom: 0,
+            maxZoom: 18,
+            subdomains: "abc",
+            errorTileUrl: "",
+            zoomOffset: 0,
+            tms: !1,
+            zoomReverse: !1,
+            detectRetina: !1,
+            crossOrigin: !1
+        },
+        initialize: function(t, i) {
+            this._url = t,
+                (i = p(this, i)).detectRetina && Ct && 0 < i.maxZoom && (i.tileSize = Math.floor(i.tileSize / 2),
+                    i.zoomReverse ? (i.zoomOffset--,
+                        i.minZoom++) : (i.zoomOffset++,
+                        i.maxZoom--),
+                    i.minZoom = Math.max(0, i.minZoom)),
+                "string" == typeof i.subdomains && (i.subdomains = i.subdomains.split("")),
+                st || this.on("tileunload", this._onTileRemove)
+        },
+        setUrl: function(t, i) {
+            return this._url === t && void 0 === i && (i = !0),
                 this._url = t,
-                    (i = l(this, i)).detectRetina && Ki && i.maxZoom > 0 && (i.tileSize = Math.floor(i.tileSize / 2),
-                        i.zoomReverse ? (i.zoomOffset--,
-                            i.minZoom++) : (i.zoomOffset++,
-                            i.maxZoom--),
-                        i.minZoom = Math.max(0, i.minZoom)),
-                    "string" == typeof i.subdomains && (i.subdomains = i.subdomains.split("")),
-                    Ti || this.on("tileunload", this._onTileRemove)
-            },
-            setUrl: function(t, i) {
-                return this._url = t,
-                    i || this.redraw(),
-                    this
-            },
-            createTile: function(t, i) {
-                var n = document.createElement("img");
-                return V(n, "load", e(this._tileOnLoad, this, i, n)),
-                    V(n, "error", e(this._tileOnError, this, i, n)),
-                    this.options.crossOrigin && (n.crossOrigin = ""),
-                    n.alt = "",
-                    n.setAttribute("role", "presentation"),
-                    n.src = this.getTileUrl(t),
-                    n
-            },
-            getTileUrl: function(t) {
-                var e = {
-                    r: Ki ? "@2x" : "",
-                    s: this._getSubdomain(t),
-                    x: t.x,
-                    y: t.y,
-                    z: this._getZoomForUrl()
-                };
-                if (this._map && !this._map.options.crs.infinite) {
-                    var n = this._globalTileRange.max.y - t.y;
-                    this.options.tms && (e.y = n),
-                        e["-y"] = n
-                }
-                return _(this._url, i(e, this.options))
-            },
-            _tileOnLoad: function(t, i) {
-                Li ? setTimeout(e(t, this, null, i), 0) : t(null, i)
-            },
-            _tileOnError: function(t, i, e) {
-                var n = this.options.errorTileUrl;
-                n && i.getAttribute("src") !== n && (i.src = n),
-                    t(e, i)
-            },
-            _onTileRemove: function(t) {
-                t.tile.onload = null
-            },
-            _getZoomForUrl: function() {
-                var t = this._tileZoom,
-                    i = this.options.maxZoom,
-                    e = this.options.zoomReverse,
-                    n = this.options.zoomOffset;
-                return e && (t = i - t),
-                    t + n
-            },
-            _getSubdomain: function(t) {
-                var i = Math.abs(t.x + t.y) % this.options.subdomains.length;
-                return this.options.subdomains[i]
-            },
-            _abortLoading: function() {
-                var t, i;
-                for (t in this._tiles)
-                    this._tiles[t].coords.z !== this._tileZoom && ((i = this._tiles[t].el).onload = r,
-                        i.onerror = r,
-                        i.complete || (i.src = ni,
-                            ut(i),
-                            delete this._tiles[t]))
+                i || this.redraw(),
+                this
+        },
+        createTile: function(t, i) {
+            var e = document.createElement("img");
+            return Ei(e, "load", a(this._tileOnLoad, this, i, e)),
+                Ei(e, "error", a(this._tileOnError, this, i, e)), !this.options.crossOrigin && "" !== this.options.crossOrigin || (e.crossOrigin = !0 === this.options.crossOrigin ? "" : this.options.crossOrigin),
+                e.alt = "",
+                e.setAttribute("role", "presentation"),
+                e.src = this.getTileUrl(t),
+                e
+        },
+        getTileUrl: function(t) {
+            var i = {
+                r: Ct ? "@2x" : "",
+                s: this._getSubdomain(t),
+                x: t.x,
+                y: t.y,
+                z: this._getZoomForUrl()
+            };
+            if (this._map && !this._map.options.crs.infinite) {
+                var e = this._globalTileRange.max.y - t.y;
+                this.options.tms && (i.y = e),
+                    i["-y"] = e
             }
-        }),
-        pn = dn.extend({
-            defaultWmsParams: {
-                service: "WMS",
-                request: "GetMap",
-                layers: "",
-                styles: "",
-                format: "image/jpeg",
-                transparent: !1,
-                version: "1.1.1"
-            },
-            options: {
-                crs: null,
-                uppercase: !1
-            },
-            initialize: function(t, e) {
-                this._url = t;
-                var n = i({}, this.defaultWmsParams);
-                for (var o in e)
-                    o in this.options || (n[o] = e[o]);
-                var s = (e = l(this, e)).detectRetina && Ki ? 2 : 1,
-                    r = this.getTileSize();
-                n.width = r.x * s,
-                    n.height = r.y * s,
-                    this.wmsParams = n
-            },
-            onAdd: function(t) {
-                this._crs = this.options.crs || t.options.crs,
-                    this._wmsVersion = parseFloat(this.wmsParams.version);
-                var i = this._wmsVersion >= 1.3 ? "crs" : "srs";
-                this.wmsParams[i] = this._crs.code,
-                    dn.prototype.onAdd.call(this, t)
-            },
-            getTileUrl: function(t) {
-                var i = this._tileCoordsToNwSe(t),
-                    e = this._crs,
-                    n = b(e.project(i[0]), e.project(i[1])),
-                    o = n.min,
-                    s = n.max,
-                    r = (this._wmsVersion >= 1.3 && this._crs === He ? [o.y, o.x, s.y, s.x] : [o.x, o.y, s.x, s.y]).join(","),
-                    a = L.TileLayer.prototype.getTileUrl.call(this, t);
-                return a + c(this.wmsParams, a, this.options.uppercase) + (this.options.uppercase ? "&BBOX=" : "&bbox=") + r
-            },
-            setParams: function(t, e) {
-                return i(this.wmsParams, t),
-                    e || this.redraw(),
-                    this
-            }
-        });
-    dn.WMS = pn,
-        Yt.wms = function(t, i) {
-            return new pn(t, i)
+            return g(this._url, h(i, this.options))
+        },
+        _tileOnLoad: function(t, i) {
+            et ? setTimeout(a(t, this, null, i), 0) : t(null, i)
+        },
+        _tileOnError: function(t, i, e) {
+            var n = this.options.errorTileUrl;
+            n && i.getAttribute("src") !== n && (i.src = n),
+                t(e, i)
+        },
+        _onTileRemove: function(t) {
+            t.tile.onload = null
+        },
+        _getZoomForUrl: function() {
+            var t = this._tileZoom,
+                i = this.options.maxZoom;
+            return this.options.zoomReverse && (t = i - t),
+                t + this.options.zoomOffset
+        },
+        _getSubdomain: function(t) {
+            var i = Math.abs(t.x + t.y) % this.options.subdomains.length;
+            return this.options.subdomains[i]
+        },
+        _abortLoading: function() {
+            var t, i;
+            for (t in this._tiles)
+                this._tiles[t].coords.z !== this._tileZoom && ((i = this._tiles[t].el).onload = l,
+                    i.onerror = l,
+                    i.complete || (i.src = x,
+                        ui(i),
+                        delete this._tiles[t]))
+        },
+        _removeTile: function(t) {
+            var i = this._tiles[t];
+            if (i)
+                return ht || i.el.setAttribute("src", x),
+                    rn.prototype._removeTile.call(this, t)
+        },
+        _tileReady: function(t, i, e) {
+            if (this._map && (!e || e.getAttribute("src") !== x))
+                return rn.prototype._tileReady.call(this, t, i, e)
+        }
+    });
+
+    function hn(t, i) {
+        return new an(t, i)
+    }
+    var un = an.extend({
+        defaultWmsParams: {
+            service: "WMS",
+            request: "GetMap",
+            layers: "",
+            styles: "",
+            format: "image/jpeg",
+            transparent: !1,
+            version: "1.1.1"
+        },
+        options: {
+            crs: null,
+            uppercase: !1
+        },
+        initialize: function(t, i) {
+            this._url = t;
+            var e = h({}, this.defaultWmsParams);
+            for (var n in i)
+                n in this.options || (e[n] = i[n]);
+            var o = (i = p(this, i)).detectRetina && Ct ? 2 : 1,
+                s = this.getTileSize();
+            e.width = s.x * o,
+                e.height = s.y * o,
+                this.wmsParams = e
+        },
+        onAdd: function(t) {
+            this._crs = this.options.crs || t.options.crs,
+                this._wmsVersion = parseFloat(this.wmsParams.version);
+            var i = 1.3 <= this._wmsVersion ? "crs" : "srs";
+            this.wmsParams[i] = this._crs.code,
+                an.prototype.onAdd.call(this, t)
+        },
+        getTileUrl: function(t) {
+            var i = this._tileCoordsToNwSe(t),
+                e = this._crs,
+                n = R(e.project(i[0]), e.project(i[1])),
+                o = n.min,
+                s = n.max,
+                r = (1.3 <= this._wmsVersion && this._crs === Me ? [o.y, o.x, s.y, s.x] : [o.x, o.y, s.x, s.y]).join(","),
+                a = an.prototype.getTileUrl.call(this, t);
+            return a + m(this.wmsParams, a, this.options.uppercase) + (this.options.uppercase ? "&BBOX=" : "&bbox=") + r
+        },
+        setParams: function(t, i) {
+            return h(this.wmsParams, t),
+                i || this.redraw(),
+                this
+        }
+    });
+    an.WMS = un,
+        hn.wms = function(t, i) {
+            return new un(t, i)
         };
-    var mn = Ue.extend({
+    var ln = Se.extend({
             options: {
                 padding: .1,
                 tolerance: 0
             },
             initialize: function(t) {
-                l(this, t),
-                    n(this),
+                p(this, t),
+                    u(this),
                     this._layers = this._layers || {}
             },
             onAdd: function() {
                 this._container || (this._initContainer(),
-                        this._zoomAnimated && pt(this._container, "leaflet-zoom-animated")),
+                        this._zoomAnimated && pi(this._container, "leaflet-zoom-animated")),
                     this.getPane().appendChild(this._container),
                     this._update(),
                     this.on("update", this._updatePaths, this)
@@ -5252,17 +5266,17 @@
             },
             _updateTransform: function(t, i) {
                 var e = this._map.getZoomScale(i, this._zoom),
-                    n = Pt(this._container),
+                    n = Pi(this._container),
                     o = this._map.getSize().multiplyBy(.5 + this.options.padding),
                     s = this._map.project(this._center, i),
                     r = this._map.project(t, i).subtract(s),
                     a = o.multiplyBy(-e).add(n).add(o).subtract(r);
-                Ni ? wt(this._container, a, e) : Lt(this._container, a)
+                yt ? xi(this._container, a, e) : wi(this._container, a)
             },
             _reset: function() {
-                this._update(),
-                    this._updateTransform(this._center, this._zoom);
-                for (var t in this._layers)
+                for (var t in this._update(),
+                        this._updateTransform(this._center, this._zoom),
+                        this._layers)
                     this._layers[t]._reset()
             },
             _onZoomEnd: function() {
@@ -5277,14 +5291,14 @@
                 var t = this.options.padding,
                     i = this._map.getSize(),
                     e = this._map.containerPointToLayerPoint(i.multiplyBy(-t)).round();
-                this._bounds = new P(e, e.add(i.multiplyBy(1 + 2 * t)).round()),
+                this._bounds = new O(e, e.add(i.multiplyBy(1 + 2 * t)).round()),
                     this._center = this._map.getCenter(),
                     this._zoom = this._map.getZoom()
             }
         }),
-        fn = mn.extend({
+        cn = ln.extend({
             getEvents: function() {
-                var t = mn.prototype.getEvents.call(this);
+                var t = ln.prototype.getEvents.call(this);
                 return t.viewprereset = this._onViewPreReset,
                     t
             },
@@ -5292,57 +5306,56 @@
                 this._postponeUpdatePaths = !0
             },
             onAdd: function() {
-                mn.prototype.onAdd.call(this),
+                ln.prototype.onAdd.call(this),
                     this._draw()
             },
             _initContainer: function() {
                 var t = this._container = document.createElement("canvas");
-                V(t, "mousemove", o(this._onMouseMove, 32, this), this),
-                    V(t, "click dblclick mousedown mouseup contextmenu", this._onClick, this),
-                    V(t, "mouseout", this._handleMouseOut, this),
+                Ei(t, "mousemove", o(this._onMouseMove, 32, this), this),
+                    Ei(t, "click dblclick mousedown mouseup contextmenu", this._onClick, this),
+                    Ei(t, "mouseout", this._handleMouseOut, this),
                     this._ctx = t.getContext("2d")
             },
             _destroyContainer: function() {
-                delete this._ctx,
-                    ut(this._container),
-                    q(this._container),
+                C(this._redrawRequest),
+                    delete this._ctx,
+                    ui(this._container),
+                    Bi(this._container),
                     delete this._container
             },
             _updatePaths: function() {
                 if (!this._postponeUpdatePaths) {
-                    this._redrawBounds = null;
-                    for (var t in this._layers)
+                    for (var t in this._redrawBounds = null,
+                            this._layers)
                         this._layers[t]._update();
                     this._redraw()
                 }
             },
             _update: function() {
                 if (!this._map._animatingZoom || !this._bounds) {
-                    this._drawnLayers = {},
-                        mn.prototype._update.call(this);
+                    ln.prototype._update.call(this);
                     var t = this._bounds,
                         i = this._container,
                         e = t.getSize(),
-                        n = Ki ? 2 : 1;
-                    Lt(i, t.min),
+                        n = Ct ? 2 : 1;
+                    wi(i, t.min),
                         i.width = n * e.x,
                         i.height = n * e.y,
                         i.style.width = e.x + "px",
                         i.style.height = e.y + "px",
-                        Ki && this._ctx.scale(2, 2),
+                        Ct && this._ctx.scale(2, 2),
                         this._ctx.translate(-t.min.x, -t.min.y),
                         this.fire("update")
                 }
             },
             _reset: function() {
-                mn.prototype._reset.call(this),
+                ln.prototype._reset.call(this),
                     this._postponeUpdatePaths && (this._postponeUpdatePaths = !1,
                         this._updatePaths())
             },
             _initPath: function(t) {
-                this._updateDashArray(t),
-                    this._layers[n(t)] = t;
-                var i = t._order = {
+                this._updateDashArray(t);
+                var i = (this._layers[u(t)] = t)._order = {
                     layer: t,
                     prev: this._drawLast,
                     next: null
@@ -5361,7 +5374,7 @@
                 e ? e.prev = n : this._drawLast = n,
                     n ? n.next = e : this._drawFirst = e,
                     delete t._order,
-                    delete this._layers[L.stamp(t)],
+                    delete this._layers[u(t)],
                     this._requestRedraw(t)
             },
             _updatePath: function(t) {
@@ -5375,22 +5388,27 @@
                     this._requestRedraw(t)
             },
             _updateDashArray: function(t) {
-                if (t.options.dashArray) {
-                    var i, e = t.options.dashArray.split(","),
-                        n = [];
-                    for (i = 0; i < e.length; i++)
-                        n.push(Number(e[i]));
-                    t.options._dashArray = n
-                }
+                if ("string" == typeof t.options.dashArray) {
+                    var i, e, n = t.options.dashArray.split(/[, ]+/),
+                        o = [];
+                    for (e = 0; e < n.length; e++) {
+                        if (i = Number(n[e]),
+                            isNaN(i))
+                            return;
+                        o.push(i)
+                    }
+                    t.options._dashArray = o
+                } else
+                    t.options._dashArray = t.options.dashArray
             },
             _requestRedraw: function(t) {
                 this._map && (this._extendRedrawBounds(t),
-                    this._redrawRequest = this._redrawRequest || f(this._redraw, this))
+                    this._redrawRequest = this._redrawRequest || M(this._redraw, this))
             },
             _extendRedrawBounds: function(t) {
                 if (t._pxBounds) {
                     var i = (t.options.weight || 0) + 1;
-                    this._redrawBounds = this._redrawBounds || new P,
+                    this._redrawBounds = this._redrawBounds || new O,
                         this._redrawBounds.extend(t._pxBounds.min.subtract([i, i])),
                         this._redrawBounds.extend(t._pxBounds.max.add([i, i]))
                 }
@@ -5433,8 +5451,7 @@
                         a = r.length,
                         h = this._ctx;
                     if (a) {
-                        for (this._drawnLayers[t._leaflet_id] = t,
-                            h.beginPath(),
+                        for (h.beginPath(),
                             e = 0; e < a; e++) {
                             for (n = 0,
                                 o = r[e].length; n < o; n++)
@@ -5452,12 +5469,11 @@
                         e = this._ctx,
                         n = Math.max(Math.round(t._radius), 1),
                         o = (Math.max(Math.round(t._radiusY), 1) || n) / n;
-                    this._drawnLayers[t._leaflet_id] = t,
-                        1 !== o && (e.save(),
+                    1 != o && (e.save(),
                             e.scale(1, o)),
                         e.beginPath(),
                         e.arc(i.x, i.y / o, n, 0, 2 * Math.PI, !1),
-                        1 !== o && e.restore(),
+                        1 != o && e.restore(),
                         this._fillStroke(e, t)
                 }
             },
@@ -5477,7 +5493,7 @@
             _onClick: function(t) {
                 for (var i, e, n = this._map.mouseEventToLayerPoint(t), o = this._drawFirst; o; o = o.next)
                     (i = o.layer).options.interactive && i._containsPoint(n) && !this._map._draggableMoved(i) && (e = i);
-                e && (et(t),
+                e && (qi(t),
                     this._fireEvent([e], t))
             },
             _onMouseMove: function(t) {
@@ -5488,7 +5504,7 @@
             },
             _handleMouseOut: function(t) {
                 var i = this._hoveredLayer;
-                i && (mt(this._container, "leaflet-interactive"),
+                i && (mi(this._container, "leaflet-interactive"),
                     this._fireEvent([i], t, "mouseout"),
                     this._hoveredLayer = null)
             },
@@ -5496,7 +5512,7 @@
                 for (var e, n, o = this._drawFirst; o; o = o.next)
                     (e = o.layer).options.interactive && e._containsPoint(i) && (n = e);
                 n !== this._hoveredLayer && (this._handleMouseOut(t),
-                        n && (pt(this._container, "leaflet-interactive"),
+                        n && (pi(this._container, "leaflet-interactive"),
                             this._fireEvent([n], t, "mouseover"),
                             this._hoveredLayer = n)),
                     this._hoveredLayer && this._fireEvent([this._hoveredLayer], t)
@@ -5505,31 +5521,36 @@
                 this._map._fireDOMEvent(i, e || i.type, t)
             },
             _bringToFront: function(t) {
-                var i = t._order,
-                    e = i.next,
-                    n = i.prev;
-                e && (e.prev = n,
-                    n ? n.next = e : e && (this._drawFirst = e),
-                    i.prev = this._drawLast,
-                    this._drawLast.next = i,
-                    i.next = null,
-                    this._drawLast = i,
-                    this._requestRedraw(t))
+                var i = t._order;
+                if (i) {
+                    var e = i.next,
+                        n = i.prev;
+                    e && ((e.prev = n) ? n.next = e : e && (this._drawFirst = e),
+                        i.prev = this._drawLast,
+                        (this._drawLast.next = i).next = null,
+                        this._drawLast = i,
+                        this._requestRedraw(t))
+                }
             },
             _bringToBack: function(t) {
-                var i = t._order,
-                    e = i.next,
-                    n = i.prev;
-                n && (n.next = e,
-                    e ? e.prev = n : n && (this._drawLast = n),
-                    i.prev = null,
-                    i.next = this._drawFirst,
-                    this._drawFirst.prev = i,
-                    this._drawFirst = i,
-                    this._requestRedraw(t))
+                var i = t._order;
+                if (i) {
+                    var e = i.next,
+                        n = i.prev;
+                    n && ((n.next = e) ? e.prev = n : n && (this._drawLast = n),
+                        i.prev = null,
+                        i.next = this._drawFirst,
+                        this._drawFirst.prev = i,
+                        this._drawFirst = i,
+                        this._requestRedraw(t))
+                }
             }
-        }),
-        gn = function() {
+        });
+
+    function _n(t) {
+        return St ? new cn(t) : null
+    }
+    var dn = function() {
             try {
                 return document.namespaces.add("lvml", "urn:schemas-microsoft-com:vml"),
                     function(t) {
@@ -5541,22 +5562,22 @@
                 }
             }
         }(),
-        vn = {
+        pn = {
             _initContainer: function() {
-                this._container = ht("div", "leaflet-vml-container")
+                this._container = hi("div", "leaflet-vml-container")
             },
             _update: function() {
-                this._map._animatingZoom || (mn.prototype._update.call(this),
+                this._map._animatingZoom || (ln.prototype._update.call(this),
                     this.fire("update"))
             },
             _initPath: function(t) {
-                var i = t._container = gn("shape");
-                pt(i, "leaflet-vml-shape " + (this.options.className || "")),
+                var i = t._container = dn("shape");
+                pi(i, "leaflet-vml-shape " + (this.options.className || "")),
                     i.coordsize = "1 1",
-                    t._path = gn("path"),
+                    t._path = dn("path"),
                     i.appendChild(t._path),
                     this._updateStyle(t),
-                    this._layers[n(t)] = t
+                    this._layers[u(t)] = t
             },
             _addPath: function(t) {
                 var i = t._container;
@@ -5565,9 +5586,9 @@
             },
             _removePath: function(t) {
                 var i = t._container;
-                ut(i),
+                ui(i),
                     t.removeInteractiveTarget(i),
-                    delete this._layers[n(t)]
+                    delete this._layers[u(t)]
             },
             _updateStyle: function(t) {
                 var i = t._stroke,
@@ -5576,16 +5597,16 @@
                     o = t._container;
                 o.stroked = !!n.stroke,
                     o.filled = !!n.fill,
-                    n.stroke ? (i || (i = t._stroke = gn("stroke")),
+                    n.stroke ? (i || (i = t._stroke = dn("stroke")),
                         o.appendChild(i),
                         i.weight = n.weight + "px",
                         i.color = n.color,
                         i.opacity = n.opacity,
-                        n.dashArray ? i.dashStyle = ei(n.dashArray) ? n.dashArray.join(" ") : n.dashArray.replace(/( *, *)/g, " ") : i.dashStyle = "",
+                        n.dashArray ? i.dashStyle = v(n.dashArray) ? n.dashArray.join(" ") : n.dashArray.replace(/( *, *)/g, " ") : i.dashStyle = "",
                         i.endcap = n.lineCap.replace("butt", "flat"),
                         i.joinstyle = n.lineJoin) : i && (o.removeChild(i),
                         t._stroke = null),
-                    n.fill ? (e || (e = t._fill = gn("fill")),
+                    n.fill ? (e || (e = t._fill = dn("fill")),
                         o.appendChild(e),
                         e.color = n.fillColor || n.color,
                         e.opacity = n.fillOpacity) : e && (o.removeChild(e),
@@ -5601,28 +5622,28 @@
                 t._path.v = i
             },
             _bringToFront: function(t) {
-                ct(t._container)
+                ci(t._container)
             },
             _bringToBack: function(t) {
-                _t(t._container)
+                _i(t._container)
             }
         },
-        yn = Ji ? gn : E,
-        xn = mn.extend({
+        mn = Et ? dn : $,
+        fn = ln.extend({
             getEvents: function() {
-                var t = mn.prototype.getEvents.call(this);
+                var t = ln.prototype.getEvents.call(this);
                 return t.zoomstart = this._onZoomStart,
                     t
             },
             _initContainer: function() {
-                this._container = yn("svg"),
+                this._container = mn("svg"),
                     this._container.setAttribute("pointer-events", "none"),
-                    this._rootGroup = yn("g"),
+                    this._rootGroup = mn("g"),
                     this._container.appendChild(this._rootGroup)
             },
             _destroyContainer: function() {
-                ut(this._container),
-                    q(this._container),
+                ui(this._container),
+                    Bi(this._container),
                     delete this._container,
                     delete this._rootGroup,
                     delete this._svgSize
@@ -5632,24 +5653,24 @@
             },
             _update: function() {
                 if (!this._map._animatingZoom || !this._bounds) {
-                    mn.prototype._update.call(this);
+                    ln.prototype._update.call(this);
                     var t = this._bounds,
                         i = t.getSize(),
                         e = this._container;
                     this._svgSize && this._svgSize.equals(i) || (this._svgSize = i,
                             e.setAttribute("width", i.x),
                             e.setAttribute("height", i.y)),
-                        Lt(e, t.min),
+                        wi(e, t.min),
                         e.setAttribute("viewBox", [t.min.x, t.min.y, i.x, i.y].join(" ")),
                         this.fire("update")
                 }
             },
             _initPath: function(t) {
-                var i = t._path = yn("path");
-                t.options.className && pt(i, t.options.className),
-                    t.options.interactive && pt(i, "leaflet-interactive"),
+                var i = t._path = mn("path");
+                t.options.className && pi(i, t.options.className),
+                    t.options.interactive && pi(i, "leaflet-interactive"),
                     this._updateStyle(t),
-                    this._layers[n(t)] = t
+                    this._layers[u(t)] = t
             },
             _addPath: function(t) {
                 this._rootGroup || this._initContainer(),
@@ -5657,9 +5678,9 @@
                     t.addInteractiveTarget(t._path)
             },
             _removePath: function(t) {
-                ut(t._path),
+                ui(t._path),
                     t.removeInteractiveTarget(t._path),
-                    delete this._layers[n(t)]
+                    delete this._layers[u(t)]
             },
             _updatePath: function(t) {
                 t._project(),
@@ -5680,7 +5701,7 @@
                         i.setAttribute("fill-rule", e.fillRule || "evenodd")) : i.setAttribute("fill", "none"))
             },
             _updatePoly: function(t, i) {
-                this._setPath(t, k(t._parts, i))
+                this._setPath(t, Q(t._parts, i))
             },
             _updateCircle: function(t) {
                 var i = t._point,
@@ -5693,17 +5714,21 @@
                 t._path.setAttribute("d", i)
             },
             _bringToFront: function(t) {
-                ct(t._path)
+                ci(t._path)
             },
             _bringToBack: function(t) {
-                _t(t._path)
+                _i(t._path)
             }
         });
-    Ji && xn.include(vn),
-        Le.include({
+
+    function gn(t) {
+        return Zt || Et ? new fn(t) : null
+    }
+    Et && fn.include(pn),
+        Ji.include({
             getRenderer: function(t) {
                 var i = t.options.renderer || this._getPaneRenderer(t.options.pane) || this.options.renderer || this._renderer;
-                return i || (i = this._renderer = this.options.preferCanvas && Xt() || Jt()),
+                return i || (i = this._renderer = this._createRenderer()),
                     this.hasLayer(i) || this.addLayer(i),
                     i
             },
@@ -5711,39 +5736,40 @@
                 if ("overlayPane" === t || void 0 === t)
                     return !1;
                 var i = this._paneRenderers[t];
-                return void 0 === i && (i = xn && Jt({
-                            pane: t
-                        }) || fn && Xt({
+                return void 0 === i && (i = this._createRenderer({
                             pane: t
                         }),
                         this._paneRenderers[t] = i),
                     i
+            },
+            _createRenderer: function(t) {
+                return this.options.preferCanvas && _n(t) || gn(t)
             }
         });
-    var wn = en.extend({
+    var vn = je.extend({
         initialize: function(t, i) {
-            en.prototype.initialize.call(this, this._boundsToLatLngs(t), i)
+            je.prototype.initialize.call(this, this._boundsToLatLngs(t), i)
         },
         setBounds: function(t) {
             return this.setLatLngs(this._boundsToLatLngs(t))
         },
         _boundsToLatLngs: function(t) {
-            return t = z(t), [t.getSouthWest(), t.getNorthWest(), t.getNorthEast(), t.getSouthEast()]
+            return [(t = D(t)).getSouthWest(), t.getNorthWest(), t.getNorthEast(), t.getSouthEast()]
         }
     });
-    xn.create = yn,
-        xn.pointsToPath = k,
-        nn.geometryToLayer = Wt,
-        nn.coordsToLatLng = Ht,
-        nn.coordsToLatLngs = Ft,
-        nn.latLngToCoords = Ut,
-        nn.latLngsToCoords = Vt,
-        nn.getFeature = qt,
-        nn.asFeature = Gt,
-        Le.mergeOptions({
+    fn.create = mn,
+        fn.pointsToPath = Q,
+        We.geometryToLayer = He,
+        We.coordsToLatLng = Fe,
+        We.coordsToLatLngs = Ue,
+        We.latLngToCoords = Ve,
+        We.latLngsToCoords = qe,
+        We.getFeature = Ge,
+        We.asFeature = Ke,
+        Ji.mergeOptions({
             boxZoom: !0
         });
-    var Ln = Ze.extend({
+    var yn = oe.extend({
         initialize: function(t) {
             this._map = t,
                 this._container = t._container,
@@ -5752,16 +5778,16 @@
                 t.on("unload", this._destroy, this)
         },
         addHooks: function() {
-            V(this._container, "mousedown", this._onMouseDown, this)
+            Ei(this._container, "mousedown", this._onMouseDown, this)
         },
         removeHooks: function() {
-            q(this._container, "mousedown", this._onMouseDown, this)
+            Bi(this._container, "mousedown", this._onMouseDown, this)
         },
         moved: function() {
             return this._moved
         },
         _destroy: function() {
-            ut(this._pane),
+            ui(this._pane),
                 delete this._pane
         },
         _resetState: function() {
@@ -5777,11 +5803,11 @@
                 return !1;
             this._clearDeferredResetState(),
                 this._resetState(),
-                mi(),
-                bt(),
+                $t(),
+                bi(),
                 this._startPoint = this._map.mouseEventToContainerPoint(t),
-                V(document, {
-                    contextmenu: Q,
+                Ei(document, {
+                    contextmenu: ji,
                     mousemove: this._onMouseMove,
                     mouseup: this._onMouseUp,
                     keydown: this._onKeyDown
@@ -5789,23 +5815,23 @@
         },
         _onMouseMove: function(t) {
             this._moved || (this._moved = !0,
-                    this._box = ht("div", "leaflet-zoom-box", this._container),
-                    pt(this._container, "leaflet-crosshair"),
+                    this._box = hi("div", "leaflet-zoom-box", this._container),
+                    pi(this._container, "leaflet-crosshair"),
                     this._map.fire("boxzoomstart")),
                 this._point = this._map.mouseEventToContainerPoint(t);
-            var i = new P(this._point, this._startPoint),
+            var i = new O(this._point, this._startPoint),
                 e = i.getSize();
-            Lt(this._box, i.min),
+            wi(this._box, i.min),
                 this._box.style.width = e.x + "px",
                 this._box.style.height = e.y + "px"
         },
         _finish: function() {
-            this._moved && (ut(this._box),
-                    mt(this._container, "leaflet-crosshair")),
-                fi(),
-                Tt(),
-                q(document, {
-                    contextmenu: Q,
+            this._moved && (ui(this._box),
+                    mi(this._container, "leaflet-crosshair")),
+                Qt(),
+                Ti(),
+                Bi(document, {
+                    contextmenu: ji,
                     mousemove: this._onMouseMove,
                     mouseup: this._onMouseUp,
                     keydown: this._onKeyDown
@@ -5815,8 +5841,8 @@
             if ((1 === t.which || 1 === t.button) && (this._finish(),
                     this._moved)) {
                 this._clearDeferredResetState(),
-                    this._resetStateTimeout = setTimeout(e(this._resetState, this), 0);
-                var i = new T(this._map.containerPointToLatLng(this._startPoint), this._map.containerPointToLatLng(this._point));
+                    this._resetStateTimeout = setTimeout(a(this._resetState, this), 0);
+                var i = new N(this._map.containerPointToLatLng(this._startPoint), this._map.containerPointToLatLng(this._point));
                 this._map.fitBounds(i).fire("boxzoomend", {
                     boxZoomBounds: i
                 })
@@ -5826,11 +5852,11 @@
             27 === t.keyCode && this._finish()
         }
     });
-    Le.addInitHook("addHandler", "boxZoom", Ln),
-        Le.mergeOptions({
+    Ji.addInitHook("addHandler", "boxZoom", yn),
+        Ji.mergeOptions({
             doubleClickZoom: !0
         });
-    var Pn = Ze.extend({
+    var xn = oe.extend({
         addHooks: function() {
             this._map.on("dblclick", this._onDoubleClick, this)
         },
@@ -5845,21 +5871,21 @@
             "center" === i.options.doubleClickZoom ? i.setZoom(o) : i.setZoomAround(t.containerPoint, o)
         }
     });
-    Le.addInitHook("addHandler", "doubleClickZoom", Pn),
-        Le.mergeOptions({
+    Ji.addInitHook("addHandler", "doubleClickZoom", xn),
+        Ji.mergeOptions({
             dragging: !0,
-            inertia: !zi,
+            inertia: !rt,
             inertiaDeceleration: 3400,
             inertiaMaxSpeed: 1 / 0,
             easeLinearity: .2,
             worldCopyJump: !1,
             maxBoundsViscosity: 0
         });
-    var bn = Ze.extend({
+    var wn = oe.extend({
         addHooks: function() {
             if (!this._draggable) {
                 var t = this._map;
-                this._draggable = new Be(t._mapPane, t._container),
+                this._draggable = new le(t._mapPane, t._container),
                     this._draggable.on({
                         dragstart: this._onDragStart,
                         drag: this._onDrag,
@@ -5870,14 +5896,14 @@
                         t.on("zoomend", this._onZoomEnd, this),
                         t.whenReady(this._onZoomEnd, this))
             }
-            pt(this._map._container, "leaflet-grab leaflet-touch-drag"),
+            pi(this._map._container, "leaflet-grab leaflet-touch-drag"),
                 this._draggable.enable(),
                 this._positions = [],
                 this._times = []
         },
         removeHooks: function() {
-            mt(this._map._container, "leaflet-grab"),
-                mt(this._map._container, "leaflet-touch-drag"),
+            mi(this._map._container, "leaflet-grab"),
+                mi(this._map._container, "leaflet-touch-drag"),
                 this._draggable.disable()
         },
         moved: function() {
@@ -5890,8 +5916,8 @@
             var t = this._map;
             if (t._stop(),
                 this._map.options.maxBounds && this._map.options.maxBoundsViscosity) {
-                var i = z(this._map.options.maxBounds);
-                this._offsetLimit = b(this._map.latLngToContainerPoint(i.getNorthWest()).multiplyBy(-1), this._map.latLngToContainerPoint(i.getSouthEast()).multiplyBy(-1).add(this._map.getSize())),
+                var i = D(this._map.options.maxBounds);
+                this._offsetLimit = R(this._map.latLngToContainerPoint(i.getNorthWest()).multiplyBy(-1), this._map.latLngToContainerPoint(i.getSouthEast()).multiplyBy(-1).add(this._map.getSize())),
                     this._viscosity = Math.min(1, Math.max(0, this._map.options.maxBoundsViscosity))
             } else
                 this._offsetLimit = null;
@@ -5910,7 +5936,7 @@
             this._map.fire("move", t).fire("drag", t)
         },
         _prunePositions: function(t) {
-            for (; this._positions.length > 1 && t - this._times[0] > 50;)
+            for (; 1 < this._positions.length && 50 < t - this._times[0];)
                 this._positions.shift(),
                 this._times.shift()
         },
@@ -5964,7 +5990,7 @@
                     c = u / (e.inertiaDeceleration * r),
                     _ = l.multiplyBy(-c / 2).round();
                 _.x || _.y ? (_ = i._limitOffset(_, i.options.maxBounds),
-                    f(function() {
+                    M(function() {
                         i.panBy(_, {
                             duration: c,
                             easeLinearity: r,
@@ -5975,12 +6001,12 @@
             }
         }
     });
-    Le.addInitHook("addHandler", "dragging", bn),
-        Le.mergeOptions({
+    Ji.addInitHook("addHandler", "dragging", wn),
+        Ji.mergeOptions({
             keyboard: !0,
             keyboardPanDelta: 80
         });
-    var Tn = Ze.extend({
+    var Pn = oe.extend({
         keyCodes: {
             left: [37],
             right: [39],
@@ -5997,7 +6023,7 @@
         addHooks: function() {
             var t = this._map._container;
             t.tabIndex <= 0 && (t.tabIndex = "0"),
-                V(t, {
+                Ei(t, {
                     focus: this._onFocus,
                     blur: this._onBlur,
                     mousedown: this._onMouseDown
@@ -6009,7 +6035,7 @@
         },
         removeHooks: function() {
             this._removeHooks(),
-                q(this._map._container, {
+                Bi(this._map._container, {
                     focus: this._onFocus,
                     blur: this._onBlur,
                     mousedown: this._onMouseDown
@@ -6064,57 +6090,55 @@
                 n[o.zoomOut[i]] = -t
         },
         _addHooks: function() {
-            V(document, "keydown", this._onKeyDown, this)
+            Ei(document, "keydown", this._onKeyDown, this)
         },
         _removeHooks: function() {
-            q(document, "keydown", this._onKeyDown, this)
+            Bi(document, "keydown", this._onKeyDown, this)
         },
         _onKeyDown: function(t) {
             if (!(t.altKey || t.ctrlKey || t.metaKey)) {
                 var i, e = t.keyCode,
                     n = this._map;
-                if (e in this._panKeys) {
-                    if (n._panAnim && n._panAnim._inProgress)
-                        return;
-                    i = this._panKeys[e],
-                        t.shiftKey && (i = w(i).multiplyBy(3)),
+                if (e in this._panKeys)
+                    n._panAnim && n._panAnim._inProgress || (i = this._panKeys[e],
+                        t.shiftKey && (i = I(i).multiplyBy(3)),
                         n.panBy(i),
-                        n.options.maxBounds && n.panInsideBounds(n.options.maxBounds)
-                } else if (e in this._zoomKeys)
+                        n.options.maxBounds && n.panInsideBounds(n.options.maxBounds));
+                else if (e in this._zoomKeys)
                     n.setZoom(n.getZoom() + (t.shiftKey ? 3 : 1) * this._zoomKeys[e]);
                 else {
                     if (27 !== e || !n._popup || !n._popup.options.closeOnEscapeKey)
                         return;
                     n.closePopup()
                 }
-                Q(t)
+                ji(t)
             }
         }
     });
-    Le.addInitHook("addHandler", "keyboard", Tn),
-        Le.mergeOptions({
+    Ji.addInitHook("addHandler", "keyboard", Pn),
+        Ji.mergeOptions({
             scrollWheelZoom: !0,
             wheelDebounceTime: 40,
             wheelPxPerZoomLevel: 60
         });
-    var zn = Ze.extend({
+    var Ln = oe.extend({
         addHooks: function() {
-            V(this._map._container, "mousewheel", this._onWheelScroll, this),
+            Ei(this._map._container, "mousewheel", this._onWheelScroll, this),
                 this._delta = 0
         },
         removeHooks: function() {
-            q(this._map._container, "mousewheel", this._onWheelScroll, this)
+            Bi(this._map._container, "mousewheel", this._onWheelScroll, this)
         },
         _onWheelScroll: function(t) {
-            var i = it(t),
-                n = this._map.options.wheelDebounceTime;
+            var i = Fi(t),
+                e = this._map.options.wheelDebounceTime;
             this._delta += i,
                 this._lastMousePos = this._map.mouseEventToContainerPoint(t),
                 this._startTime || (this._startTime = +new Date);
-            var o = Math.max(n - (+new Date - this._startTime), 0);
+            var n = Math.max(e - (+new Date - this._startTime), 0);
             clearTimeout(this._timer),
-                this._timer = setTimeout(e(this._performZoom, this), o),
-                Q(t)
+                this._timer = setTimeout(a(this._performZoom, this), n),
+                ji(t)
         },
         _performZoom: function() {
             var t = this._map,
@@ -6124,42 +6148,42 @@
             var n = this._delta / (4 * this._map.options.wheelPxPerZoomLevel),
                 o = 4 * Math.log(2 / (1 + Math.exp(-Math.abs(n)))) / Math.LN2,
                 s = e ? Math.ceil(o / e) * e : o,
-                r = t._limitZoom(i + (this._delta > 0 ? s : -s)) - i;
+                r = t._limitZoom(i + (0 < this._delta ? s : -s)) - i;
             this._delta = 0,
                 this._startTime = null,
                 r && ("center" === t.options.scrollWheelZoom ? t.setZoom(i + r) : t.setZoomAround(this._lastMousePos, i + r))
         }
     });
-    Le.addInitHook("addHandler", "scrollWheelZoom", zn),
-        Le.mergeOptions({
+    Ji.addInitHook("addHandler", "scrollWheelZoom", Ln),
+        Ji.mergeOptions({
             tap: !0,
             tapTolerance: 15
         });
-    var Mn = Ze.extend({
+    var bn = oe.extend({
         addHooks: function() {
-            V(this._map._container, "touchstart", this._onDown, this)
+            Ei(this._map._container, "touchstart", this._onDown, this)
         },
         removeHooks: function() {
-            q(this._map._container, "touchstart", this._onDown, this)
+            Bi(this._map._container, "touchstart", this._onDown, this)
         },
         _onDown: function(t) {
             if (t.touches) {
-                if ($(t),
+                if (Di(t),
                     this._fireClick = !0,
-                    t.touches.length > 1)
+                    1 < t.touches.length)
                     return this._fireClick = !1,
                         void clearTimeout(this._holdTimeout);
                 var i = t.touches[0],
-                    n = i.target;
-                this._startPos = this._newPos = new x(i.clientX, i.clientY),
-                    n.tagName && "a" === n.tagName.toLowerCase() && pt(n, "leaflet-active"),
-                    this._holdTimeout = setTimeout(e(function() {
+                    e = i.target;
+                this._startPos = this._newPos = new B(i.clientX, i.clientY),
+                    e.tagName && "a" === e.tagName.toLowerCase() && pi(e, "leaflet-active"),
+                    this._holdTimeout = setTimeout(a(function() {
                         this._isTapValid() && (this._fireClick = !1,
                             this._onUp(),
                             this._simulateEvent("contextmenu", i))
                     }, this), 1e3),
                     this._simulateEvent("mousedown", i),
-                    V(document, {
+                    Ei(document, {
                         touchmove: this._onMove,
                         touchend: this._onUp
                     }, this)
@@ -6167,14 +6191,14 @@
         },
         _onUp: function(t) {
             if (clearTimeout(this._holdTimeout),
-                q(document, {
+                Bi(document, {
                     touchmove: this._onMove,
                     touchend: this._onUp
                 }, this),
                 this._fireClick && t && t.changedTouches) {
                 var i = t.changedTouches[0],
                     e = i.target;
-                e && e.tagName && "a" === e.tagName.toLowerCase() && mt(e, "leaflet-active"),
+                e && e.tagName && "a" === e.tagName.toLowerCase() && mi(e, "leaflet-active"),
                     this._simulateEvent("mouseup", i),
                     this._isTapValid() && this._simulateEvent("click", i)
             }
@@ -6184,7 +6208,7 @@
         },
         _onMove: function(t) {
             var i = t.touches[0];
-            this._newPos = new x(i.clientX, i.clientY),
+            this._newPos = new B(i.clientX, i.clientY),
                 this._simulateEvent("mousemove", i)
         },
         _simulateEvent: function(t, i) {
@@ -6195,19 +6219,19 @@
                 i.target.dispatchEvent(e)
         }
     });
-    Vi && !Ui && Le.addInitHook("addHandler", "tap", Mn),
-        Le.mergeOptions({
-            touchZoom: Vi && !zi,
+    Tt && !bt && Ji.addInitHook("addHandler", "tap", bn),
+        Ji.mergeOptions({
+            touchZoom: Tt && !rt,
             bounceAtZoomLimits: !0
         });
-    var Cn = Ze.extend({
+    var Tn = oe.extend({
         addHooks: function() {
-            pt(this._map._container, "leaflet-touch-zoom"),
-                V(this._map._container, "touchstart", this._onTouchStart, this)
+            pi(this._map._container, "leaflet-touch-zoom"),
+                Ei(this._map._container, "touchstart", this._onTouchStart, this)
         },
         removeHooks: function() {
-            mt(this._map._container, "leaflet-touch-zoom"),
-                q(this._map._container, "touchstart", this._onTouchStart, this)
+            mi(this._map._container, "leaflet-touch-zoom"),
+                Bi(this._map._container, "touchstart", this._onTouchStart, this)
         },
         _onTouchStart: function(t) {
             var i = this._map;
@@ -6222,170 +6246,174 @@
                     this._moved = !1,
                     this._zooming = !0,
                     i._stop(),
-                    V(document, "touchmove", this._onTouchMove, this),
-                    V(document, "touchend", this._onTouchEnd, this),
-                    $(t)
+                    Ei(document, "touchmove", this._onTouchMove, this),
+                    Ei(document, "touchend", this._onTouchEnd, this),
+                    Di(t)
             }
         },
         _onTouchMove: function(t) {
             if (t.touches && 2 === t.touches.length && this._zooming) {
                 var i = this._map,
-                    n = i.mouseEventToContainerPoint(t.touches[0]),
-                    o = i.mouseEventToContainerPoint(t.touches[1]),
-                    s = n.distanceTo(o) / this._startDist;
-                if (this._zoom = i.getScaleZoom(s, this._startZoom), !i.options.bounceAtZoomLimits && (this._zoom < i.getMinZoom() && s < 1 || this._zoom > i.getMaxZoom() && s > 1) && (this._zoom = i._limitZoom(this._zoom)),
+                    e = i.mouseEventToContainerPoint(t.touches[0]),
+                    n = i.mouseEventToContainerPoint(t.touches[1]),
+                    o = e.distanceTo(n) / this._startDist;
+                if (this._zoom = i.getScaleZoom(o, this._startZoom), !i.options.bounceAtZoomLimits && (this._zoom < i.getMinZoom() && o < 1 || this._zoom > i.getMaxZoom() && 1 < o) && (this._zoom = i._limitZoom(this._zoom)),
                     "center" === i.options.touchZoom) {
                     if (this._center = this._startLatLng,
-                        1 === s)
+                        1 == o)
                         return
                 } else {
-                    var r = n._add(o)._divideBy(2)._subtract(this._centerPoint);
-                    if (1 === s && 0 === r.x && 0 === r.y)
+                    var s = e._add(n)._divideBy(2)._subtract(this._centerPoint);
+                    if (1 == o && 0 === s.x && 0 === s.y)
                         return;
-                    this._center = i.unproject(i.project(this._pinchStartLatLng, this._zoom).subtract(r), this._zoom)
+                    this._center = i.unproject(i.project(this._pinchStartLatLng, this._zoom).subtract(s), this._zoom)
                 }
                 this._moved || (i._moveStart(!0, !1),
                         this._moved = !0),
-                    g(this._animRequest);
-                var a = e(i._move, i, this._center, this._zoom, {
+                    C(this._animRequest);
+                var r = a(i._move, i, this._center, this._zoom, {
                     pinch: !0,
                     round: !1
                 });
-                this._animRequest = f(a, this, !0),
-                    $(t)
+                this._animRequest = M(r, this, !0),
+                    Di(t)
             }
         },
         _onTouchEnd: function() {
             this._moved && this._zooming ? (this._zooming = !1,
-                g(this._animRequest),
-                q(document, "touchmove", this._onTouchMove),
-                q(document, "touchend", this._onTouchEnd),
+                C(this._animRequest),
+                Bi(document, "touchmove", this._onTouchMove),
+                Bi(document, "touchend", this._onTouchEnd),
                 this._map.options.zoomAnimation ? this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), !0, this._map.options.zoomSnap) : this._map._resetView(this._center, this._map._limitZoom(this._zoom))) : this._zooming = !1
         }
     });
-    Le.addInitHook("addHandler", "touchZoom", Cn),
-        Le.BoxZoom = Ln,
-        Le.DoubleClickZoom = Pn,
-        Le.Drag = bn,
-        Le.Keyboard = Tn,
-        Le.ScrollWheelZoom = zn,
-        Le.Tap = Mn,
-        Le.TouchZoom = Cn;
-    var Zn = window.L;
-    window.L = t,
-        Object.freeze = $t,
-        t.version = "1.3.1+HEAD.ba6f97f",
-        t.noConflict = function() {
-            return window.L = Zn,
-                this
-        },
-        t.Control = Pe,
-        t.control = be,
-        t.Browser = $i,
-        t.Evented = ui,
-        t.Mixin = Ee,
-        t.Util = ai,
-        t.Class = v,
-        t.Handler = Ze,
-        t.extend = i,
-        t.bind = e,
-        t.stamp = n,
-        t.setOptions = l,
-        t.DomEvent = de,
-        t.DomUtil = xe,
-        t.PosAnimation = we,
-        t.Draggable = Be,
-        t.LineUtil = Oe,
-        t.PolyUtil = Re,
-        t.Point = x,
-        t.point = w,
-        t.Bounds = P,
-        t.bounds = b,
-        t.Transformation = Z,
-        t.transformation = S,
-        t.Projection = je,
-        t.LatLng = M,
-        t.latLng = C,
-        t.LatLngBounds = T,
-        t.latLngBounds = z,
-        t.CRS = ci,
-        t.GeoJSON = nn,
-        t.geoJSON = Kt,
-        t.geoJson = sn,
-        t.Layer = Ue,
-        t.LayerGroup = Ve,
+    Ji.addInitHook("addHandler", "touchZoom", Tn),
+        Ji.BoxZoom = yn,
+        Ji.DoubleClickZoom = xn,
+        Ji.Drag = wn,
+        Ji.Keyboard = Pn,
+        Ji.ScrollWheelZoom = Ln,
+        Ji.Tap = bn,
+        Ji.TouchZoom = Tn,
+        Object.freeze = i,
+        t.version = "1.5.1",
+        t.Control = Qi,
+        t.control = $i,
+        t.Browser = Bt,
+        t.Evented = k,
+        t.Mixin = re,
+        t.Util = S,
+        t.Class = Z,
+        t.Handler = oe,
+        t.extend = h,
+        t.bind = a,
+        t.stamp = u,
+        t.setOptions = p,
+        t.DomEvent = Yi,
+        t.DomUtil = Zi,
+        t.PosAnimation = Xi,
+        t.Draggable = le,
+        t.LineUtil = ye,
+        t.PolyUtil = Pe,
+        t.Point = B,
+        t.point = I,
+        t.Bounds = O,
+        t.bounds = R,
+        t.Transformation = G,
+        t.transformation = K,
+        t.Projection = Te,
+        t.LatLng = j,
+        t.latLng = W,
+        t.LatLngBounds = N,
+        t.latLngBounds = D,
+        t.CRS = F,
+        t.GeoJSON = We,
+        t.geoJSON = Xe,
+        t.geoJson = Je,
+        t.Layer = Se,
+        t.LayerGroup = Ze,
         t.layerGroup = function(t, i) {
-            return new Ve(t, i)
+            return new Ze(t, i)
         },
-        t.FeatureGroup = qe,
+        t.FeatureGroup = Ee,
         t.featureGroup = function(t) {
-            return new qe(t)
+            return new Ee(t)
         },
-        t.ImageOverlay = rn,
+        t.ImageOverlay = $e,
         t.imageOverlay = function(t, i, e) {
-            return new rn(t, i, e)
+            return new $e(t, i, e)
         },
-        t.VideoOverlay = an,
+        t.VideoOverlay = Qe,
         t.videoOverlay = function(t, i, e) {
-            return new an(t, i, e)
-        },
-        t.DivOverlay = hn,
-        t.Popup = un,
-        t.popup = function(t, i) {
-            return new un(t, i)
-        },
-        t.Tooltip = ln,
-        t.tooltip = function(t, i) {
-            return new ln(t, i)
-        },
-        t.Icon = Ge,
-        t.icon = function(t) {
-            return new Ge(t)
-        },
-        t.DivIcon = cn,
-        t.divIcon = function(t) {
-            return new cn(t)
-        },
-        t.Marker = Xe,
-        t.marker = function(t, i) {
-            return new Xe(t, i)
-        },
-        t.TileLayer = dn,
-        t.tileLayer = Yt,
-        t.GridLayer = _n,
-        t.gridLayer = function(t) {
-            return new _n(t)
-        },
-        t.SVG = xn,
-        t.svg = Jt,
-        t.Renderer = mn,
-        t.Canvas = fn,
-        t.canvas = Xt,
-        t.Path = Je,
-        t.CircleMarker = $e,
-        t.circleMarker = function(t, i) {
-            return new $e(t, i)
-        },
-        t.Circle = Qe,
-        t.circle = function(t, i, e) {
             return new Qe(t, i, e)
         },
-        t.Polyline = tn,
+        t.SVGOverlay = tn,
+        t.svgOverlay = function(t, i, e) {
+            return new tn(t, i, e)
+        },
+        t.DivOverlay = en,
+        t.Popup = nn,
+        t.popup = function(t, i) {
+            return new nn(t, i)
+        },
+        t.Tooltip = on,
+        t.tooltip = function(t, i) {
+            return new on(t, i)
+        },
+        t.Icon = ke,
+        t.icon = function(t) {
+            return new ke(t)
+        },
+        t.DivIcon = sn,
+        t.divIcon = function(t) {
+            return new sn(t)
+        },
+        t.Marker = Ie,
+        t.marker = function(t, i) {
+            return new Ie(t, i)
+        },
+        t.TileLayer = an,
+        t.tileLayer = hn,
+        t.GridLayer = rn,
+        t.gridLayer = function(t) {
+            return new rn(t)
+        },
+        t.SVG = fn,
+        t.svg = gn,
+        t.Renderer = ln,
+        t.Canvas = cn,
+        t.canvas = _n,
+        t.Path = Oe,
+        t.CircleMarker = Re,
+        t.circleMarker = function(t, i) {
+            return new Re(t, i)
+        },
+        t.Circle = Ne,
+        t.circle = function(t, i, e) {
+            return new Ne(t, i, e)
+        },
+        t.Polyline = De,
         t.polyline = function(t, i) {
-            return new tn(t, i)
+            return new De(t, i)
         },
-        t.Polygon = en,
+        t.Polygon = je,
         t.polygon = function(t, i) {
-            return new en(t, i)
+            return new je(t, i)
         },
-        t.Rectangle = wn,
+        t.Rectangle = vn,
         t.rectangle = function(t, i) {
-            return new wn(t, i)
+            return new vn(t, i)
         },
-        t.Map = Le,
+        t.Map = Ji,
         t.map = function(t, i) {
-            return new Le(t, i)
-        }
+            return new Ji(t, i)
+        };
+    var zn = window.L;
+    t.noConflict = function() {
+            return window.L = zn,
+                this
+        },
+        window.L = t
 });;
 /*!
  Leaflet.TileLayer.Fallback 1.0.4+e36cde9
@@ -7365,7 +7393,7 @@
         return b
     }) : window.tinycolor = b
 }(Math);;
-var majorRunwayGrid = {
+geofs.majorRunwayGrid = {
     "-107": {
         "37": [
             ["00C", 5013, 0, 200.78, 37.209599, -107.866135],
@@ -21126,9 +21154,9 @@ var majorRunwayGrid = {
 };
 
 //Juancho E. Yrausquin Airport
-majorRunwayGrid["-63"] = majorRunwayGrid["-63"] || [];
-majorRunwayGrid["-63"]["17"] = majorRunwayGrid["-63"]["17"] || [];
-majorRunwayGrid["-63"]["17"].push(["TNCS", 950, 70, 112, 17.645873, -63.221808, 70]);;
+geofs.majorRunwayGrid["-63"] = geofs.majorRunwayGrid["-63"] || [];
+geofs.majorRunwayGrid["-63"]["17"] = geofs.majorRunwayGrid["-63"]["17"] || [];
+geofs.majorRunwayGrid["-63"]["17"].push(["TNCS", 950, 70, 112, 17.645873, -63.221808, 70]);;
 var $jscomp = $jscomp || {};
 $jscomp.scope = {};
 $jscomp.arrayIteratorImpl = function(a) {
@@ -21217,8 +21245,8 @@ $jscomp.polyfill("Promise", function(a) {
                 a[b] = null;
                 try {
                     c()
-                } catch (n) {
-                    this.asyncThrow_(n)
+                } catch (m) {
+                    this.asyncThrow_(m)
                 }
             }
         }
@@ -21312,8 +21340,8 @@ $jscomp.polyfill("Promise", function(a) {
         var c = this.createResolveAndReject_();
         try {
             a.call(b, c.resolve, c.reject)
-        } catch (n) {
-            c.reject(n)
+        } catch (m) {
+            c.reject(m)
         }
     };
     e.prototype.then = function(a, b) {
@@ -21321,8 +21349,8 @@ $jscomp.polyfill("Promise", function(a) {
             return "function" == typeof a ? function(b) {
                     try {
                         d(a(b))
-                    } catch (y) {
-                        f(y)
+                    } catch (z) {
+                        f(z)
                     }
                 } :
                 b
@@ -21388,19 +21416,6 @@ $jscomp.polyfill("Promise", function(a) {
     };
     return e
 }, "es6", "es3");
-$jscomp.polyfill("Promise.prototype.finally", function(a) {
-    return a ? a : function(a) {
-        return this.then(function(b) {
-            return Promise.resolve(a()).then(function() {
-                return b
-            })
-        }, function(b) {
-            return Promise.resolve(a()).then(function() {
-                throw b;
-            })
-        })
-    }
-}, "es9", "es3");
 $jscomp.SYMBOL_PREFIX = "jscomp_symbol_";
 $jscomp.initSymbol = function() {
     $jscomp.initSymbol = function() {};
@@ -22016,21 +22031,21 @@ M33 = {
             g = a[1][1],
             h = a[1][2],
             k = a[2][0],
-            n = a[2][1];
+            m = a[2][1];
         a = a[2][2];
         var v = b[0][0],
-            z = b[0][1],
-            A = b[0][2],
-            C = b[1][0],
+            y = b[0][1],
+            C = b[0][2],
+            I = b[1][0],
             w = b[1][1],
-            y = b[1][2],
+            z = b[1][2],
             D = b[2][0],
-            B = b[2][1];
+            A = b[2][1];
         b = b[2][2];
         return [
-            [c * v + f * z + k * A, d * v + g * z + n * A, e * v + h * z + a * A],
-            [c * C + f * w + k * y, d * C + g * w + n * y, e * C + h * w + a * y],
-            [c * D + f * B + k * b, d * D + g * B + n * b, e * D + h * B + a * b]
+            [c * v + f * y + k * C, d * v + g * y + m * C, e * v + h * y + a * C],
+            [c * I + f * w + k * z, d * I + g * w + m * z, e * I + h * w + a * z],
+            [c * D + f * A + k * b, d * D + g * A + m * b, e * D + h * A + a * b]
         ]
     },
     scaled: function(a, b) {
@@ -22561,7 +22576,7 @@ geofs.runways = {
     refreshDistanceThreshold: .1,
     modelVisibility: !1,
     defaultPadding: 1E3,
-    tileLength: 278,
+    tileLength: 582,
     modelRunwayWidth: 60,
     thresholdLength: 582,
     modelVerticalOffset: .1,
@@ -22574,9 +22589,7 @@ geofs.runways = {
     refresh: function() {
         var a = geofs.aircraft.instance.llaLocation;
         clearInterval(geofs.runwaysCheckTimeout);
-        geofs.runwaysCheckTimeout = setInterval(function() {
-            geofs.runways.refresh()
-        }, geofs.runways.refreshRate);
+        geofs.runwaysCheckTimeout = setInterval(geofs.runways.refresh, geofs.runways.refreshRate);
         if (!(V2.length(V2.sub(a, geofs.fx.lastRunwayTestLocation)) < geofs.runways.refreshDistanceThreshold)) {
             geofs.fx.lastRunwayTestLocation = a;
             a = geofs.runways.getNearRunways(a, geofs.runways.runwayNumberLimit);
@@ -22586,7 +22599,6 @@ geofs.runways = {
             }
             for (c in geofs.runways.nearRunways)
                 b[c] || geofs.runways.nearRunways[c].destroy();
-            console.log(b + "   b")
             geofs.runways.nearRunways = Object.assign({}, b);
             $("body").trigger("runwayUpdate")
         }
@@ -22611,7 +22623,7 @@ geofs.runways = {
     getNearRunways: function(a, b, c) {
         c = c || 0;
         for (var d = parseInt(a[0]), e = parseInt(a[1]), f = [], g, h = -c; h <= c; h++) {
-            g = majorRunwayGrid[e + h] || {};
+            g = geofs.majorRunwayGrid[e + h] || {};
             for (var k = -c; k <= c; k++)
                 g[d + k] && (f = f.concat(g[d + k]))
         }
@@ -22636,26 +22648,26 @@ geofs.runways = {
     },
     env: {},
     getRotationCanvas: function(a) {
-        return new Promise(function(b) {
-            if (geofs.runways.env[a])
-                b(geofs.runways.env[a]);
-            else {
+        geofs.runways.env[a] || (geofs.runways.env[a] = {},
+            geofs.runways.env[a].promise = new Promise(function(b) {
                 var c = document.createElement("img");
-                c.onload = function() {
-                    env = {
-                        image: this
-                    };
-                    env.canvas = document.createElement("canvas");
-                    env.canvas.width = this.width;
-                    env.canvas.height = this.width;
-                    env.context = env.canvas.getContext("2d");
-                    env.context.translate(this.width / 2, this.width / 2);
-                    geofs.runways.env[a] = env;
-                    b(env)
+                c.onload = function(c) {
+                    c = c.currentTarget;
+                    var d = document.createElement("canvas");
+                    d.width = c.width;
+                    d.height = c.width;
+                    geofs.runways.env[a].image = c;
+                    geofs.runways.env[a].canvas = d;
+                    geofs.runways.env[a].context = d.getContext("2d");
+                    geofs.runways.env[a].context.translate(c.width / 2, c.width / 2);
+                    b(geofs.runways.env[a])
                 };
                 c.src = a
-            }
-        })
+            }),
+            geofs.runways.env[a].promise.then(function(a) {
+                return a
+            }));
+        return geofs.runways.env[a].promise
     },
     asyncSetImageLayerRotationPosition: function(a, b, c, d) {
         var e, f, g;
@@ -22717,8 +22729,8 @@ geofs.runways.runway.prototype = {
         if (!this.modelExists) {
             var a = clamp(this.widthMeters / geofs.runways.modelRunwayWidth, .5, 10),
                 b = new Cesium.Color(.5, .5, .5, .7);
-            if (geofs.retroOn)
-                b = new Cesium.GeometryInstance({
+            if (geofs.retroOn) {
+                var c = new Cesium.GeometryInstance({
                     geometry: new Cesium.GroundPolylineGeometry({
                         positions: Cesium.Cartesian3.fromDegreesArray([this.threshold1[1] - this.widthInLla[1], this.threshold1[0] - this.widthInLla[0], this.threshold1[1] + this.widthInLla[1], this.threshold1[0] + this.widthInLla[0], this.threshold2[1] + this.widthInLla[1], this.threshold2[0] + this.widthInLla[0], this.threshold2[1] - this.widthInLla[1], this.threshold2[0] - this.widthInLla[0]]),
                         width: 10,
@@ -22727,18 +22739,18 @@ geofs.runways.runway.prototype = {
                     attributes: {
                         color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromCssColorString("#2caecf"))
                     }
-                }),
+                });
                 geofs.api.viewer.scene.groundPrimitives.add(new Cesium.GroundPolylinePrimitive({
-                    geometryInstances: b,
+                    geometryInstances: c,
                     appearance: new Cesium.PolylineColorAppearance
-                }));
-            else if (Cesium.Entity.supportsMaterialsforEntitiesOnTerrain(geofs.api.viewer.scene) && !geofs.isApp) {
+                }))
+            } else if (Cesium.Entity.supportsMaterialsforEntitiesOnTerrain(geofs.api.viewer.scene) && !geofs.isApp) {
                 this.entities = [];
-                var c = V2.scale(this.meterlla, geofs.runways.thresholdLength * a),
-                    d = geofs.api.viewer.entities.add({
+                var d = V2.scale(this.meterlla, geofs.runways.thresholdLength * a),
+                    e = geofs.api.viewer.entities.add({
                         polygon: {
                             hierarchy: {
-                                positions: [new Cesium.Cartesian3.fromDegrees(this.threshold1[1] - this.widthInLla[1], this.threshold1[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold1[1] + c[1] - this.widthInLla[1], this.threshold1[0] + c[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold1[1] + c[1] + this.widthInLla[1], this.threshold1[0] + c[0] + this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold1[1] + this.widthInLla[1], this.threshold1[0] + this.widthInLla[0], 0)]
+                                positions: [new Cesium.Cartesian3.fromDegrees(this.threshold1[1] - this.widthInLla[1], this.threshold1[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold1[1] + d[1] - this.widthInLla[1], this.threshold1[0] + d[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold1[1] + d[1] + this.widthInLla[1], this.threshold1[0] + d[0] + this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold1[1] + this.widthInLla[1], this.threshold1[0] + this.widthInLla[0], 0)]
                             },
                             material: new Cesium.ImageMaterialProperty({
                                 image: "models/objects/runway/threshold2.jpg",
@@ -22751,11 +22763,11 @@ geofs.runways.runway.prototype = {
                         interleave: !1,
                         allowPicking: !1
                     });
-                this.entities.push(d);
-                d = geofs.api.viewer.entities.add({
+                this.entities.push(e);
+                e = geofs.api.viewer.entities.add({
                     polygon: {
                         hierarchy: {
-                            positions: [new Cesium.Cartesian3.fromDegrees(this.threshold2[1] - this.widthInLla[1], this.threshold2[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold2[1] - c[1] - this.widthInLla[1], this.threshold2[0] - c[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold2[1] - c[1] + this.widthInLla[1], this.threshold2[0] - c[0] + this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold2[1] + this.widthInLla[1], this.threshold2[0] + this.widthInLla[0], 0)]
+                            positions: [new Cesium.Cartesian3.fromDegrees(this.threshold2[1] - this.widthInLla[1], this.threshold2[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold2[1] - d[1] - this.widthInLla[1], this.threshold2[0] - d[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold2[1] - d[1] + this.widthInLla[1], this.threshold2[0] - d[0] + this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold2[1] + this.widthInLla[1], this.threshold2[0] + this.widthInLla[0], 0)]
                         },
                         material: new Cesium.ImageMaterialProperty({
                             image: "models/objects/runway/threshold2.jpg",
@@ -22768,15 +22780,15 @@ geofs.runways.runway.prototype = {
                     interleave: !1,
                     allowPicking: !1
                 });
-                this.entities.push(d);
-                var e = Math.ceil((this.lengthMeters - 2 * geofs.runways.thresholdLength * a) / (geofs.runways.tileLength * a));
-                a = V2.scale(this.meterlla, geofs.runways.tileLength * a);
-                c = [this.threshold1[0] + c[0], this.threshold1[1] + c[1]];
-                for (var f = 0; f <= e; f++)
-                    d = geofs.api.viewer.entities.add({
+                this.entities.push(e);
+                c = Math.ceil((this.lengthMeters - 2 * geofs.runways.thresholdLength * a) / (geofs.runways.tileLength * a));
+                var f = V2.scale(this.meterlla, geofs.runways.tileLength * a);
+                d = [this.threshold1[0] + d[0], this.threshold1[1] + d[1]];
+                for (a = 0; a <= c; a++)
+                    e = geofs.api.viewer.entities.add({
                         polygon: {
                             hierarchy: {
-                                positions: [new Cesium.Cartesian3.fromDegrees(c[1] - this.widthInLla[1], c[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(c[1] + a[1] - this.widthInLla[1], c[0] + a[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(c[1] + a[1] + this.widthInLla[1], c[0] + a[0] + this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(c[1] + this.widthInLla[1], c[0] + this.widthInLla[0], 0)]
+                                positions: [new Cesium.Cartesian3.fromDegrees(d[1] - this.widthInLla[1], d[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(d[1] + f[1] - this.widthInLla[1], d[0] + f[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(d[1] + f[1] + this.widthInLla[1], d[0] + f[0] + this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(d[1] + this.widthInLla[1], d[0] + this.widthInLla[0], 0)]
                             },
                             material: new Cesium.ImageMaterialProperty({
                                 image: "models/objects/runway/tile2.jpg",
@@ -22789,30 +22801,35 @@ geofs.runways.runway.prototype = {
                         interleave: !1,
                         allowPicking: !1
                     }),
-                    c = V2.add(c, a),
-                    this.entities.push(d)
-            } else
-                this.imageryLayers = [],
-                b = .5 * this.lengthMeters,
-                V2.scale(this.meterlla, b),
-                d = .5 * b,
-                b = V2.scale(this.meterlla, d),
-                d = xy2ll([d, d], this.threshold1),
-                e = [this.threshold1[0] + b[0], this.threshold1[1] + b[1]],
-                e = Cesium.Rectangle.fromDegrees(e[1] - d[1], e[0] - d[0], e[1] + d[1], e[0] + d[0]),
-                geofs.runways.asyncSetImageLayerRotationPosition("models/objects/runway/full.jpg", this.headingRad - HALF_PI, e, this.imageryLayers),
-                e = [this.threshold2[0] - b[0], this.threshold2[1] - b[1]],
-                e = Cesium.Rectangle.fromDegrees(e[1] - d[1], e[0] - d[0], e[1] + d[1], e[0] + d[0]),
-                geofs.runways.asyncSetImageLayerRotationPosition("models/objects/runway/full.jpg", this.headingRad + HALF_PI, e, this.imageryLayers)
+                    d = V2.add(d, f),
+                    this.entities.push(e)
+            } else {
+                this.imageryLayers = [];
+                f = geofs.runways.thresholdLength * a * .5;
+                c = V2.scale(this.meterlla, f);
+                d = V2.scale(this.meterlla, geofs.runways.thresholdLength * a - .5);
+                b = [this.threshold1[0] + c[0], this.threshold1[1] + c[1]];
+                e = xy2ll([f, f], this.threshold1);
+                b = Cesium.Rectangle.fromDegrees(b[1] - e[1], b[0] - e[0], b[1] + e[1], b[0] + e[0]);
+                geofs.runways.asyncSetImageLayerRotationPosition("models/objects/runway/threshold2.png", this.headingRad - HALF_PI, b, this.imageryLayers);
+                b = [this.threshold2[0] - c[0], this.threshold2[1] - c[1]];
+                b = Cesium.Rectangle.fromDegrees(b[1] - e[1], b[0] - e[0], b[1] + e[1], b[0] + e[0]);
+                geofs.runways.asyncSetImageLayerRotationPosition("models/objects/runway/threshold2.png", this.headingRad + HALF_PI, b, this.imageryLayers);
+                c = Math.floor((this.lengthMeters - 2 * geofs.runways.thresholdLength * a) / (geofs.runways.tileLength * a));
+                f = V2.scale(this.meterlla, (geofs.runways.tileLength - .5) * a);
+                d = [this.threshold1[0] + d[0], this.threshold1[1] + d[1]];
+                var g = geofs.runways.tileLength * a * .5,
+                    h = V2.scale(this.meterlla, g);
+                for (a = 0; a <= c; a++)
+                    b = [d[0] + h[0], d[1] + h[1]],
+                    e = xy2ll([g, g], this.threshold1),
+                    b = Cesium.Rectangle.fromDegrees(b[1] - e[1], b[0] - e[0], b[1] + e[1], b[0] + e[0]),
+                    geofs.runways.asyncSetImageLayerRotationPosition("models/objects/runway/tile2.png", this.headingRad + HALF_PI, b, this.imageryLayers),
+                    d = V2.add(d, f)
+            }
         }
     },
     destroyRunwayModel: function() {
-        geofs.api.destroyModel(this.threshold1Model);
-        geofs.api.destroyModel(this.threshold2Model);
-        this.tiles && this.tiles.forEach(function(a) {
-            geofs.api.destroyModel(a)
-        });
-        this.tiles = null;
         this.entities && this.entities.forEach(function(a) {
             geofs.api.viewer.entities.remove(a)
         });
@@ -22836,1347 +22853,1410 @@ geofs.api.overlayBaseZIndex = 60;
 geofs.api.ALTITUDE_RELATIVE = "ALTITUDE_RELATIVE";
 geofs.api.CLAMP_TO_GROUND = "CLAMP_TO_GROUND";
 geofs.api.nativeMouseHandling = !1;
-(function() {
-    geofs.api.initWorld = function(a) {
-        Cesium.Ion.defaultAccessToken = geofs.ionkey;
-        var b = {
-            animation: !1,
-            geocoder: !1,
-            homeButton: !1,
-            infoBox: !1,
-            selectionIndicator: !1,
-            sceneModePicker: !1,
-            baseLayerPicker: !1,
-            timeline: !1,
-            imageryProvider: Cesium.createTileMapServiceImageryProvider({
-                url: Cesium.buildModuleUrl("Assets/Textures/NaturalEarthII")
-            }),
-            navigationHelpButton: !1,
-            navigationInstructionsInitiallyVisible: !1,
-            fullscreenButton: !1,
-            scene3DOnly: !0,
-            clock: new Cesium.Clock({
-                currentTime: new Cesium.JulianDate(geofs.api.march2019theTwentyFirst, 43200)
-            }),
-            showRenderLoopErrors: geofs.debug.on,
-            orderIndependentTranslucency: !1,
-            useDefaultRenderLoop: !0
-        };
-        geofs.androidViewerOptions = geofs.androidViewerOptions || {};
-        geofs.iosViewerOptions = geofs.iosViewerOptions || {};
-        Object.assign(b, geofs.androidViewerOptions, geofs.iosViewerOptions);
-        try {
-            geofs.api.viewer = new Cesium.Viewer(a, b),
-                b.useDefaultRenderLoop || (geofs.renderLoop = function() {
-                        geofs.pause || geofs.api.viewer.render();
-                        requestAnimationFrame(geofs.renderLoop)
-                    },
-                    geofs.renderLoop())
-        } catch (c) {
-            $.haring.create('GeoFS, Free Online Flight Simulator, requires WebGL in order to run. Please visit the <a href="/pages/instructions.php">instructions page</a> for more details', "OK");
-            console.log(c);
-            return
-        }
-        geofs.api.blackMarble = geofs.api.viewer.imageryLayers.addImageryProvider(Cesium.createTileMapServiceImageryProvider({
-            url: geofs.dataServer + "/bm",
-            credit: "Black Marble imagery courtesy NASA Earth Observatory",
-            maximumLevel: 8,
-            flipXY: !0
-        }));
-        geofs.api.blackMarble.alpha = 0;
-        geofs.api.blackMarble.hue = 3.5;
-        geofs.api.blackMarble.saturation = .7;
-        geofs.api.blackMarble.brightness = 4;
-        geofs.api.blackMarble.show = !1;
-        geofs.api.viewer.scene.highDynamicRange = !1;
-        geofs.api.viewer.scene.skyBox = new Cesium.SkyBox({
-            sources: {
-                positiveX: "images/skybox/tycho2t3_80_px.png",
-                negativeX: "images/skybox/tycho2t3_80_mx.png",
-                positiveY: "images/skybox/tycho2t3_80_py.png",
-                negativeY: "images/skybox/tycho2t3_80_my.png",
-                positiveZ: "images/skybox/tycho2t3_80_pz.png",
-                negativeZ: "images/skybox/tycho2t3_80_mz.png"
-            }
-        });
-        geofs.api.viewer.scene.moon.textureUrl = "images/moonSmall.jpg";
-        geofs.api.flatRunwayTerrainProviderInstance = new geofs.api.FlatRunwayTerrainProvider({
-            baseProvider: new Cesium.EllipsoidTerrainProvider
-        });
-        geofs.api.viewer.terrainProvider = geofs.api.flatRunwayTerrainProviderInstance;
-        geofs.api.viewer.scene.globe.enableLighting = !1;
-        geofs.api.viewer.scene.globe.oceanNormalMapUrl = "shaders/oceanmap.jpg";
-        geofs.api.viewer.scene.logarithmicDepthBuffer = !1;
-        geofs.api.viewer.scene.farToNearRatio = 100;
-        geofs.api.viewer.scene.globe.depthTestAgainstTerrain = !1;
-        $(".geofs-ui-3dview").on("terrainStable", function() {
-            geofs.api.viewer.scene.globe.depthTestAgainstTerrain = !0
-        });
-        $(".geofs-ui-3dview").on("terrainUnstable", function() {
-            geofs.api.viewer.scene.globe.depthTestAgainstTerrain = !1
-        });
-        geofs.api.labels = geofs.api.viewer.scene.primitives.add(new Cesium.LabelCollection);
-        geofs.api.billboards = {
-            "default": geofs.api.viewer.scene.primitives.add(new Cesium.BillboardCollection({
-                scene: geofs.api.viewer.scene,
-                blendOption: Cesium.BlendOption.OPAQUE_AND_TRANSLUCENT
-            })),
-            opaque: geofs.api.viewer.scene.primitives.add(new Cesium.BillboardCollection({
-                scene: geofs.api.viewer.scene,
-                blendOption: Cesium.BlendOption.OPAQUE
-            })),
-            translucent: geofs.api.viewer.scene.primitives.add(new Cesium.BillboardCollection({
-                scene: geofs.api.viewer.scene,
-                blendOption: Cesium.BlendOption.TRANSLUCENT
-            }))
-        };
-        geofs.api.models = geofs.api.viewer.scene.primitives.add(new Cesium.PrimitiveCollection({
-            destroyPrimitives: !1
-        }));
-        geofs.api.viewer.scene.preRender.addEventListener(geofs.api.frameCallbackWrapper);
-        $(".geofs-ui-3dview").trigger("rendererInitDone")
+geofs.api.initWorld = function(a, b) {
+    b = b || {};
+    Cesium.Ion.defaultAccessToken = geofs.ionkey;
+    var c = {
+        animation: !1,
+        geocoder: !1,
+        homeButton: !1,
+        infoBox: !1,
+        selectionIndicator: !1,
+        sceneModePicker: !1,
+        baseLayerPicker: !1,
+        timeline: !1,
+        imageryProvider: Cesium.createTileMapServiceImageryProvider({
+            url: Cesium.buildModuleUrl("Assets/Textures/NaturalEarthII")
+        }),
+        navigationHelpButton: !1,
+        navigationInstructionsInitiallyVisible: !1,
+        fullscreenButton: !1,
+        scene3DOnly: !0,
+        clock: new Cesium.Clock({
+            currentTime: new Cesium.JulianDate(geofs.api.march2019theTwentyFirst, 43200)
+        }),
+        showRenderLoopErrors: geofs.debug.on,
+        requestRenderMode: !0,
+        useDefaultRenderLoop: !0
     };
-    geofs.api.destroyWorld = function() {
-        geofs.api.viewer.scene.preRender.removeEventListener(geofs.api.frameCallbackWrapper)
-    };
-    geofs.frameCallbackStack = {};
-    geofs.api.addFrameCallback = function(a, b, c) {
-        b = b || "global";
-        geofs.frameCallbackStack[b] || (geofs.frameCallbackStack[b] = {
-            callbacks: {},
-            lastId: 0,
-            maxExecutionTime: c,
-            lastIndex: 1
-        });
-        geofs.frameCallbackStack[b].lastId++;
-        geofs.frameCallbackStack[b].callbacks[geofs.frameCallbackStack[b].lastId] = a;
-        return geofs.frameCallbackStack[b].lastId
-    };
-    geofs.api.removeFrameCallback = function(a, b) {
-        b = b || "global";
-        geofs.frameCallbackStack[b] && delete geofs.frameCallbackStack[b].callbacks[a]
-    };
-    geofs.api.frameCallbackWrapper = function(a, b) {
-        a = geofs.utils.now();
-        for (var c in geofs.frameCallbackStack)
-            if (b = geofs.frameCallbackStack[c],
-                0 < b.maxExecutionTime) {
-                var d = b.lastIndex;
-                do {
-                    try {
-                        b.callbacks[d](a)
-                    } catch (e) {
-                        geofs.debug.throw(e)
-                    }
-                    d++;
-                    d > b.lastId && (d = 1)
-                } while (a + b.maxExecutionTime > geofs.utils.now());
-                b.lastIndex = d
-            } else
-                for (d in b.callbacks)
-                    try {
-                        b.callbacks[d](a)
-                    } catch (e) {
-                        geofs.debug.throw(e)
-                    }
-    };
-    geofs.api.configureOutsideView = function() {
-        geofs.api.viewer.shadowMap.maximumDistance = geofs.aircraft.instance.setup.oustsideShadowMapMaxDistance || 1E3;
-        geofs.api.viewer.shadowMap.darkness = .3;
-        geofs.api.camera.frustum.near = 1
-    };
-    geofs.api.configureInsideView = function() {
-        geofs.api.viewer.shadowMap.maximumDistance = geofs.aircraft.instance.setup.cockpitShadowMapMaxDistance || 100;
-        geofs.api.viewer.shadowMap.darkness = .5;
-        geofs.api.camera.frustum.near = .2
-    };
-    geofs.api.setGlobeLighting = function(a) {
-        geofs.api.viewer.scene.globe.enableLighting = a
-    };
-    geofs.api.setWaterEffect = function(a) {
-        geofs.api.viewer.scene.globe.showWaterEffect = a
-    };
-    geofs.api.setHD = function(a) {
-        if (geofs.api.hdOn !== a) {
-            a = {
-                method: "doGeoIp",
-                nohd: a ? "false" : "true"
-            };
-            if (geofs.isApp) {
-                if (!geofs.userRecord.sessionId)
-                    return;
-                a.sessionId = geofs.userRecord.sessionId
-            }
-            $(".geofs-apiResponse").htmlView("load", geofs.url + "/backend/accounts/hd.php", a)
-        }
-    };
-    geofs.api.setImageryProvider = function(a, b, c, d, e) {
-        var f = geofs.api.viewer.imageryLayers,
-            g = f.get(0);
-        f.remove(g);
-        a = f.addImageryProvider(a, 0);
-        geofs.runways.setRunwayModelVisibility(b);
-        geofs.api.setImageryColorModifier("multiplier", {
-            brightness: c || 1,
-            contrast: d || 1,
-            saturation: e || 1
-        });
-        geofs.preferences && geofs.preferences.graphics && geofs.api.enhanceColors(geofs.preferences.graphics.enhanceColors);
-        return a
-    };
-    geofs.api.setTimeAndDate = function(a, b) {
-        geofs.api.viewer.clock.shouldAnimate = !1;
-        return geofs.api.viewer.clock.currentTime = new Cesium.JulianDate(geofs.api.march2019theTwentyFirst + (b || 0), a - geofs.api.halfADayInSeconds)
-    };
-    geofs.api.setClock = function(a) {
-        geofs.api.viewer.clock.multiplier = 1;
-        geofs.api.viewer.clock.currentTime = Cesium.JulianDate.fromDate(a);
-        geofs.api.viewer.clock.shouldAnimate = !0
-    };
-    geofs.api.vr = function(a) {
-        geofs.api.viewer.scene.useWebVR = a
-    };
-    geofs.api.enhanceColors = function(a) {
-        a = a || 0;
-        geofs.api.setImageryColorModifier("enhancement", {
-            contrast: 1 + .4 * a,
-            saturation: 1 + .4 * a
-        });
-        geofs.api.setAtmosphereColorModifier("enhancement", {
-            brightnessShift: .5,
-            saturationShift: -.2,
-            groundBrightnessShift: .7,
-            fogBrightness: .9,
-            groundSaturationShift: -1
-        })
-    };
-    geofs.api.defaultImageryColorModifier = {
-        brightness: 1,
-        contrast: 1,
-        saturation: 1,
-        gamma: 1,
-        hue: 0
-    };
-    geofs.api.imageryColorModifiers = {};
-    geofs.api.setImageryColorModifier = function(a, b) {
-        b = $.extend({}, geofs.api.defaultImageryColorModifier, b);
-        geofs.api.imageryColorModifiers[a || "base"] = b;
-        geofs.api.applyImageryColorModifiers()
-    };
-    geofs.api.removeImageryColorModifier = function(a) {
-        delete geofs.api.imageryColorModifiers[a];
-        geofs.api.applyImageryColorModifiers()
-    };
-    geofs.api.applyImageryColorModifiers = function() {
-        geofs.api.imageryColors = $.extend({}, geofs.api.defaultImageryColorModifier);
-        for (var a in geofs.api.imageryColorModifiers)
-            geofs.api.imageryColors.brightness *= geofs.api.imageryColorModifiers[a].brightness,
-            geofs.api.imageryColors.contrast *= geofs.api.imageryColorModifiers[a].contrast,
-            geofs.api.imageryColors.saturation *= geofs.api.imageryColorModifiers[a].saturation,
-            geofs.api.imageryColors.gamma *= geofs.api.imageryColorModifiers[a].gamma,
-            geofs.api.imageryColors.hue += geofs.api.imageryColorModifiers[a].hue;
-        geofs.api.setImageryBrightness(geofs.api.imageryColors.brightness);
-        geofs.api.setImageryContrast(geofs.api.imageryColors.contrast);
-        geofs.api.setImagerySaturation(geofs.api.imageryColors.saturation);
-        geofs.api.setImageryGamma(geofs.api.imageryColors.gamma);
-        geofs.api.setImageryHue(geofs.api.imageryColors.hue)
-    };
-    geofs.api.setImageryBrightness = function(a) {
-        var b = geofs.api.viewer.imageryLayers.get(0);
-        a && (b.brightness = a);
-        return b.brightness
-    };
-    geofs.api.setImageryContrast = function(a) {
-        var b = geofs.api.viewer.imageryLayers.get(0);
-        a && (b.contrast = a);
-        return b.contrast
-    };
-    geofs.api.setImagerySaturation = function(a) {
-        var b = geofs.api.viewer.imageryLayers.get(0);
-        a && (b.saturation = a);
-        return b.saturation
-    };
-    geofs.api.setImageryHue = function(a) {
-        var b = geofs.api.viewer.imageryLayers.get(0);
-        a && (b.hue = a);
-        return b.hue
-    };
-    geofs.api.setImageryGamma = function(a) {
-        var b = geofs.api.viewer.imageryLayers.get(0);
-        a && (b.gamma = a);
-        return b.gamma
-    };
-    geofs.api.defaultAtmosphereColorModifier = {
-        brightnessShift: 0,
-        saturationShift: 0,
-        hueShift: 0,
-        groundBrightnessShift: 0,
-        groundSaturationShift: 0,
-        groundHueShift: 0,
-        fogBrightness: 1,
-        cloudsBrightness: 1
-    };
-    geofs.api.atmosphereColorModifiers = {};
-    geofs.api.setAtmosphereColorModifier = function(a, b) {
-        a = a || "base";
-        b = $.extend({}, geofs.api.defaultAtmosphereColorModifier, geofs.api.atmosphereColorModifiers[a] || {}, b);
-        geofs.api.atmosphereColorModifiers[a] = b;
-        geofs.api.applyAtmosphereColorModifiers()
-    };
-    geofs.api.removeAtmosphereColorModifier = function(a) {
-        delete geofs.api.atmosphereColorModifiers[a];
-        geofs.api.applyAtmosphereColorModifiers()
-    };
-    geofs.api.applyAtmosphereColorModifiers = function() {
-        geofs.api.atmosphereColors = $.extend({}, geofs.api.defaultAtmosphereColorModifier);
-        for (var a in geofs.api.atmosphereColorModifiers)
-            geofs.api.atmosphereColors.brightnessShift += geofs.api.atmosphereColorModifiers[a].brightnessShift,
-            geofs.api.atmosphereColors.saturationShift += geofs.api.atmosphereColorModifiers[a].saturationShift,
-            geofs.api.atmosphereColors.hueShift += geofs.api.atmosphereColorModifiers[a].hueShift,
-            geofs.api.atmosphereColors.groundBrightnessShift += geofs.api.atmosphereColorModifiers[a].groundBrightnessShift,
-            geofs.api.atmosphereColors.groundHueShift += geofs.api.atmosphereColorModifiers[a].groundHueShift,
-            geofs.api.atmosphereColors.groundSaturationShift += geofs.api.atmosphereColorModifiers[a].groundSaturationShift,
-            geofs.api.atmosphereColors.fogBrightness *= geofs.api.atmosphereColorModifiers[a].fogBrightness,
-            geofs.api.atmosphereColors.cloudsBrightness *= geofs.api.atmosphereColorModifiers[a].cloudsBrightness;
-        geofs.api.viewer.scene.skyAtmosphere.brightnessShift = geofs.api.atmosphereColors.brightnessShift;
-        geofs.api.viewer.scene.skyAtmosphere.saturationShift = geofs.api.atmosphereColors.saturationShift;
-        geofs.api.viewer.scene.skyAtmosphere.hueShift = geofs.api.atmosphereColors.hueShift;
-        geofs.api.viewer.scene.globe.atmosphereBrightnessShift = clamp(geofs.api.atmosphereColors.groundBrightnessShift, -1, 1);
-        geofs.api.viewer.scene.globe.atmosphereHueShift = clamp(geofs.api.atmosphereColors.groundHueShift, -1, 1);
-        geofs.api.viewer.scene.globe.atmosphereSaturationShift = clamp(geofs.api.atmosphereColors.groundSaturationShift, -1, 1);
-        geofs.api.viewer.scene.fog.minimumBrightness = geofs.api.atmosphereColors.fogBrightness;
-        geofs.fx.cloudManager.setCloudsBrightness(geofs.api.atmosphereColors.cloudsBrightness)
-    };
-    geofs.api.showSun = function() {
-        geofs.api.viewer.scene.sun.show = !0
-    };
-    geofs.api.hideSun = function() {
-        geofs.api.viewer.scene.sun.show = !1
-    };
-    $(".geofs-ui-3dview").on("terrainUnstable", function() {
-        $(".geofs-3dloader").show()
-    });
-    $(".geofs-ui-3dview").on("terrainStable", function() {
-        $(".geofs-3dloader").hide()
-    });
-    geofs.api.renderingQuality = function(a) {
-        a = a || geofs.preferences.graphics.quality;
-        switch (a) {
-            case 1:
-                geofs.api.viewer.scene.globe.tileCacheSize = 20;
-                geofs.api.viewer.resolutionScale = .7;
-                geofs.api.viewer.scene.fxaa = !0;
-                geofs.api.viewer.scene.globe.maximumScreenSpaceError = 6;
-                geofs.api.setGlobeLighting(!1);
-                geofs.preferences.graphics.simpleShadow = !0;
-                geofs.fx.cloudManager.setCloudCoverToCloudNumber(1);
-                geofs.api.viewer.scene.fog.screenSpaceErrorFactor = 2;
-                geofs.api.viewer.scene.fog.density = 3.2E-4;
-                geofs.api.viewer.shadowMap.size = 1024;
-                geofs.api.flatRunwayTerrainProviderInstance.setMaximumLevel(8);
-                break;
-            case 2:
-                geofs.api.viewer.scene.globe.tileCacheSize = geofs.isMobile ? 30 : 500;
-                geofs.api.viewer.resolutionScale = .9;
-                geofs.api.viewer.scene.fxaa = !0;
-                geofs.api.viewer.scene.globe.maximumScreenSpaceError = 4;
-                geofs.api.setGlobeLighting(!1);
-                geofs.preferences.graphics.simpleShadow = !1;
-                geofs.fx.cloudManager.setCloudCoverToCloudNumber(5);
-                geofs.api.viewer.scene.fog.screenSpaceErrorFactor = 2;
-                geofs.api.viewer.scene.fog.density = 3E-4;
-                geofs.api.viewer.shadowMap.size = 1024;
-                geofs.api.flatRunwayTerrainProviderInstance.setMaximumLevel(10);
-                break;
-            case 3:
-                geofs.api.viewer.scene.globe.tileCacheSize = geofs.isMobile ? 50 : 1E3;
-                geofs.api.viewer.resolutionScale = 1;
-                geofs.api.viewer.scene.fxaa = !0;
-                geofs.api.viewer.scene.globe.maximumScreenSpaceError = 2;
-                geofs.api.setGlobeLighting(!0);
-                geofs.preferences.graphics.simpleShadow = !1;
-                geofs.fx.cloudManager.setCloudCoverToCloudNumber(10);
-                geofs.api.viewer.scene.fog.screenSpaceErrorFactor = 2;
-                geofs.api.viewer.scene.fog.density = 2.5E-4;
-                geofs.api.viewer.shadowMap.size = 2048;
-                geofs.api.flatRunwayTerrainProviderInstance.setMaximumLevel(12);
-                break;
-            case 4:
-                geofs.api.viewer.scene.globe.tileCacheSize = geofs.isMobile ? 50 : 1500;
-                geofs.api.viewer.resolutionScale = 1;
-                geofs.api.viewer.scene.fxaa = !0;
-                geofs.api.viewer.scene.globe.maximumScreenSpaceError = 1;
-                geofs.api.setGlobeLighting(!0);
-                geofs.preferences.graphics.simpleShadow = !1;
-                geofs.fx.cloudManager.setCloudCoverToCloudNumber(15);
-                geofs.api.viewer.scene.fog.screenSpaceErrorFactor = 2;
-                geofs.api.viewer.scene.fog.density = 2E-4;
-                geofs.api.viewer.shadowMap.size = 2048;
-                geofs.api.flatRunwayTerrainProviderInstance.setMaximumLevel(14);
-                break;
-            case 5:
-                geofs.api.viewer.scene.globe.tileCacheSize = geofs.isMobile ? 50 : 1500;
-                geofs.api.viewer.resolutionScale = 1.5;
-                geofs.api.viewer.scene.fxaa = !0;
-                geofs.api.viewer.scene.globe.maximumScreenSpaceError = 1;
-                geofs.api.setGlobeLighting(!0);
-                geofs.preferences.graphics.simpleShadow = !1;
-                geofs.fx.cloudManager.setCloudCoverToCloudNumber(15);
-                geofs.api.viewer.scene.fog.screenSpaceErrorFactor = 2;
-                geofs.api.viewer.scene.fog.density = 2E-4;
-                geofs.api.viewer.shadowMap.size = 3072;
-                geofs.api.flatRunwayTerrainProviderInstance.setMaximumLevel(16);
-                break;
-            case 6:
-                geofs.api.viewer.scene.globe.tileCacheSize = geofs.isMobile ? 100 : 1500,
-                    geofs.api.viewer.resolutionScale = 2,
-                    geofs.api.viewer.scene.fxaa = !0,
-                    geofs.api.viewer.scene.globe.maximumScreenSpaceError = 1,
-                    geofs.preferences.graphics.simpleShadow = !1,
-                    geofs.fx.cloudManager.setCloudCoverToCloudNumber(15),
-                    geofs.api.viewer.scene.fog.screenSpaceErrorFactor = 2,
-                    geofs.api.viewer.scene.fog.density = 2E-4,
-                    geofs.api.viewer.shadowMap.size = 4096,
-                    geofs.api.flatRunwayTerrainProviderInstance.setMaximumLevel(20)
-        }
-        geofs.useSimpleShadow(geofs.preferences.graphics.forceSimpleShadow || geofs.preferences.graphics.simpleShadow);
-        geofs.api.viewer.resize()
-    };
-    geofs.api.useNativeShadows = function(a) {
-        geofs.api.viewer.shadows = a
-    };
-    geofs.api.addLabel = function(a, b, c) {
-        b = b || [0, 0, 0];
-        c = c || {};
-        if (V3.isValid(b))
-            return a = {
-                    position: new Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]),
-                    text: geofs.api.makeLabelTextSafe(a)
+    geofs.androidViewerOptions = geofs.androidViewerOptions || {};
+    geofs.iosViewerOptions = geofs.iosViewerOptions || {};
+    Object.assign(c, geofs.androidViewerOptions, geofs.iosViewerOptions, b);
+    try {
+        geofs.api.viewer = new Cesium.Viewer(a, c),
+            c.useDefaultRenderLoop || (geofs.renderLoop = function() {
+                    geofs.pause || geofs.api.viewer.render();
+                    requestAnimationFrame(geofs.renderLoop)
                 },
-                c = $.extend(c, a),
-                geofs.api.labels.add(c);
-        geofs.debug.debugger()
-    };
-    geofs.api.updateLabelText = function(a, b) {
-        a.text = geofs.api.makeLabelTextSafe(b)
-    };
-    geofs.api.makeLabelTextSafe = function(a) {
-        return a.replace(/[^\x20-\x7E]+/g, "")
-    };
-    geofs.api.removeLabel = function(a) {
-        a && geofs.api.labels.remove(a)
-    };
-    geofs.api.setLabelPosition = function(a, b) {
-        a && (V3.isValid(b) ? a.position = new Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]) : geofs.debug.debugger())
-    };
-    geofs.api.altitudeErrorThreshold = .2;
-    geofs.api.wrongAltitudeTries = 2;
-    geofs.api.getGroundAltitude = function(a, b) {
-        if (geofs.debug.on && !V3.isValid(a))
-            debugger;
-        var c = geofs.groundElevation || 0;
-        a = geofs.api.viewer.scene.globe.getHeight(new Cesium.Cartographic.fromDegrees(a[1], a[0], c)); -
-        1E3 > a && (a = 0);
-        if (void 0 == a)
-            b ? (a = b.lastGroundAltitude || 0,
-                b.wrongAltitude = !0) : a = c;
-        else if (b) {
-            if (Math.abs(b.lastGroundAltitude - a) > geofs.api.altitudeErrorThreshold && b.wrongAltitudeTries <= geofs.api.wrongAltitudeTries)
-                return b.wrongAltitudeTries++,
-                    b.lastGroundAltitude;
-            b.wrongAltitudeTries = 0;
-            b.lastGroundAltitude = a;
-            b.wrongAltitude = null
+                geofs.renderLoop())
+    } catch (m) {
+        $.haring.create('GeoFS, Free Online Flight Simulator, requires WebGL in order to run. Please visit the <a href="/pages/instructions.php">instructions page</a> for more details', "OK");
+        console.log(m);
+        return
+    }
+    geofs.api.blackMarble = geofs.api.viewer.imageryLayers.addImageryProvider(Cesium.createTileMapServiceImageryProvider({
+        url: geofs.dataServer + "/bm",
+        credit: "Black Marble imagery courtesy NASA Earth Observatory",
+        maximumLevel: 8,
+        flipXY: !0
+    }));
+    geofs.api.blackMarble.alpha = 0;
+    geofs.api.blackMarble.hue = 3.5;
+    geofs.api.blackMarble.saturation = .7;
+    geofs.api.blackMarble.brightness = 4;
+    geofs.api.blackMarble.show = !1;
+    geofs.api.viewer.scene.skyBox = new Cesium.SkyBox({
+        sources: {
+            positiveX: "images/skybox/tycho2t3_80_px.png",
+            negativeX: "images/skybox/tycho2t3_80_mx.png",
+            positiveY: "images/skybox/tycho2t3_80_py.png",
+            negativeY: "images/skybox/tycho2t3_80_my.png",
+            positiveZ: "images/skybox/tycho2t3_80_pz.png",
+            negativeZ: "images/skybox/tycho2t3_80_mz.png"
         }
-        return a
-    };
-    geofs.api.oldNormal = [0, 0, 1];
-    geofs.api.normalDotThreshold = .95;
-    geofs.api.wrongNormalTries = 3;
-    geofs.api.getMostDetailedGroundNormal = function(a, b) {
-        var c = V3.dup(a);
-        a = xyz2lla([1, 1, 0], c);
-        var d = V3.add(c, [a[0], 0, 0]),
-            e = V3.add(c, [0, a[1], 0]);
-        a = Cesium.sampleTerrainMostDetailed(geofs.api.viewer.terrainProvider, [Cesium.Cartographic.fromDegrees(c[1], c[0]), Cesium.Cartographic.fromDegrees(d[1], d[0]), Cesium.Cartographic.fromDegrees(e[1], e[0])]);
-        Cesium.when(a, function(a) {
-            c[2] = a[0].height;
-            d[2] = a[1].height;
-            e[2] = a[2].height;
-            a = V3.sub(d, c);
-            var f = V3.sub(e, c);
-            a = lla2xyz(a, c);
-            f = lla2xyz(f, c);
-            b({
-                origin: c,
-                normal: V3.normalize(V3.cross(f, a))
-            })
-        })
-    };
-    geofs.api.getGroundNormal = function(a, b) {
-        b = b || {};
-        b.oldNormal = b.oldNormal || [0, 0, 1];
-        a = V3.dup(a);
-        var c = xyz2lla([1, 1, a[2]], a),
-            d = V3.add(a, [c[0], 0, a[2]]);
-        c = V3.add(a, [0, c[1], a[2]]);
-        a[2] = geofs.api.getGroundAltitude(a);
-        d[2] = geofs.api.getGroundAltitude(d);
-        c[2] = geofs.api.getGroundAltitude(c);
-        d = V3.sub(d, a);
-        c = V3.sub(c, a);
-        d = lla2xyz(d, a);
-        c = lla2xyz(c, a);
-        a = V3.normalize(V3.cross(c, d));
-        if (V3.dot(a, b.oldNormal) < geofs.api.normalDotThreshold && b.wrongNormal < geofs.api.wrongNormalTries)
-            return b.wrongNormal += 1,
-                b.oldNormal;
-        b.wrongNormal = 0;
-        b.oldNormal = a;
-        return geofs.api.oldNormal = a
-    };
-    geofs.api.shadowOffset = .1;
-    geofs.api.createShadow = function(a, b) {
-        this.scale = V3.scale(b, 2);
-        this.scale[2] = 1;
-        return geofs.api.loadModel({
-            url: a
-        })
-    };
-    geofs.api.setShadowLocationRotation = function(a, b, c, d) {
-        b[2] += geofs.api.shadowOffset;
-        geofs.api.setModelPositionOrientationAndScale(a, b, c, this.scale)
-    };
-    geofs.api.Model = function(a, b) {
-        b = b || {};
-        b.url = b.url || a;
-        this._model = geofs.api.loadModel(b);
-        this.setPositionOrientationAndScale(b.location, b.rotation)
-    };
-    geofs.api.Model.prototype.setPositionOrientationAndScale = function(a, b, c) {
-        return geofs.api.setModelPositionOrientationAndScale(this._model, a, b, c)
-    };
-    geofs.api.Model.prototype.setLocation = function(a) {
-        this.setPositionOrientationAndScale(a)
-    };
-    geofs.api.Model.prototype.setColor = function(a) {
-        this._model.color = a
-    };
-    geofs.api.Model.prototype.setCssColor = function(a) {
-        this._model.color = Cesium.Color.fromCssColorString(a)
-    };
-    geofs.api.Model.prototype.hide = function() {
-        geofs.api.setModelVisibility(this._model, !1)
-    };
-    geofs.api.Model.prototype.show = function() {
-        geofs.api.setModelVisibility(this._model, !0)
-    };
-    geofs.api.Model.prototype.destroy = function() {
-        geofs.api.destroyModel(this._model)
-    };
-    geofs.api.Model.prototype.remove = function() {
-        geofs.api.removeFromWorld(this._model)
-    };
-    geofs.api.loadModel = function(a) {
-        "string" == typeof a && (a = {
-            url: a
-        });
-        a = $.extend({}, {
-            castShadows: !1,
-            receiveShadows: !1
-        }, a);
-        var b = Cesium.ShadowMode.DISABLED;
-        a.castShadows && (b = Cesium.ShadowMode.CAST_ONLY);
-        a.receiveShadows && (b = Cesium.ShadowMode.RECEIVE_ONLY);
-        a.castShadows && a.receiveShadows && (b = Cesium.ShadowMode.ENABLED);
-        a.shadows = b;
-        b = Cesium.Model.fromGltf(a);
-        a.justLoad || geofs.api.addModelToWorld(b);
-        return b
-    };
-    geofs.api.addModelToWorld = function(a) {
-        a && (a.isDestroyed() || geofs.api.models.add(a))
-    };
-    geofs.api.toggleModelShadow = function(a, b) {
-        geofs.api.viewer.shadows && a && !a.isDestroyed() && (a.shadows = b ? Cesium.ShadowMode.CAST_ONLY : Cesium.ShadowMode.DISABLED)
-    };
-    geofs.api.removeModelFromWorld = function(a) {
-        a && (a.isDestroyed() || geofs.api.models.remove(a))
-    };
-    geofs.api.setModelVisibility = function(a, b) {
-        if (!a || a.isDestroyed())
-            return !1;
-        a.show = b;
-        return !0
-    };
-    geofs.api.destroyModel = function(a) {
-        a && (geofs.api.removeModelFromWorld(a),
-            a.isDestroyed() || a.destroy())
-    };
-    geofs.fromHeadingPitchRoll = function(a, b, c, d) {
-        d = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_X, -b);
-        c = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, -c);
-        d = Cesium.Quaternion.multiply(d, c, c);
-        a = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Z, -a);
-        return Cesium.Quaternion.multiply(a, d, d)
-    };
-    geofs.headingPitchRollScaleToFixedFrame = function(a, b, c, d, e) {
-        var f = new Cesium.Quaternion;
-        e = new Cesium.Cartesian3(e[0], e[1], e[2]);
-        var g = new Cesium.Matrix4;
-        b = geofs.fromHeadingPitchRoll(b, c, d, f);
-        b = Cesium.Matrix4.fromTranslationQuaternionRotationScale(Cesium.Cartesian3.ZERO, b, e, g);
-        a = Cesium.Transforms.eastNorthUpToFixedFrame(a);
-        return Cesium.Matrix4.multiply(a, b, a)
-    };
-    geofs.api.getPositionOrientationAndScaleMatrix = function(a, b, c) {
-        c = c || [1, 1, 1];
-        b = b || [0, 0, 0];
-        a = a || [0, 0, 0];
-        a = Cesium.Cartesian3.fromDegrees(a[1], a[0], a[2]);
-        return geofs.headingPitchRollScaleToFixedFrame(a, b[0] * DEGREES_TO_RAD, b[1] * DEGREES_TO_RAD, b[2] * DEGREES_TO_RAD, c)
-    };
-    geofs.api.setModelElevation = function(a, b) {
-        geofs.api.setModelPositionOrientationAndScale(a, [a._apiLla[0], a._apiLla[1], b])
-    };
-    geofs.api.setModelPositionOrientationAndScale = function(a, b, c, d) {
-        a && !a.isDestroyed() && (d = d || a._apiScale || [1, 1, 1],
-            c = c || a._apiHtr || [0, 0, 0],
-            b = b || a._apiLla || [0, 0, 0],
-            V3.isValid(c) ? V3.isValid(d) ? V3.isValid(b) ? (a.modelMatrix = geofs.api.getPositionOrientationAndScaleMatrix(b, c, d),
-                a._apiScale = d,
-                a._apiHtr = c,
-                a._apiLla = b) : geofs.debug.debugger() : geofs.debug.debugger() : geofs.debug.debugger())
-    };
-    geofs.api.getModelNode = function(a, b) {
-        a._geofsNodes = a._geofsNodes || {};
-        if (!a._geofsNodes[b]) {
-            if (!a || !a.ready)
-                return !1;
-            a._geofsNodes[b] = a.getNode(b)
-        }
-        return a._geofsNodes[b]
-    };
-    geofs.api.setModelRotationPosition = function(a, b, c) {
-        a.originalTranform || (a.originalTranform = a.modelMatrix.clone(a.originalTranform));
-        if (b)
-            var d = Cesium.Matrix3.fromColumnMajorArray(M33.toArray(b));
-        if (c)
-            var e = Cesium.Cartesian3.fromDegrees(c[1], c[0], c[2]);
-        a.modelMatrix = Cesium.Matrix4.fromRotationTranslation(d, e);
-        b = Cesium.Transforms.eastNorthUpToFixedFrame(e);
-        a.modelMatrix = Cesium.Matrix4.multiply(b, a.modelMatrix, b)
-    };
-    geofs.api.setNodeRotationTranslation = function(a, b, c) {
-        a.originalTranform || (a.originalTranform = a.matrix.clone(a.originalTranform));
-        if (b)
-            var d = Cesium.Matrix3.fromColumnMajorArray(M33.toArray(b));
-        if (c)
-            var e = new Cesium.Cartesian3(c[0], c[1], c[2]);
-        b = Cesium.Matrix4.fromRotationTranslation(d, e);
-        a.matrix = Cesium.Matrix4.multiply(a.originalTranform, b, a.matrix)
-    };
-    geofs.api.setNodeScale = function(a, b) {
-        b = Cesium.Matrix4.fromScale(new Cesium.Cartesian3(b[0], b[1], b[2]));
-        a.matrix = Cesium.Matrix4.multiply(a.matrix, b, a.matrix)
-    };
-    geofs.api.setNodeVisibility = function(a, b) {
-        if (!a)
-            return !1;
-        a.show = b;
-        return !0
-    };
-    geofs.api.getNodePosition = function(a) {
-        a = Cesium.Matrix4.getTranslation(a.matrix, new Cesium.Cartesian3);
-        return [a.x, a.y, a.z]
-    };
-    geofs.api.getNodeRotation = function(a) {
-        return M33.identity()
-    };
-    geofs.api.setEntityPositionOrientation = function(a, b, c) {
-        if (a)
-            if (c = c || a._apiHtr || [0, 0, 0],
-                b = b || a._apiLla || [0, 0, 0],
-                V3.isValid(c))
-                if (V3.isValid(b)) {
-                    var d = Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]),
-                        e = new Cesium.ConstantProperty(Cesium.Transforms.headingPitchRollQuaternion(d, new Cesium.HeadingPitchRoll(c[0] * DEGREES_TO_RAD, c[1] * DEGREES_TO_RAD, c[2] * DEGREES_TO_RAD)));
-                    a.position = d;
-                    a.orientation = e;
-                    geofs.debug.watch("x", d.x);
-                    geofs.debug.watch("y", d.y);
-                    geofs.debug.watch("z", d.z);
-                    a._apiHtr = c;
-                    a._apiLla = b
-                } else
-                    geofs.debug.debugger();
-        else
-            geofs.debug.debugger()
-    };
-    geofs.api.initAndGetCamera = function() {
-        geofs.api.camera = geofs.api.viewer.camera;
-        return geofs.api.camera
-    };
-    geofs.api.getFOV = function(a) {
-        return a.frustum.fov
-    };
-    geofs.api.setFOV = function(a, b) {
-        a.frustum.fov = b
-    };
-    geofs.api.setCameraPositionAndOrientation = function(a, b, c) {
-        V3.isValid(b) ? V3.isValid(c) ? (a.position = Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]),
-            a.setView({
-                orientation: {
-                    heading: Cesium.Math.toRadians(c[0]),
-                    pitch: Cesium.Math.toRadians(c[1]),
-                    roll: Cesium.Math.toRadians(c[2])
-                }
-            })) : geofs.debug.debugger() : geofs.debug.debugger()
-    };
-    geofs.api.getCameraLla = function(a) {
-        a = a.positionCartographic;
-        return [a.latitude * RAD_TO_DEGREES, a.longitude * RAD_TO_DEGREES, a.height]
-    };
-    geofs.api.setCameraLookAt = function(a, b) {
-        a.lookAt(Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]))
-    };
-    geofs.api.getHeading = function(a) {
-        return a.heading * RAD_TO_DEGREES
-    };
-    geofs.api.debug = function(a) {
-        geofs.api.viewer.scene.debugShowFramesPerSecond = a ? !0 : !1
-    };
-    geofs.api.getLlaFromScreencoordDepth = function(a, b, c) {
-        a = camera.cam.getPickRay(new Cesium.Cartesian2(a, b));
-        c = Cesium.Ray.getPoint(a, c);
-        if (!isNaN(c.x))
-            return c = Cesium.Cartographic.fromCartesian(c, null, new Cesium.Cartographic), [c.latitude * RAD_TO_DEGREES, c.longitude * RAD_TO_DEGREES, c.height]
-    };
-    geofs.api.getScreenCoordFromLla = function(a) {
-        return Cesium.SceneTransforms.wgs84ToWindowCoordinates(geofs.api.viewer.scene, Cesium.Cartesian3.fromDegrees(a[1], a[0], a[2]))
-    };
-    geofs.api.xyz2lla = function(a, b) {
-        var c = new Cesium.Matrix4,
-            d = geofs.api.viewer.scene.globe.ellipsoid,
-            e = Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]);
-        Cesium.Transforms.eastNorthUpToFixedFrame(e, d, c);
-        a = new Cesium.Cartesian3(a[0], a[1], a[2]);
-        c = Cesium.Matrix4.multiplyByPoint(c, a, new Cesium.Cartesian3);
-        return (d = Cesium.Cartographic.fromCartesian(c, d, new Cesium.Cartographic)) ? [d.latitude * RAD_TO_DEGREES - b[0], d.longitude * RAD_TO_DEGREES - b[1], d.height - b[2]] : [0, 0, 0]
-    };
-    geofs.api.cssTransform = function() {
-        this._$element = $('<div class="geofs-overlay"></div>').appendTo(".geofs-overlay-container");
-        this.positionY = this.positionX = this.rotation = 0;
-        this.offset = {
-            x: 0,
-            y: 0
-        }
-    };
-    geofs.api.cssTransform.rotationThreshold = 0;
-    geofs.api.cssTransform.translationThreshold = 0;
-    geofs.api.cssTransform.prototype = {
-        setDrawOrder: function(a) {
-            this._$element.css("z-index", a + geofs.api.overlayBaseZIndex)
-        },
-        setUrl: function(a) {
-            if (a) {
-                this.image = new Image;
-                this.image.src = a;
-                var b = this;
-                this.image.onload = function() {
-                    b.loaded()
-                };
-                this._$element.css("background-image", 'url("' + a + '")')
-            }
-        },
-        setText: function(a) {
-            this._$element.html(a);
-            this._$element.addClass("geofs-textOverlay")
-        },
-        setTitle: function(a) {
-            this._$element.attr("title", a)
-        },
-        setClass: function(a) {
-            this._$element.addClass(a)
-        },
-        setStyle: function(a) {
-            this._$element.attr("style", a)
-        },
-        loaded: function() {
-            this.naturalSize = {
-                x: this.image.width,
-                y: this.image.height
-            };
-            $(this).trigger("load")
-        },
-        setFrameSize: function(a) {
-            this._$element.css("width", a.x + "px");
-            this._$element.css("height", a.y + "px")
-        },
-        setVisibility: function(a) {
-            a ? this._$element.css("display", "block") : this._$element.css("display", "none")
-        },
-        setAnchor: function(a) {
-            this._$element.css("margin-left", -a.x + "px ");
-            this._$element.css("margin-bottom", -a.y + "px ")
-        },
-        setRotationCenter: function(a) {
-            this._$element.css("transform-origin", a.x + "px " + a.y + "px")
-        },
-        setSize: function(a) {
-            this._$element.css("background-size", a.x + "px " + a.y + "px")
-        },
-        setPosition: function(a) {
-            this._$element.css("left", a.x + "px");
-            this._$element.css("bottom", a.y + "px")
-        },
-        setPositionX: function(a) {
-            Math.abs(a - this.positionX) < geofs.api.cssTransform.translationThreshold || (this._$element.css("left", a + "px"),
-                this.positionX = a)
-        },
-        setPositionY: function(a) {
-            Math.abs(a - this.positionY) < geofs.api.cssTransform.translationThreshold || (this._$element.css("bottom", a + "px"),
-                this.positionY = a)
-        },
-        setPositionOffset: function(a) {
-            Math.abs(a.x - this.offset.x) < geofs.api.cssTransform.translationThreshold && Math.abs(a.y - this.offset.y) < geofs.api.cssTransform.translationThreshold || (this._$element.css("background-position", a.x + "px " + a.y + "px"),
-                this.offset.x = a.x,
-                this.offset.y = a.y)
-        },
-        setOpacity: function(a) {
-            this._$element.css("opacity", a)
-        },
-        setRotation: function(a) {
-            if (!(Math.abs(a - this.rotation) < geofs.api.cssTransform.rotationThreshold)) {
-                var b = "rotate(" + fixAngle360(-a) + "deg)";
-                this._$element.css("transform", b);
-                this.rotation = a
-            }
-        },
-        destroy: function() {
-            this._$element.remove()
-        }
-    };
-    geofs.api.billboard = function(a, b, c) {
-        c = $.extend({
-            collection: "default"
-        }, c);
-        a = a || [0, 0, 0];
-        c.image = c.image || b;
-        c.image += geofs.killCache;
-        c.position = Cesium.Cartesian3.fromDegrees(a[1], a[0], a[2]);
-        geofs.api.billboards[c.collection] || (geofs.api.billboards[c.collection] = geofs.api.viewer.scene.primitives.add(new Cesium.BillboardCollection({
+    });
+    a = new Cesium.Cartesian3(.170455150831422, .163151083190219, .196966760289763);
+    b = new Cesium.Cartesian3(-.066550267689383, -.022088055746048, .078835009246127);
+    c = new Cesium.Cartesian3(.038364097478591, .045714300098753, .063498904606215);
+    var d = new Cesium.Cartesian3(-.01436536331281, -.026490613715151, -.05018940406602),
+        e = new Cesium.Cartesian3(-.05153278691789, -.050777795729986, -.056449044453032),
+        f = new Cesium.Cartesian3(.043454596136534, .046672590104157, .05753010764661),
+        g = new Cesium.Cartesian3(-.00164046627411, .001286638231156, .007228908989616),
+        h = new Cesium.Cartesian3(-.042260855700641, -.046394335094707, -.057562936365585),
+        k = new Cesium.Cartesian3(-.004953478914091, -4.79681664876E-4, .008508150106928);
+    a = [a, b, c, d, e, f, g, h, k];
+    geofs.api.viewer.scene.specularEnvironmentMaps = "shaders/kiara_6_afternoon_2k_ibl.ktx";
+    geofs.api.viewer.scene.sphericalHarmonicCoefficients = a;
+    geofs.api.viewer.scene.moon.textureUrl = "images/moonSmall.jpg";
+    geofs.api.flatRunwayTerrainProviderInstance = new geofs.api.FlatRunwayTerrainProvider({
+        baseProvider: new Cesium.EllipsoidTerrainProvider
+    });
+    geofs.api.viewer.terrainProvider = geofs.api.flatRunwayTerrainProviderInstance;
+    geofs.api.viewer.scene.globe.enableLighting = !1;
+    geofs.api.viewer.scene.globe.oceanNormalMapUrl = "shaders/oceanmap.jpg";
+    geofs.api.viewer.scene.logarithmicDepthBuffer = !1;
+    geofs.api.viewer.scene.farToNearRatio = 100;
+    geofs.api.viewer.scene.globe.depthTestAgainstTerrain = !0;
+    geofs.api.labels = geofs.api.viewer.scene.primitives.add(new Cesium.LabelCollection);
+    geofs.api.billboards = {
+        "default": geofs.api.viewer.scene.primitives.add(new Cesium.BillboardCollection({
             scene: geofs.api.viewer.scene,
             blendOption: Cesium.BlendOption.OPAQUE_AND_TRANSLUCENT
-        })));
-        this._billboard = geofs.api.billboards[c.collection].add(c);
-        this._lla = a;
-        c.altitudeMode == geofs.api.ALTITUDE_RELATIVE && (this._billboard.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND);
-        c.altitudeMode == geofs.api.CLAMP_TO_GROUND && (this._billboard.heightReference = Cesium.HeightReference.CLAMP_TO_GROUND);
-        c.opacity && this.setOpacity(c.opacity);
-        c.scale && this.setScale(c.scale);
-        c.rotation && this.setRotation(c.rotation);
-        c.geofsFixCameraRotation && this.fixCameraRotation();
-        this._options = c
+        })),
+        opaque: geofs.api.viewer.scene.primitives.add(new Cesium.BillboardCollection({
+            scene: geofs.api.viewer.scene,
+            blendOption: Cesium.BlendOption.OPAQUE
+        })),
+        translucent: geofs.api.viewer.scene.primitives.add(new Cesium.BillboardCollection({
+            scene: geofs.api.viewer.scene,
+            blendOption: Cesium.BlendOption.TRANSLUCENT
+        }))
     };
-    geofs.api.billboard.prototype = {
-        setUrl: function(a) {},
-        setVisibility: function(a) {
-            this._billboard && (this._billboard.show = a)
-        },
-        setColor: function(a) {
-            this._billboard && (a.alpha = this.opacity || 1,
-                this._billboard.color = a)
-        },
-        setCssColor: function(a) {
-            this._billboard && (this._billboard.color = Cesium.Color.fromCssColorString(a))
-        },
-        setOpacity: function(a) {
-            if (this._billboard) {
-                var b = this._billboard.color || new Cesium.Color(1, 1, 1, 1);
-                b.alpha = a;
-                this._billboard.color = b;
-                this.opacity = a
-            }
-        },
-        setRotation: function(a) {
-            this._billboard && (this._billboard.rotation = a)
-        },
-        setScale: function(a) {
-            this._billboard && (this._billboard.scale = a)
-        },
-        setLocation: function(a) {
-            this._billboard && (V3.isValid(a) ? (this._lla = a,
-                this._billboard.position = Cesium.Cartesian3.fromDegrees(a[1], a[0], a[2])) : geofs.debug.debugger())
-        },
-        getLla: function(a) {
-            return this._lla
-        },
-        fixCameraRotation: function() {
-            var a = this;
-            this.rotationFixCallback = geofs.api.addFrameCallback(function() {
-                a._billboard.rotation = camera.radianRoll
-            }, "billboardsRotationFix")
-        },
-        destroy: function() {
-            this._billboard && (geofs.api.removeFrameCallback(this.rotationFixCallback, "billboardsRotationFix"),
-                geofs.api.billboards[this._options.collection].remove(this._billboard),
-                this._billboard = null)
+    geofs.api.models = geofs.api.viewer.scene.primitives.add(new Cesium.PrimitiveCollection({
+        destroyPrimitives: !1
+    }));
+    geofs.api.viewer.scene.preRender.addEventListener(geofs.api.frameCallbackWrapper);
+    $(".geofs-ui-3dview").trigger("rendererInitDone")
+};
+geofs.api.destroyWorld = function() {
+    geofs.api.viewer.scene.preRender.removeEventListener(geofs.api.frameCallbackWrapper)
+};
+geofs.api.triggerExplicitRendering = function() {
+    geofs.api.viewer.scene.requestRender()
+};
+geofs.frameCallbackStack = {};
+geofs.api.addFrameCallback = function(a, b, c) {
+    b = b || "global";
+    geofs.frameCallbackStack[b] || (geofs.frameCallbackStack[b] = {
+        callbacks: {},
+        lastId: 0,
+        maxExecutionTime: c,
+        lastIndex: 1
+    });
+    geofs.frameCallbackStack[b].lastId++;
+    geofs.frameCallbackStack[b].callbacks[geofs.frameCallbackStack[b].lastId] = a;
+    return geofs.frameCallbackStack[b].lastId
+};
+geofs.api.removeFrameCallback = function(a, b) {
+    b = b || "global";
+    geofs.frameCallbackStack[b] && delete geofs.frameCallbackStack[b].callbacks[a]
+};
+geofs.api.frameCallbackWrapper = function(a, b) {
+    a = geofs.utils.now();
+    for (var c in geofs.frameCallbackStack)
+        if (b = geofs.frameCallbackStack[c],
+            0 < b.maxExecutionTime) {
+            var d = b.lastIndex;
+            do {
+                try {
+                    b.callbacks[d](a)
+                } catch (e) {
+                    geofs.debug.throw(e)
+                }
+                d++;
+                d > b.lastId && (d = 1)
+            } while (a + b.maxExecutionTime > geofs.utils.now());
+            b.lastIndex = d
+        } else
+            for (d in b.callbacks)
+                try {
+                    b.callbacks[d](a)
+                } catch (e) {
+                    geofs.debug.throw(e)
+                }
+};
+geofs.api.configureOutsideView = function() {
+    geofs.api.viewer.shadowMap.maximumDistance = geofs.aircraft.instance.definition.oustsideShadowMapMaxDistance || 1E3;
+    geofs.api.viewer.shadowMap.darkness = .3;
+    geofs.api.camera.frustum.near = 1
+};
+geofs.api.configureInsideView = function() {
+    geofs.api.viewer.shadowMap.maximumDistance = geofs.aircraft.instance.definition.cockpitShadowMapMaxDistance || 100;
+    geofs.api.viewer.shadowMap.darkness = .5;
+    geofs.api.camera.frustum.near = .2
+};
+geofs.api.setGlobeLighting = function(a) {
+    geofs.api.viewer.scene.globe.enableLighting = a
+};
+geofs.api.setWaterEffect = function(a) {
+    geofs.api.viewer.scene.globe.showWaterEffect = a
+};
+geofs.api.setHD = function(a) {
+    if (geofs.api.hdOn !== a) {
+        a = {
+            method: "doGeoIp",
+            nohd: a ? "false" : "true"
+        };
+        if (geofs.isApp) {
+            if (!geofs.userRecord.sessionId)
+                return;
+            a.sessionId = geofs.userRecord.sessionId
         }
-    };
-    geofs.api.notify = function(a, b, c) {
-        $.haring.create(a, b || "OK", c)
-    };
-    geofs.api.analytics = {
-        init: function() {
-            try {
-                window._gat && window._gaq && (geofs.api.pageTracker = _gat._getTracker("UA-2996341-8"),
-                    _gaq.push(["_trackPageview"]))
-            } catch (a) {
-                geofs.debug.error(a)
+        $(".geofs-apiResponse").htmlView("load", geofs.url + "/backend/accounts/hd.php", a)
+    }
+};
+geofs.api.setImageryProvider = function(a, b, c, d, e) {
+    var f = geofs.api.viewer.imageryLayers,
+        g = f.get(0);
+    f.remove(g);
+    a = f.addImageryProvider(a, 0);
+    geofs.runways.setRunwayModelVisibility(b);
+    geofs.api.setImageryColorModifier("multiplier", {
+        brightness: c || 1,
+        contrast: d || 1,
+        saturation: e || 1
+    });
+    geofs.preferences && geofs.preferences.graphics && geofs.api.enhanceColors(geofs.preferences.graphics.enhanceColors);
+    return a
+};
+geofs.api.setTimeAndDate = function(a, b) {
+    geofs.api.viewer.clock.shouldAnimate = !1;
+    return geofs.api.viewer.clock.currentTime = new Cesium.JulianDate(geofs.api.march2019theTwentyFirst + (b || 0), a - geofs.api.halfADayInSeconds)
+};
+geofs.api.setClock = function(a) {
+    geofs.api.viewer.clock.multiplier = 1;
+    geofs.api.viewer.clock.currentTime = Cesium.JulianDate.fromDate(a);
+    geofs.api.viewer.clock.shouldAnimate = !0
+};
+geofs.api.vr = function(a) {
+    geofs.api.viewer.scene.useWebVR = a
+};
+geofs.api.enhanceColors = function(a) {
+    a = a || 0;
+    geofs.api.setImageryColorModifier("enhancement", {
+        contrast: 1 + .4 * a,
+        saturation: 1 + .4 * a
+    });
+    geofs.api.setAtmosphereColorModifier("enhancement", {
+        brightnessShift: .4,
+        saturationShift: 0,
+        groundBrightnessShift: .2,
+        groundHueShift: .1,
+        fogBrightness: 0,
+        groundSaturationShift: -1
+    })
+};
+geofs.api.defaultImageryColorModifier = {
+    brightness: 1,
+    contrast: 1,
+    saturation: 1,
+    gamma: 1,
+    hue: 0
+};
+geofs.api.imageryColorModifiers = {};
+geofs.api.setImageryColorModifier = function(a, b) {
+    b = $.extend({}, geofs.api.defaultImageryColorModifier, b);
+    geofs.api.imageryColorModifiers[a || "base"] = b;
+    geofs.api.applyImageryColorModifiers()
+};
+geofs.api.removeImageryColorModifier = function(a) {
+    delete geofs.api.imageryColorModifiers[a];
+    geofs.api.applyImageryColorModifiers()
+};
+geofs.api.applyImageryColorModifiers = function() {
+    geofs.api.imageryColors = $.extend({}, geofs.api.defaultImageryColorModifier);
+    for (var a in geofs.api.imageryColorModifiers)
+        geofs.api.imageryColors.brightness *= geofs.api.imageryColorModifiers[a].brightness,
+        geofs.api.imageryColors.contrast *= geofs.api.imageryColorModifiers[a].contrast,
+        geofs.api.imageryColors.saturation *= geofs.api.imageryColorModifiers[a].saturation,
+        geofs.api.imageryColors.gamma *= geofs.api.imageryColorModifiers[a].gamma,
+        geofs.api.imageryColors.hue += geofs.api.imageryColorModifiers[a].hue;
+    geofs.api.setImageryBrightness(geofs.api.imageryColors.brightness);
+    geofs.api.setImageryContrast(geofs.api.imageryColors.contrast);
+    geofs.api.setImagerySaturation(geofs.api.imageryColors.saturation);
+    geofs.api.setImageryGamma(geofs.api.imageryColors.gamma);
+    geofs.api.setImageryHue(geofs.api.imageryColors.hue)
+};
+geofs.api.setImageryBrightness = function(a) {
+    var b = geofs.api.viewer.imageryLayers.get(0);
+    a && (b.brightness = a);
+    return b.brightness
+};
+geofs.api.setImageryContrast = function(a) {
+    var b = geofs.api.viewer.imageryLayers.get(0);
+    a && (b.contrast = a);
+    return b.contrast
+};
+geofs.api.setImagerySaturation = function(a) {
+    var b = geofs.api.viewer.imageryLayers.get(0);
+    a && (b.saturation = a);
+    return b.saturation
+};
+geofs.api.setImageryHue = function(a) {
+    var b = geofs.api.viewer.imageryLayers.get(0);
+    a && (b.hue = a);
+    return b.hue
+};
+geofs.api.setImageryGamma = function(a) {
+    var b = geofs.api.viewer.imageryLayers.get(0);
+    a && (b.gamma = a);
+    return b.gamma
+};
+geofs.api.defaultAtmosphereColorModifier = {
+    brightnessShift: 0,
+    saturationShift: 0,
+    hueShift: 0,
+    groundBrightnessShift: 0,
+    groundSaturationShift: 0,
+    groundHueShift: 0,
+    fogBrightness: 1,
+    cloudsBrightness: 1
+};
+geofs.api.atmosphereColorModifiers = {};
+geofs.api.setAtmosphereColorModifier = function(a, b) {
+    a = a || "base";
+    b = $.extend({}, geofs.api.defaultAtmosphereColorModifier, geofs.api.atmosphereColorModifiers[a] || {}, b);
+    geofs.api.atmosphereColorModifiers[a] = b;
+    geofs.api.applyAtmosphereColorModifiers()
+};
+geofs.api.removeAtmosphereColorModifier = function(a) {
+    delete geofs.api.atmosphereColorModifiers[a];
+    geofs.api.applyAtmosphereColorModifiers()
+};
+geofs.api.applyAtmosphereColorModifiers = function() {
+    geofs.api.atmosphereColors = $.extend({}, geofs.api.defaultAtmosphereColorModifier);
+    for (var a in geofs.api.atmosphereColorModifiers)
+        geofs.api.atmosphereColors.brightnessShift += geofs.api.atmosphereColorModifiers[a].brightnessShift,
+        geofs.api.atmosphereColors.saturationShift += geofs.api.atmosphereColorModifiers[a].saturationShift,
+        geofs.api.atmosphereColors.hueShift += geofs.api.atmosphereColorModifiers[a].hueShift,
+        geofs.api.atmosphereColors.groundBrightnessShift += geofs.api.atmosphereColorModifiers[a].groundBrightnessShift,
+        geofs.api.atmosphereColors.groundHueShift += geofs.api.atmosphereColorModifiers[a].groundHueShift,
+        geofs.api.atmosphereColors.groundSaturationShift += geofs.api.atmosphereColorModifiers[a].groundSaturationShift,
+        geofs.api.atmosphereColors.fogBrightness *= geofs.api.atmosphereColorModifiers[a].fogBrightness,
+        geofs.api.atmosphereColors.cloudsBrightness *= geofs.api.atmosphereColorModifiers[a].cloudsBrightness;
+    geofs.api.viewer.scene.skyAtmosphere.brightnessShift = geofs.api.atmosphereColors.brightnessShift;
+    geofs.api.viewer.scene.skyAtmosphere.saturationShift = geofs.api.atmosphereColors.saturationShift;
+    geofs.api.viewer.scene.skyAtmosphere.hueShift = geofs.api.atmosphereColors.hueShift;
+    geofs.api.viewer.scene.globe.atmosphereBrightnessShift = clamp(geofs.api.atmosphereColors.groundBrightnessShift, -1, 1);
+    geofs.api.viewer.scene.globe.atmosphereHueShift = clamp(geofs.api.atmosphereColors.groundHueShift, -1, 1);
+    geofs.api.viewer.scene.globe.atmosphereSaturationShift = clamp(geofs.api.atmosphereColors.groundSaturationShift, -1, 1);
+    geofs.api.viewer.scene.fog.minimumBrightness = geofs.api.atmosphereColors.fogBrightness;
+    geofs.fx.cloudManager.setCloudsBrightness(geofs.api.atmosphereColors.cloudsBrightness)
+};
+geofs.api.showSun = function() {
+    geofs.api.viewer.scene.sun.show = !0
+};
+geofs.api.hideSun = function() {
+    geofs.api.viewer.scene.sun.show = !1
+};
+$(".geofs-ui-3dview").on("terrainUnstable", function() {
+    $(".geofs-3dloader").show()
+});
+$(".geofs-ui-3dview").on("terrainStable", function() {
+    $(".geofs-3dloader").hide()
+});
+geofs.api.renderingQualityLevels = {
+    1: {
+        resolutionScale: .8,
+        tileCacheSize: 20,
+        fxaa: !1,
+        maximumScreenSpaceError: 6,
+        globeLighting: !1,
+        simpleShadow: !0,
+        cloudCoverToCloudNumber: 1,
+        fogScreenSpaceErrorFactor: 2,
+        fogDensity: 3.2E-4,
+        shadowMapSize: 1024
+    },
+    2: {
+        resolutionScale: .9,
+        tileCacheSize: 100,
+        fxaa: !0,
+        maximumScreenSpaceError: 4,
+        globeLighting: !1,
+        simpleShadow: !0,
+        cloudCoverToCloudNumber: 5,
+        fogScreenSpaceErrorFactor: 2,
+        fogDensity: 3E-4,
+        shadowMapSize: 1024
+    },
+    3: {
+        resolutionScale: 1,
+        tileCacheSize: 250,
+        fxaa: !0,
+        maximumScreenSpaceError: 2,
+        globeLighting: !0,
+        simpleShadow: !1,
+        cloudCoverToCloudNumber: 10,
+        fogScreenSpaceErrorFactor: 2,
+        fogDensity: 2.5E-4,
+        shadowMapSize: 2048
+    },
+    4: {
+        resolutionScale: 1,
+        tileCacheSize: 500,
+        fxaa: !0,
+        maximumScreenSpaceError: 2,
+        globeLighting: !0,
+        simpleShadow: !1,
+        cloudCoverToCloudNumber: 12,
+        fogScreenSpaceErrorFactor: 1.8,
+        fogDensity: 2E-4,
+        shadowMapSize: 2048
+    },
+    5: {
+        resolutionScale: 1,
+        tileCacheSize: 750,
+        fxaa: !0,
+        maximumScreenSpaceError: 2,
+        globeLighting: !0,
+        simpleShadow: !1,
+        cloudCoverToCloudNumber: 14,
+        fogScreenSpaceErrorFactor: 1.5,
+        fogDensity: 1E-4,
+        shadowMapSize: 3072
+    },
+    6: {
+        resolutionScale: 1,
+        tileCacheSize: 1E3,
+        fxaa: !0,
+        maximumScreenSpaceError: 2,
+        globeLighting: !0,
+        simpleShadow: !1,
+        cloudCoverToCloudNumber: 15,
+        fogScreenSpaceErrorFactor: 1,
+        fogDensity: 5E-5,
+        shadowMapSize: 4096
+    }
+};
+geofs.api.renderingQuality = function(a) {
+    geofs.api.viewer.scene.highDynamicRange = !1;
+    a = a || geofs.preferences.graphics.quality;
+    geofs.preferences.graphics.quality = a;
+    geofs.api.renderingQualityLevels[a] || geofs.resetPreferences();
+    geofs.api.viewer.resolutionScale = geofs.api.renderingQualityLevels[a].resolutionScale;
+    geofs.api.viewer.scene.globe.tileCacheSize = geofs.api.renderingQualityLevels[a].tileCacheSize;
+    geofs.api.viewer.scene.postProcessStages.fxaa.enabled = geofs.api.renderingQualityLevels[a].fxaa;
+    geofs.api.viewer.scene.globe.maximumScreenSpaceError = geofs.api.renderingQualityLevels[a].maximumScreenSpaceError;
+    geofs.api.setGlobeLighting(geofs.api.renderingQualityLevels[a].globeLighting);
+    geofs.preferences.graphics.simpleShadow = geofs.api.renderingQualityLevels[a].simpleShadow;
+    geofs.fx.cloudManager.setCloudCoverToCloudNumber(geofs.api.renderingQualityLevels[a].cloudCoverToCloudNumber);
+    geofs.api.viewer.scene.fog.screenSpaceErrorFactor = geofs.api.renderingQualityLevels[a].fogScreenSpaceErrorFactor;
+    geofs.api.viewer.scene.fog.density = geofs.api.renderingQualityLevels[a].fogDensity;
+    geofs.api.viewer.shadowMap.size = geofs.api.renderingQualityLevels[a].shadowMapSize;
+    geofs.api.flatRunwayTerrainProviderInstance.setMaximumLevel(12);
+    geofs.useSimpleShadow(geofs.preferences.graphics.forceSimpleShadow || geofs.preferences.graphics.simpleShadow);
+    geofs.api.viewer.resize()
+};
+geofs.api.adaptativeMaxMaximumScreenSpaceError = 6;
+geofs.api.adaptativeTopSpeed = 100;
+geofs.api.adaptativeTopAltitude = 500;
+geofs.api.adaptativeTurnrateRatio = 5E-4;
+geofs.api.adaptativeRenderingQuality = function() {
+    var a = Math.abs(geofs.animation.values.turnrate) || 0,
+        b = geofs.api.renderingQualityLevels[geofs.preferences.graphics.quality].maximumScreenSpaceError,
+        c = geofs.animation.values.kias / geofs.api.adaptativeTopSpeed,
+        d = clamp((geofs.api.adaptativeTopAltitude - (geofs.relativeAltitude || 0)) / geofs.api.adaptativeTopAltitude, 0, 1);
+    b += c * d + a * geofs.api.adaptativeTurnrateRatio;
+    geofs.api.viewer.scene.globe.maximumScreenSpaceError = clamp(b, b, geofs.api.adaptativeMaxMaximumScreenSpaceError)
+};
+geofs.api.useNativeShadows = function(a) {
+    geofs.api.viewer.shadows = a
+};
+geofs.api.addLabel = function(a, b, c) {
+    b = b || [0, 0, 0];
+    c = c || {};
+    if (V3.isValid(b))
+        return a = {
+                position: new Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]),
+                text: geofs.api.makeLabelTextSafe(a)
+            },
+            c = $.extend(c, a),
+            geofs.api.labels.add(c);
+    geofs.debug.debugger()
+};
+geofs.api.updateLabelText = function(a, b) {
+    a.text = geofs.api.makeLabelTextSafe(b)
+};
+geofs.api.makeLabelTextSafe = function(a) {
+    return a.replace(/[^\x20-\x7E]+/g, "")
+};
+geofs.api.removeLabel = function(a) {
+    a && geofs.api.labels.remove(a)
+};
+geofs.api.setLabelPosition = function(a, b) {
+    a && (V3.isValid(b) ? a.position = new Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]) : geofs.debug.debugger())
+};
+geofs.api.altitudeErrorThreshold = .2;
+geofs.api.wrongAltitudeTries = 2;
+geofs.api.getGroundAltitude = function(a, b) {
+    if (geofs.debug.on && !V3.isValid(a))
+        debugger;
+    var c = geofs.groundElevation || 0;
+    a = geofs.api.viewer.scene.globe.getHeight(new Cesium.Cartographic.fromDegrees(a[1], a[0], c)); -
+    1E3 > a && (a = 0);
+    if (void 0 == a)
+        b ? (a = b.lastGroundAltitude || 0,
+            b.wrongAltitude = !0) : a = c;
+    else if (b) {
+        if (Math.abs(b.lastGroundAltitude - a) > geofs.api.altitudeErrorThreshold && b.wrongAltitudeTries <= geofs.api.wrongAltitudeTries)
+            return b.wrongAltitudeTries++,
+                b.lastGroundAltitude;
+        b.wrongAltitudeTries = 0;
+        b.lastGroundAltitude = a;
+        b.wrongAltitude = null
+    }
+    return a
+};
+geofs.api.oldNormal = [0, 0, 1];
+geofs.api.normalDotThreshold = .95;
+geofs.api.wrongNormalTries = 3;
+geofs.api.getGroundNormal = function(a, b) {
+    b = b || {};
+    b.oldNormal = b.oldNormal || [0, 0, 1];
+    a = V3.dup(a);
+    var c = xyz2lla([1, 1, a[2]], a),
+        d = V3.add(a, [c[0], 0, a[2]]);
+    c = V3.add(a, [0, c[1], a[2]]);
+    a[2] = geofs.api.getGroundAltitude(a);
+    d[2] = geofs.api.getGroundAltitude(d);
+    c[2] = geofs.api.getGroundAltitude(c);
+    d = V3.sub(d, a);
+    c = V3.sub(c, a);
+    d = lla2xyz(d, a);
+    c = lla2xyz(c, a);
+    a = V3.normalize(V3.cross(c, d));
+    if (V3.dot(a, b.oldNormal) < geofs.api.normalDotThreshold && b.wrongNormal < geofs.api.wrongNormalTries)
+        return b.wrongNormal += 1,
+            b.oldNormal;
+    b.wrongNormal = 0;
+    b.oldNormal = a;
+    return geofs.api.oldNormal = a
+};
+geofs.api.shadowOffset = .1;
+geofs.api.createShadow = function(a, b) {
+    this.scale = V3.scale(b, 2);
+    this.scale[2] = 1;
+    return geofs.api.loadModel({
+        url: a
+    })
+};
+geofs.api.setShadowLocationRotation = function(a, b, c, d) {
+    b[2] += geofs.api.shadowOffset;
+    geofs.api.setModelPositionOrientationAndScale(a, b, c, this.scale)
+};
+geofs.api.Model = function(a, b) { //
+    b = b || {};
+    b.url = b.url || a;
+    this._model = geofs.api.loadModel(b);
+    this.setPositionOrientationAndScale(b.location, b.rotation)
+};
+geofs.api.Model.prototype.setPositionOrientationAndScale = function(a, b, c) { //
+    this._lla = a;
+    return geofs.api.setModelPositionOrientationAndScale(this._model, a, b, c)
+};
+geofs.api.Model.prototype.setLocation = function(a) { //
+    this.setPositionOrientationAndScale(a)
+};
+geofs.api.Model.prototype.setColor = function(a) { //
+    this._model.color = a
+};
+geofs.api.Model.prototype.setCssColor = function(a) { //
+    this._model.color = Cesium.Color.fromCssColorString(a)
+};
+geofs.api.Model.prototype.hide = function() { //
+    geofs.api.setModelVisibility(this._model, !1)
+};
+geofs.api.Model.prototype.show = function() { //
+    geofs.api.setModelVisibility(this._model, !0)
+};
+geofs.api.Model.prototype.destroy = function() { //
+
+    geofs.api.destroyModel(this._model)
+};
+geofs.api.Model.prototype.remove = function() { //
+    geofs.api.removeFromWorld(this._model)
+};
+geofs.api.loadModel = function(a) {
+    "string" == typeof a && (a = {
+        url: a
+    });
+    a = $.extend({}, {
+        castShadows: !1,
+        receiveShadows: !1
+    }, a);
+    var b = Cesium.ShadowMode.DISABLED;
+    a.castShadows && (b = Cesium.ShadowMode.CAST_ONLY);
+    a.receiveShadows && (b = Cesium.ShadowMode.RECEIVE_ONLY);
+    a.castShadows && a.receiveShadows && (b = Cesium.ShadowMode.ENABLED);
+    a.shadows = b;
+    b = Cesium.Model.fromGltf(a);
+    a.justLoad || geofs.api.addModelToWorld(b);
+    return b
+};
+geofs.api.addModelToWorld = function(a) {
+    a && (a.isDestroyed() || geofs.api.models.add(a))
+};
+geofs.api.toggleModelShadow = function(a, b) {
+    geofs.api.viewer.shadows && a && !a.isDestroyed() && (a.shadows = b ? Cesium.ShadowMode.CAST_ONLY : Cesium.ShadowMode.DISABLED)
+};
+geofs.api.removeModelFromWorld = function(a) {
+    a && (a.isDestroyed() || geofs.api.models.remove(a))
+};
+geofs.api.setModelVisibility = function(a, b) {
+    if (!a || a.isDestroyed())
+        return !1;
+    a.show = b;
+    return !0
+};
+geofs.api.destroyModel = function(a) {
+    a && (geofs.api.removeModelFromWorld(a),
+        a.isDestroyed() || a.destroy())
+};
+geofs.fromHeadingPitchRoll = function(a, b, c, d) {
+    d = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_X, -b);
+    c = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, -c);
+    d = Cesium.Quaternion.multiply(d, c, c);
+    a = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Z, -a);
+    return Cesium.Quaternion.multiply(a, d, d)
+};
+geofs.headingPitchRollScaleToFixedFrame = function(a, b, c, d, e) {
+    var f = new Cesium.Quaternion;
+    e = new Cesium.Cartesian3(e[0], e[1], e[2]);
+    var g = new Cesium.Matrix4;
+    b = geofs.fromHeadingPitchRoll(b, c, d, f);
+    b = Cesium.Matrix4.fromTranslationQuaternionRotationScale(Cesium.Cartesian3.ZERO, b, e, g);
+    a = Cesium.Transforms.eastNorthUpToFixedFrame(a);
+    return Cesium.Matrix4.multiply(a, b, a)
+};
+geofs.api.getPositionOrientationAndScaleMatrix = function(a, b, c) {
+    c = c || [1, 1, 1];
+    b = b || [0, 0, 0];
+    a = a || [0, 0, 0];
+    a = Cesium.Cartesian3.fromDegrees(a[1], a[0], a[2]);
+    return geofs.headingPitchRollScaleToFixedFrame(a, b[0] * DEGREES_TO_RAD, b[1] * DEGREES_TO_RAD, b[2] * DEGREES_TO_RAD, c)
+};
+geofs.api.setModelElevation = function(a, b) {
+    geofs.api.setModelPositionOrientationAndScale(a, [a._apiLla[0], a._apiLla[1], b])
+};
+geofs.api.setModelPositionOrientationAndScale = function(a, b, c, d) {
+    a && !a.isDestroyed() && (d = d || a._apiScale || [1, 1, 1],
+        c = c || a._apiHtr || [0, 0, 0],
+        b = b || a._apiLla || [0, 0, 0],
+        V3.isValid(c) ? V3.isValid(d) ? V3.isValid(b) ? (a.modelMatrix = geofs.api.getPositionOrientationAndScaleMatrix(b, c, d),
+            a._apiScale = d,
+            a._apiHtr = c,
+            a._apiLla = b) : geofs.debug.debugger() : geofs.debug.debugger() : geofs.debug.debugger())
+};
+geofs.api.getModelNode = function(a, b) {
+    a._geofsNodes = a._geofsNodes || {};
+    if (!a._geofsNodes[b]) {
+        if (!a || !a.ready)
+            return !1;
+        a._geofsNodes[b] = a.getNode(b)
+    }
+    return a._geofsNodes[b]
+};
+geofs.api.setModelRotationPosition = function(a, b, c) {
+    a.originalTranform || (a.originalTranform = a.modelMatrix.clone(a.originalTranform));
+    if (b)
+        var d = Cesium.Matrix3.fromColumnMajorArray(M33.toArray(b));
+    if (c)
+        var e = Cesium.Cartesian3.fromDegrees(c[1], c[0], c[2]);
+    a.modelMatrix = Cesium.Matrix4.fromRotationTranslation(d, e);
+    b = Cesium.Transforms.eastNorthUpToFixedFrame(e);
+    a.modelMatrix = Cesium.Matrix4.multiply(b, a.modelMatrix, b)
+};
+geofs.api.setNodeRotationTranslation = function(a, b, c) {
+    a.originalTranform || (a.originalTranform = a.matrix.clone(a.originalTranform));
+    if (b)
+        var d = Cesium.Matrix3.fromColumnMajorArray(M33.toArray(b));
+    if (c)
+        var e = new Cesium.Cartesian3(c[0], c[1], c[2]);
+    b = Cesium.Matrix4.fromRotationTranslation(d, e);
+    a.matrix = Cesium.Matrix4.multiply(a.originalTranform, b, a.matrix)
+};
+geofs.api.setNodeScale = function(a, b) {
+    b = Cesium.Matrix4.fromScale(new Cesium.Cartesian3(b[0], b[1], b[2]));
+    a.matrix = Cesium.Matrix4.multiply(a.matrix, b, a.matrix)
+};
+geofs.api.setNodeVisibility = function(a, b) {
+    if (!a)
+        return !1;
+    a.show = b;
+    return !0
+};
+geofs.api.getNodePosition = function(a) {
+    a = Cesium.Matrix4.getTranslation(a.matrix, new Cesium.Cartesian3);
+    return [a.x, a.y, a.z]
+};
+geofs.api.getNodeRotation = function(a) {
+    return M33.identity()
+};
+geofs.api.setEntityPositionOrientation = function(a, b, c) {
+    if (a)
+        if (c = c || a._apiHtr || [0, 0, 0],
+            b = b || a._apiLla || [0, 0, 0],
+            V3.isValid(c))
+            if (V3.isValid(b)) {
+                var d = Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]),
+                    e = new Cesium.ConstantProperty(Cesium.Transforms.headingPitchRollQuaternion(d, new Cesium.HeadingPitchRoll(c[0] * DEGREES_TO_RAD, c[1] * DEGREES_TO_RAD, c[2] * DEGREES_TO_RAD)));
+                a.position = d;
+                a.orientation = e;
+                geofs.debug.watch("x", d.x);
+                geofs.debug.watch("y", d.y);
+                geofs.debug.watch("z", d.z);
+                a._apiHtr = c;
+                a._apiLla = b
+            } else
+                geofs.debug.debugger();
+    else
+        geofs.debug.debugger()
+};
+geofs.api.initAndGetCamera = function() {
+    geofs.api.camera = geofs.api.viewer.camera;
+    return geofs.api.camera
+};
+geofs.api.getFOV = function(a) {
+    return a.frustum.fov
+};
+geofs.api.setFOV = function(a, b) {
+    a.frustum.fov = b
+};
+geofs.api.setCameraPositionAndOrientation = function(a, b, c) {
+    V3.isValid(b) ? V3.isValid(c) ? (a.position = Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]),
+        a.setView({
+            orientation: {
+                heading: Cesium.Math.toRadians(c[0]),
+                pitch: Cesium.Math.toRadians(c[1]),
+                roll: Cesium.Math.toRadians(c[2])
             }
-        },
-        event: function(a, b, c, d) {
-            geofs.api.pageTracker ? geofs.api.pageTracker._trackEvent(a, b, c, d) : geofs.api.analytics.init()
+        })) : geofs.debug.debugger() : geofs.debug.debugger()
+};
+geofs.api.getCameraLla = function(a) {
+    a = a.positionCartographic;
+    return [a.latitude * RAD_TO_DEGREES, a.longitude * RAD_TO_DEGREES, a.height]
+};
+geofs.api.setCameraLookAt = function(a, b) {
+    a.lookAt(Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]))
+};
+geofs.api.getHeading = function(a) {
+    return a.heading * RAD_TO_DEGREES
+};
+geofs.api.debug = function(a) {
+    geofs.api.viewer && (geofs.api.viewer.scene.debugShowFramesPerSecond = a ? !0 : !1)
+};
+geofs.api.getLlaFromScreencoordDepth = function(a, b, c) {
+    a = geofs.camera.cam.getPickRay(new Cesium.Cartesian2(a, b));
+    c = Cesium.Ray.getPoint(a, c);
+    if (!isNaN(c.x))
+        return c = Cesium.Cartographic.fromCartesian(c, null, new Cesium.Cartographic), [c.latitude * RAD_TO_DEGREES, c.longitude * RAD_TO_DEGREES, c.height]
+};
+geofs.api.getScreenCoordFromLla = function(a) {
+    return Cesium.SceneTransforms.wgs84ToWindowCoordinates(geofs.api.viewer.scene, Cesium.Cartesian3.fromDegrees(a[1], a[0], a[2]))
+};
+geofs.api.xyz2lla = function(a, b) {
+    var c = new Cesium.Matrix4,
+        d = geofs.api.viewer.scene.globe.ellipsoid,
+        e = Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]);
+    Cesium.Transforms.eastNorthUpToFixedFrame(e, d, c);
+    a = new Cesium.Cartesian3(a[0], a[1], a[2]);
+    c = Cesium.Matrix4.multiplyByPoint(c, a, new Cesium.Cartesian3);
+    return (d = Cesium.Cartographic.fromCartesian(c, d, new Cesium.Cartographic)) ? [d.latitude * RAD_TO_DEGREES - b[0], d.longitude * RAD_TO_DEGREES - b[1], d.height - b[2]] : [0, 0, 0]
+};
+geofs.api.cssTransform = function() {
+    this._$element = $('<div class="geofs-overlay"></div>').appendTo(".geofs-overlay-container");
+    this.positionY = this.positionX = this.rotation = 0;
+    this.offset = {
+        x: 0,
+        y: 0
+    }
+};
+geofs.api.cssTransform.rotationThreshold = 0;
+geofs.api.cssTransform.translationThreshold = 0;
+geofs.api.cssTransform.prototype = {
+    setDrawOrder: function(a) {
+        this._$element.css("z-index", a + geofs.api.overlayBaseZIndex)
+    },
+    setUrl: function(a) {
+        var b = this;
+        a && (this.image = new Image,
+            this.image.src = a,
+            this.image.onload = function() {
+                b.loaded()
+            },
+            this._$element.css("background-image", 'url("' + a + '")'))
+    },
+    setText: function(a) {
+        this._$element.html(a);
+        this._$element.addClass("geofs-textOverlay")
+    },
+    setTitle: function(a) {
+        this._$element.attr("title", a)
+    },
+    setClass: function(a) {
+        this._$element.addClass(a)
+    },
+    setStyle: function(a) {
+        this._$element.attr("style", a)
+    },
+    loaded: function() {
+        this.naturalSize = {
+            x: this.image.width,
+            y: this.image.height
+        };
+        $(this).trigger("load")
+    },
+    setFrameSize: function(a) {
+        this._$element.css("width", a.x + "px");
+        this._$element.css("height", a.y + "px")
+    },
+    setVisibility: function(a) {
+        a ? this._$element.css("display", "block") : this._$element.css("display", "none")
+    },
+    setAnchor: function(a) {
+        this._$element.css("margin-left", -a.x + "px ");
+        this._$element.css("margin-bottom", -a.y + "px ")
+    },
+    setRotationCenter: function(a) {
+        this._$element.css("transform-origin", a.x + "px " + a.y + "px")
+    },
+    setSize: function(a) {
+        this._$element.css("background-size", a.x + "px " + a.y + "px")
+    },
+    setPosition: function(a) {
+        this._$element.css("left", a.x + "px");
+        this._$element.css("bottom", a.y + "px")
+    },
+    setPositionX: function(a) {
+        Math.abs(a - this.positionX) < geofs.api.cssTransform.translationThreshold || (this._$element.css("left", a + "px"),
+            this.positionX = a)
+    },
+    setPositionY: function(a) {
+        Math.abs(a - this.positionY) < geofs.api.cssTransform.translationThreshold || (this._$element.css("bottom", a + "px"),
+            this.positionY = a)
+    },
+    setPositionOffset: function(a) {
+        Math.abs(a.x - this.offset.x) < geofs.api.cssTransform.translationThreshold && Math.abs(a.y - this.offset.y) < geofs.api.cssTransform.translationThreshold || (this._$element.css("background-position", a.x + "px " + a.y + "px"),
+            this.offset.x = a.x,
+            this.offset.y = a.y)
+    },
+    setOpacity: function(a) {
+        this._$element.css("opacity", a)
+    },
+    setRotation: function(a) {
+        if (!(Math.abs(a - this.rotation) < geofs.api.cssTransform.rotationThreshold)) {
+            var b = "rotate(" + fixAngle360(-a) + "deg)";
+            this._$element.css("transform", b);
+            this.rotation = a
         }
+    },
+    destroy: function() {
+        this._$element.remove();
+        this._$element = null
+    }
+};
+geofs.api.billboard = function(a, b, c) {
+    c = $.extend({
+        collection: "default"
+    }, c);
+    a = a || [0, 0, 0];
+    c.image = c.image || b;
+    c.image += geofs.killCache;
+    c.position = Cesium.Cartesian3.fromDegrees(a[1], a[0], a[2]);
+    geofs.api.billboards[c.collection] || (geofs.api.billboards[c.collection] = geofs.api.viewer.scene.primitives.add(new Cesium.BillboardCollection({
+        scene: geofs.api.viewer.scene,
+        blendOption: Cesium.BlendOption.OPAQUE_AND_TRANSLUCENT
+    })));
+    this._billboard = geofs.api.billboards[c.collection].add(c);
+    this._lla = a;
+    c.altitudeMode == geofs.api.ALTITUDE_RELATIVE && (this._billboard.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND);
+    c.altitudeMode == geofs.api.CLAMP_TO_GROUND && (this._billboard.heightReference = Cesium.HeightReference.CLAMP_TO_GROUND);
+    c.opacity && this.setOpacity(c.opacity);
+    c.scale && this.setScale(c.scale);
+    c.rotation && this.setRotation(c.rotation);
+    c.geofsFixCameraRotation && this.fixCameraRotation();
+    this._options = c
+};
+geofs.api.billboard.prototype = {
+    setUrl: function(a) {},
+    setVisibility: function(a) {
+        this._billboard && (this._billboard.show = a)
+    },
+    setColor: function(a) {
+        this._billboard && (a.alpha = this.opacity || 1,
+            this._billboard.color = a)
+    },
+    setCssColor: function(a) {
+        this._billboard && (this._billboard.color = Cesium.Color.fromCssColorString(a))
+    },
+    setOpacity: function(a) {
+        if (this._billboard) {
+            var b = this._billboard.color || new Cesium.Color(1, 1, 1, 1);
+            b.alpha = a;
+            this._billboard.color = b;
+            this.opacity = a
+        }
+    },
+    setRotation: function(a) {
+        this._billboard && (this._billboard.rotation = a)
+    },
+    setScale: function(a) {
+        this._billboard && (this._billboard.scale = a)
+    },
+    setLocation: function(a) {
+        this._billboard && (V3.isValid(a) ? (this._lla = a,
+            this._billboard.position = Cesium.Cartesian3.fromDegrees(a[1], a[0], a[2])) : geofs.debug.debugger())
+    },
+    getLla: function(a) {
+        return this._lla
+    },
+    fixCameraRotation: function() {
+        var a = this;
+        this.rotationFixCallback = geofs.api.addFrameCallback(function() {
+            a._billboard.rotation = geofs.camera.radianRoll
+        }, "billboardsRotationFix")
+    },
+    destroy: function() {
+        this._billboard && (geofs.api.removeFrameCallback(this.rotationFixCallback, "billboardsRotationFix"),
+            geofs.api.billboards[this._options.collection].remove(this._billboard),
+            this._billboard = null)
+    }
+};
+geofs.api.notify = function(a, b, c) {
+    $.haring.create(a, b || "OK", c)
+};
+geofs.api.analytics = {
+    init: function() {
+        try {
+            window._gat && window._gaq && (geofs.api.pageTracker = _gat._getTracker("UA-2996341-8"),
+                _gaq.push(["_trackPageview"]))
+        } catch (a) {
+            geofs.debug.error(a)
+        }
+    },
+    event: function(a, b, c, d) {
+        geofs.api.pageTracker ? geofs.api.pageTracker._trackEvent(a, b, c, d) : geofs.api.analytics.init()
+    }
+};
+geofs.api.Canvas = function(a) {
+    this.canvas = document.createElement("canvas");
+    this.canvas.height = a.height;
+    this.canvas.width = a.width;
+    this.context = this.canvas.getContext("2d");
+    this.context.fillStyle = "green";
+    this.context.fillRect(10, 10, 100, 100)
+};
+geofs.api.Canvas.prototype = {
+    getTexture: function() {
+        return this.canvas.toDataURL()
+    },
+    destroy: function() {}
+};
+window.Cesium && (Cesium.sampleTerrainMostDetailed = function(a, b) {
+    return a.readyPromise.then(function() {
+        for (var c = [], d = a.availability, e = 0; e < b.length; ++e) {
+            var f = b[e],
+                g = a.maximumLevel;
+            d && (g = d.computeMaximumLevelAtPosition(f));
+            g = Math.min(g, a.maximumLevel);
+            var h = c[g];
+            h || (c[g] = h = []);
+            h.push(f)
+        }
+        return Cesium.when.all(c.map(function(b, c) {
+            if (b)
+                return Cesium.sampleTerrain(a, c, b)
+        })).then(function() {
+            return b
+        })
+    })
+});
+geofs.api.FlatRunwayTerrainProvider = function(a) {
+    var b = this;
+    this.baseProvider = a.baseProvider;
+    this.regions = {};
+    this.tiles = {};
+    this.minFlatteningLevel = this.defaultMinFlatteningLevel = 6;
+    this.maximumLevel = 13;
+    this.defaultMaximumLevel = a.maximumLevel || this.maximumLevel;
+    this.flatten = !a.bypass;
+    this.setMaximumLevel(this.maximumLevel);
+    a = function() {
+        b.regions = {};
+        for (var a in geofs.runways.nearRunways)
+            b.addRunway(geofs.runways.nearRunways[a])
     };
-    geofs.api.Canvas = function(a) {
-        this.canvas = document.createElement("canvas");
-        this.canvas.height = a.height;
-        this.canvas.width = a.width;
-        this.context = this.canvas.getContext("2d");
-        this.context.fillStyle = "green";
-        this.context.fillRect(10, 10, 100, 100)
-    };
-    geofs.api.Canvas.prototype = {
-        getTexture: function() {
-            return this.canvas.toDataURL()
-        },
-        destroy: function() {}
-    };
-    window.Cesium && (Cesium.sampleTerrainMostDetailed = function(a, b) {
-        return a.readyPromise.then(function() {
-            for (var c = [], d = a.availability, e = 0; e < b.length; ++e) {
-                var f = b[e],
-                    g = Math.min(d.computeMaximumLevelAtPosition(f), a.maximumLevel),
-                    h = c[g];
-                h || (c[g] = h = []);
-                h.push(f)
-            }
-            return Cesium.when.all(c.map(function(b, c) {
-                if (b)
-                    return Cesium.sampleTerrain(a, c, b)
-            })).then(function() {
-                return b
+    $(document).on("runwayUpdate", a);
+    a()
+};
+geofs.api.FlatRunwayTerrainProvider.prototype = {
+    aName: "FlatRunwayTerrainProvider",
+    get availability() {
+        return this.baseProvider.availability
+    },
+    get credit() {
+        return this.baseProvider.credit
+    },
+    get errorEvent() {
+        return this.baseProvider.errorEvent
+    },
+    get hasVertexNormals() {
+        return this.baseProvider.hasVertexNormals
+    },
+    get hasWaterMask() {
+        return this.baseProvider.hasWaterMask
+    },
+    get ready() {
+        return this.baseProvider.ready
+    },
+    get readyPromise() {
+        return this.baseProvider.readyPromise
+    },
+    get tilingScheme() {
+        return this.baseProvider.tilingScheme
+    },
+    getLevelMaximumGeometricError: function(a) {
+        return this.baseProvider.getLevelMaximumGeometricError(a)
+    },
+    getTileDataAvailable: function(a, b, c) {
+        return c > this.maximumLevel || c > this.defaultMaximumLevel ? !1 : this.baseProvider.getTileDataAvailable(a, b, c)
+    },
+    setMaximumLevel: function(a) {
+        a > this.defaultMaximumLevel && (a = this.defaultMaximumLevel);
+        this.minFlatteningLevel = a < this.defaultMinFlatteningLevel ? a : this.defaultMinFlatteningLevel;
+        this.maximumLevel = a
+    },
+    addRunway: function(a) {
+        var b = xy2ll([a.padding, a.padding], a.threshold1);
+        a.rec = Cesium.Rectangle.fromDegrees(Math.min(a.threshold1[1], a.threshold2[1]) - b[1], Math.min(a.threshold1[0], a.threshold2[0]) - b[0], Math.max(a.threshold1[1], a.threshold2[1]) + b[1], Math.max(a.threshold1[0], a.threshold2[0]) + b[0]);
+        a.threshold1Cartesian = Cesium.Cartesian3.fromDegrees(a.threshold1[1], a.threshold1[0]);
+        a.threshold2Cartesian = Cesium.Cartesian3.fromDegrees(a.threshold2[1], a.threshold2[0]);
+        a.direction = Cesium.Cartesian3.subtract(a.threshold1Cartesian, a.threshold2Cartesian, new Cesium.Cartesian3);
+        a = {
+            name: a.id,
+            rec: a.rec,
+            runways: [a],
+            vertices: {}
+        };
+        for (var c in this.regions)
+            b = this.regions[c],
+            void 0 !== Cesium.Rectangle.intersection(b.rec, a.rec) && (a.rec = Cesium.Rectangle.union(a.rec, b.rec),
+                a.name += b.name,
+                a.runways = a.runways.concat(b.runways),
+                delete this.regions[c]);
+        this.regions[a.name] = a
+    },
+    requestTileGeometry: function(a, b, c, d) {
+        if (c >= this.minFlatteningLevel && this.flatten) {
+            var e = this.baseProvider.tilingScheme.tileXYToRectangle(a, b, c),
+                f;
+            for (f in this.regions)
+                if (void 0 !== Cesium.Rectangle.intersection(this.regions[f].rec, e))
+                    return a = this.baseProvider.requestTileGeometry(a, b, c, d),
+                        void 0 === a ? void 0 : this.getPromise(a, e, this.regions[f])
+        }
+        return this.baseProvider.requestTileGeometry(a, b, c, d)
+    },
+    getPromise: function(a, b, c) {
+        var d = this;
+        if (void 0 !== a) {
+            var e = new Promise(function(a, b) {
+                if (c.referenceElevation)
+                    a(c.referenceElevation);
+                else {
+                    var e = Cesium.sampleTerrain(d.baseProvider, d.maximumLevel, [Cesium.Cartographic.fromDegrees(c.runways[0].threshold1[1], c.runways[0].threshold1[0])]);
+                    Cesium.when(e, function(d) {
+                        d[0] && d[0].height ? (c.referenceElevation = d[0].height,
+                            a(c.referenceElevation)) : b("no value")
+                    })
+                }
+            });
+            return Promise.all([e, a]).then(function(a) {
+                try {
+                    var d = a[0],
+                        e = a[1];
+                    for (a = 0; a < c.runways.length; a++) {
+                        var f = c.runways[a],
+                            m = !1;
+                        e._oldMinimumHeight = e._minimumHeight;
+                        e._oldMaximumHeight = e._maximumHeight;
+                        var v = 32767 / (e._oldMaximumHeight - e._oldMinimumHeight);
+                        d > e._maximumHeight && (e._maximumHeight = d,
+                            m = !0);
+                        d < e._minimumHeight && (e._minimumHeight = d,
+                            m = !0);
+                        for (var y = e._oldMinimumHeight - e._minimumHeight, C = 32767 / (e._maximumHeight - e._minimumHeight), I = (d - e._minimumHeight) * C, w = 0; w < e._heightValues.length; w++) {
+                            var z = b.south + e._quantizedVertices[e._heightValues.length + w] / 32767 * b.height,
+                                D = b.west + e._quantizedVertices[w] / 32767 * b.width;
+                            if (Cesium.Rectangle.contains(c.rec, new Cesium.Cartographic(D, z, 0))) {
+                                var A = Cesium.Cartesian3.fromRadians(D, z);
+                                Cesium.Cartesian3.subtract(f.threshold1Cartesian, A, A);
+                                var t = Cesium.Cartesian3.magnitude(A),
+                                    n = Cesium.Cartesian3.multiplyByScalar(f.direction, Cesium.Cartesian3.dot(A, f.direction) / Cesium.Cartesian3.dot(f.direction, f.direction), new Cesium.Cartesian3),
+                                    N = Cesium.Cartesian3.subtract(A, n, new Cesium.Cartesian3);
+                                if (Math.sqrt(Cesium.Cartesian3.dot(N, N)) < f.padding && t < f.lengthMeters + f.padding) {
+                                    e._heightValues[w] = I;
+                                    continue
+                                }
+                            }
+                            m && (e._heightValues[w] = (e._heightValues[w] / v + y) * C)
+                        }
+                    }
+                    return e
+                } catch (X) {
+                    geofs.debug.log("FlatRunwayTerrainProvider promise: " + X)
+                }
             })
+        }
+    }
+};
+geofs.api.add3dBuildings = function() {
+    geofs.api.viewer.terrainProvider = geofs.api.flatRunwayTerrainProviderInstance = new geofs.api.FlatRunwayTerrainProvider({
+        baseProvider: Cesium.createWorldTerrain({
+            requestWaterMask: !0,
+            requestVertexNormals: !0
         })
     });
-    geofs.api.FlatRunwayTerrainProvider = function(a) {
-        var b = this;
-        this.baseProvider = a.baseProvider;
-        this.regions = {};
-        this.tiles = {};
-        this.minFlatteningLevel = this.defaultMinFlatteningLevel = 6;
-        this.maximumLevel = 13;
-        this.defaultMaximumLevel = a.maximumLevel || this.maximumLevel;
-        this.flatten = !a.bypass;
-        this.setMaximumLevel(this.maximumLevel);
-        a = function() {
-            b.regions = {};
-            for (var a in geofs.runways.nearRunways)
-                b.addRunway(geofs.runways.nearRunways[a])
-        };
-        $(document).on("runwayUpdate", a);
-        a()
-    };
-    geofs.api.FlatRunwayTerrainProvider.prototype = {
-        aName: "FlatRunwayTerrainProvider",
-        get availability() {
-            return this.baseProvider.availability
-        },
-        get credit() {
-            return this.baseProvider.credit
-        },
-        get errorEvent() {
-            return this.baseProvider.errorEvent
-        },
-        get hasVertexNormals() {
-            return this.baseProvider.hasVertexNormals
-        },
-        get hasWaterMask() {
-            return this.baseProvider.hasWaterMask
-        },
-        get ready() {
-            return this.baseProvider.ready
-        },
-        get readyPromise() {
-            return this.baseProvider.readyPromise
-        },
-        get tilingScheme() {
-            return this.baseProvider.tilingScheme
-        },
-        getLevelMaximumGeometricError: function(a) {
-            return this.baseProvider.getLevelMaximumGeometricError(a)
-        },
-        getTileDataAvailable: function(a, b, c) {
-            return c > this.maximumLevel || c > this.defaultMaximumLevel ? !1 : this.baseProvider.getTileDataAvailable(a, b, c)
-        },
-        setMaximumLevel: function(a) {
-            a > this.defaultMaximumLevel && (a = this.defaultMaximumLevel);
-            this.minFlatteningLevel = a < this.defaultMinFlatteningLevel ? a : this.defaultMinFlatteningLevel;
-            this.maximumLevel = a
-        },
-        addRunway: function(a) {
-            var b = xy2ll([a.padding, a.padding], a.threshold1);
-            a.rec = Cesium.Rectangle.fromDegrees(Math.min(a.threshold1[1], a.threshold2[1]) - b[1], Math.min(a.threshold1[0], a.threshold2[0]) - b[0], Math.max(a.threshold1[1], a.threshold2[1]) + b[1], Math.max(a.threshold1[0], a.threshold2[0]) + b[0]);
-            a.threshold1Cartesian = Cesium.Cartesian3.fromDegrees(a.threshold1[1], a.threshold1[0]);
-            a.threshold2Cartesian = Cesium.Cartesian3.fromDegrees(a.threshold2[1], a.threshold2[0]);
-            a.direction = Cesium.Cartesian3.subtract(a.threshold1Cartesian, a.threshold2Cartesian, new Cesium.Cartesian3);
-            a = {
-                name: a.id,
-                rec: a.rec,
-                runways: [a],
-                vertices: {}
-            };
-            for (var c in this.regions)
-                b = this.regions[c],
-                void 0 !== Cesium.Rectangle.intersection(b.rec, a.rec) && (a.rec = Cesium.Rectangle.union(a.rec, b.rec),
-                    a.name += b.name,
-                    a.runways = a.runways.concat(b.runways),
-                    delete this.regions[c]);
-            this.regions[a.name] = a
-        },
-        requestTileGeometry: function(a, b, c, d) {
-            if (c >= this.minFlatteningLevel && this.flatten) {
-                var e = this.baseProvider.tilingScheme.tileXYToRectangle(a, b, c),
-                    f;
-                for (f in this.regions)
-                    if (void 0 !== Cesium.Rectangle.intersection(this.regions[f].rec, e))
-                        return a = this.baseProvider.requestTileGeometry(a, b, c, d),
-                            void 0 === a ? void 0 : this.getPromise(a, e, this.regions[f])
-            }
-            return this.baseProvider.requestTileGeometry(a, b, c, d)
-        },
-        getPromise: function(a, b, c) {
-            var d = this;
-            if (void 0 !== a) {
-                var e = new Promise(function(a, b) {
-                    if (c.referenceElevation)
-                        a(c.referenceElevation);
-                    else {
-                        var e = Cesium.sampleTerrain(d.baseProvider, d.maximumLevel, [Cesium.Cartographic.fromDegrees(c.runways[0].threshold1[1], c.runways[0].threshold1[0])]);
-                        Cesium.when(e, function(d) {
-                            d[0] && d[0].height ? (c.referenceElevation = d[0].height,
-                                a(c.referenceElevation)) : b("no value")
-                        })
-                    }
-                });
-                return Promise.all([e, a]).then(function(a) {
-                    try {
-                        var d = a[0],
-                            e = a[1];
-                        for (a = 0; a < c.runways.length; a++) {
-                            var f = c.runways[a],
-                                n = !1;
-                            e._oldMinimumHeight = e._minimumHeight;
-                            e._oldMaximumHeight = e._maximumHeight;
-                            var v = 32767 / (e._oldMaximumHeight - e._oldMinimumHeight);
-                            d > e._maximumHeight && (e._maximumHeight = d,
-                                n = !0);
-                            d < e._minimumHeight && (e._minimumHeight = d,
-                                n = !0);
-                            for (var z = e._oldMinimumHeight - e._minimumHeight, A = 32767 / (e._maximumHeight - e._minimumHeight), C = (d - e._minimumHeight) * A, w = 0; w < e._heightValues.length; w++) {
-                                var y = b.south + e._quantizedVertices[e._heightValues.length + w] / 32767 * b.height,
-                                    D = b.west + e._quantizedVertices[w] / 32767 * b.width;
-                                if (Cesium.Rectangle.contains(c.rec, new Cesium.Cartographic(D, y, 0))) {
-                                    var B = Cesium.Cartesian3.fromRadians(D, y);
-                                    Cesium.Cartesian3.subtract(f.threshold1Cartesian, B, B);
-                                    var t = Cesium.Cartesian3.magnitude(B),
-                                        m = Cesium.Cartesian3.multiplyByScalar(f.direction, Cesium.Cartesian3.dot(B, f.direction) / Cesium.Cartesian3.dot(f.direction, f.direction), new Cesium.Cartesian3),
-                                        O = Cesium.Cartesian3.subtract(B, m, new Cesium.Cartesian3);
-                                    if (Math.sqrt(Cesium.Cartesian3.dot(O, O)) < f.padding && t < f.lengthMeters + f.padding) {
-                                        e._heightValues[w] = C;
-                                        continue
-                                    }
-                                }
-                                n && (e._heightValues[w] = (e._heightValues[w] / v + z) * A)
-                            }
-                        }
-                        return e
-                    } catch (Y) {
-                        geofs.debug.log("FlatRunwayTerrainProvider promise: " + Y)
-                    }
-                })
-            }
-        }
-    };
-    geofs.api.add3dBuildings = function() {
-        geofs.api.viewer.terrainProvider = geofs.api.flatRunwayTerrainProviderInstance = new geofs.api.FlatRunwayTerrainProvider({
-            baseProvider: Cesium.createWorldTerrain({
-                requestWaterMask: !0,
-                requestVertexNormals: !0
-            })
-        });
-        geofs.useSimpleShadow(!0);
-        geofs.api.buildings = [];
-        [29328, 29331, 29332, 29333, 29334, 29335].forEach(function(a) {
-            geofs.api.buildings.push(geofs.api.viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
-                url: Cesium.IonResource.fromAssetId(a)
-            })))
-        })
-    };
-    geofs.api.tileLayerConstructor = L.tileLayer.fallback;
-    geofs.api.mapMaxZoom = 13;
-    geofs.api.map = function(a, b, c) {
-        var d = this;
-        a.zoom = a.zoom || 10;
-        this._holder = a.holder || $(".geofs-map-viewport")[0];
-        this.map = L.map(this._holder, {
-            minZoom: 3,
-            maxZoom: geofs.api.mapMaxZoom,
-            preferCanvas: !0
-        });
-        L.tileLayer.fallback(geofs.mapXYZ, {
-            attribution: "\u00a9 OpenStreetMap contributors - Made with Natural Earth."
-        }).addTo(this.map);
-        this.icons = {
-            yellow: [],
-            blue: [],
-            traffic: []
-        };
-        for (var e = 0; 36 > e; e++) {
-            var f = e + "";
-            f = ("00" + f).substring(f.length);
-            this.icons.yellow.push(L.icon({
-                iconUrl: geofs.localUrl + "images/map/icons/yellow/icon00" + f + ".png",
-                iconSize: [40, 40],
-                iconAnchor: [20, 20],
-                popupAnchor: [0, 0]
-            }));
-            this.icons.blue.push(L.icon({
-                iconUrl: geofs.localUrl + "images/map/icons/blue/icon00" + f + ".png",
-                iconSize: [30, 30],
-                iconAnchor: [15, 15],
-                popupAnchor: [0, 0]
-            }));
-            this.icons.traffic.push(L.icon({
-                iconUrl: geofs.localUrl + "images/map/icons/blue/icon00" + f + ".png",
-                iconSize: [20, 20],
-                iconAnchor: [10, 10],
-                popupAnchor: [0, 0],
-                className: "geofs-traffic-icon"
-            }))
-        }
-        this.map.on("load zoomend resize moveend", function() {
-            d.updateMarkerLayers()
-        });
-        this.map.getPanes().overlayPane.style.opacity = .7;
-        this.map.setView(L.latLng(b, c), a.zoom);
-        $(document).on("click", ".geofs-createPath", function() {
-            geofs.api.map.flightPathOn ? geofs.api.map.stopCreatePath(d) : geofs.api.map.createPath(d)
-        }).on("click", ".geofs-clearPath", function() {
-            geofs.api.map.clearPath(d)
-        })
-    };
-    geofs.api.map.runwayMarkerRadius = 5;
-    geofs.api.map.defaultLayer = {
-        minZoom: 0,
-        maxZoom: 15,
-        tileSize: 10,
-        tiles: {}
-    };
-    geofs.api.map.prototype = {
-        init: function() {
-            this.updateMarkerLayers();
-            geofs.api.map.instance = this
-        },
-        updateMap: function(a, b) {
-            this.map.panTo(L.latLng(a, b))
-        },
-        addLayeredMarker: function(a, b, c, d) {
-            c = geofs.getLatLonMatrixcoord(c, d, geofs.api.map.runwayLayers[a].tileSize);
-            geofs.api.map.runwayLayers[a] || (geofs.api.map.runwayLayers[a] = Object.assign({}, geofs.api.map.defaultLayer));
-            geofs.api.map.runwayLayers[a].visibileTiles = {};
-            geofs.api.map.runwayLayers[a].tiles[c] || (geofs.api.map.runwayLayers[a].tiles[c] = []);
-            geofs.api.map.runwayLayers[a].tiles[c].push(b)
-        },
-        getVisibleTiles: function(a, b) {
-            var c = a.getNorthEast().wrap(),
-                d = a.getSouthWest().wrap();
-            a = Math.floor(d.lng / b);
-            var e = Math.floor(d.lat / b),
-                f = (parseInt((c.lng - d.lng) / b) || 1) + 2;
-            b = (parseInt((c.lat - d.lat) / b) || 1) + 2;
-            c = {};
-            for (d = a; d < a + f; d++)
-                for (var g = e; g < e + b; g++)
-                    c[g + "/" + d] = !0;
-            return c
-        },
-        showTile: function(a, b) {
-            var c = this;
-            a.visibileTiles && !a.visibileTiles[b] && a.tiles[b] && (a.tiles[b].forEach(function(a) {
-                    a.marker || (a.marker = geofs.api.map.makeMarker(a));
-                    a.marker.addTo(c.map)
-                }),
-                a.visibileTiles[b] = a.tiles[b])
-        },
-        hideTile: function(a, b) {
-            a.visibileTiles && a.visibileTiles[b] && a.tiles[b] && (a.tiles[b].forEach(function(a) {
-                    a.marker && a.marker.remove()
-                }),
-                delete a.visibileTiles[b])
-        },
-        updateMarkerLayers: function() {
-            var a = this.map.getZoom(),
-                b;
-            for (b in geofs.api.map.runwayLayers) {
-                var c = geofs.api.map.runwayLayers[b];
-                if (a > c.minZoom && a < c.maxZoom) {
-                    var d = this.getVisibleTiles(this.map.getBounds(), c.tileSize),
-                        e;
-                    for (e in c.visibileTiles)
-                        d[e] || this.hideTile(c, e);
-                    for (e in d)
-                        this.showTile(c, e)
-                } else
-                    for (e in c.visibileTiles)
-                        this.hideTile(c, e)
-            }
-        },
-        setGenericLocationPopup: function() {
-            var a = this,
-                b = L.popup();
-            this.map.on("contextmenu click", function(c) {
-                if (2 == c.originalEvent.button || geofs.isApp) {
-                    b.closePopup();
-                    var d = c.latlng.lat + "," + c.latlng.lng;
-                    b.setContent('<div class="geofs-map-popup"><ul><li><a href="http://flyto://' + d + ', 0, 0, true">On the ground</a></li><li><a href="http://flyto://' + d + ', 304, 0, true">At 1,000 feet</a></li><li><a href="http://flyto://' + d + ', 914, 0, true">At 3,000 feet</a></li><li><a href="http://flyto://' + d + ', 3048, 0, true">At 10,000 feet</a></li><li><a href="http://flyto://' + d + ', 6096, 0, true">At 20,000 feet</a></li><li><a href="http://flyto://' + d + ', 9144, 0, true">At 30,000 Feet</a></li></ul></div>').setLatLng(c.latlng).openOn(a.map);
-                    c.originalEvent.preventDefault()
+    geofs.useSimpleShadow(!0);
+    geofs.api.buildings = [];
+    [29328, 29331, 29332, 29333, 29334, 29335].forEach(function(a) {
+        geofs.api.buildings.push(geofs.api.viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+            url: Cesium.IonResource.fromAssetId(a),
+            immediatelyLoadDesiredLevelOfDetail: !0,
+            preloadFlightDestinations: !1,
+            skipLevelOfDetail: !0,
+            style: new Cesium.Cesium3DTileStyle({
+                color: {
+                    conditions: [
+                        ["${Height} >= 100", 'color("purple", 0.5)'],
+                        ["${Height} >= 50", 'color("red")']
+                    ]
                 }
             })
-        },
-        mapClickHandler: function(a) {
-            var b = a.target.getAttribute("href");
-            if (b && (b = b.split("://"),
-                    "flyto" == b[1])) {
-                b = b[2].split(",");
-                var c = parseFloat(b[3]),
-                    d = [parseFloat(b[0]), parseFloat(b[1]), parseFloat(b[2]), c];
-                "approach" == b[4] ? (c *= DEGREES_TO_RAD,
-                    c = xy2ll(V2.scale([Math.sin(c), Math.cos(c)], parseFloat(b[5])), d),
-                    d[0] -= c[0],
-                    d[1] -= c[1],
-                    d[2] = d[2] * FEET_TO_METERS + parseFloat(b[6]),
-                    d[4] = !0) : d[4] = b[4];
-                geofs.flyTo(d);
-                a.preventDefault()
+        })))
+    })
+};
+geofs.api.tileLayerConstructor = L.tileLayer.fallback;
+geofs.api.mapMaxZoom = 13;
+geofs.api.mapOption = {
+    minZoom: 3,
+    maxZoom: geofs.api.mapMaxZoom,
+    markerZoomAnimation: !1,
+    worldCopyJump: !0,
+    preferCanvas: !1
+};
+geofs.api.mapTooltipOptions = {
+    permanent: !1
+};
+geofs.api.toolTipPositioning = [{
+    direction: "top",
+    offset: L.point(0, -15)
+}, {
+    direction: "right",
+    offset: L.point(15, 0)
+}, {
+    direction: "bottom",
+    offset: L.point(0, 15)
+}, {
+    direction: "left",
+    offset: L.point(-15, 0)
+}];
+geofs.api.map = function(a, b, c) {
+    var d = this;
+    a.zoom = a.zoom || 10;
+    this._holder = a.holder || $(".geofs-map-viewport")[0];
+    this.map = L.map(this._holder, geofs.api.mapOption);
+    geofs.api.tileLayerConstructor(geofs.mapXYZ, {
+        attribution: "\u00a9 OpenStreetMap contributors - Made with Natural Earth."
+    }).addTo(this.map);
+    this.icons = {
+        yellow: [],
+        blue: [],
+        traffic: []
+    };
+    this.icons.yellow = L.icon({
+        iconUrl: geofs.localUrl + "images/map/icons/yellow.png",
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
+        popupAnchor: [0, 0],
+        className: "geofs-map-icon"
+    });
+    this.icons.blue = L.icon({
+        iconUrl: geofs.localUrl + "images/map/icons/blue.png",
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+        popupAnchor: [0, 0],
+        className: "geofs-map-icon"
+    });
+    this.icons.traffic = L.icon({
+        iconUrl: geofs.localUrl + "images/map/icons/blue.png",
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+        popupAnchor: [0, 0],
+        className: "geofs-traffic-icon"
+    });
+    this.map.on("load zoomend resize moveend", function() {
+        d.updateMarkerLayers()
+    });
+    this.map.on("zoomend", function() {
+        for (var a in ui.playerMarkers) {
+            var b = ui.playerMarkers[a]._marker;
+            b._icon.style.transform += " rotate(" + b._geofsRotation + "deg)"
+        }
+    });
+    this.map.getPane("tooltipPane").style.opacity = .9;
+    this.map.getPane("overlayPane").style.opacity = .7;
+    this.map.setView(L.latLng(b, c), a.zoom);
+    $(document).on("click", ".geofs-createPath", function() {
+        geofs.api.map.flightPathOn ? geofs.api.map.stopCreatePath(d) : geofs.api.map.createPath(d)
+    }).on("click", ".geofs-clearPath", function() {
+        geofs.api.map.clearPath(d)
+    })
+};
+geofs.api.map.runwayMarkerRadius = 7;
+geofs.api.map.defaultLayer = {
+    minZoom: 0,
+    maxZoom: 15,
+    tileSize: 10,
+    tiles: {}
+};
+geofs.api.map.prototype = {
+    init: function() {
+        this.updateMarkerLayers();
+        geofs.api.map.instance = this
+    },
+    updateMap: function(a, b) {
+        this.map.panTo(L.latLng(a, b))
+    },
+    addLayeredMarker: function(a, b, c, d) {
+        c = geofs.getLatLonMatrixcoord(c, d, geofs.api.map.runwayLayers[a].tileSize);
+        geofs.api.map.runwayLayers[a] || (geofs.api.map.runwayLayers[a] = Object.assign({}, geofs.api.map.defaultLayer));
+        geofs.api.map.runwayLayers[a].visibileTiles = {};
+        geofs.api.map.runwayLayers[a].tiles[c] || (geofs.api.map.runwayLayers[a].tiles[c] = []);
+        geofs.api.map.runwayLayers[a].tiles[c].push(b)
+    },
+    getVisibleTiles: function(a, b) {
+        var c = a.getNorthEast().wrap(),
+            d = a.getSouthWest().wrap();
+        a = Math.floor(d.lng / b);
+        var e = Math.floor(d.lat / b),
+            f = (parseInt((c.lng - d.lng) / b) || 1) + 2;
+        b = (parseInt((c.lat - d.lat) / b) || 1) + 2;
+        c = {};
+        for (d = a; d < a + f; d++)
+            for (var g = e; g < e + b; g++)
+                c[g + "/" + d] = !0;
+        return c
+    },
+    showTile: function(a, b) {
+        var c = this;
+        a.visibileTiles && !a.visibileTiles[b] && a.tiles[b] && (a.tiles[b].forEach(function(a) {
+                a.marker || (a.marker = geofs.api.map.makeRunwayMarker(a, c));
+                a.marker.addTo(c.map)
+            }),
+            a.visibileTiles[b] = a.tiles[b])
+    },
+    hideTile: function(a, b) {
+        a.visibileTiles && a.visibileTiles[b] && a.tiles[b] && (a.tiles[b].forEach(function(a) {
+                a.marker && (a.marker.remove(),
+                    a.marker = null)
+            }),
+            delete a.visibileTiles[b])
+    },
+    updateMarkerLayers: function() {
+        var a = this.map.getZoom(),
+            b;
+        for (b in geofs.api.map.runwayLayers) {
+            var c = geofs.api.map.runwayLayers[b];
+            if (a > c.minZoom && a < c.maxZoom) {
+                var d = this.getVisibleTiles(this.map.getBounds(), c.tileSize),
+                    e;
+                for (e in c.visibileTiles)
+                    d[e] || this.hideTile(c, e);
+                for (e in d)
+                    this.showTile(c, e)
+            } else
+                for (e in c.visibileTiles)
+                    this.hideTile(c, e)
+        }
+    },
+    setGenericLocationPopup: function() {
+        var a = this,
+            b = L.popup();
+        this.map.on("contextmenu click", function(c) {
+            if (2 == c.originalEvent.button || geofs.isApp) {
+                b.closePopup();
+                var d = c.latlng.lat + "," + c.latlng.lng;
+                b.setContent('<div class="geofs-map-popup"><button class="mdl-button mdl-js-button" href="http://flyto://' + d + ', 0, 0, true">Ground</button><button class="mdl-button mdl-js-button" href="http://flyto://' + d + ', 304, 0, true">1,000 feet</button><button class="mdl-button mdl-js-button" href="http://flyto://' + d + ', 914, 0, true">3,000 feet</button><button class="mdl-button mdl-js-button" href="http://flyto://' + d + ', 3048, 0, true">10,000 feet</button><button class="mdl-button mdl-js-button" href="http://flyto://' + d + ', 6096, 0, true">20,000 feet</button><button class="mdl-button mdl-js-button" href="http://flyto://' + d + ', 9144, 0, true">30,000 Feet</button></div>').setLatLng(c.latlng).openOn(a.map);
+                c.originalEvent.preventDefault()
             }
-        }
-    };
-    geofs.api.map.runwayLayers = {
-        major: {
-            minZoom: 6,
-            maxZoom: 15,
-            tileSize: 5,
-            tiles: {}
-        },
-        minor: {
-            minZoom: 8,
-            maxZoom: 15,
-            tileSize: 5,
-            tiles: {}
-        }
-    };
-    geofs.api.map.majorRunwayMarkers = [];
-    geofs.api.map.minorRunwayMarkers = [];
-    geofs.api.map.addRunwayMarker = function(a, b) {
-        var c = a[2] + "," + a[3],
-            d = a[5];
-        b.addLayeredMarker(d ? "major" : "minor", {
-            lat: a[2],
-            lon: a[3],
-            options: {
-                radius: geofs.api.map.runwayMarkerRadius,
-                color: "#000000",
-                weight: 1,
-                fillColor: d ? "#9797ff" : "#ffff99",
-                fillOpacity: 1,
-                pane: "overlayPane"
-            },
-            popupContent: '<div class="geofs-map-popup"><b>' + a[0] + '</b><br><a href="http://flyto://' + c + ",0," + a[1] + '">Take-off from</a><a href="http://flyto://' + c + ",1000," + a[1] + '">Fly by</a><a href="http://flyto://' + c + "," + a[4] + "," + a[1] + ',approach,4800,450">Approach</a></div>'
-        }, a[2], a[3])
-    };
-    geofs.api.map.makeMarker = function(a) {
-        return L.circleMarker(L.latLng(a.lat, a.lon), a.options).bindPopup(a.popupContent)
-    };
-    geofs.api.map.planeMarker = function(a, b, c, d, e, f) {
-        this.style = d = d || "blue";
-        this.apiMap = c;
-        this._marker = L.marker(L.latLng(a, b), {
-            icon: c.icons[d][0],
-            title: f,
-            zIndexOffset: e
-        }).addTo(c.map)
-    };
-    geofs.api.map.planeMarker.prototype = {
-        updatePlaneMarker: function(a, b, c, d) {
-            this._marker.setLatLng(L.latLng(a, b));
-            d && (this._marker._icon.title = d);
-            a = this.apiMap.icons[this.style][Math.floor(fixAngle360(c) / 10)];
-            this._marker.setIcon(a)
-        },
-        destoryPlaneMarker: function(a) {
-            this._marker && this._marker.remove()
-        }
-    };
-    geofs.api.map.flightPath = null;
-    geofs.api.map.flightPathOn = !1;
-    geofs.api.map.createPath = function(a, b) {
-        var c = {
-            weight: 5
-        };
-        geofs.api.map.flightPath || (geofs.api.map.flightPath = L.Polyline.Plotter(b || [], c).addTo(a.map));
-        geofs.api.map.flightPath.setReadOnly(!1);
-        $(".geofs-createPath").addClass("on");
-        $(".geofs-clearPath").show();
-        geofs.api.map.flightPathOn = !0
-    };
-    geofs.api.map.stopCreatePath = function() {
-        geofs.api.map.flightPath && (geofs.api.map.flightPath.setReadOnly(!0),
-            $(".geofs-createPath").removeClass("on"),
-            geofs.api.map.flightPathOn = !1)
-    };
-    geofs.api.map.clearPath = function() {
-        geofs.api.map.flightPath && (geofs.api.map.stopCreatePath(),
-            geofs.api.map.flightPath.remove(),
-            geofs.api.map.flightPath = null,
-            $(".geofs-clearPath").hide())
-    };
-    geofs.api.map.getPathPoints = function() {
-        if (geofs.api.map.flightPath) {
-            var a = [];
-            geofs.api.map.flightPath.getLatLngs().forEach(function(b) {
-                a.push([b.lat, b.lng])
-            });
-            return a
-        }
-    };
-    geofs.api.map.setPathPoints = function(a) {
-        geofs.api.map.instance && (geofs.api.map.clearPath(),
-            geofs.api.map.createPath(geofs.api.map.instance, a))
-    };
-    geofs.api.reverserGeocode = function(a, b) {
-        jQuery.getJSON("https://api.opencagedata.com/geocode/v1/json?q=" + a + "&key=f7681dd621b540a6847d2dae0dc33a99", function(a) {
-            try {
-                if (a.results && 0 < a.results.length) {
-                    var c = a.results[0].geometry;
-                    b(c.lat, c.lng)
-                }
-            } catch (e) {}
         })
+    },
+    mapClickHandler: function(a) {
+        var b = $(a.target).closest("[href]").attr("href");
+        if (b && (b = b.split("://"),
+                "flyto" == b[1])) {
+            b = b[2].split(",");
+            var c = parseFloat(b[3]),
+                d = [parseFloat(b[0]), parseFloat(b[1]), parseFloat(b[2]), c];
+            "approach" == b[4] ? (c *= DEGREES_TO_RAD,
+                c = xy2ll(V2.scale([Math.sin(c), Math.cos(c)], parseFloat(b[5])), d),
+                d[0] -= c[0],
+                d[1] -= c[1],
+                d[2] = d[2] * FEET_TO_METERS + parseFloat(b[6]),
+                d[4] = !0) : d[4] = b[4];
+            geofs.flyTo(d);
+            a.preventDefault()
+        }
+    },
+    setTooltipVisibility: function(a) {
+        geofs.api.mapTooltipOptions.permanent = a
     }
-})();
+};
+geofs.api.map.runwayLayers = {
+    major: {
+        minZoom: 6,
+        maxZoom: 15,
+        tileSize: 5,
+        tiles: {}
+    },
+    minor: {
+        minZoom: 8,
+        maxZoom: 15,
+        tileSize: 5,
+        tiles: {}
+    }
+};
+geofs.api.map.majorRunwayMarkers = [];
+geofs.api.map.minorRunwayMarkers = [];
+geofs.api.map.runwayMarkerPopup = function(a) {
+    a = a.options.runway;
+    var b = a[3] + "," + a[4];
+    return '<div class="geofs-map-popup"><header><span class="mdl-chip"><span class="mdl-chip__text"><b>' + a[0] + "</b> " + a[1] + '</span></span></header><button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" href="http://flyto://' + b + ",0," + a[2] + '" title="Take-off from"><i class="material-icons">flight_takeoff</i></button><button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" href="http://flyto://' + b + ",1000," + a[2] + '" title="Fly by"><i class="material-icons">flight</i></button><button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" href="http://flyto://' + b + "," + a[5] + "," + a[2] + ',approach,4800,450" title="Approach"><i class="material-icons">flight_land</i></button></div>'
+};
+geofs.api.map.addRunwayMarker = function(a, b) {
+    b.addLayeredMarker(a[6] ? "major" : "minor", a, a[3], a[4])
+};
+geofs.api.map.makeRunwayMarker = function(a, b) {
+    return L.circleMarker([a[3], a[4]], {
+        radius: geofs.api.map.runwayMarkerRadius,
+        color: "#ffffff",
+        weight: 2,
+        fillColor: a[6] ? "#184888" : "#ffd200",
+        fillOpacity: 1,
+        pane: "overlayPane",
+        runway: a
+    }).bindPopup(geofs.api.map.runwayMarkerPopup, {
+        minWidth: 200
+    })
+};
+geofs.api.map.planeMarker = function(a, b, c, d, e, f) {
+    this.style = d = d || "blue";
+    this.apiMap = c;
+    this.label = f;
+    this._marker = L.marker(L.latLng(a, b), {
+        icon: c.icons[d],
+        riseOnHover: !0
+    }).addTo(c.map);
+    f && (a = Object.assign({}, geofs.api.mapTooltipOptions, geofs.api.toolTipPositioning[Math.floor(4 * Math.random())]),
+        this._marker.bindTooltip(f, a))
+};
+geofs.api.map.planeMarker.prototype = {
+    updatePlaneMarker: function(a, b, c, d) {
+        this._marker.setLatLng(L.latLng(a, b));
+        d && (this.label = d,
+            this._marker.setTooltipContent(d));
+        this._marker._geofsRotation = c;
+        this._marker._icon.style.transform += " rotate(" + this._marker._geofsRotation + "deg)"
+    },
+    destoryPlaneMarker: function(a) {
+        this._marker && this._marker.remove()
+    },
+    resetTooltip: function() {
+        if (this._marker) {
+            this._marker.unbindTooltip();
+            var a = Object.assign({}, geofs.api.mapTooltipOptions, geofs.api.toolTipPositioning[Math.floor(4 * Math.random())]);
+            this._marker.bindTooltip(this.label, a)
+        }
+    }
+};
+geofs.api.map.flightPath = null;
+geofs.api.map.flightPathOn = !1;
+geofs.api.map.createPath = function(a, b) {
+    var c = {
+        weight: 5
+    };
+    geofs.api.map.flightPath || (geofs.api.map.flightPath = L.Polyline.Plotter(b || [], c).addTo(a.map));
+    geofs.api.map.flightPath.setReadOnly(!1);
+    $(".geofs-createPath").addClass("on");
+    $(".geofs-clearPath").show();
+    geofs.api.map.flightPathOn = !0
+};
+geofs.api.map.stopCreatePath = function() {
+    geofs.api.map.flightPath && (geofs.api.map.flightPath.setReadOnly(!0),
+        $(".geofs-createPath").removeClass("on"),
+        geofs.api.map.flightPathOn = !1)
+};
+geofs.api.map.clearPath = function() {
+    geofs.api.map.flightPath && (geofs.api.map.stopCreatePath(),
+        geofs.api.map.flightPath.remove(),
+        geofs.api.map.flightPath = null,
+        $(".geofs-clearPath").hide())
+};
+geofs.api.map.getPathPoints = function() {
+    if (geofs.api.map.flightPath) {
+        var a = [];
+        geofs.api.map.flightPath.getLatLngs().forEach(function(b) {
+            a.push([b.lat, b.lng])
+        });
+        return a
+    }
+};
+geofs.api.map.setPathPoints = function(a) {
+    geofs.api.map.instance && (geofs.api.map.clearPath(),
+        geofs.api.map.createPath(geofs.api.map.instance, a))
+};
+geofs.api.reverserGeocode = function(a, b) {
+    jQuery.getJSON("https://api.opencagedata.com/geocode/v1/json?q=" + a + "&key=f7681dd621b540a6847d2dae0dc33a99", function(a) {
+        try {
+            if (a.results && 0 < a.results.length) {
+                var c = a.results[0].geometry;
+                b(c.lat, c.lng)
+            }
+        } catch (e) {}
+    })
+};
 geofs.api.isMobile = function() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? !0 : !1
 };
@@ -24220,10 +24300,10 @@ geofs.animation.getValue = function(a) {
 geofs.animation.filter = function(a, b) {
     if ("random" == a.value)
         b = Math.random();
-    else if ($.isFunction(a.value)) {
+    else if (a["function"]) {
         if (b = 0, !geofs.aircraft.instance.aircraftRecord.isCommunity)
             try {
-                b = a.value()
+                b = Function(a["function"])()
             } catch (f) {
                 b = 0
             }
@@ -24331,6 +24411,9 @@ geofs.utils.hashCode = function(a) {
     }
     return b + ""
 };
+geofs.utils.displayAltitude = function(a) {
+    return a = 18E3 < a ? "FL" + 5 * Math.round(a / 500) : a + "ft."
+};
 
 function absMin(a, b) {
     asbA = Math.abs(a);
@@ -24420,15 +24503,12 @@ function clamp(a, b, c) {
     return a > c ? c : a < b ? b : a
 }
 
-function clamp(a, b, c) {
-    return void 0 == b || void 0 == c ? a : a < b ? b : a > c ? c : a
-}
-
 function geoDecodeLocation(a, b) {
     geofs.api.reverserGeocode(a, b)
 }
 
 function Overlay(a, b) {
+    var c = this;
     this.definition = {
         url: "",
         anchor: {
@@ -24487,11 +24567,10 @@ function Overlay(a, b) {
     this.overlay.setClass(this.definition.class);
     this.overlay.setStyle(this.definition.style);
     this.overlay.setDrawOrder(this.definition.drawOrder || 0);
-    var c = this;
-    $(this.overlay).on("load", function() {
-        var a = c.definition.size.x / this.naturalSize.x;
-        c.definition.size = this.naturalSize;
-        c._sizeScale = a;
+    $(this.overlay).one("load", function(a) {
+        var b = c.definition.size.x / a.currentTarget.naturalSize.x;
+        c.definition.size = a.currentTarget.naturalSize;
+        c._sizeScale = b;
         c.scaleAndPlace()
     });
     this.overlay.setVisibility(this.definition.visibility);
@@ -24585,7 +24664,7 @@ Overlay.prototype.place = function(a) {
             x: this.parent.position.x + this.definition.position.x * this.scale.x,
             y: this.parent.position.y + this.definition.position.y * this.scale.y
         }) : (a = a || this.definition.position,
-        "cockpit" == camera.currentModeName && this.definition.cockpit ? this.position = a : this.definition.alignment && ("right" == this.definition.alignment.x && (this.position.x = geofs.viewportWidth - a.x * this.scale.x),
+        "cockpit" == geofs.camera.currentModeName && this.definition.cockpit ? this.position = a : this.definition.alignment && ("right" == this.definition.alignment.x && (this.position.x = geofs.viewportWidth - a.x * this.scale.x),
             "center" == this.definition.alignment.x && (this.position.x = geofs.viewportWidth / 2 - a.x * this.scale.x),
             "top" == this.definition.alignment.y && (this.position.y = geofs.viewportHeight - a.y * this.scale.y),
             "center" == this.definition.alignment.y && (this.position.y = geofs.viewportHeight / 2 - a.y * this.scale.y)));
@@ -24728,8 +24807,6 @@ function clone(a) {
 
 function serialize(a) {
     var b = function(a) {
-        if ("undefined" !== typeof a.toSource && "undefined" === typeof a.callee)
-            return a.toSource();
         switch (typeof a) {
             case "number":
             case "boolean":
@@ -24767,14 +24844,13 @@ geofs.selectDropdown = function(a, b) {
 geofs.getLink = function() {
     var a = geofs.aircraft.instance.llaLocation[2];
     geofs.aircraft.instance.groundContact && (a = 0);
-    var b = new URL(window.location.href);
-    b = b.origin + b.pathname + "?";
-    b += "aircraft=" + geofs.aircraft.instance.id;
-    b += "&lon=" + geofs.aircraft.instance.llaLocation[1];
-    b += "&lat=" + geofs.aircraft.instance.llaLocation[0];
-    b = b + ("&alt=" + a) + ("&heading=" + geofs.aircraft.instance.htr[0]);
-    geofs.preferences.weather.windActive && geofs.preferences.weather.customWindActive && (b += "&windspeed=" + geofs.preferences.weather.windSpeed,
-        b += "&windheading=" + geofs.preferences.weather.windDirection);
+    new URL(window.location.href);
+    var b = geofs.masterDomain + "/fly?";
+    b += "a=" + geofs.aircraft.instance.id;
+    b += "&lo=" + geofs.aircraft.instance.llaLocation[1].toFixed(5);
+    b += "&la=" + geofs.aircraft.instance.llaLocation[0].toFixed(5);
+    b += "&al=" + a.toFixed();
+    b += "&h=" + geofs.aircraft.instance.htr[0].toFixed();
     a = "Use this link to start the simulator at the current location:<textarea>" + b + "</textarea>";
     $(".geofs-linkOutput").html(a)
 };
@@ -24837,9 +24913,11 @@ PID.prototype.compute = function(a, b) {
     return clamp(this._kp * c + this._iTerm - this._kd * b, this._minOutput, this._maxOutput)
 };
 geofs.useSimpleShadow = function(a) {
-    0 == a ? (geofs.aircraft.instance && geofs.aircraft.instance.removeShadow(),
-        geofs.api.useNativeShadows(!0)) : (geofs.aircraft.instance && geofs.aircraft.instance.addShadow(),
-        geofs.api.useNativeShadows(!1))
+    0 == a && !1 !== geofs.simpleShadowOn ? (geofs.aircraft.instance && geofs.aircraft.instance.removeShadow(),
+        geofs.api.useNativeShadows(!0),
+        geofs.simpleShadowOn = !1) : 1 != a || geofs.simpleShadowOn || (geofs.aircraft.instance && geofs.aircraft.instance.addShadow(),
+        geofs.api.useNativeShadows(!1),
+        geofs.simpleShadowOn = !0)
 };
 geofs.disableShadows = function() {
     geofs.shadowsDisabled || (geofs.useSimpleShadow(!0),
@@ -24868,22 +24946,6 @@ geofs.shadow.prototype = {
         this.context = this.shadowBox = null
     }
 };
-geofs.light = function(a, b, c) {
-    a = a || [0, 0, 0];
-    this._billboard = new geofs.api.billboard(a, geofs.fx.texture2url[b], c)
-};
-geofs.light.prototype = {
-    destroy: function() {
-        this._billboard.destroy()
-    },
-    setVisibility: function(a) {
-        this._billboard.setVisibility(a);
-        return !0
-    },
-    setLocation: function(a) {
-        this._billboard.setLocation(a)
-    }
-};
 geofs.coord2tile = function(a, b, c) {
     return {
         x: Math.floor((b + 180) / 360 * Math.pow(2, c)),
@@ -24901,8 +24963,8 @@ geofs.getLatLonMatrixcoord = function(a, b, c) {
     return parseInt(a / c) + "/" + parseInt(b / c)
 };
 "use strict";
-var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, "/");
 window.geofs = window.geofs || {};
+var PAGE_PATH = document.location.href.replace(/\/[^\/]+$/, "/");
 geofs.includes = {};
 geofs.init = function(a) {
     geofs.PRODUCTION = geofs.PRODUCTION || !1;
@@ -24932,15 +24994,8 @@ geofs.init = function(a) {
         controls.init();
         geofs.api.renderingQuality(geofs.preferences.graphics.quality);
         geofs.api.enhanceColors(geofs.preferences.graphics.enhanceColors);
-        geofs.api.setWaterEffect(geofs.preferences.graphics.waterEffect);
         var a = getURLParameters();
-        a.coordinates = [parseFloat(a.lat) || void 0, parseFloat(a.lon) || void 0, parseFloat(a.alt) || void 0, parseFloat(a.heading) || void 0, !0];
-        a.windspeed && a.windheading && (a.weather = {
-            windActive: !0,
-            customWindActive: !0,
-            windDirection: parseInt(a.windheading),
-            windSpeed: parseInt(a.windspeed)
-        });
+        a.coordinates = [parseFloat(a.lat) || parseFloat(a.la) || void 0, parseFloat(a.lon) || parseFloat(a.lo) || void 0, parseFloat(a.alt) || parseFloat(a.al) || 0, parseFloat(a.heading) || parseFloat(a.h) || void 0, !0];
         geofs.preferences = $.extend(!0, geofs.preferences, a);
         var c = geofs.preferences.coordinates;
         c && (-90 > c[0] || 90 < c[0] || -180 > c[1] || 180 < c[1] || 1E5 < c[2]) && (c = null);
@@ -24952,20 +25007,17 @@ geofs.init = function(a) {
             ],
             c = geofs.initialRunways[Math.floor(Math.random() * geofs.initialRunways.length)]);
         geofs.aircraft.instance = new geofs.aircraft.Aircraft(c);
-        a = a.aircraft || geofs.preferences.aircraft || 1;
+        a = a.aircraft || a.a || geofs.preferences.aircraft || 1;
         geofs.doPause(1);
         geofs.probeTerrain();
         geofs.aircraft.instance.load(a, c);
-        camera.init();
+        geofs.camera.init();
         objects.init();
         weather.init();
         multiplayer.init();
         geofs.fx.init();
         weather.refresh(c);
-        geofs.initLoggedInUser();
-        setInterval(function() {
-            "function" == typeof CollectGarbage && CollectGarbage()
-        }, 5E3)
+        geofs.initLoggedInUser()
     });
     geofs.lastTime = geofs.utils.now();
     $(window).unload(geofs.unload);
@@ -25005,9 +25057,7 @@ geofs.probeTerrain = function() {
     geofs.cautiousWithTerrain || $(geofs.canvas).trigger("terrainUnstable");
     geofs.cautiousWithTerrain = !0;
     clearTimeout(geofs.probbingTimeout);
-    geofs.probbingTimeout = setTimeout(function() {
-        geofs.terrainProbbingDone()
-    }, geofs.terrainProbingDuration)
+    geofs.probbingTimeout = setTimeout(geofs.terrainProbbingDone, geofs.terrainProbingDuration)
 };
 geofs.togglePause = function() {
     geofs.pause ? geofs.undoPause(2) : geofs.doPause(2)
@@ -25019,6 +25069,7 @@ geofs.isPaused = function() {
 geofs.doPause = function(a, b) {
     a = a || 0;
     geofs.pauses = geofs.pauses || {};
+    2 == a && (geofs.userPause = !0);
     a < geofs.pauseLevel || (b || multiplayer.stopUpdates(),
         audio.stop(),
         flight.recorder.stopRecording(),
@@ -25028,34 +25079,36 @@ geofs.doPause = function(a, b) {
         geofs.pauseLevel = a)
 };
 geofs.undoPause = function(a) {
-    (a || 0) < geofs.pauseLevel || (geofs.lastTime = null,
+    a = a || 0;
+    2 == a && (geofs.userPause = !1);
+    a < geofs.pauseLevel || (geofs.userPause ? geofs.pauseLevel = 2 : (geofs.lastTime = null,
         geofs.cautiousWithTerrain ? ($(geofs.canvas).one("terrainStable", multiplayer.startUpdates),
             $(geofs.canvas).one("terrainStable", flight.recorder.startRecording)) : (multiplayer.startUpdates(),
             flight.recorder.startRecording()),
         geofs.pause = !1,
         ui.toggleButton(".geofs-button-pause", !1),
         geofs.pauseLevel = 0,
-        flight.recorder.unpausePlayback())
+        flight.recorder.unpausePlayback(),
+        geofs.api.triggerExplicitRendering()))
 };
 geofs.frameCallback = function(a) {
-    if (geofs.lastTime) {
-        var b = a - geofs.lastTime;
-        geofs.lastTime = a;
-        0 >= b && (b = 1);
-        1E3 < b && (b = 1E3);
-        a = b / 1E3;
-        flight.terrainElevationManagement();
-        geofs.pause ? camera.update(a) : (controls.update(a),
-            flight.tick(a, b),
-            multiplayer.update(b),
-            geofs.debug.update(b),
-            camera.update(a),
-            instruments.update(),
-            audio.update(),
-            geofs.fx.update(b));
-        weather.update(a)
-    } else
-        geofs.lastTime = a
+    var b = a - geofs.lastTime;
+    geofs.lastTime = a;
+    0 >= b && (b = 1);
+    1E3 < b && (b = 1E3);
+    a = b / 1E3;
+    flight.terrainElevationManagement();
+    geofs.pause || (controls.update(a),
+        flight.tick(a, b),
+        multiplayer.update(b),
+        geofs.debug.update(b),
+        instruments.update(),
+        audio.update(),
+        geofs.fx.update(b),
+        geofs.api.adaptativeRenderingQuality());
+    3 > geofs.pauseLevel && (geofs.camera.update(a),
+        weather.update(a),
+        geofs.api.triggerExplicitRendering())
 };
 geofs.flyTo = function(a, b) {
     if (a) {
@@ -25075,8 +25128,8 @@ geofs.flyTo = function(a, b) {
         g[0] = a[3];
         a = 0 == f;
         c.llaLocation = [d, e, f];
-        b ? camera.set(camera.currentMode) : (geofs.probeTerrain(),
-            camera.reset(),
+        b ? geofs.camera.set(geofs.camera.currentMode) : (geofs.probeTerrain(),
+            geofs.camera.reset(),
             controls.reset(),
             weather.refresh());
         c.reset(a);
@@ -25086,26 +25139,29 @@ geofs.flyTo = function(a, b) {
         geofs.runwaysLights.updateAll();
         b = geofs.getGroundAltitude(d, e).location[2];
         geofs.groundElevation = b;
-        a ? (f = geofs.groundElevation + c.setup.startAltitude,
+        a ? (f = geofs.groundElevation + c.definition.startAltitude,
             c.absoluteStartAltitude = !1) : c.absoluteStartAltitude || (f += geofs.groundElevation);
         c.llaLocation[2] = f;
         c.elevationAtPreviousLocation = b;
         c.previousLlaLocation = c.llaLocation;
-        a ? (g[1] = c.setup.startTilt || 0,
+        a ? (g[1] = c.definition.startTilt || 0,
             c.startOnGround = !0,
-            c.place(c.llaLocation, g)) : (c.startOnGround = !1,
             c.place(c.llaLocation, g),
             c.object3d.compute(c.llaLocation),
-            f = c.setup.minimumSpeed / 1.94 * c.setup.mass,
+            c.render()) : (c.startOnGround = !1,
+            c.place(c.llaLocation, g),
+            c.object3d.compute(c.llaLocation),
+            f = c.definition.minimumSpeed / 1.94 * c.definition.mass,
             c.rigidBody.applyCentralImpulse(V3.scale(c.object3d.getWorldFrame()[1], f)));
         geofs.undoPause(1);
-        camera.update(0);
+        geofs.camera.setToNeutral();
+        geofs.camera.update(2);
         flight.recorder.clear();
         $(document).trigger("flyto")
     }
 };
 geofs.flyToCamera = function() {
-    geofs.flyTo(camera.getFlytToCoordinates())
+    geofs.flyTo(geofs.camera.getFlytToCoordinates())
 };
 geofs.resetFlight = function() {
     geofs.lastFlightCoordinates && geofs.flyTo(geofs.lastFlightCoordinates, !0)
@@ -25290,13 +25346,15 @@ geofs.preferencesDefault = {
     weather: {
         sun: !1,
         localTime: 12,
-        season: 0,
+        season: 1,
         manual: !0,
         quality: 0,
-        customWindActive: !1,
-        windSpeed: 0,
-        windDirection: 0,
-        randomizeWind: !0
+        advanced: {
+            clouds: 0,
+            fog: 0,
+            windSpeed: 0,
+            windDirection: 0
+        }
     },
     graphics: {
         quality: 3,
@@ -25394,13 +25452,21 @@ geofs.readPreferences = function(a) {
     } catch (d) {
         geofs.debug.error(d, "geofs.readPreferences"),
             alert("Unable to read saved preferendes. Preferences are reset to default."),
-            c == {}
+            geofs.resetPreferences()
     }
     geofs.preferences.version = geofs.version;
     geofs.preferences = $.extend(!0, {}, geofs.preferencesDefault, c);
     geofs.preferences.graphics.waterEffect = !1;
     geofs.userRecord.id || (geofs.preferences.chat = !1);
-    a && a();
+    if (a)
+        try {
+            a()
+        } catch (d) {
+            geofs.debug.error(d, "geofs.readPreferences>callback"),
+                alert("Error during GeoFS initialization. Preferences are reset to default. Please contact support if this error keeps occurring."),
+                geofs.resetPreferences(),
+                a()
+        }
     $(document).trigger("preferenceRead")
 };
 geofs.populateButtonAssignments = function() {
@@ -25414,7 +25480,7 @@ geofs.populateButtonAssignments = function() {
             d;
         for (d in controls.joystick.buttons)
             c += '<div class="geofs-feedback-wrapper"><label>Button ' + controls.joystick.buttons[d].globalId + '</label><div class="geofs-feedback" button="' + d + '"></div>',
-            c += '<select gespref="geofs.preferences.joystick.buttons.' + d + '" update="controls.joystick.configure">' + b + "</div>";
+            c += '<select gespref="geofs.preferences.joystick.buttons.' + d + '" update="{controls.joystick.configure()}">' + b + "</div>";
         a.html(c)
     }
 };
@@ -25431,9 +25497,9 @@ geofs.populateAxesAssignments = function() {
             c += '<div class="geofs-feedback-wrapper"><label>Axis ' + controls.joystick.axes[d].globalId + "</label>",
             c += '<select gespref="geofs.preferences.joystick.axis.' + d + '">' + b,
             c += '<div class="progress" axis="' + d + '"><div class="bar"></div></div>',
-            c += '<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" title="Reverse axis">',
-            c += '<input type="checkbox" class="mdl-switch__input" gespref="geofs.preferences.joystick.multiplier.' + d + '" update="controls.setMode();">',
-            c += '<span class="mdl-switch__label">Reverse</span>',
+            c += '<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" title="Inverse axis">',
+            c += '<input type="checkbox" class="mdl-switch__input" gespref="geofs.preferences.joystick.multiplier.' + d + '" update="{controls.setMode()}">',
+            c += '<span class="mdl-switch__label">Inverse</span>',
             c += "</label>";
         a.html(c)
     }
@@ -25448,28 +25514,35 @@ geofs.populateKeyAssignments = function() {
     }
     a.html(b);
     componentHandler.upgradeDom();
-    a.on("click focus", ".geofs-preferences-key-detect", function() {
-        $(".geofs-preference-key-detecting", a).each(function() {
-            this.value = this._originalValue;
-            $(this).removeClass("geofs-preference-key-detecting")
+    a.on("click focus", ".geofs-preferences-key-detect", function(b) {
+        $(".geofs-preference-key-detecting", a).each(function(a, b) {
+            b.value = b._originalValue;
+            $(b).removeClass("geofs-preference-key-detecting")
         });
-        this._originalValue = this.value;
-        this.value = "";
-        $(this).addClass("geofs-preference-key-detecting")
+        b.currentTarget._originalValue = b.currentTarget.value;
+        b.currentTarget.value = "";
+        $(b.currentTarget).addClass("geofs-preference-key-detecting")
     }).on("keyup", ".geofs-preferences-key-detect", function(a) {
-        $(this).hasClass("geofs-preference-key-detecting") && (27 != a.which ? (this.value = geofs.preferencesKeycodeLookup[a.which] ? geofs.preferencesKeycodeLookup[a.which] : this.value.toUpperCase(),
-                this.setAttribute("keycode", a.which),
-                geofs.setPreferenceFromInput(this)) : this.value = this._originalValue,
-            $(this).removeClass("geofs-preference-key-detecting"),
-            $(this).blur(),
-            a.stopPropagation(),
-            a.preventDefault())
+        var b = a.currentTarget;
+        if ($(b).hasClass("geofs-preference-key-detecting")) {
+            if (27 != a.which) {
+                var c = geofs.preferencesKeycodeLookup[a.which] ? geofs.preferencesKeycodeLookup[a.which] : b.value.toUpperCase();
+                b.value = c;
+                b.setAttribute("keycode", a.which);
+                geofs.setPreferenceFromInput(b)
+            } else
+                b.value = b._originalValue;
+            $(b).removeClass("geofs-preference-key-detecting");
+            $(b).blur();
+            a.stopPropagation();
+            a.preventDefault()
+        }
     }).on("keydown", ".geofs-preferences-key-detect", function(a) {
-        $(this).hasClass("geofs-preference-key-detecting") && 9 == a.which && (a.stopPropagation(),
+        $(a.currentTarget).hasClass("geofs-preference-key-detecting") && 9 == a.which && (a.stopPropagation(),
             a.preventDefault())
     }).on("blur", ".geofs-preferences-key-detect", function(a) {
-        $(this).hasClass("geofs-preference-key-detecting") && ("" == this.value && (this.value = this._originalValue),
-            $(this).removeClass("geofs-preference-key-detecting"),
+        $(a.currentTarget).hasClass("geofs-preference-key-detecting") && ("" == a.currentTarget.value && (a.currentTarget.value = a.currentTarget._originalValue),
+            $(a.currentTarget).removeClass("geofs-preference-key-detecting"),
             a.stopPropagation(),
             a.preventDefault())
     })
@@ -25497,19 +25570,19 @@ geofs.preferencesTestOrientation = function() {
 };
 geofs.preferencesStartFeedback = function() {
     geofs.preferencesFeedbackInterval || (geofs.preferencesFeedbackInterval = setInterval(function() {
-        geofs.preferencesTestJoystick() && ($(".geofs-preferences-joystick .progress[axis]", geofs.$preferencePanel).each(function() {
-                var a = controls.joystick.getAxisValue(this.getAttribute("axis"));
+        geofs.preferencesTestJoystick() && ($(".geofs-preferences-joystick .progress[axis]", geofs.$preferencePanel).each(function(a, b) {
+                a = controls.joystick.getAxisValue(b.getAttribute("axis"));
                 a = 50 * (a + 1);
-                $(this).find(".bar").css("width", a + "%")
+                $(b).find(".bar").css("width", a + "%")
             }),
-            $(".geofs-preferences-joystick .geofs-feedback[button]", geofs.$preferencePanel).each(function() {
-                controls.joystick.checkButton(parseInt(this.getAttribute("button"))) ? $(this).addClass("on") : $(this).removeClass("on")
+            $(".geofs-preferences-joystick .geofs-feedback[button]", geofs.$preferencePanel).each(function(a, b) {
+                controls.joystick.checkButton(parseInt(b.getAttribute("button"))) ? $(b).addClass("on") : $(b).removeClass("on")
             }));
-        geofs.preferencesTestOrientation() && $(".geofs-preferences-orientation .progress[axis]", geofs.$preferencePanel).each(function() {
-            var a = controls.orientation.getNormalizedAxis(geofs.preferences.orientation.axis[this.getAttribute("axis")]);
+        geofs.preferencesTestOrientation() && $(".geofs-preferences-orientation .progress[axis]", geofs.$preferencePanel).each(function(a, b) {
+            a = controls.orientation.getNormalizedAxis(geofs.preferences.orientation.axis[b.getAttribute("axis")]);
             a *= 100;
-            this.getAttribute("centered") && (a = (a + 100) / 2);
-            $(this).find(".bar").css("width", a + "%")
+            b.getAttribute("centered") && (a = (a + 100) / 2);
+            $(b).find(".bar").css("width", a + "%")
         })
     }, 100))
 };
@@ -25518,63 +25591,91 @@ geofs.preferencesStopFeedback = function() {
     geofs.preferencesFeedbackInterval = null
 };
 geofs.initializePreferencesPanel = function() {
-    controls.joystick.ready && (geofs.populateButtonAssignments(),
-        geofs.populateAxesAssignments());
-    $(controls.joystick).on("joystickReady", function() {
-        geofs.populateButtonAssignments();
-        geofs.populateAxesAssignments();
-        geofs.setPreferenceValues(geofs.$preferencePanel.find(".geofs-preferences-joystick"))
-    });
-    geofs.setPreferenceValues(geofs.$preferencePanel);
-    geofs.populateKeyAssignments();
-    geofs.preferencesTestJoystick();
-    geofs.preferencesTestOrientation();
-    geofs.preferencesDebugInfo()
+    geofs.preferenceInitialized || (controls.joystick.ready && (geofs.populateButtonAssignments(),
+            geofs.populateAxesAssignments()),
+        $(controls.joystick).on("joystickReady", function() {
+            geofs.populateButtonAssignments();
+            geofs.populateAxesAssignments();
+            geofs.setPreferenceValues(geofs.$preferencePanel.find(".geofs-preferences-joystick"));
+            geofs.setInputHandlers(geofs.$preferencePanel.find(".geofs-preferences-joystick"))
+        }),
+        geofs.setPreferenceValues(geofs.$preferencePanel),
+        geofs.setInputHandlers(geofs.$preferencePanel),
+        geofs.populateKeyAssignments(),
+        geofs.preferencesTestJoystick(),
+        geofs.preferencesTestOrientation(),
+        geofs.preferencesDebugInfo(),
+        geofs.preferenceInitialized = !0)
 };
 geofs.setPreferenceValues = function(a) {
-    $(a).find("[gespref]").each(function() {
-        var a = $(this),
-            c = this.getAttribute("data-type") || this.getAttribute("type");
-        "SELECT" == this.nodeName && (c = "select");
-        c = c.toLowerCase();
-        for (var d = this.getAttribute("gespref").split("."), e = window, f = 0; f < d.length - 1; f++)
-            e = e[d[f]];
-        d = e[d[f]];
-        switch (c) {
+    $(a).find("[gespref]").each(function(a, c) {
+        var b = $(c),
+            e = c.getAttribute("data-type") || c.getAttribute("type");
+        "SELECT" == c.nodeName && (e = "select");
+        e = e.toLowerCase();
+        var f = c.getAttribute("gespref").split("."),
+            g = window;
+        for (a = 0; a < f.length - 1; a++)
+            g = g[f[a]];
+        a = g[f[a]];
+        switch (e) {
             case "slider":
-                a.slider("value", d);
-                a.on("change", function(a, b) {
-                    geofs.setPreferenceFromInput(this)
-                });
+                b.slider("value", a);
                 break;
             case "select":
-                geofs.selectDropdown(this, d);
-                this.onchange = function() {
-                    geofs.setPreferenceFromInput(this)
-                };
+                geofs.selectDropdown(c, a);
                 break;
             case "radio-button":
-                (c = this.getAttribute("matchvalue")) && c == d && a.addClass("is-checked");
-                a.on("click", "input", function() {
-                    geofs.setPreferenceFromInput(this)
-                });
+                (c = c.getAttribute("matchvalue")) && c == a && b.addClass("is-checked");
                 break;
             case "checkbox":
             case "radio":
-                c = (c = this.getAttribute("matchvalue")) ? c == d : 1 == d;
-                a.prop("checked", c);
-                c ? a.parent(".mdl-radio, .mdl-switch").addClass("is-checked") : a.parent(".mdl-radio, .mdl-switch").removeClass("is-checked");
-                this.onchange = function() {
-                    geofs.setPreferenceFromInput(this)
+                c = (c = c.getAttribute("matchvalue")) ? c == a : 1 == a;
+                b.prop("checked", c);
+                c ? b.parent(".mdl-radio, .mdl-switch").addClass("is-checked") : b.parent(".mdl-radio, .mdl-switch").removeClass("is-checked");
+                break;
+            case "keydetect":
+                break;
+            default:
+                c.value = a
+        }
+    })
+};
+geofs.setInputHandlers = function(a) {
+    $(a).find("[gespref]").each(function(a, c) {
+        a = $(c);
+        var b = c.getAttribute("data-type") || c.getAttribute("type");
+        "SELECT" == c.nodeName && (b = "select");
+        b = b.toLowerCase();
+        switch (b) {
+            case "slider":
+                a.handlerSet || (a.on("change", function(a, b) {
+                        geofs.setPreferenceFromInput(a.currentTarget)
+                    }),
+                    a.handlerSet = !0);
+                break;
+            case "select":
+                c.onchange = function() {
+                    geofs.setPreferenceFromInput(event.currentTarget)
+                };
+                break;
+            case "radio-button":
+                c.onclick = function(a) {
+                    geofs.setPreferenceFromInput(a.currentTarget)
+                };
+                break;
+            case "checkbox":
+            case "radio":
+                c.onchange = function(a) {
+                    geofs.setPreferenceFromInput(a.currentTarget)
                 };
                 break;
             case "keydetect":
                 break;
             default:
-                this.value = d,
-                    this.onchange = function() {
-                        geofs.setPreferenceFromInput(this)
-                    }
+                c.onchange = function(a) {
+                    geofs.setPreferenceFromInput(a.currentTarget)
+                }
         }
     })
 };
@@ -25625,24 +25726,21 @@ geofs.setPreferenceFromInput = function(a) {
             }
             var h = a.getAttribute("update");
             if (h) {
-                c = function(a) {
-                    var b = eval(h);
-                    "function" == typeof b && b(a)
-                };
+                var k = new Function("value", h);
                 try {
-                    c.call(a, g)
-                } catch (k) {
-                    geofs.debug.error(k, "setPreferenceFromInput updateFunction.call")
+                    k.call(a, g)
+                } catch (m) {
+                    geofs.debug.error(m, "setPreferenceFromInput updateFunction.call")
                 }
             }
         }
-    } catch (k) {
-        geofs.debug.error(k, "geofs.setPreferenceFromInput")
+    } catch (m) {
+        geofs.debug.error(m, "geofs.setPreferenceFromInput")
     }
 };
 geofs.savePreferencesPanel = function() {
-    $("[gespref]", geofs.$preferencePanel).each(function() {
-        geofs.setPreferenceFromInput(this)
+    $("[gespref]:not(.geofs-disabled)", geofs.$preferencePanel).each(function(a, b) {
+        geofs.setPreferenceFromInput(b)
     });
     geofs.destroyPreferencePanel();
     geofs.savePreferences()
@@ -25714,21 +25812,22 @@ ui.init = function() {
     $(document).on("click", ".geofs-stopMousePropagation", function(a) {
         a.stopImmediatePropagation()
     });
-    $(document).on("click", "[data-aircraft]", function() {
-        geofs.aircraft.instance.change($(this).attr("data-aircraft"));
+    $(document).on("click", "[data-aircraft]", function(a) {
+        geofs.aircraft.instance.change(a.currentTarget.getAttribute("data-aircraft"), a.currentTarget.getAttribute("data-livery"));
         ui.panel.hide(null, !0);
-        event.stopPropagation()
+        a.stopPropagation()
     });
-    $(document).on("click", "[data-camera]", function() {
-        eval($(this).attr("data-camera"))
+    $(document).on("click", "[data-camera]", function(a) {
+        a = a.currentTarget.getAttribute("data-camera");
+        Number.isInteger(parseInt(a)) ? geofs.camera.set(parseInt(a)) : geofs.camera.set(null, a)
     });
     $(document).on("click", "[data-location]", function(a) {
-        eval($(this).attr("data-location"));
+        Function("{" + a.currentTarget.getAttribute("data-location") + "}")();
         ui.panel.hide(null, !0);
         a.stopPropagation()
     });
     $(document).on("click", "[data-player]", function(a) {
-        a = $(this).attr("data-player");
+        a = a.currentTarget.getAttribute("data-player");
         var b = multiplayer.users[a].getCoordinates();
         b[0] -= .003 * Math.cos(b[3] * DEGREES_TO_RAD);
         b[1] -= .003 * Math.sin(b[3] * DEGREES_TO_RAD);
@@ -25773,14 +25872,14 @@ ui.runMouseUpHandlers = function(a) {
 ui.panel = {
     init: function() {
         $(document).on("click", "[data-toggle-panel]", function(a) {
-            ui.panel.toggle($(this).attr("data-toggle-panel"));
+            ui.panel.toggle($(a.currentTarget).attr("data-toggle-panel"));
             a.stopImmediatePropagation()
         });
         $(document).on("click", function() {
             ui.panel.hide($(".geofs-toggle-panel.geofs-visible").not("[data-noblur]"), !0)
         });
         $(document).on("click", ".geofs-list-collapsible-item", function(a) {
-            ui.panel.toggleItem(this, a);
+            ui.panel.toggleItem(a.currentTarget, a);
             a.preventDefault();
             a.stopImmediatePropagation()
         });
@@ -25813,7 +25912,7 @@ ui.panel = {
             ui.expandLeft("panel");
             a.addClass("geofs-visible");
             try {
-                eval(a.attr("onShow"))
+                Function(a.attr("onShow"))()
             } catch (b) {
                 geofs.debug.throw(b)
             }
@@ -25823,14 +25922,14 @@ ui.panel = {
     hide: function(a, b) {
         var c = !0,
             d = $(a || ".geofs-toggle-panel.geofs-visible");
-        $(d).each(function(b) {
-            b = $(this);
+        $(d).each(function(b, d) {
+            b = $(d);
             if (!a && b.attr("data-modal"))
                 return c = !1;
             b.removeClass("geofs-visible");
             try {
-                eval(b.attr("onHide"))
-            } catch (f) {}
+                Function(b.attr("onHide"))()
+            } catch (g) {}
         });
         d.length && b && ui.collapseLeft(a);
         d.find(".geofs-list-collapsible-item").trigger("collapsed");
@@ -25842,24 +25941,34 @@ ui.closePreferencePanel = function() {
 };
 geofs.map = {};
 ui.createMap = function(a) {
+    a = a || {};
     if (geofs.aircraft && geofs.aircraft.instance) {
         var b = geofs.aircraft.instance.llaLocation[0];
         var c = geofs.aircraft.instance.llaLocation[1]
     } else
-        b = a.lat,
-        c = a.lon;
+        b = a.lat || 0,
+        c = a.lon || 0;
     ui.mapInstance ? (ui.mapInstance.startMap(),
         ui.mapInstance.updateMap(b, c)) : ui.mapInstance = new geofs.map(a, b, c)
 };
 geofs.map = function(a, b, c) {
+    var d = this;
+    b = b || 0;
+    c = c || 0;
     this.dontMoveTimeoutValue = 1E4;
     this._options = a = a || {};
     this.apiMap = new geofs.api.map(a, b, c);
-    a.standalone || (this.planeMarker = new geofs.api.map.planeMarker(b, c, this.apiMap, "yellow", 100, "Here I am"));
+    a.standalone || (this.planeMarker = new geofs.api.map.planeMarker(b, c, this.apiMap, "yellow", 100, null));
     this.setMapInfoWindow();
     a.norunways || this.addRunways();
     a.standalone ? this.mapActive = !0 : this.startMap();
-    this.apiMap.init()
+    this.apiMap.init();
+    this.ATCMode = !1;
+    $(document).on("click", ".geofs-map-atc-button", function(a) {
+        d.toggleATCMode();
+        a.preventDefault();
+        a.stopPropagation()
+    })
 };
 geofs.map.prototype = {
     addRunways: function() {
@@ -25904,7 +26013,7 @@ geofs.map.prototype = {
     },
     stopMovingMap: function(a) {
         var b = this;
-        this.dontMoveTimeout && clearTimeout(this.dontMoveTimeout);
+        clearTimeout(this.dontMoveTimeout);
         a || (this.dontMoveTimeout = setTimeout(function() {
             b.dontMove = !1
         }, this.dontMoveTimeoutValue));
@@ -25915,18 +26024,34 @@ geofs.map.prototype = {
             this.planeMarker.updatePlaneMarker(a, b, geofs.aircraft.instance.htr[0]))
     },
     addPlayerMarker: function(a, b, c) {
-        b = new geofs.api.map.planeMarker(0, 0, this.apiMap, b, 1, c || "");
+        b = new geofs.api.map.planeMarker(0, 0, this.apiMap, b, 1, c || "-");
         return this.apiMap.map && this.mapActive && b ? ui.playerMarkers[a] = b : ui.playerMarkers[a] = null
     },
     updatePlayerMarker: function(a, b, c, d, e, f) {
-        this.apiMap.map && this.mapActive && (ui.playerMarkers[a] || this.addPlayerMarker(a, d, c),
-            ui.playerMarkers[a] && (d = parseInt(b[2] * METERS_TO_FEET),
-                ui.playerMarkers[a].updatePlaneMarker(b[0], b[1], b[3], c + " (" + ("unknown" != e ? e : "") + ")\n" + d + "ft.\n" + f + "kts.")))
+        if (this.apiMap.map && this.mapActive && (ui.playerMarkers[a] || this.addPlayerMarker(a, d, c),
+                ui.playerMarkers[a])) {
+            var g = parseInt(b[2] * METERS_TO_FEET);
+            d = fixAngle360(b[3]);
+            c = (c || "-") + "<br/>" + ("unknown" != e ? "" + e + "<br/>" : "") + f + "kt " + parseInt(d) + "dg<br/>" + geofs.utils.displayAltitude(g);
+            ui.playerMarkers[a].updatePlaneMarker(b[0], b[1], d, c)
+        }
     },
     deletePlayerMarker: function(a) {
         this.apiMap.map && ui.playerMarkers[a] && ui.playerMarkers[a].destoryPlaneMarker();
         ui.playerMarkers[a] = null;
         delete ui.playerMarkers[a]
+    },
+    toggleATCMode: function() {
+        this.ATCMode = !this.ATCMode;
+        this.setTooltipVisibility(this.ATCMode);
+        $(this.apiMap._holder).toggleClass("geofs-atc-map")
+    },
+    setTooltipVisibility: function(a) {
+        this.tooltipVisibility = a;
+        this.apiMap.setTooltipVisibility(a);
+        if (this.apiMap.map && this.mapActive)
+            for (var b in ui.playerMarkers)
+                ui.playerMarkers[b].resetTooltip()
     }
 };
 ui.Text = function(a, b) {
@@ -25983,13 +26108,13 @@ ui.chat.init = function() {
     var a = $(".geofs-chat-messages"),
         b = $(".geofs-user-block");
     b.data("user", {});
-    a.on("click", ".geofs-chat-message .label", function() {
-        var a = $(this.parentNode);
+    a.on("click", ".geofs-chat-message .label", function(a) {
+        a = $(a.currentTarget.parentNode);
         if (a.attr("acid") != geofs.userRecord.id) {
-            var d = a.attr("callsign");
-            b.find(".geofs-user-callsign").html(d);
+            var c = a.attr("callsign");
+            b.find(".geofs-user-callsign").html(c);
             b.data("user", {
-                callsign: d,
+                callsign: c,
                 uid: a.attr("uid"),
                 acid: a.attr("acid")
             });
@@ -26029,8 +26154,8 @@ ui.chat.publish = function(a) {
         var c = "";
         a.acid == geofs.userRecord.id && (c = "myself");
         ui.chat.$container.prepend('<div class="geofs-chat-message ' + a.cls + '" uid="' + a.uid + '" acid="' + a.acid + '" callsign="' + a.cs + '"><b class="label ' + c + '">' + a.cs + ":</b> " + b + "</div>");
-        ui.chat.$container.find(".geofs-chat-message").each(function(a) {
-            $(this).css("opacity", (ui.chat.maxNumberMessages - a) / ui.chat.maxNumberMessages)
+        ui.chat.$container.find(".geofs-chat-message").each(function(a, b) {
+            $(b).css("opacity", (ui.chat.maxNumberMessages - a) / ui.chat.maxNumberMessages)
         }).eq(ui.chat.maxNumberMessages).remove()
     }
 };
@@ -26044,7 +26169,7 @@ ui.hud = {};
 ui.hud.init = function() {
     ui.hud.stall = new Overlay({
         name: "stall",
-        url: PAGE_PATH + "images/instruments/stall.png",
+        url: "images/instruments/stall.png",
         visibility: !1,
         size: {
             x: 60,
@@ -26064,6 +26189,7 @@ ui.hud.init = function() {
             y: "top"
         }
     });
+    ui.hud.stallAlarmSet = !1;
     ui.hud.stallAlarmOn = !1;
     geofs.addResizeHandler(function() {
         ui.hud.stall.scaleAndPlace()
@@ -26071,13 +26197,15 @@ ui.hud.init = function() {
     ui.hud.stall.scaleAndPlace()
 };
 ui.hud.stallAlarm = function(a) {
-    !geofs.aircraft.instance.groundContact && a && !ui.hud.stallAlarmOn && ui.hud.stall && (ui.hud.stall.setVisibility(!0),
-        ui.hud.stallAlarmOn = !0,
-        clearTimeout(ui.hud.stallAlarmTimeout),
-        ui.hud.stallAlarmTimeout = setTimeout(function() {
-            ui.hud.stall.setVisibility(!1);
-            ui.hud.stallAlarmOn = !1
-        }, 500))
+    !1 === a ? (ui.hud.stallAlarmSet || (clearTimeout(ui.hud.stallAlarmOnTimeout),
+            ui.hud.stall && ui.hud.stall.setVisibility(!1),
+            ui.hud.stallAlarmOn = !1),
+        ui.hud.stallAlarmSet = !1) : ui.hud.stallAlarmSet = !0;
+    a && !geofs.aircraft.instance.groundContact && ui.hud.stall && !ui.hud.stallAlarmOn && (clearTimeout(ui.hud.stallAlarmOnTimeout),
+        ui.hud.stallAlarmOnTimeout = setTimeout(function() {
+            ui.hud.stall && ui.hud.stall.setVisibility(!0)
+        }, 100),
+        ui.hud.stallAlarmOn = !0)
 };
 ui.notification = {};
 ui.notification.show = function(a) {
@@ -26085,7 +26213,7 @@ ui.notification.show = function(a) {
 };
 ui.vr = function(a) {
     a ? ($("body").addClass("geofs-vr"),
-        camera.set(1, "cockpit")) : $(body).removeClass("geofs-vr");
+        geofs.camera.set(1, "cockpit")) : $(body).removeClass("geofs-vr");
     instruments.toggle();
     geofs.api.vr(a);
     geofs.vr = a
@@ -26114,8 +26242,8 @@ geofs.removeResizeHandler = function(a) {
 geofs.getViewportDimentions = function() {
     geofs.viewportWidth = geofs.canvas.offsetWidth;
     geofs.viewportHeight = geofs.canvas.offsetHeight;
-    camera.cam && (geofs.fovScale = Math.pow(geofs.viewportWidth / VIEWPORT_REFERENCE_WIDTH, .5),
-        geofs.fovScale /= Math.pow(geofs.api.getFOV(camera.cam), .6))
+    geofs.camera.cam && (geofs.fovScale = Math.pow(geofs.viewportWidth / VIEWPORT_REFERENCE_WIDTH, .5),
+        geofs.fovScale /= Math.pow(geofs.api.getFOV(geofs.camera.cam), .6))
 };
 ui.hud.autopilotIndicator = function(a) {
     a ? $(document).trigger("autopilotOn") : $(document).trigger("autopilotOff")
@@ -26123,17 +26251,17 @@ ui.hud.autopilotIndicator = function(a) {
 "use strict";
 geofs.fx = geofs.fx || {};
 geofs.fx.texture2url = {
-    smoke: PAGE_PATH + "images/particles/smoke-light.png",
-    whitesmoke: PAGE_PATH + "images/particles/smoke-white.png",
-    darkSmoke: PAGE_PATH + "images/particles/smoke-dark.png",
-    1: PAGE_PATH + "images/lights/yellowflare.png",
-    2: PAGE_PATH + "images/lights/redflare.png",
-    3: PAGE_PATH + "images/lights/greenflare.png",
-    white: PAGE_PATH + "images/lights/whitelight.png",
-    red: PAGE_PATH + "images/lights/redlight.png",
-    green: PAGE_PATH + "images/lights/greenlight.png",
-    whitepapi: PAGE_PATH + "images/lights/whitepapi.png",
-    redpapi: PAGE_PATH + "images/lights/redpapi.png"
+    smoke: "images/particles/smoke-light.png",
+    whitesmoke: "images/particles/smoke-white.png",
+    darkSmoke: "images/particles/smoke-dark.png",
+    1: "images/lights/yellowflare.png",
+    2: "images/lights/redflare.png",
+    3: "images/lights/greenflare.png",
+    white: "images/lights/whitelight.png",
+    red: "images/lights/redlight.png",
+    green: "images/lights/greenlight.png",
+    whitepapi: "images/lights/whitepapi.png",
+    redpapi: "images/lights/redpapi.png"
 };
 geofs.fx.particles = {};
 geofs.fx.particleEmitters = {};
@@ -26213,7 +26341,8 @@ geofs.fx.Particle.prototype = {
         var a = {
             opacity: this._currentOpacity,
             scale: this._currentScale,
-            rotation: this._currentRotation
+            rotation: this._currentRotation,
+            disableDepthTestDistance: Number.POSITIVE_INFINITY
         };
         a = $.extend(a, geofs.fx.particleBillboardOptions);
         this._billboard = new geofs.api.billboard(this.currentLocation, this._options.url, a)
@@ -26286,16 +26415,14 @@ geofs.runwaysLights = function(a) {
     b = M33.rotationZ(b, a.headingRad);
     this.stepX = xy2ll(V2.scale(b[0], this.localStepXm), a.threshold1);
     this.stepY = xy2ll(V2.scale(b[1], this.localStepYm), a.threshold1);
-    if (geofs.preferences.showPapi) {
-        var c = xy2ll(V2.scale(b[0], 9), a.threshold1),
-            d = V2.add(a.threshold1, xy2ll(V2.scale(b[0], a.widthMeters / 2 + 15), a.threshold1));
-        d = V2.add(d, V2.scale(this.stepY, 5));
-        this.addPapi(d, c);
-        c = xy2ll(V2.scale(b[0], -9), a.threshold2);
-        d = V2.add(a.threshold2, xy2ll(V2.scale(b[0], -a.widthMeters / 2 - 15), a.threshold2));
-        d = V2.add(d, V2.scale(this.stepY, -5));
-        this.addPapi(d, c)
-    }
+    var c = xy2ll(V2.scale(b[0], 9), a.threshold1),
+        d = V2.add(a.threshold1, xy2ll(V2.scale(b[0], a.widthMeters / 2 + 15), a.threshold1));
+    d = V2.add(d, V2.scale(this.stepY, 5));
+    this.addPapi(d, c);
+    c = xy2ll(V2.scale(b[0], -9), a.threshold2);
+    d = V2.add(a.threshold2, xy2ll(V2.scale(b[0], -a.widthMeters / 2 - 15), a.threshold2));
+    d = V2.add(d, V2.scale(this.stepY, -5));
+    this.addPapi(d, c)
 };
 geofs.runwaysLights.turnAllOff = function() {
     for (var a in geofs.fx.litRunways)
@@ -26311,7 +26438,9 @@ geofs.runwaysLights.updateAll = function() {
         geofs.fx.litRunways[b.id] || (geofs.fx.litRunways[b.id] = new geofs.runwaysLights(b))
     }
     for (a in geofs.fx.litRunways)
-        geofs.runways.nearRunways[a] || geofs.fx.litRunways[a].destroy();
+        geofs.runways.nearRunways[a] || (geofs.fx.litRunways[a].destroy(),
+            geofs.fx.litRunways[a] = null,
+            delete geofs.fx.litRunways[a]);
     geofs.isNight ? geofs.runwaysLights.turnAllOn() : geofs.runwaysLights.turnAllOff()
 };
 geofs.runwaysLights.prototype = {
@@ -26352,7 +26481,9 @@ geofs.runwaysLights.prototype = {
     turnOff: function() {
         if (this.on) {
             for (var a = 0; a < this.lights.length; a++)
-                this.lights[a].destroy();
+                this.lights[a].destroy(),
+                this.lights[a] = null;
+            this.lights = [];
             this.on = !1
         }
     },
@@ -26374,41 +26505,45 @@ geofs.runwaysLights.prototype = {
     },
     addLight: function(a, b) {
         a[2] = .2;
-        this.lights.push(new geofs.light(a, b, geofs.fx.lightBillboardOptions))
+        this.lights.push(new geofs.fx.light(a, b, geofs.fx.lightBillboardOptions))
     },
     destroy: function() {
         if (this.lights) {
             for (var a = 0; a < this.lights.length; a++)
                 this.lights[a].destroy();
-            this.lights = []
+            this.lights = null
         }
         if (this.papis) {
             for (a = 0; a < this.papis.length; a++)
                 this.papis[a].destroy();
-            this.papis = []
+            this.papis = null
         }
+        this.runway = null
     }
 };
 geofs.fx.papi = function(a, b) {
+    var c = this;
     this.lights = [];
-    for (var c = 0; 4 > c; c++)
+    for (var d = 0; 4 > d; d++)
         a[2] = .5,
-        this.lights[c] = {
-            white: new geofs.light(a, "whitepapi", geofs.fx.papiBillboardOptions),
-            red: new geofs.light(a, "redpapi", geofs.fx.papiBillboardOptions)
+        this.lights[d] = {
+            white: new geofs.fx.light(a, "whitepapi", geofs.fx.papiBillboardOptions),
+            red: new geofs.fx.light(a, "redpapi", geofs.fx.papiBillboardOptions)
         },
         a = V2.add(a, b);
     this.location = a;
-    var d = this;
-    a = Cesium.sampleTerrainMostDetailed(geofs.api.viewer.terrainProvider, [Cesium.Cartographic.fromDegrees(a[1], a[0])]);
-    Cesium.when(a, function(a) {
-        d.location[2] = a[0].height
+    geofs.api.viewer.terrainProvider.readyPromise.then(function() {
+        var b = Cesium.sampleTerrainMostDetailed(geofs.api.viewer.terrainProvider, [Cesium.Cartographic.fromDegrees(a[1], a[0])]);
+        Cesium.when(b, function(a) {
+            c.location[2] = a[0].height
+        })
     });
     this.refresh()
 };
 geofs.fx.papi.prototype = {
     refresh: function() {
         var a = this;
+        clearInterval(this.papiInterval);
         this.papiInterval = setInterval(function() {
             var b = geofs.utils.llaDistanceInMeters([geofs.aircraft.instance.llaLocation[0], geofs.aircraft.instance.llaLocation[1], a.location[2]], a.location, a.location),
                 c = Math.atan2(geofs.aircraft.instance.llaLocation[2] - a.location[2], b) * RAD_TO_DEGREES;
@@ -26430,7 +26565,25 @@ geofs.fx.papi.prototype = {
         clearInterval(this.papiInterval);
         for (var a = 0; 4 > a; a++)
             this.lights[a].red.destroy(),
-            this.lights[a].white.destroy()
+            this.lights[a].white.destroy();
+        this.lights = this.location = null
+    }
+};
+geofs.fx.light = function(a, b, c) {
+    a = a || [0, 0, 0];
+    this._billboard = new geofs.api.billboard(a, geofs.fx.texture2url[b], c)
+};
+geofs.fx.light.prototype = {
+    setVisibility: function(a) {
+        this._billboard.setVisibility(a);
+        return !0
+    },
+    setLocation: function(a) {
+        this._billboard.setLocation(a)
+    },
+    destroy: function() {
+        this._billboard.destroy();
+        this._billboard = null
     }
 };
 geofs.fx.dayNightManager = {
@@ -26448,7 +26601,7 @@ geofs.fx.dayNightManager = {
         valueRamp: [-.6, -.6, -.6, 0, 0]
     },
     groundBrightnessShift: {
-        valueRamp: [-.9, -.9, -.9, 0, 0]
+        valueRamp: [-1.5, -1.5, -1.5, 0, 0]
     },
     groundAtmoSaturationShift: {
         valueRamp: [-.6, -.6, 0, 0, 0]
@@ -26534,13 +26687,26 @@ geofs.fx.volumetricFog = {
         opacity: 1,
         cutoff: .95
     },
+    getCanvas: function() {
+        this.canvases || (this.canvases = {},
+            this.canvases.a = document.createElement("canvas"),
+            this.canvases.a.width = 100,
+            this.canvases.a.height = 1,
+            this.canvases.b = document.createElement("canvas"),
+            this.canvases.b.width = 100,
+            this.canvases.b.height = 1);
+        if (this.canvases.a.used)
+            return this.canvases.a.used = !1,
+                this.canvases.b;
+        this.canvases.a.used = !0;
+        return this.canvases.a
+    },
     getColorRamp: function(a) {
         this.ramp = Object.assign({}, this.defaultRamp, this.ramp, a);
-        a = document.createElement("canvas");
-        a.width = 100;
-        a.height = 1;
-        var b = a.getContext("2d"),
-            c = b.createLinearGradient(0, 0, 100, 0);
+        a = this.getCanvas();
+        var b = a.getContext("2d");
+        b.clearRect(0, 0, a.width, a.height);
+        var c = b.createLinearGradient(0, 0, 100, 0);
         c.addColorStop(0, this.ramp.color.withAlpha(this.ramp.opacity).toCssColorString());
         c.addColorStop(this.ramp.cutoff, this.ramp.color.withAlpha(this.ramp.opacity).toCssColorString());
         c.addColorStop(1, this.ramp.color.withAlpha(0).toCssColorString());
@@ -26553,16 +26719,18 @@ geofs.fx.volumetricFog = {
         this.material || (this.material = Cesium.Material.fromType("ElevationRamp"));
         this.material.uniforms.image = this.getColorRamp(c);
         this.material.uniforms.minimumHeight = a || 0;
+        b < a && (b = a);
         this.material.uniforms.maximumHeight = b;
         geofs.api.viewer.scene.globe.material = this.material
     },
     setColor: function(a) {
         this.ramp = Object.assign({}, this.defaultRamp, this.ramp);
         this.ramp.color = a;
-        this.material && (this.material.uniforms.image = this.getColorRamp(this.ramp))
+        this.material && (this.material.uniforms.image = this.getColorRamp(this.ramp));
+        geofs.api.viewer.scene.globe.material = this.material
     },
     setCeiling: function(a) {
-        geofs.api.viewer.scene.globe.material && (geofs.api.viewer.scene.globe.material.uniforms.maximumHeight = a)
+        geofs.api.viewer.scene.globe.material && (this.material.uniforms.maximumHeight = a)
     },
     destroy: function() {
         this.material = geofs.api.viewer.scene.globe.material = null
@@ -26687,7 +26855,7 @@ geofs.fx.cloudManager = {
     setCloudCover: function(a) {
         geofs.fx.cloudManager.instance && (this.percentCoverage = a || 0,
             a *= .01,
-            100 <= this.percentCoverage ? this.fullCover || (this.fullCover = new geofs.fx.CloudCover([camera.lla[0], camera.lla[1], weather.definition.ceiling])) : this.fullCover && (this.fullCover.destroy(),
+            100 <= this.percentCoverage ? this.fullCover || (this.fullCover = new geofs.fx.CloudCover([geofs.camera.lla[0], geofs.camera.lla[1], weather.definition.ceiling])) : this.fullCover && (this.fullCover.destroy(),
                 this.fullCover = null),
             geofs.api.setAtmosphereColorModifier("weatherHaze", {
                 groundBrightnessShift: clamp(.5 * a, 0, .1),
@@ -26700,6 +26868,11 @@ geofs.fx.cloudManager = {
     setNumberOfClouds: function(a) {
         geofs.fx.cloudManager.instance && (this.maxNumberOfClouds = a,
             this.spawnClouds())
+    },
+    setCeiling: function(a) {
+        this.fullCover && this.fullCover.update();
+        for (var b in this.clouds)
+            this.clouds[b].setCeiling(a)
     },
     destroyLastCloud: function() {
         geofs.fx.cloudManager.instance.currentID--;
@@ -26820,6 +26993,10 @@ geofs.fx.Cloud.prototype = {
             this._entity = new geofs.api.Model(this._type.model, b));
         this.update()
     },
+    setCeiling: function(a) {
+        a = a || weather.definition.ceiling;
+        this._entity.setLocation([this._entity._lla[0], this._entity._lla[1], Math.random() * (this._type.aboveCeiling - this._type.belowCeiling) + (a + this._type.belowCeiling)])
+    },
     setColor: function(a) {
         this._entity.setColor(a)
     },
@@ -26884,7 +27061,7 @@ geofs.fx.CloudCover.prototype = {
     },
     update: function() {
         var a = this;
-        this.setLocation([camera.lla[0], camera.lla[1], weather.definition.ceiling]);
+        this.setLocation([geofs.camera.lla[0], geofs.camera.lla[1], weather.definition.ceiling]);
         clearTimeout(this._updateTimeout);
         this._updateTimeout = setTimeout(function() {
             a.update()
@@ -26920,7 +27097,7 @@ geofs.fx.precipitation = {
     update: function(a, b) {
         if (geofs.fx.precipitation.apiModel && this.visible) {
             !geofs.fx.precipitation._material && geofs.fx.precipitation.apiModel._model && geofs.fx.precipitation.apiModel._model.ready && (geofs.fx.precipitation._material = geofs.fx.precipitation.apiModel._model.getMaterial("rainMaterial"));
-            if ("chase" == camera.currentModeName || "free" == camera.currentModeName) {
+            if ("chase" == geofs.camera.currentModeName || "free" == geofs.camera.currentModeName) {
                 var c = weather.currentWindSpeedMs;
                 a = weather.currentWindDirection + 180;
                 var d = 90
@@ -26931,7 +27108,7 @@ geofs.fx.precipitation = {
             a = [a, 2 * c, 0];
             a[1] = clamp(a[1], 0, d);
             c = [2, 2, clamp(2 + .5 * c, 2, 50)];
-            geofs.fx.precipitation.apiModel.setPositionOrientationAndScale(camera.lla, a, c);
+            geofs.fx.precipitation.apiModel.setPositionOrientationAndScale(geofs.camera.lla, a, c);
             geofs.fx.precipitation._material && !geofs.pause && (geofs.fx.precipitation.motionOffset -= Math.min(.9, .01 + b * geofs.aircraft.instance.trueAirSpeed * geofs.fx.precipitation.types[geofs.fx.precipitation.type].speed),
                 0 > geofs.fx.precipitation.motionOffset && (geofs.fx.precipitation.motionOffset += 1),
                 geofs.fx.precipitation._material.setValue("motion", geofs.fx.precipitation.motionOffset))
@@ -27016,128 +27193,130 @@ geofs.fx.retro = function(a) {
 };
 "use strict";
 window.flight = window.flight || {};
-geofs.minPenetrationThreshold = .001;
-var currentAltitudeTestContext = {},
-    pastAltitudeTestContext = {};
+flight.minPenetrationThreshold = .001;
+flight.currentAltitudeTestContext = {};
+flight.pastAltitudeTestContext = {};
 flight.tick = function(a, b) {
     var c = clamp(Math.floor(b / (geofs.PHYSICS_DELTA_MS || 10)), 1, 20),
         d = a / c,
         e = 1 / a,
         f = geofs.aircraft.instance,
         g = geofs.animation.values,
-        h = f.setup,
+        h = f.definition,
         k = f.llaLocation[2];
     if (1 == flight.recorder.playing)
-        flight.recorder.stepInterpolation();
+        flight.recorder.play(b);
     else {
         weather.atmosphere.update(f.llaLocation[2]);
-        for (var n = 0; n < c; n++) {
+        ui.hud.stallAlarm(!1);
+        for (var m = 0; m < c; m++) {
             f.velocity = f.rigidBody.v_linearVelocity;
             f.velocityScalar = V3.length(f.velocity);
             var v = f.velocityScalar * d;
             f.airVelocity = V3.sub(f.velocity, weather.currentWindVector);
             f.veldir = V3.normalize(f.airVelocity);
             f.trueAirSpeed = V3.length(f.airVelocity);
-            var z = 0,
-                A = 1,
+            var y = 0,
                 C = 1,
+                I = 1,
                 w = h.zeroThrustAltitude,
-                y = h.zeroRPMAltitude;
-            w ? A = clamp(w - g.altitude, 0, w) / w : y && (C = clamp(y - g.altitude, 0, y) / y);
-            for (var D = geofs.aircraft.instance.engines, B = D.length, t = 0; t < B; t++) {
-                var m = D[t],
-                    O = controls.throttle,
-                    Y = 1,
-                    fa = m.animations;
-                if (fa)
-                    for (var ha = 0; ha < fa.length; ha++) {
-                        var K = fa[ha];
-                        switch (K.type) {
+                z = h.zeroRPMAltitude;
+            w ? C = clamp(w - g.altitude, 0, w) / w : z && (I = clamp(z - g.altitude, 0, z) / z);
+            for (var D = geofs.aircraft.instance.engines, A = D.length, t = 0; t < A; t++) {
+                var n = D[t],
+                    N = controls.throttle,
+                    X = 1,
+                    ea = n.animations;
+                if (ea)
+                    for (var fa = 0; fa < ea.length; fa++) {
+                        var ha = ea[fa];
+                        switch (ha.type) {
                             case "throttle":
-                                O = g[K.value] * K.ratio + K.offset;
+                                N = geofs.animation.filter(ha);
                                 break;
                             case "pitch":
-                                Y = g[K.value] * K.ratio + K.offset
+                                X = geofs.animation.filter(ha)
                         }
                     }
                 if (f.engine.on) {
-                    var Da = (h.maxRPM - h.minRPM) * O + h.minRPM;
-                    Da *= C;
-                    m.rpm += (Da - m.rpm) * h.engineInertia * d;
-                    geofs.aircraft.instance.setup.reverse && (m.rpm < h.minRPM && 0 < m.rpm && !f.engine.startup && (m.rpm = -h.minRPM),
-                        m.rpm > -h.minRPM && 0 > m.rpm && !f.engine.startup && (m.rpm = h.minRPM))
+                    var Da = (h.maxRPM - h.minRPM) * N + h.minRPM;
+                    Da *= I;
+                    n.rpm += (Da - n.rpm) * h.engineInertia * d;
+                    geofs.aircraft.instance.definition.reverse && (n.rpm < h.minRPM && 0 < n.rpm && !f.engine.startup && (n.rpm = -h.minRPM),
+                        n.rpm > -h.minRPM && 0 > n.rpm && !f.engine.startup && (n.rpm = h.minRPM))
                 } else
-                    m.rpm = 1E-5 > m.rpm ? 0 : m.rpm - m.rpm * h.engineInertia * d;
-                var Ea = Math.abs(m.rpm),
-                    ia = m.thrust;
-                m.afterBurnerThrust && .9 < O && (ia = m.afterBurnerThrust);
-                0 > m.rpm && (ia = m.reverseThrust ? -m.reverseThrust : 0);
-                var Z = ia * clamp(Ea - h.minRPM, 0, h.maxRPM) * f.engine.invRPMRange;
-                Z *= A;
-                Z *= Y;
-                var ab = m.object3d.getWorldFrame()[m.forceDirection];
-                f.rigidBody.applyForce(V3.scale(ab, Z), m.points.forceSourcePoint.worldPosition);
-                z += Z
+                    n.rpm = 1E-5 > n.rpm ? 0 : n.rpm - n.rpm * h.engineInertia * d;
+                var Ea = Math.abs(n.rpm),
+                    ia = n.thrust;
+                n.afterBurnerThrust && .9 < N && (ia = n.afterBurnerThrust);
+                0 > n.rpm && (ia = n.reverseThrust ? -n.reverseThrust : 0);
+                var Y = ia * clamp(Ea - h.minRPM, 0, h.maxRPM) * f.engine.invRPMRange;
+                Y *= C;
+                Y *= X;
+                var ab = n.object3d.getWorldFrame()[n.forceDirection];
+                f.rigidBody.applyForce(V3.scale(ab, Y), n.points.forceSourcePoint.worldPosition);
+                y += Y
             }
-            0 < B && (f.engine.rpm = parseInt(Ea));
+            0 < A && (f.engine.rpm = parseInt(Ea));
             var E = 0;
             t = 0;
             for (var F = geofs.aircraft.instance.balloons.length; t < F; t++) {
-                var M = geofs.aircraft.instance.balloons[t],
-                    bb = clamp(controls[M.controller.name], 0, 1);
-                E = M.temperature;
-                E += bb * M.heatingSpeed * d;
-                E -= M.coolingSpeed * (E - weather.atmosphere.airTempAtAltitude) * d;
+                var K = geofs.aircraft.instance.balloons[t],
+                    bb = clamp(controls[K.controller.name], 0, 1);
+                E = K.temperature;
+                E += bb * K.heatingSpeed * d;
+                E -= K.coolingSpeed * (E - weather.atmosphere.airTempAtAltitude) * d;
                 E = clamp(E, 0, 300);
-                M.temperature = E;
-                f.rigidBody.applyForce([0, 0, (weather.atmosphere.airDensityAtAltitude - weather.atmosphere.airPressureAtAltitude / (GAS_CONSTANT * (E + KELVIN_OFFSET))) * M.volume * GRAVITY], M.points.forceSourcePoint.worldPosition)
+                K.temperature = E;
+                f.rigidBody.applyForce([0, 0, (weather.atmosphere.airDensityAtAltitude - weather.atmosphere.airPressureAtAltitude / (GAS_CONSTANT * (E + KELVIN_OFFSET))) * K.volume * GRAVITY], K.points.forceSourcePoint.worldPosition)
             }
             if (.01 < f.trueAirSpeed) {
-                var aa = V3.scale(f.veldir, -(h.dragFactor * f.trueAirSpeed * f.trueAirSpeed * weather.atmosphere.airDensityAtAltitude));
-                f.rigidBody.applyCentralForce(aa);
+                var Z = V3.scale(f.veldir, -(h.dragFactor * f.trueAirSpeed * f.trueAirSpeed * weather.atmosphere.airDensityAtAltitude));
+                f.rigidBody.applyCentralForce(Z);
                 t = 0;
                 for (F = f.airfoils.length; t < F; t++) {
                     var r = f.airfoils[t],
                         ja = r.points.forceSourcePoint.worldPosition,
                         cb = r.object3d.getWorldFrame(),
-                        G = f.rigidBody.getVelocityInLocalPoint(ja);
+                        B = f.rigidBody.getVelocityInLocalPoint(ja);
                     if (r.propwash) {
                         var Fa = f.engine.rpm * r.propwash,
-                            db = V3.dot(G, f.object3d.worldRotation[1]);
-                        G = V3.add(G, V3.scale(f.object3d.worldRotation[1], clamp(Fa - db, 0, Fa)))
+                            db = V3.dot(B, f.object3d.worldRotation[1]);
+                        B = V3.add(B, V3.scale(f.object3d.worldRotation[1], clamp(Fa - db, 0, Fa)))
                     }
-                    G = V3.sub(G, weather.currentWindVector);
-                    G = V3.sub(G, weather.thermals.currentVector);
-                    r.velocity = V3.length(G);
-                    var ka = V3.normalize(G),
+                    B = V3.sub(B, weather.currentWindVector);
+                    B = V3.sub(B, weather.thermals.currentVector);
+                    B = V3.add(B, weather.getLocalTurbulence());
+                    r.velocity = V3.length(B);
+                    var ka = V3.normalize(B),
                         la = r.velocity * r.velocity,
                         ma = cb[r.forceDirection],
-                        R = -V3.dot(ma, ka),
+                        Q = -V3.dot(ma, ka),
                         eb = V3.cross(ma, ka),
-                        fb = V3.rotate(ma, eb, R);
+                        fb = V3.rotate(ma, eb, Q);
                     if (r.area) {
-                        var ba = R * TWO_PI;
+                        var aa = Q * TWO_PI;
                         if (1 == r.stalls) {
-                            var ca = R * RAD_TO_DEGREES,
-                                S = Math.abs(ca);
-                            S > r.stallIncidence && (ui.hud.stallAlarm(!0),
-                                ba *= 1 - clamp(S - r.stallIncidence, 0, .9 * r.zeroLiftIncidence) / r.zeroLiftIncidence)
+                            var ba = Q * RAD_TO_DEGREES,
+                                R = Math.abs(ba);
+                            R > r.stallIncidence && (ui.hud.stallAlarm(!0),
+                                aa *= 1 - clamp(R - r.stallIncidence, 0, .9 * r.zeroLiftIncidence) / r.zeroLiftIncidence)
                         }
-                        aa = .5 * la * (MIN_DRAG_COEF + DRAG_CONSTANT * ba * ba) * weather.atmosphere.airDensityAtAltitude;
-                        var Ga = weather.atmosphere.airDensityAtAltitude * la * .5 * r.area * ba
+                        Z = .5 * la * (MIN_DRAG_COEF + DRAG_CONSTANT * aa * aa) * weather.atmosphere.airDensityAtAltitude;
+                        var Ga = weather.atmosphere.airDensityAtAltitude * la * .5 * r.area * aa
                     } else {
                         var Ha = r.liftFactor,
                             gb = r.dragFactor;
-                        1 == r.stalls && (ca = R * RAD_TO_DEGREES,
-                            S = Math.abs(ca),
-                            S > r.stallIncidence && (ui.hud.stallAlarm(!0),
-                                Ha *= .9 - clamp(S - r.stallIncidence, 0, r.zeroLiftIncidence) / r.zeroLiftIncidence));
-                        var Ia = R * la;
+                        1 == r.stalls && (ba = Q * RAD_TO_DEGREES,
+                            R = Math.abs(ba),
+                            R > r.stallIncidence && (ui.hud.stallAlarm(!0),
+                                Ha *= .9 - clamp(R - r.stallIncidence, 0, r.zeroLiftIncidence) / r.zeroLiftIncidence));
+                        var Ia = Q * la;
                         Ga = Ha * Ia * weather.atmosphere.airDensityAtAltitude;
-                        aa = gb * Math.abs(Ia) * weather.atmosphere.airDensityAtAltitude
+                        Z = gb * Math.abs(Ia) * weather.atmosphere.airDensityAtAltitude
                     }
                     f.rigidBody.applyForce(V3.scale(fb, Ga), ja);
-                    f.rigidBody.applyForce(V3.scale(ka, -aa), ja)
+                    f.rigidBody.applyForce(V3.scale(ka, -Z), ja)
                 }
             }
             var na = 0;
@@ -27146,8 +27325,8 @@ flight.tick = function(a, b) {
             geofs.relativeAltitude = f.llaLocation[2] - geofs.groundElevation;
             if (geofs.relativeAltitude < geofs.aircraft.instance.boundingSphereRadius + v && !flight.skipCollisionResponse) {
                 var Ja = geofs.aircraft.instance.collisionPoints,
-                    T = [],
-                    U = 0;
+                    S = [],
+                    T = 0;
                 t = 0;
                 for (F = Ja.length; t < F; t++) {
                     var p = Ja[t],
@@ -27156,91 +27335,91 @@ flight.tick = function(a, b) {
                     var oa = V3.add(f.llaLocation, xyz2lla(p.worldPosition, f.llaLocation));
                     f.rigidBody.getVelocityInLocalPoint(p.worldPosition);
                     if (q.suspension) {
-                        var P = q.points.suspensionOrigin,
-                            V = geofs.getCollisionResult(oa, p.worldPosition, f.collResult),
-                            pa = V.location[2],
-                            Ka = V3.sub([P.worldPosition[0], P.worldPosition[1], P.worldPosition[2] + f.llaLocation[2]], [p.worldPosition[0], p.worldPosition[1], pa]),
+                        var O = q.points.suspensionOrigin,
+                            U = geofs.getCollisionResult(oa, p.worldPosition, f.collResult),
+                            pa = U.location[2],
+                            Ka = V3.sub([O.worldPosition[0], O.worldPosition[1], O.worldPosition[2] + f.llaLocation[2]], [p.worldPosition[0], p.worldPosition[1], pa]),
                             hb = Math.sign(Ka[2]),
                             ib = V3.length(Ka) * hb,
                             qa = q.suspension.restLength - ib,
                             La = clamp(qa / q.suspension.restLength, 0, 1),
                             jb = La * q.suspension.restLength;
-                        if (0 < La && P.worldPosition[2] >= p.worldPosition[2]) {
-                            var J = geofs.getNormalFromCollision(V, p),
-                                Q = q.object3d.getWorldFrame();
-                            V3.dot(J, Q[2]);
+                        if (0 < La && O.worldPosition[2] >= p.worldPosition[2]) {
+                            var J = geofs.getNormalFromCollision(U, p),
+                                P = q.object3d.getWorldFrame();
+                            V3.dot(J, P[2]);
                             var u = {
                                 collisionPoint: p,
                                 normal: J,
                                 force: q.suspension.stiffness * jb,
                                 type: "raycast",
-                                contactFwdDir: V3.cross(J, V3.normalize(Q[0])),
-                                contactSideDir: V3.cross(J, V3.normalize(Q[1]))
+                                contactFwdDir: V3.cross(J, V3.normalize(P[0])),
+                                contactSideDir: V3.cross(J, V3.normalize(P[1]))
                             };
                             q.contact = u;
-                            T.push(u);
-                            P[2] = -qa;
+                            S.push(u);
+                            O[2] = -qa;
                             var ra = q.name + "Suspension";
                             g[ra] = qa;
                             q.suspension.rest = !1
                         } else
                             q.suspension.rest || (ra = q.name + "Suspension",
                                 g[ra] = 0,
-                                P[2] = 0,
+                                O[2] = 0,
                                 q.suspension.rest = !0);
                         var Ma = {};
                         Ma[q.name] = q;
                         f.placeParts(Ma)
                     } else {
-                        V = geofs.getCollisionResult(oa, p.worldPosition, f.collResult);
-                        pa = V.location[2];
+                        U = geofs.getCollisionResult(oa, p.worldPosition, f.collResult);
+                        pa = U.location[2];
                         var sa = pa - oa[2];
-                        0 <= sa && (Q = q.object3d.getWorldFrame(),
-                            J = geofs.getNormalFromCollision(V, p),
-                            U = Math.max(U, sa),
+                        0 <= sa && (P = q.object3d.getWorldFrame(),
+                            J = geofs.getNormalFromCollision(U, p),
+                            T = Math.max(T, sa),
                             u = {
                                 collisionPoint: p,
                                 normal: J,
                                 penetration: sa,
                                 type: "standard",
-                                contactFwdDir: V3.cross(J, V3.normalize(Q[0])),
-                                contactSideDir: V3.cross(J, V3.normalize(Q[1]))
+                                contactFwdDir: V3.cross(J, V3.normalize(P[0])),
+                                contactSideDir: V3.cross(J, V3.normalize(P[1]))
                             },
                             q.contact = u,
-                            T.push(u))
+                            S.push(u))
                     }
                 }
-                if (T.length) {
+                if (S.length) {
                     f.groundContact = !0;
-                    U > geofs.minPenetrationThreshold && (f.llaLocation[2] += U,
-                        U = 0);
+                    T > flight.minPenetrationThreshold && (f.llaLocation[2] += T,
+                        T = 0);
                     var ta = 0;
-                    for (F = T.length; ta < F; ta++) {
-                        u = T[ta];
+                    for (F = S.length; ta < F; ta++) {
+                        u = S[ta];
                         p = u.collisionPoint;
                         q = p.part;
-                        var H = p.contactProperties,
-                            da = f.rigidBody.getVelocityInLocalPoint(p.worldPosition),
-                            W = V3.dot(u.normal, da);
-                        na = Math.max(na, Math.abs(W));
-                        var X = 0;
+                        var G = p.contactProperties,
+                            ca = f.rigidBody.getVelocityInLocalPoint(p.worldPosition),
+                            V = V3.dot(u.normal, ca);
+                        na = Math.max(na, Math.abs(V));
+                        var W = 0;
                         if ("raycast" == u.type || "hardpoint" == u.type)
-                            X = (u.force - q.suspension.damping * W) * f.rigidBody.mass * d,
-                            0 < X && f.rigidBody.applyImpulse(V3.scale(u.normal, X), p.worldPosition);
-                        if (("standard" == u.type || "hardpoint" == u.type) && 0 > W) {
-                            var Na = f.rigidBody.computeJacobian(0, W, p.worldPosition, u.normal),
+                            W = (u.force - q.suspension.damping * V) * f.rigidBody.mass * d,
+                            0 < W && f.rigidBody.applyImpulse(V3.scale(u.normal, W), p.worldPosition);
+                        if (("standard" == u.type || "hardpoint" == u.type) && 0 > V) {
+                            var Na = f.rigidBody.computeJacobian(0, V, p.worldPosition, u.normal),
                                 ua = V3.scale(u.normal, Na);
-                            ua = V3.scale(ua, H.damping);
+                            ua = V3.scale(ua, G.damping);
                             f.rigidBody.applyImpulse(ua, p.worldPosition);
-                            X = Na
+                            W = Na
                         }
-                        var I = X * H.frictionCoef;
-                        I = clamp(I, I, 2 * f.rigidBody.mass * d * H.frictionCoef);
+                        var H = W * G.frictionCoef;
+                        H = clamp(H, H, 2 * f.rigidBody.mass * d * G.frictionCoef);
                         if ("wheel" == q.type) {
                             var va = u.contactFwdDir,
                                 wa = u.contactSideDir,
-                                Oa = V3.dot(wa, da),
-                                xa = V3.dot(va, da);
+                                Oa = V3.dot(wa, ca),
+                                xa = V3.dot(va, ca);
                             u.forwardProjVel = xa;
                             u.sideProjVel = Oa;
                             var Pa = f.rigidBody.computeJacobian(0, Oa, p.worldPosition, wa),
@@ -27248,31 +27427,31 @@ flight.tick = function(a, b) {
                                 ya = Math.abs(Pa),
                                 za = Math.abs(Qa),
                                 Ra = 1,
-                                ea = 1;
-                            Math.abs(xa) > H.lockSpeed && (ea = H.rollingFriction);
+                                da = 1;
+                            Math.abs(xa) > G.lockSpeed && (da = G.rollingFriction);
                             var Sa = q.brakesController;
                             if (Sa && 0 < za) {
                                 var kb = clamp(g[Sa] * q.brakesControllerRatio, 0, 1);
-                                ea = clamp(I / (za * H.frictionCoef), 0, 1) * kb
+                                da = clamp(H / (za * G.frictionCoef), 0, 1) * kb
                             }
-                            var lb = f.setup.brakeDamping || 3;
-                            .05 < controls.brakes && (ea = clamp(I / (za * H.frictionCoef * lb) * controls.brakes, 0, 1));
-                            if (ya > I) {
-                                var Aa = I / (ya * ya);
-                                Ra = clamp(Aa, H.dynamicFriction, 1)
+                            var lb = f.definition.brakeDamping || 3;
+                            .05 < controls.brakes && (da = clamp(H / (za * G.frictionCoef * lb) * controls.brakes, 0, 1));
+                            if (ya > H) {
+                                var Aa = H / (ya * ya);
+                                Ra = clamp(Aa, G.dynamicFriction, 1)
                             }
                             f.rigidBody.applyImpulse(V3.scale(wa, Pa * Ra), p.worldPosition);
-                            f.rigidBody.applyImpulse(V3.scale(va, Qa * ea), p.worldPosition)
+                            f.rigidBody.applyImpulse(V3.scale(va, Qa * da), p.worldPosition)
                         } else {
-                            var Ta = V3.sub(da, V3.scale(u.normal, W)),
+                            var Ta = V3.sub(ca, V3.scale(u.normal, V)),
                                 Ua = V3.normalize(Ta),
                                 Va = V3.length(Ta);
                             if (Va) {
                                 var Wa = f.rigidBody.computeJacobian(0, Va, p.worldPosition, Ua),
                                     Ba = Math.abs(Wa),
                                     Xa = 1;
-                                Ba > I && (Aa = I / (Ba * Ba),
-                                    Xa = clamp(Aa, H.dynamicFriction, 1));
+                                Ba > H && (Aa = H / (Ba * Ba),
+                                    Xa = clamp(Aa, G.dynamicFriction, 1));
                                 f.rigidBody.applyImpulse(V3.scale(Ua, Xa * Wa), p.worldPosition)
                             }
                         }
@@ -27286,7 +27465,6 @@ flight.tick = function(a, b) {
         f.rigidBody.setCurrentAcceleration(e, a);
         f.placeParts();
         f.render();
-        1 == flight.recorder.recording && flight.recorder.record();
         geofs.preferences.crashDetection && (10 < na && (f.crashed = !0), !f.crashNotified && f.crashed && (f.crashNotified = !0,
             f.crash()))
     }
@@ -27321,20 +27499,21 @@ flight.tick = function(a, b) {
         var Za = x.name + "Rotation";
         g[Za] = fixAngle360((g[Za] || 0) + x.angularVelocity)
     }
-    var N = f.llaLocation[2] * METERS_TO_FEET,
-        mb = 60 * (N - k * METERS_TO_FEET) / a,
+    var M = f.llaLocation[2] * METERS_TO_FEET,
+        mb = 60 * (M - k * METERS_TO_FEET) / a,
         nb = fixAngle(weather.currentWindDirection - f.htr[0]),
         ob = f.engine.rpm * h.RPM2PropAS * a;
     g.maxAngularVRatio = Ca;
     g.enginesOn = geofs.aircraft.instance.engine.on;
     g.prop = fixAngle360(g.prop + ob);
-    g.thrust = z;
+    g.thrust = y;
     g.rpm = f.engine.rpm;
     g.throttle = controls.throttle;
     g.pitch = controls.pitch;
     g.rawPitch = controls.rawPitch;
     g.roll = controls.roll;
     g.yaw = controls.yaw;
+    g.rawYaw = controls.rawYaw;
     g.trim = controls.elevatorTrim;
     g.brakes = controls.brakes;
     g.gearPosition = controls.gear.position;
@@ -27359,14 +27538,15 @@ flight.tick = function(a, b) {
     g.ktas = 1.94 * f.trueAirSpeed;
     g.kias = g.ktas;
     g.mach = f.trueAirSpeed / (331.3 + .606 * weather.atmosphere.airTempAtAltitude);
-    g.altitude = N;
-    g.altTenThousands = N % 1E5;
-    g.altThousands = N % 1E4;
-    g.altHundreds = N % 1E3;
-    g.altTens = N % 100;
-    g.altUnits = N % 10;
+    g.altitudeMeters = f.llaLocation[2];
+    g.altitude = M;
+    g.altTenThousands = M % 1E5;
+    g.altThousands = M % 1E4;
+    g.altHundreds = M % 1E3;
+    g.altTens = M % 100;
+    g.altUnits = M % 10;
     g.climbrate = mb;
-    g.aoa = ca;
+    g.aoa = ba;
     g.turnrate = 60 * (f.htr[0] - g.heading) / a;
     g.heading = f.htr[0];
     g.heading360 = fixAngle360(f.htr[0]);
@@ -27375,10 +27555,10 @@ flight.tick = function(a, b) {
     g.relativeWind = nb;
     g.windSpeed = weather.currentWindSpeed;
     g.windSpeedLabel = parseInt(weather.currentWindSpeed) + " kts";
-    g.view = camera.currentView;
+    g.view = geofs.camera.currentView;
     g.envelopeTemp = E;
-    if ("free" == camera.currentModeName || "chase" == camera.currentModeName) {
-        var $a = geofs.utils.llaDistanceInMeters(camera.lla, f.llaLocation);
+    if ("free" == geofs.camera.currentModeName || "chase" == geofs.camera.currentModeName) {
+        var $a = geofs.utils.llaDistanceInMeters(geofs.camera.lla, f.llaLocation);
         g.cameraAircraftSpeed = (g.cameraAircraftDistance - $a) / a;
         g.cameraAircraftDistance = $a
     } else
@@ -27387,144 +27567,140 @@ flight.tick = function(a, b) {
 };
 flight.recorder = {
     tape: [],
-    rate: 5,
-    invRate: .2,
+    rate: 4,
     maxLength: 1E3,
-    recordingFrame: 0,
     recording: !0,
     playing: !1,
-    paused: !1
-};
-flight.recorder.record = function() {
-    if (flight.recorder.recordingFrame < flight.recorder.rate)
-        flight.recorder.recordingFrame++;
-    else {
-        var a = geofs.aircraft.instance,
-            b = a.llaLocation;
-        a = a.htr;
-        b = {
-            coord: [b[0], b[1], b[2], a[0], a[1], a[2]],
-            controls: [controls.pitch, controls.roll, controls.yaw, controls.throttle, controls.gear.position, controls.flaps.position, controls.airbrakes.position, geofs.aircraft.instance.trueAirSpeed],
-            state: [geofs.aircraft.instance.engine.on, geofs.aircraft.instance.rigidBody.getLinearVelocity(), geofs.aircraft.instance.rigidBody.getAngularVelocity()]
-        };
-        flight.recorder.tape.push(b);
-        flight.recorder.tape.length > flight.recorder.maxLength && flight.recorder.tape.shift();
-        flight.recorder.recordingFrame = 0
-    }
-};
-flight.recorder.clear = function() {
-    flight.recorder.tape = []
-};
-flight.recorder.startRecording = function() {
-    flight.recorder.playing || (flight.recorder.recording = !0)
-};
-flight.recorder.stopRecording = function() {
-    flight.recorder.recording = !1
-};
-flight.recorder.enterPlayback = function() {
-    geofs.aircraft.instance.rigidBody.saveState();
-    flight.recorder.stopRecording();
-    $(".geofs-recordPlayer-slider").attr("max", flight.recorder.tape.length - 2);
-    flight.recorder.setStep(0);
-    $(".geofs-recordPlayer-slider").on("userchange", function(a, b) {
-        flight.recorder.setStep(parseInt(b), !0)
-    }).on("dragstart", flight.recorder.pausePlayback).on("dragend", flight.recorder.unpausePlayback);
-    $("body").addClass("geofs-record-playing");
-    flight.recorder.playing = !0
-};
-flight.recorder.exitPlayback = function() {
-    geofs.doPause();
-    flight.recorder.playing = !1;
-    geofs.aircraft.instance.rigidBody.restoreState();
-    flight.recorder.setStep(flight.recorder.currentStep);
-    geofs.aircraft.instance.object3d.resetRotationMatrix();
-    $("body").removeClass("geofs-record-playing");
-    flight.recorder.startRecording()
-};
-flight.recorder.pausePlayback = function() {
-    flight.recorder.paused = !0
-};
-flight.recorder.unpausePlayback = function() {
-    flight.recorder.paused = !1
-};
-flight.recorder.startPlayback = function() {
-    flight.recorder.playing = !0;
-    geofs.undoPause()
-};
-flight.recorder.setStep = function(a, b) {
-    a > flight.recorder.tape.length - 2 && (a = flight.recorder.tape.length - 2,
-        geofs.doPause());
-    0 > a && (a = 0);
-    if (!flight.recorder.tape[a])
-        return flight.recorder.pausePlayback(), !1;
-    flight.recorder.currentStep = a;
-    flight.recorder.currentFrame = 0;
-    flight.recorder.liveRecord = $.extend({}, flight.recorder.tape[a]);
-    flight.recorder.setAircraft(flight.recorder.liveRecord);
-    b ? (flight.tick(1, 1),
-        camera.update(0)) : $(".geofs-recordPlayer-slider").slider("value", a);
-    flight.recorder.setDeltaRecord(a);
-    return !0
-};
-flight.recorder.setDeltaRecord = function(a) {
-    var b = flight.recorder.tape,
-        c = b[a];
-    b = b[a + 1];
-    a = M3.sub(b.coord, c.coord);
-    a[3] = fixAngle(a[3]);
-    a[4] = fixAngle(a[4]);
-    a[5] = fixAngle(a[5]);
-    c = M3.sub(b.controls, c.controls);
-    a = M3.scale(a, flight.recorder.invRate);
-    c = M3.scale(c, flight.recorder.invRate);
-    flight.recorder.deltaRecord = {
-        coord: a,
-        controls: c
-    }
-};
-flight.recorder.stepInterpolation = function() {
-    if (!flight.recorder.paused)
-        if (flight.recorder.currentFrame >= flight.recorder.rate - 1)
-            flight.recorder.setStep(flight.recorder.currentStep + 1);
-        else {
-            flight.recorder.currentFrame++;
-            var a = flight.recorder.liveRecord;
-            a.coord = M3.add(a.coord, flight.recorder.deltaRecord.coord);
-            a.coord[3] = fixAngle(a.coord[3]);
-            a.coord[4] = fixAngle(a.coord[4]);
-            a.coord[5] = fixAngle(a.coord[5]);
-            a.controls = M3.add(a.controls, flight.recorder.deltaRecord.controls);
-            flight.recorder.setAircraft(a)
+    paused: !1,
+    record: function() {
+        if (flight.recorder.recording) {
+            var a = geofs.aircraft.instance.llaLocation,
+                b = geofs.aircraft.instance.htr;
+            a = {
+                time: geofs.utils.now(),
+                coord: [a[0], a[1], a[2], b[0], b[1], b[2]],
+                controls: [controls.pitch, controls.roll, controls.yaw, controls.throttle, controls.gear.position, controls.flaps.position, controls.airbrakes.position, geofs.aircraft.instance.trueAirSpeed],
+                state: [geofs.aircraft.instance.engine.on, geofs.aircraft.instance.rigidBody.getLinearVelocity(), geofs.aircraft.instance.rigidBody.getAngularVelocity()]
+            };
+            flight.recorder.tape.push(a);
+            flight.recorder.tape.length > flight.recorder.maxLength && flight.recorder.tape.shift()
         }
-};
-flight.recorder.setAircraft = function(a) {
-    var b = a.coord,
-        c = [b[0], b[1], b[2]];
-    b = [b[3], b[4], b[5]];
-    var d = a.controls;
-    controls.pitch = d[0];
-    controls.roll = d[1];
-    controls.yaw = d[2];
-    controls.throttle = d[3];
-    controls.gear.position = d[4];
-    controls.flaps.position = d[5];
-    controls.airbrakes.position = d[6];
-    geofs.aircraft.instance.trueAirSpeed = d[7];
-    a.state && (geofs.aircraft.instance.engine.on = a.state[0],
-        geofs.aircraft.instance.rigidBody.setLinearVelocity(a.state[1]),
-        geofs.aircraft.instance.rigidBody.setAngularVelocity(a.state[2]));
-    geofs.aircraft.instance.place(c, b);
-    geofs.aircraft.instance.object3d.compute(geofs.aircraft.instance.llaLocation);
-    geofs.aircraft.instance.render()
+    },
+    clear: function() {
+        flight.recorder.tape = []
+    },
+    startRecording: function() {
+        flight.recorder.interval || (flight.recorder.interval = setInterval(flight.recorder.record, 1E3 / flight.recorder.rate));
+        flight.recorder.playing || (flight.recorder.recording = !0)
+    },
+    stopRecording: function() {
+        flight.recorder.recording = !1
+    },
+    enterPlayback: function() {
+        geofs.aircraft.instance.rigidBody.saveState();
+        flight.recorder.stopRecording();
+        $(".geofs-recordPlayer-slider").attr("max", flight.recorder.tape.length - 2);
+        flight.recorder.setStep(0);
+        $(".geofs-recordPlayer-slider").on("userchange", function(a, b) {
+            flight.recorder.setStep(parseInt(b), !0)
+        }).on("dragstart", flight.recorder.pausePlayback).on("dragend", flight.recorder.unpausePlayback);
+        $("body").addClass("geofs-record-playing");
+        flight.recorder.playing = !0
+    },
+    exitPlayback: function() {
+        geofs.doPause();
+        flight.recorder.playing = !1;
+        geofs.aircraft.instance.rigidBody.restoreState();
+        flight.recorder.setStep(flight.recorder.currentStep);
+        geofs.aircraft.instance.object3d.resetRotationMatrix();
+        $("body").removeClass("geofs-record-playing");
+        flight.recorder.startRecording()
+    },
+    pausePlayback: function() {
+        flight.recorder.paused = !0
+    },
+    unpausePlayback: function() {
+        flight.recorder.paused = !1
+    },
+    startPlayback: function() {
+        flight.recorder.playing = !0;
+        geofs.undoPause(2)
+    },
+    setStep: function(a, b) {
+        a > flight.recorder.tape.length - 2 && (a = flight.recorder.tape.length - 2,
+            geofs.doPause());
+        0 > a && (a = 0);
+        if (!flight.recorder.tape[a])
+            return flight.recorder.pausePlayback(), !1;
+        flight.recorder.currentStep = a;
+        flight.recorder.liveRecord = $.extend({}, flight.recorder.tape[a]);
+        flight.recorder.setAircraft(flight.recorder.liveRecord);
+        b ? (flight.tick(1, 1),
+            geofs.camera.update(0)) : $(".geofs-recordPlayer-slider").slider("value", a);
+        flight.recorder.setDeltaRecord(a);
+        return !0
+    },
+    setDeltaRecord: function(a) {
+        var b = flight.recorder.tape,
+            c = b[a];
+        a = b[a + 1];
+        b = 1 / (a.time - c.time);
+        var d = M3.sub(a.coord, c.coord);
+        d[3] = fixAngle(d[3]);
+        d[4] = fixAngle(d[4]);
+        d[5] = fixAngle(d[5]);
+        var e = M3.sub(a.controls, c.controls);
+        d = M3.scale(d, b);
+        e = M3.scale(e, b);
+        flight.recorder.nextTime = geofs.utils.now() + (a.time - c.time);
+        flight.recorder.deltaRecord = {
+            coord: d,
+            controls: e
+        }
+    },
+    play: function(a) {
+        if (!flight.recorder.paused)
+            if (geofs.utils.now() >= flight.recorder.nextTime)
+                flight.recorder.setStep(flight.recorder.currentStep + 1);
+            else {
+                var b = flight.recorder.liveRecord;
+                b.coord = M3.add(b.coord, M3.scale(flight.recorder.deltaRecord.coord, a));
+                b.coord[3] = fixAngle(b.coord[3]);
+                b.coord[4] = fixAngle(b.coord[4]);
+                b.coord[5] = fixAngle(b.coord[5]);
+                b.controls = M3.add(b.controls, M3.scale(flight.recorder.deltaRecord.controls, a));
+                flight.recorder.setAircraft(b)
+            }
+    },
+    setAircraft: function(a) {
+        var b = a.coord,
+            c = [b[0], b[1], b[2]];
+        b = [b[3], b[4], b[5]];
+        var d = a.controls;
+        controls.pitch = d[0];
+        controls.roll = d[1];
+        controls.yaw = d[2];
+        controls.throttle = d[3];
+        controls.gear.position = d[4];
+        controls.flaps.position = d[5];
+        controls.airbrakes.position = d[6];
+        geofs.aircraft.instance.trueAirSpeed = d[7];
+        a.state && (geofs.aircraft.instance.engine.on = a.state[0],
+            geofs.aircraft.instance.rigidBody.setLinearVelocity(a.state[1]),
+            geofs.aircraft.instance.rigidBody.setAngularVelocity(a.state[2]));
+        geofs.aircraft.instance.place(c, b);
+        geofs.aircraft.instance.object3d.compute(geofs.aircraft.instance.llaLocation);
+        geofs.aircraft.instance.render()
+    }
 };
 flight.terrainElevationManagement = function() {
     var a = geofs.aircraft.instance;
-    a.collResult = geofs.getCollisionResult([a.llaLocation[0], a.llaLocation[1], 0], null, null, currentAltitudeTestContext);
-    a.collResult.normal = geofs.getNormalFromCollision(a.collResult, currentAltitudeTestContext);
+    a.collResult = geofs.getCollisionResult([a.llaLocation[0], a.llaLocation[1], 0], null, null, flight.currentAltitudeTestContext);
+    a.collResult.normal = geofs.getNormalFromCollision(a.collResult, flight.currentAltitudeTestContext);
     var b = a.collResult.location[2],
-        c = geofs.getGroundAltitude(a.lastLlaLocation[0], a.lastLlaLocation[1], pastAltitudeTestContext).location[2],
+        c = geofs.getGroundAltitude(a.lastLlaLocation[0], a.lastLlaLocation[1], flight.pastAltitudeTestContext).location[2],
         d = c - a.elevationAtPreviousLocation,
-        e = !(currentAltitudeTestContext.wrongAltitude || pastAltitudeTestContext.wrongAltitude);
+        e = !(flight.currentAltitudeTestContext.wrongAltitude || flight.pastAltitudeTestContext.wrongAltitude);
     flight.skipCollisionResponse = !1;
     if (.2 < Math.abs(d)) {
         if (e)
@@ -27534,7 +27710,7 @@ flight.terrainElevationManagement = function() {
             a.llaLocation[2] += d;
         geofs.cautiousWithTerrain && geofs.probeTerrain()
     }
-    geofs.cautiousWithTerrain && a.absoluteStartAltitude && b + a.setup.startAltitude > a.llaLocation[2] && (a.llaLocation[2] = b + a.setup.startAltitude + 100,
+    geofs.cautiousWithTerrain && a.absoluteStartAltitude && b + a.definition.startAltitude > a.llaLocation[2] && (a.llaLocation[2] = b + a.definition.startAltitude + 100,
         flight.skipCollisionResponse = !0);
     a.elevationAtPreviousLocation = b;
     a.lastLlaLocation = a.llaLocation;
@@ -27636,10 +27812,8 @@ rigidBody.prototype.integrateTransform = function(a) {
         a = V3.scale(this.v_angularVelocity, a),
         a = M33.transformByTranspose(b.object3d._initialRotation, a),
         b.object3d.rotateInitialRotation(a);
-    this.setFrameForces();
     this.clearForces()
 };
-rigidBody.prototype.setFrameForces = function() {};
 rigidBody.prototype.setCurrentAcceleration = function(a, b) {
     this.v_acceleration = V3.scale(V3.sub(this.v_linearVelocity, this.v_prevLinearVelocity), a);
     this.v_acceleration = V3.add([0, 0, GRAVITY], this.v_acceleration);
@@ -27691,6 +27865,7 @@ geofs.aircraft.Aircraft = function(a) {
     this.trueAirSpeed = 0;
     geofs.animation.resetValues({
         altitude: 0,
+        altitudeMeters: 0,
         prop: 0,
         throttle: 0,
         yaw: 0,
@@ -27701,7 +27876,8 @@ geofs.aircraft.Aircraft = function(a) {
         night: 0,
         cameraAircraftDistance: 0,
         kias: 0,
-        optionalAnimatedPartPosition: 0
+        optionalAnimatedPartPosition: 0,
+        turnrate: 0
     });
     this.animationValue = geofs.animation.values;
     this.reset()
@@ -27716,17 +27892,11 @@ geofs.aircraft.Aircraft.prototype.getCurrentCoordinates = function() {
     a[3] = geofs.aircraft.instance.htr[0];
     return a
 };
-geofs.aircraft.Aircraft.prototype.change = function(a, b) {
-    a = a || this.aircraftRecord.id;
-    geofs.doPause(1);
-    this.load(a, this.getCurrentCoordinates(), b);
-    geofs.api.analytics.event("aircraft", geofs.aircraftList[a].name)
-};
 geofs.aircraft.Aircraft.prototype.addShadow = function() {
     this.removeShadow();
     if (this.aircraftRecord) {
-        var a = this.aircraftRecord.fullPath + (this.setup.shadowFile || "shadow.glb"),
-            b = V3.scale(this.setup.shadowBox, this.setup.scale);
+        var a = this.aircraftRecord.fullPath + (this.definition.shadowFile || "shadow.glb"),
+            b = V3.scale(this.definition.shadowBox, this.definition.scale);
         b[2] = 0;
         this.shadow = new geofs.shadow(a, b)
     }
@@ -27741,11 +27911,11 @@ geofs.aircraft.Aircraft.prototype.loadDefault = function(a) {
 };
 geofs.aircraft.Aircraft.prototype.parseRecord = function(a) {
     try {
-        var b = $.parseJSON(a);
+        var b = JSON.parse(a);
         this.aircraftRecord = b;
         if (b.definition) {
             var c = atob(b.definition);
-            var d = b.isCommunity ? $.parseJSON(c)[0] : eval(c)[0]
+            var d = JSON.parse(c)[0]
         }
         if (b.error) {
             this.loadDefault(b.error);
@@ -27753,40 +27923,77 @@ geofs.aircraft.Aircraft.prototype.parseRecord = function(a) {
         }
     } catch (e) {
         this.loadDefault("Incorrect aircraft definition file: " + e.message);
+        console.log('aircraft definition:' + definitionString);
         return
     }
     return d
 };
+geofs.aircraft.Aircraft.prototype.change = function(a, b, c) {
+    var d = this;
+    a = a || this.aircraftRecord.id;
+    this.load(a, this.getCurrentCoordinates(), c).then(function() {
+        d.loadLivery(b)
+    });
+    geofs.api.analytics.event("aircraft", geofs.aircraftList[a].name)
+};
+geofs.aircraft.Aircraft.prototype.loadLivery = function(a) {
+    var b = this;
+    if (a) {
+        this.liveryId = a;
+        var c = "cockpit" == geofs.camera.currentModeName ? "cockpit" : "root",
+            d = this.parts[c]["3dmodel"];
+        d && d.readyPromise.then(function() {
+            b.parts[c].textures.forEach(function(c) {
+                var e = d._rendererResources.textures[c.index];
+                Cesium.Resource.fetchImage({
+                    url: b.aircraftRecord.fullPath + c.filename + a + ".jpg"
+                }).then(function(a) {
+                    e.copyFrom(a)
+                })
+            })
+        })
+    } else
+        this.liveryId = null
+};
 geofs.aircraft.Aircraft.prototype.load = function(a, b, c) {
-    $.ajax(geofs.aircraftList[a] && geofs.aircraftList[a].local ? geofs.aircraftList[a].path + "aircraft.json" : geofs.url + "/models/aircraft/load.php", {
-        data: {
-            id: a
-        },
-        dataType: "text",
-        success: function(d, e, f) {
-            if ("error" != e) {
-                if (geofs.aircraftList[a].local && (d = JSON.stringify({
-                        id: a,
-                        name: geofs.aircraftList[a].name,
-                        fullPath: geofs.aircraftList[a].path,
-                        isPremium: !1,
-                        isCommunity: !1,
-                        definition: btoa(d)
-                    })),
-                    d = geofs.aircraft.instance.parseRecord(d))
-                    geofs.aircraftList[a].local || (geofs.aircraft.instance.aircraftRecord.fullPath = geofs.url + geofs.aircraft.instance.aircraftRecord.fullPath),
-                    geofs.aircraft.instance.id = a,
-                    geofs.aircraft.instance.init(d, b, c)
-            } else
-                geofs.aircraft.instance.loadDefault("Could not load aircraft file")
-        },
-        error: function(b, c, f) {
-            a != geofs.aircraft.default && geofs.aircraft.instance.loadDefault("Could not load aircraft file" + f)
-        }
+    var d = this,
+        e = geofs.aircraftList[a] && geofs.aircraftList[a].local ? geofs.aircraftList[a].path + "aircraft.json" : geofs.url + "/models/aircraft/load.php";
+    return new Promise(function(f, g) {
+        d.id != a || c ? (geofs.doPause(1),
+            d.unloadAircraft(),
+            $.ajax(e, {
+                data: {
+                    id: a,
+                    kc: geofs.killCache
+                },
+                dataType: "text",
+                success: function(e, g, m) {
+                    if ("error" != g) {
+                        if (geofs.aircraftList[a].local && (e = JSON.stringify({
+                                id: a,
+                                name: geofs.aircraftList[a].name,
+                                fullPath: geofs.aircraftList[a].path,
+                                isPremium: !1,
+                                isCommunity: !1,
+                                definition: btoa(e)
+                            })),
+                            e = d.parseRecord(e))
+                            geofs.aircraftList[a].local || (d.fullPath = geofs.url + d.aircraftRecord.fullPath),
+                            d.id = a,
+                            d.init(e, b, c)
+                    } else
+                        d.loadDefault("Could not load aircraft file");
+                    f()
+                },
+                error: function(b, c, d) {
+                    a != geofs.aircraft.default && this.loadDefault("Could not load aircraft file" + d);
+                    g()
+                }
+            })) : f()
     })
 };
 geofs.aircraft.Aircraft.prototype.init = function(a, b, c) {
-    this.setup = a;
+    this.setup = this.definition = a;
     this.controllers = {
         pitch: {
             recenter: !1,
@@ -27804,7 +28011,6 @@ geofs.aircraft.Aircraft.prototype.init = function(a, b, c) {
             ratio: 1
         }
     };
-    this.unloadAircraft();
     this.parts = {};
     this.airfoils = [];
     this.engines = [];
@@ -27814,87 +28020,97 @@ geofs.aircraft.Aircraft.prototype.init = function(a, b, c) {
     this.lights = [];
     this.currentAltitudeTest = {};
     this.pastAltitudeTest = {};
-    this.setup.scale = this.setup.scale || 1;
-    this.setup.startupTime = this.setup.startupTime || 1;
-    this.setup.com = this.setup.com || [0, 0, 0];
-    this.setup.startAltitude *= this.setup.scale;
-    this.setup.cockpitScaleFix = this.setup.cockpitScaleFix || 1;
-    this.setup.motionSensitivity = this.setup.motionSensitivity || 1;
-    for (var d in this.setup.cameras)
-        a = this.setup.cameras[d],
-        a.distance *= this.setup.scale,
-        a.position && (a.position = V3.scale(a.position, this.setup.scale));
-    for (d = 0; d < this.setup.parts.length; d++)
-        this.parts[this.setup.parts[d].name] = this.setup.parts[d];
+    this.definition.scale = this.definition.scale || 1;
+    this.definition.startupTime = this.definition.startupTime || 1;
+    this.definition.com = this.definition.com || [0, 0, 0];
+    this.definition.startAltitude *= this.definition.scale;
+    this.definition.cockpitScaleFix = this.definition.cockpitScaleFix || 1;
+    this.definition.motionSensitivity = this.definition.motionSensitivity || 1;
+    for (var d in this.definition.cameras)
+        a = this.definition.cameras[d],
+        a.distance *= this.definition.scale,
+        a.position && (a.position = V3.scale(a.position, this.definition.scale));
+    for (d = 0; d < this.definition.parts.length; d++)
+        this.parts[this.definition.parts[d].name] = this.definition.parts[d];
     this.parts.root || (d = {
             name: "root",
-            position: this.setup.com || [0, 0, 0]
+            position: this.definition.com || [0, 0, 0]
         },
-        this.setup.parts.push(d),
+        this.definition.parts.push(d),
         this.parts.root = d);
     geofs.isApp && (this.parts.camera = {
             name: "camera",
             position: [.25, 0, 0]
         },
         this.parts.camera.object3d = new Object3D(this.parts.camera));
-    this.addParts(this.setup.parts, this.aircraftRecord.fullPath, this.setup.scale);
+    this.addParts(this.definition.parts, this.aircraftRecord.fullPath, this.definition.scale);
     this.object3d = this.parts.root.object3d;
     d = this.boundingSphereRadius = 0;
     for (a = this.collisionPoints.length; d < a; d++)
         this.boundingSphereRadius = Math.max(this.boundingSphereRadius, V3.length(this.collisionPoints[d]));
     this.boundingSphereRadius *= 1.5;
-    for (d in this.setup.contactProperties)
-        a = this.setup.contactProperties[d],
+    for (d in this.definition.contactProperties)
+        a = this.definition.contactProperties[d],
         a.lockSpeed = a.lockSpeed || .01;
     this.object3d.compute(this.llaLocation);
     this.object3d.render(this.llaLocation);
     this.rigidBody || (this.rigidBody = new rigidBody);
-    this.rigidBody.setMassProps(this.setup.mass, this.setup.tensorFactor);
-    this.setup.RPM2PropAS = this.setup.driveRatio / 60 * 360;
-    this.engine.invRPMRange = 1 / (this.setup.maxRPM - this.setup.minRPM);
+    this.rigidBody.setMassProps(this.definition.mass, this.definition.tensorFactor);
+    this.definition.RPM2PropAS = this.definition.driveRatio / 60 * 360;
+    this.engine.invRPMRange = 1 / (this.definition.maxRPM - this.definition.minRPM);
     (geofs.preferences.graphics.simpleShadow || geofs.preferences.graphics.forceSimpleShadow) && this.addShadow();
     this._cockpitLoaded = !1;
-    c || (audio.init(this.setup.sounds),
-        instruments.init(this.setup.instruments),
+    c || (audio.init(this.definition.sounds),
+        instruments.init(this.definition.instruments),
         controls.reset(),
-        camera.reset());
+        geofs.camera.reset());
     geofs.preferences.aircraft = this.aircraftRecord.id;
-    this.setup.autopilot || controls.autopilot.turnOff();
+    this.definition.autopilot || controls.autopilot.turnOff();
     geofs.flyTo(b, !0)
 };
 geofs.aircraft.Aircraft.prototype.loadCockpit = function() {
-    if (!this._cockpitLoaded)
-        if (geofs.aircraft.instance.setup.cockpitModel) {
-            var a = geofs.aircraft.instance.aircraftRecord.id;
-            $.ajax(geofs.aircraftList[a].local ? geofs.aircraftList[a].path + "cockpit/cockpit.json" : geofs.url + "/models/aircraft/load.php", {
+    var a = this,
+        b = geofs.aircraft.instance.aircraftRecord.id,
+        c = geofs.aircraftList[b].local ? geofs.aircraftList[b].path + "cockpit/cockpit.json" : geofs.url + "/models/aircraft/load.php",
+        d = new Promise(function(d, f) {
+            a._cockpitLoaded ? d() : geofs.aircraft.instance.definition.cockpitModel ? $.ajax(c, {
                 data: {
-                    id: a,
+                    id: b,
+                    kc: geofs.killCache,
                     cockpit: !0
                 },
                 dataType: "text",
-                success: function(b, c) {
-                    geofs.aircraftList[a].local && (b = JSON.stringify({
-                        id: a,
-                        name: geofs.aircraftList[a].name,
-                        fullPath: geofs.aircraftList[a].path,
+                success: function(c, e) {
+                    geofs.aircraftList[b].local && (c = JSON.stringify({
+                        id: b,
+                        name: geofs.aircraftList[b].name,
+                        fullPath: geofs.aircraftList[b].path,
                         isPremium: !1,
                         isCommunity: !1,
-                        definition: btoa(b)
+                        definition: btoa(c)
                     }));
-                    if (b = geofs.aircraft.instance.parseRecord(b))
-                        geofs.aircraft.instance.cockpitSetup = b,
-                        geofs.aircraft.instance._cockpitLoaded = !0,
-                        geofs.aircraftList[a].local || (geofs.aircraft.instance.aircraftRecord.fullPath = geofs.url + geofs.aircraft.instance.aircraftRecord.fullPath),
-                        geofs.aircraft.instance.addParts(b.parts, geofs.aircraft.instance.aircraftRecord.fullPath + "cockpit/", geofs.aircraft.instance.cockpitSetup.scale),
+                    if (c = a.parseRecord(c))
+                        a.cockpitSetup = c,
+                        a._cockpitLoaded = !0,
+                        geofs.aircraftList[b].local || (a.aircraftRecord.fullPath = geofs.url + a.aircraftRecord.fullPath),
+                        a.addParts(c.parts, a.aircraftRecord.fullPath + "cockpit/", a.cockpitSetup.scale),
                         instruments.rescale(),
-                        geofs.aircraft.instance.setup.cockpitScaleFix && geofs.aircraft.instance.fixCockpitScale(geofs.aircraft.instance.setup.cockpitScaleFix),
-                        geofs.aircraft.instance.object3d.compute(geofs.aircraft.instance.llaLocation),
-                        geofs.aircraft.instance.placeParts(),
-                        geofs.aircraft.instance.render()
+                        a.definition.cockpitScaleFix && a.fixCockpitScale(a.definition.cockpitScaleFix),
+                        a.object3d.compute(a.llaLocation),
+                        a.placeParts(),
+                        a.render();
+                    d()
+                },
+                error: function(a, b) {
+                    f()
                 }
-            })
-        } else
-            geofs.aircraft.instance._cockpitLoaded = !0
+            }) : (geofs.aircraft.instance._cockpitLoaded = !0,
+                f())
+        });
+    d.then(function() {
+        a.loadLivery(a.liveryId)
+    });
+    return d
 };
 geofs.aircraft.Aircraft.prototype.addParts = function(a, b, c) {
     c = c || 1;
@@ -27929,12 +28145,13 @@ geofs.aircraft.Aircraft.prototype.addParts = function(a, b, c) {
             b && "/" != e.model[0] && !e.include && (f = b + e.model),
             e["3dmodel"] = geofs.loadModel(f, {
                 castShadows: e.noCastShadows ? !1 : !0,
-                receiveShadows: e.noReceiveShadows ? !1 : !0
+                receiveShadows: e.noReceiveShadows ? !1 : !0,
+                incrementallyLoadTextures: !1
             }));
         "GlassPanel" == e.type && (f = new geofs.GlassPanel(e),
             e.entity = f.entity,
             instruments.add(f, e.name));
-        e.light && (e.lightBillboard = new geofs.light(null, e.light, {
+        e.light && (e.lightBillboard = new geofs.fx.light(null, e.light, {
                 scale: .2
             }),
             geofs.aircraft.instance.lights.push(e));
@@ -27980,14 +28197,14 @@ geofs.aircraft.Aircraft.prototype.addParts = function(a, b, c) {
             e.aspectRatio = e.aspectRatio || DEFAULT_AIRFOIL_ASPECT_RATIO,
             e.aspectRatioCoefficient = e.aspectRatio / e.aspectRatio + 2);
         "engine" == e.type && (e.rpm = 0,
-            geofs.aircraft.instance.setup.originalInertia = geofs.aircraft.instance.setup.engineInertia,
+            geofs.aircraft.instance.definition.originalInertia = geofs.aircraft.instance.definition.engineInertia,
             geofs.aircraft.instance.engines.push(e));
         "balloon" == e.type && (e.temperature = e.initialTemperature || 0,
             e.coolingSpeed = e.coolingSpeed || 0,
             geofs.aircraft.instance.balloons.push(e));
         if (e.collisionPoints)
             for (f = e.collisionPoints,
-                g = geofs.aircraft.instance.setup.contactProperties[e.type],
+                g = geofs.aircraft.instance.definition.contactProperties[e.type],
                 h = 0; h < f.length; h++)
                 f[h].part = e,
                 f[h].contactProperties = g,
@@ -28042,12 +28259,13 @@ geofs.aircraft.Aircraft.prototype.reset = function(a) {
     this.engine.on = !0;
     if (this.engines)
         for (b = 0; b < this.engines.length; b++)
-            this.engines[b].rpm = this.setup.minRPM;
+            this.engines[b].rpm = this.definition.minRPM;
     this.engine.rpm = 0
 };
 geofs.aircraft.Aircraft.prototype.place = function(a, b) {
     this.lastLlaLocation = this.llaLocation = a;
-    b && (this.object3d.reset(),
+    b && (this.htr = V3.dup(b),
+        this.object3d.reset(),
         b = V3.toRadians(b),
         this.object3d.setInitiallRotation([b[1], b[2], b[0]]));
     this.placeParts()
@@ -28111,15 +28329,15 @@ geofs.aircraft.Aircraft.prototype.render = function() {
 geofs.aircraft.Aircraft.prototype.startEngine = function() {
     this.engine.on || !0 === geofs.aircraft.instance.crashed || (this.engine.on = !0,
         this.engine.startup = !0,
-        geofs.aircraft.instance.setup.engineInertia = 2 / this.setup.startupTime,
+        geofs.aircraft.instance.definition.engineInertia = 2 / this.definition.startupTime,
         setTimeout(function() {
             geofs.aircraft.instance.engine.startup = !1;
-            geofs.aircraft.instance.setup.engineInertia = geofs.aircraft.instance.setup.originalInertia
-        }, 1E3 * this.setup.startupTime),
+            geofs.aircraft.instance.definition.engineInertia = geofs.aircraft.instance.definition.originalInertia
+        }, 1E3 * this.definition.startupTime),
         audio.playStartup())
 };
 geofs.aircraft.Aircraft.prototype.stopEngine = function() {
-    this.engine.on && (geofs.aircraft.instance.setup.engineInertia = 2 / (this.setup.shutdownTime || 1),
+    this.engine.on && (geofs.aircraft.instance.definition.engineInertia = 2 / (this.definition.shutdownTime || 1),
         controls.throttle = 0,
         this.engine.on = !1,
         audio.playShutdown())
@@ -28273,10 +28491,10 @@ objects.checkCollisions = function(a, b, c) {
             b = c ? V3.add(a, c) : V3.add(f.metricOffset, b);
             for (var g = 0, h = f.collisionTriangles.length; g < h; g++) {
                 var k = f.collisionTriangles[g],
-                    n = intersect_RayTriangle([a, b], k);
-                if (n)
+                    m = intersect_RayTriangle([a, b], k);
+                if (m)
                     return {
-                        location: V3.add(f.location, xyz2lla(n.point, f.location)),
+                        location: V3.add(f.location, xyz2lla(m.point, f.location)),
                         normal: V3.normalize(k.n)
                     }
             }
@@ -28285,12 +28503,12 @@ objects.checkCollisions = function(a, b, c) {
 objects.getAltitudeAtLocation = function(a, b) {
     if (objects.collidableObject)
         for (var c = [a, b, 1E5], d = 0, e = objects.collidableObjectList.length; d < e; d++)
-            for (var f = objects.collidableObjectList[d], g = lla2xyz(V3.sub(c, f.location), f.location), h = [g[0], g[1], 0], k = 0, n = f.collisionTriangles.length; k < n; k++) {
+            for (var f = objects.collidableObjectList[d], g = lla2xyz(V3.sub(c, f.location), f.location), h = [g[0], g[1], 0], k = 0, m = f.collisionTriangles.length; k < m; k++) {
                 var v = f.collisionTriangles[k],
-                    z = intersect_RayTriangle([g, h], v);
-                if (z)
+                    y = intersect_RayTriangle([g, h], v);
+                if (y)
                     return {
-                        location: [a, b, z.point[2] + f.location[2]],
+                        location: [a, b, y.point[2] + f.location[2]],
                         normal: V3.normalize(v.n)
                     }
             }
@@ -28333,14 +28551,14 @@ controls.init = function() {
     controls.mouseHandler = function(a) {
         !1 === controls.mouse.down || geofs.api.nativeMouseHandling ? "mouse" == controls.mode && (controls.mouse.xValue = clamp((a.pageX - controls.mouse.oX - controls.mouse.cX) * controls.mouse.rX, -1, 1),
             controls.mouse.yValue = clamp((a.pageY - controls.mouse.tY - controls.mouse.cY) * controls.mouse.rY, -1, 1),
-            controls.keyboard.override = !1) : (1 == controls.mouse.down && camera.rotate((controls.mouse.originalX - a.pageX) * controls.mouse.orbit.ratioX, (controls.mouse.originalY - a.pageY) * controls.mouse.orbit.ratioY) && (a.preventDefault(),
-                a.stopPropagation(),
-                a.stopImmediatePropagation()),
-            3 == controls.mouse.down && camera.translate(-(controls.mouse.lastY - a.pageY) * controls.mouse.orbit.ratioZ) && (a.preventDefault(),
-                a.stopImmediatePropagation()),
+            controls.keyboard.override = !1) : (1 == controls.mouse.down && geofs.camera.rotate((controls.mouse.originalX - a.pageX) * controls.mouse.orbit.ratioX, (controls.mouse.originalY - a.pageY) * controls.mouse.orbit.ratioY) && (a.preventDefault(),
+                a.stopPropagation && a.stopPropagation(),
+                a.stopImmediatePropagation && a.stopImmediatePropagation()),
+            3 == controls.mouse.down && geofs.camera.translate(-(controls.mouse.lastY - a.pageY) * controls.mouse.orbit.ratioZ) && (a.preventDefault(),
+                a.stopImmediatePropagation && a.stopImmediatePropagation()),
             controls.mouse.lastY = a.pageY);
         geofs.api.nativeMouseHandling || (a.preventDefault(),
-            a.stopImmediatePropagation())
+            a.stopImmediatePropagation && a.stopImmediatePropagation())
     };
     $(document).on("click", ".geofs-orientationReset, .geofs-orientationCalibrate", function() {
         controls.orientation.recenter()
@@ -28351,22 +28569,22 @@ controls.init = function() {
     controls.mouseDownHandler = function(a) {
         controls.mouse.down = a.which;
         0 === controls.mouse.down && (controls.mouse.down = 1);
-        camera.isHandlingMouseRotation() && (a.preventDefault(),
+        geofs.camera.isHandlingMouseRotation() && (a.preventDefault(),
             a.stopImmediatePropagation && a.stopImmediatePropagation(),
             controls.mouse.originalX = a.pageX,
             controls.mouse.originalY = a.pageY,
             controls.mouse.lastY = controls.mouse.originalY,
-            camera.saveRotation())
+            geofs.camera.saveRotation())
     };
     controls.mouseUpHandler = function(a) {
-        camera.isHandlingMouseRotation() && camera.saveRotation();
+        geofs.camera.isHandlingMouseRotation() && geofs.camera.saveRotation();
         a.preventDefault();
         controls.mouse.down = !1
     };
     $(".geofs-canvas-mouse-overlay").on("mousedown", controls.mouseDownHandler);
     $(".geofs-canvas-mouse-overlay").on("mouseup", controls.mouseUpHandler);
     $(".geofs-canvas-mouse-overlay").on("mousewheel", function(a) {
-        0 < a.originalEvent.wheelDelta / 120 ? camera.decreaseFOV() : camera.increaseFOV();
+        0 < a.originalEvent.wheelDelta / 120 ? geofs.camera.decreaseFOV() : geofs.camera.increaseFOV();
         a.preventDefault()
     });
     controls.joystick.init();
@@ -28404,7 +28622,7 @@ controls.initViewportDimensions = function() {
     controls.mouse.orbit.ratioZ = .1
 };
 controls.resetWithAircraftDefinition = function() {
-    controls.flaps.maxPosition = geofs.aircraft.instance.setup.flapsPositions ? geofs.aircraft.instance.setup.flapsPositions.length : geofs.aircraft.instance.setup.flapsSteps
+    controls.flaps.maxPosition = geofs.aircraft.instance.definition.flapsPositions ? geofs.aircraft.instance.definition.flapsPositions.length : geofs.aircraft.instance.definition.flapsSteps
 };
 controls.reset = function() {
     controls.roll = 0;
@@ -28412,6 +28630,7 @@ controls.reset = function() {
     controls.pitch = 0;
     controls.yaw = 0;
     controls.throttle = 0;
+    controls.reverse = 0;
     controls.brakes = 0;
     controls.engine = {};
     controls.engine.on = !1;
@@ -28443,7 +28662,7 @@ controls.reset = function() {
     controls.mouse.xValue = 0;
     controls.mouse.yValue = 0;
     controls.initViewportDimensions();
-    geofs.aircraft.instance && geofs.aircraft.instance.setup && controls.resetWithAircraftDefinition()
+    geofs.aircraft.instance && geofs.aircraft.instance.definition && controls.resetWithAircraftDefinition()
 };
 controls.setMode = function(a) {
     a = a || geofs.preferences.controlMode || "mouse";
@@ -28530,6 +28749,12 @@ controls.axisSetters = {
             return controls.throttle = (a + 1) / 2
         }
     },
+    reverse: {
+        label: "Reverse",
+        process: function(a) {
+            return controls.reverse = (a + 1) / 2
+        }
+    },
     brakes: {
         label: "Brakes",
         process: function(a) {
@@ -28555,21 +28780,21 @@ controls.axisSetters = {
             if (1 == a || -.7 > a)
                 d = 40;
             if (c || d)
-                camera.rotate(c * b, d * b),
-                camera.saveRotation()
+                geofs.camera.rotate(c * b, d * b),
+                geofs.camera.saveRotation()
         }
     },
     lookAround: {
         label: "Look left/right",
         process: function(a) {
-            a != geofs.lookAroundValue && (camera.lookAround(90 * a),
+            a != geofs.lookAroundValue && (geofs.camera.lookAround(90 * a),
                 geofs.lookAroundValue = a)
         }
     },
     lookUpDown: {
         label: "Look up/down",
         process: function(a) {
-            a != geofs.lookUpDownValue && (camera.lookAround(null, -90 * a),
+            a != geofs.lookUpDownValue && (geofs.camera.lookAround(null, -90 * a),
                 geofs.lookUpDownValue = a)
         }
     }
@@ -28617,23 +28842,23 @@ controls.setters = {
         label: "Flaps Up",
         set: function() {
             0 < controls.flaps.target && (controls.flaps.target--,
-                geofs.aircraft.instance.setup.flapsPositions && (controls.flaps.positionTarget = geofs.aircraft.instance.setup.flapsPositions[controls.flaps.target]),
+                geofs.aircraft.instance.definition.flapsPositions && (controls.flaps.positionTarget = geofs.aircraft.instance.definition.flapsPositions[controls.flaps.target]),
                 controls.setPartAnimationDelta(controls.flaps))
         }
     },
     setFlapsDown: {
         label: "Flaps down",
         set: function() {
-            controls.flaps.target < geofs.aircraft.instance.setup.flapsSteps && (controls.flaps.target++,
-                geofs.aircraft.instance.setup.flapsPositions && (controls.flaps.positionTarget = geofs.aircraft.instance.setup.flapsPositions[controls.flaps.target]),
+            controls.flaps.target < geofs.aircraft.instance.definition.flapsSteps && (controls.flaps.target++,
+                geofs.aircraft.instance.definition.flapsPositions && (controls.flaps.positionTarget = geofs.aircraft.instance.definition.flapsPositions[controls.flaps.target]),
                 controls.setPartAnimationDelta(controls.flaps))
         }
     },
     cycleFlaps: {
         label: "Cycle Flaps",
         set: function() {
-            controls.flaps.target < geofs.aircraft.instance.setup.flapsSteps ? controls.flaps.target++ : controls.flaps.target = 0;
-            geofs.aircraft.instance.setup.flapsPositions && (controls.flaps.positionTarget = geofs.aircraft.instance.setup.flapsPositions[controls.flaps.target]);
+            controls.flaps.target < geofs.aircraft.instance.definition.flapsSteps ? controls.flaps.target++ : controls.flaps.target = 0;
+            geofs.aircraft.instance.definition.flapsPositions && (controls.flaps.positionTarget = geofs.aircraft.instance.definition.flapsPositions[controls.flaps.target]);
             controls.setPartAnimationDelta(controls.flaps)
         }
     },
@@ -28643,6 +28868,24 @@ controls.setters = {
             if (!geofs.aircraft.instance.groundContact || geofs.debug.on)
                 controls.gear.target = 0 == controls.gear.target ? 1 : 0,
                 controls.setPartAnimationDelta(controls.gear)
+        }
+    },
+    setReverseNone: {
+        label: "Set reverse to none",
+        set: function() {
+            controls.reverse = 0
+        }
+    },
+    setReverseFull: {
+        label: "Set reverse to full",
+        set: function() {
+            controls.reverse = 1
+        }
+    },
+    toggleReverse: {
+        label: "Toggle Reverse (full/none)",
+        set: function() {
+            controls.reverse = 0 < controls.reverse ? 0 : 1
         }
     },
     setElevatorTrimUp: {
@@ -28670,11 +28913,11 @@ controls.setters = {
         }
     }
 };
-controls.trimUp = function() {
-    controls.elevatorTrim < controls.elevatorTrimMax && (controls.elevatorTrim += controls.elevatorTrimStep)
+controls.trimUp = function(a) {
+    controls.elevatorTrim < controls.elevatorTrimMax && (controls.elevatorTrim += controls.elevatorTrimStep * (a || 1))
 };
-controls.trimDown = function() {
-    controls.elevatorTrim > controls.elevatorTrimMin && (controls.elevatorTrim -= controls.elevatorTrimStep)
+controls.trimDown = function(a) {
+    controls.elevatorTrim > controls.elevatorTrimMin && (controls.elevatorTrim -= controls.elevatorTrimStep * (a || 1))
 };
 controls.update = function(a) {
     controls.updateKeyboard(a);
@@ -28682,7 +28925,7 @@ controls.update = function(a) {
     if (controls.autopilot.on)
         controls.autopilot.update(a);
     else {
-        controls.states.elevatorTrimUp ? controls.trimUp() : controls.states.elevatorTrimDown && controls.trimDown();
+        controls.states.elevatorTrimUp ? controls.trimUp(2 * a) : controls.states.elevatorTrimDown && controls.trimDown(2 * a);
         controls.elevatorTrim = clamp(controls.elevatorTrim, controls.elevatorTrimMin, controls.elevatorTrimMax);
         "mouse" != controls.mode && "touch" != controls.mode || controls.keyboard.override || controls.updateMouse(a);
         "orientation" == controls.mode && controls.updateOrientation(a);
@@ -28694,16 +28937,19 @@ controls.update = function(a) {
         controls.yaw *= controls.multiplier.yaw;
         controls.roll *= Math.pow(Math.abs(controls.roll), b);
         controls.rawPitch *= Math.pow(Math.abs(controls.rawPitch), b);
+        controls.rawYaw = controls.yaw;
         controls.mixYawRoll ? controls.yaw = controls.roll * controls.mixYawRollQuantity : (controls.keyboard.overrideRudder && (b = geofs.preferences.keyboard.exponential),
-            controls.yaw *= Math.pow(Math.abs(controls.yaw), b))
+            controls.yaw *= Math.pow(Math.abs(controls.yaw), b),
+            controls.rawYaw = controls.yaw)
     }
     controls.roll = clamp(controls.roll, -1, 1);
     controls.rawPitch = clamp(controls.rawPitch, -1, 1);
     controls.yaw = clamp(controls.yaw, -1, 1);
     controls.pitch = controls.rawPitch + controls.elevatorTrim;
     b = 0;
-    geofs.aircraft.instance.setup.reverse && (b = -1);
-    controls.throttle = clamp(controls.throttle, b, 1);
+    geofs.aircraft.instance.definition.reverse && (b = -1,
+        0 < controls.throttle && (controls.reverse = 0));
+    controls.throttle = clamp(controls.throttle - controls.reverse, b, 1);
     controls.animatePart("gear", a);
     controls.animatePart("flaps", a);
     controls.animatePart("airbrakes", a);
@@ -28715,7 +28961,7 @@ controls.setPartAnimationDelta = function(a) {
 controls.animatePart = function(a, b) {
     var c = controls[a];
     var d = c.positionTarget ? c.positionTarget : c.target;
-    c.position != d && geofs.aircraft.instance.setup[a + "TravelTime"] && (c.position += c.delta / (geofs.aircraft.instance.setup[a + "TravelTime"] / b),
+    c.position != d && geofs.aircraft.instance.definition[a + "TravelTime"] && (c.position += c.delta / (geofs.aircraft.instance.definition[a + "TravelTime"] / b),
         0 > c.delta && c.position <= d && (c.position = d,
             c.delta = null),
         0 < c.delta && c.position >= d && (c.position = d,
@@ -28837,7 +29083,7 @@ controls.keyDown = function(a) {
             geofs.togglePause();
             break;
         case 67:
-            camera.cycle();
+            geofs.camera.cycle();
             break;
         case 78:
             ui.panel.toggle(".geofs-map-list");
@@ -28861,37 +29107,40 @@ controls.keyDown = function(a) {
             controls.setMode("joystick");
             break;
         case 81:
-            camera.animations.orbitHorizontal.active = !camera.animations.orbitHorizontal.active;
+            geofs.camera.animations.orbitHorizontal.active = !geofs.camera.animations.orbitHorizontal.active;
             break;
         case 82:
             geofs.resetFlight();
             break;
-        case 101:
-            camera.setToNeutral();
+        case 87:
+            geofs.camera.animations.orbitVertical.active = !geofs.camera.animations.orbitVertical.active;
             break;
         case 97:
-            camera.setRotation(45);
+            geofs.camera.setRotation(45);
             break;
         case 98:
-            camera.setRotation(0);
+            geofs.camera.setRotation(0);
             break;
         case 99:
-            camera.setRotation(-45);
+            geofs.camera.setRotation(-45);
             break;
         case 100:
-            camera.setRotation(90);
+            geofs.camera.setRotation(90);
+            break;
+        case 101:
+            geofs.camera.setToNeutral();
             break;
         case 102:
-            camera.setRotation(-90);
+            geofs.camera.setRotation(-90);
             break;
         case 103:
-            camera.setRotation(135);
+            geofs.camera.setRotation(135);
             break;
         case 104:
-            camera.setRotation(180);
+            geofs.camera.setRotation(180);
             break;
         case 105:
-            camera.setRotation(-135)
+            geofs.camera.setRotation(-135)
     }
     48 <= a.keyCode && 57 >= a.keyCode && (controls.throttle = (a.keyCode - 48) / 9)
 };
@@ -28985,7 +29234,7 @@ controls.joystick.configure = function() {
         c.hash = geofs.utils.hashCode(c.id);
         for (var e in c.buttons) {
             var f = c.hash + e;
-            if (geofs.preferences.joystick.buttons[f]) {
+            if (geofs.preferences.joystick.buttons[f] && controls.setters[geofs.preferences.joystick.buttons[f]]) {
                 var g = controls.setters[geofs.preferences.joystick.buttons[f]].set,
                     h = controls.setters[geofs.preferences.joystick.buttons[f]].unset;
                 g && controls.joystick.addButtonListener(f, "buttondown", g);
@@ -29120,15 +29369,14 @@ controls.autopilot = {
 };
 ui.hud.autopilotIndicator = function() {};
 controls.autopilot.initUI = function() {
-    var a = $(".geofs-autopilot-pad .control-pad-label"),
-        b;
+    controls.autopilot.$autopilotPad = $(".geofs-autopilot-pad .control-pad-label");
     controls.autopilot.setHeading = function(a) {
         var b = controls.autopilot.heading;
         try {
             controls.autopilot.heading = fixAngle360(parseInt(a, 10)),
                 $(".geofs-autopilot-heading").text(controls.autopilot.heading),
                 $(".legacyAutopilot .geofs-autopilot-heading").val(controls.autopilot.heading)
-        } catch (e) {
+        } catch (c) {
             controls.autopilot.heading = b
         }
     };
@@ -29138,7 +29386,7 @@ controls.autopilot.initUI = function() {
             controls.autopilot.altitude = parseInt(a, 10),
                 $(".geofs-autopilot-altitude").text(controls.autopilot.altitude),
                 $(".legacyAutopilot .geofs-autopilot-altitude").val(controls.autopilot.altitude)
-        } catch (e) {
+        } catch (c) {
             controls.autopilot.altitude = b
         }
     };
@@ -29148,7 +29396,7 @@ controls.autopilot.initUI = function() {
             controls.autopilot.kias = parseInt(a, 10),
                 $(".geofs-autopilot-kias").text(controls.autopilot.kias),
                 $(".legacyAutopilot .geofs-autopilot-kias").val(controls.autopilot.kias)
-        } catch (e) {
+        } catch (c) {
             controls.autopilot.kias = b
         }
     };
@@ -29157,49 +29405,50 @@ controls.autopilot.initUI = function() {
         try {
             controls.autopilot.climbrate = parseInt(a, 10),
                 $(".geofs-autopilot-climbrate").text(controls.autopilot.climbrate)
-        } catch (e) {
+        } catch (c) {
             controls.autopilot.climbrate = b
         }
     };
     $(document).on("autopilotOn", function() {
-        clearTimeout(b);
-        a.removeClass("red-pad").addClass("green-pad");
+        clearTimeout(controls.autopilot.autopilotPadTimeout);
+        controls.autopilot.$autopilotPad.removeClass("red-pad").addClass("green-pad");
         $(".geofs-autopilot-controls").show();
         $(".geofs-autopilot-toggle").html("Engaged").addClass("mdl-button--colored")
     });
     $(document).on("autopilotOff", function() {
-        a.removeClass("green-pad").addClass("red-pad");
+        controls.autopilot.$autopilotPad.removeClass("green-pad").addClass("red-pad");
         $(".geofs-autopilot-controls").hide();
         $(".geofs-autopilot-toggle").html("Disengaged").removeClass("mdl-button--colored");
-        b = setTimeout(function() {
-            a.removeClass("red-pad").removeClass("green-pad")
+        clearTimeout(controls.autopilot.autopilotPadTimeout);
+        controls.autopilot.autopilotPadTimeout = setTimeout(function() {
+            controls.autopilot.$autopilotPad.removeClass("red-pad").removeClass("green-pad")
         }, 3E3)
     });
     $(document).on("pointerdown touchstart", ".numberUp, .numberDown", function(a) {
-        var b = $(this),
-            c = $(this).parent().find(".numberValue"),
-            f = parseInt(c.text()) || 0,
-            g = parseInt(c.attr("step")),
-            h = parseInt(c.attr("min")),
-            k = parseInt(c.attr("max")),
-            n = b.hasClass("numberUp") ? g : -g,
-            v = c.attr("loop"),
-            z = c.attr("method"),
-            A = function() {
-                f += n;
-                f = Math.floor(f / g) * g;
-                f = v && f > k ? h : v && f < h ? k : clamp(f, h, k);
-                c.text(f);
-                controls.autopilot[z](f)
+        var b = $(a.currentTarget),
+            c = $(a.currentTarget).parent().find(".numberValue"),
+            d = parseInt(c.text()) || 0,
+            e = parseInt(c.attr("step")),
+            f = parseInt(c.attr("min")),
+            g = parseInt(c.attr("max")),
+            h = b.hasClass("numberUp") ? e : -e,
+            k = c.attr("loop"),
+            m = c.attr("method"),
+            v = function() {
+                d += h;
+                d = Math.floor(d / e) * e;
+                d = k && d > g ? f : k && d < f ? g : clamp(d, f, g);
+                c.text(d);
+                controls.autopilot[m](d)
             },
-            C = function() {
-                A();
+            y = function() {
+                v();
                 clearTimeout(window.spinnerRepeat);
-                window.spinnerRepeat = setTimeout(C, 50)
+                window.spinnerRepeat = setTimeout(y, 50)
             };
         clearTimeout(window.spinnerRepeat);
-        window.spinnerRepeat = setTimeout(C, 500);
-        A();
+        window.spinnerRepeat = setTimeout(y, 500);
+        v();
         a.preventDefault()
     }).on("pointerup pointercancel mouseleave touchend", ".numberUp, .numberDown", function() {
         clearTimeout(window.spinnerRepeat)
@@ -29211,7 +29460,7 @@ controls.autopilot.toggle = function() {
     controls.autopilot.on ? controls.autopilot.turnOff() : controls.autopilot.turnOn()
 };
 controls.autopilot.turnOn = function() {
-    if (geofs.aircraft.instance.setup.autopilot) {
+    if (geofs.aircraft.instance.definition.autopilot) {
         var a = geofs.animation.values;
         controls.autopilot.climbPID.reset();
         controls.autopilot.pitchPID.reset();
@@ -29260,17 +29509,21 @@ weather.updateRate = 6E4;
 weather.timeRatio = 1;
 weather.seasonRatio = 1;
 weather.defaults = {
+    cloudCover: 0,
     ceiling: 1E3,
     cloudCoverThickness: 200,
-    cloudCover: 0,
+    fogDensity: 0,
+    fogBottom: 0,
     precipitationType: "none",
-    precipitationQuantity: 0,
+    precipitationAmount: 0,
     thunderstorm: 0,
     visibility: 1E4,
     windDirection: 0,
     windSpeedMS: 0,
+    windGustMS: 0,
     windLayerHeight: 7E3,
     windLayerNb: 3,
+    turbulences: 0,
     AIR_PRESSURE_SL: AIR_PRESSURE_SL,
     AIR_TEMP_SL: AIR_TEMP_SL
 };
@@ -29287,76 +29540,114 @@ weather.init = function() {
     weather.currentWindSpeedMs = 0;
     weather.activeWindLayer = 0;
     weather.windLayers = [];
+    weather.reset();
     setInterval(function() {
         weather.refresh()
     }, weather.updateRate);
+    weather.generateFromPreferences();
+    weather.refresh();
     $(document).on("change", ".geofs-timeSlider", function(a, b) {
         a = ("00" + parseInt(60 * (b % 1).toFixed(2))).slice(-2);
         b = parseInt(b);
         $(this).find(".slider-input").val(b + ":" + a)
-    })
+    });
+    $(document).on("change", ".geofs-seasonSlider", function(a, b) {
+        var c;
+        0 <= b && (c = "Spring");
+        25 < b && (c = "Summer");
+        50 < b && (c = "Autumn");
+        75 < b && (c = "Winter");
+        $(this).find(".slider-input").val(c)
+    });
+    weather.manualWeatherUIContainer = $(".geofs-manualWeather")
 };
 weather.reset = function() {
     weather.set($.extend({}, weather.defaults))
 };
 weather.refresh = function(a) {
-    a = a || camera.lla;
+    a = a || geofs.camera.lla;
     var b = function(b) {
         try {
-            var c = eval(b)
-        } catch (g) {
-            geofs.debug.error(g, "weather.refresh refreshCallback eval(response)")
+            var c = JSON.parse(b)
+        } catch (f) {
+            geofs.debug.error(f, "weather.refresh error parsing JSON data")
         }
-        if (c = c || [],
-            0 < c.length)
-            var d = c[0];
-        weather.set($.extend({}, weather.defaults, weather.definition, d), a)
+        c = c || [];
+        c.timestamp = geofs.utils.now();
+        weather.set($.extend({}, weather.defaults, weather.definition, c), a)
     };
     if (geofs.preferences.weather.manual)
-        weather.set(null, a);
+        weather.set(weather.manualDefinition);
     else {
         var c = geofs.runways.getNearestRunway(a);
-        c ? $.ajax(weather.dataProxy + c.icao, {
-            success: b,
-            error: b
-        }) : b()
+        c ? (c = weather.dataProxy + c.icao + "&kc" + geofs.utils.now(),
+            $.ajax(c, {
+                success: b,
+                error: b
+            })) : b()
     }
 };
-weather.generateFromPreferences = function() {
-    var a = parseInt(Math.abs(camera.lla[0])),
-        b = geofs.preferences.weather.localTime,
-        c = weather.timeRatio,
-        d = geofs.preferences.weather.quality,
-        e = d / 100,
-        f = geofs.preferences.weather.season;
-    weather.manualDefinition && weather.roundedLatitude == a && weather.manualQuality == d && weather.manualSeason == f && weather.manualTimeOfDay == b || (weather.roundedLatitude = a,
-        weather.manualQuality = d,
-        weather.manualSeason = f,
-        weather.manualTimeOfDay = b,
-        weather.manualDefinition = {
-            cloudCover: Math.min(100, 2 * d),
-            fogDensity: (1 - 2 * Math.abs(c - .5)) * (.1 < e ? 1 - e : 0) * 100,
-            fogBottom: geofs.groundElevation || 0,
-            fogCeiling: 2 * geofs.groundElevation + 50 || 0,
-            precipitationAmount: 50 < d ? 2 * (d - 50) : 0,
-            precipitationType: 75 < f && 30 < Math.abs(a) ? "snow" : "rain",
-            thunderstorm: 90 < d ? 10 * (d - 90) : 0,
-            visibility: 1E4,
-            windDirection: 360 * Math.random(),
-            windSpeedMS: d / 6,
-            windLayerHeight: 7E3,
-            windLayerNb: 3,
-            AIR_TEMP_SL: clamp(.5 * (100 - f - Math.abs(a)) * (1 - c), -50, 50)
-        });
+weather.generateFromPreferences = function(a) {
+    var b = parseInt(Math.abs(geofs.camera.lla[0])),
+        c = geofs.preferences.weather.localTime,
+        d = weather.timeRatio,
+        e = geofs.preferences.weather.quality,
+        f = e / 100,
+        g = geofs.preferences.weather.season;
+    weather.roundedLatitude = b;
+    weather.manualQuality = e;
+    weather.manualSeason = g;
+    weather.manualTimeOfDay = c;
+    a && (geofs.preferences.weather.advanced.clouds = Math.min(100, 2 * e),
+        geofs.preferences.weather.advanced.ceiling = weather.defaults.ceiling,
+        geofs.preferences.weather.advanced.fog = (1 - 2 * Math.abs(d - .5)) * (.1 < f ? 1 - f : 0) * 100,
+        geofs.preferences.weather.advanced.fogCeiling = 2 * geofs.groundElevation + 50 || 0,
+        geofs.preferences.weather.advanced.precipitationAmount = 50 < e ? 2 * (e - 50) : 0,
+        geofs.preferences.weather.advanced.windDirection = 360 * Math.random(),
+        geofs.preferences.weather.advanced.windSpeedMS = e / 6,
+        geofs.preferences.weather.advanced.turbulences = f * Math.abs(d - .5) * 2);
+    weather.manualDefinition = {
+        cloudCover: geofs.preferences.weather.advanced.clouds,
+        ceiling: geofs.preferences.weather.advanced.ceiling,
+        fogDensity: geofs.preferences.weather.advanced.fog,
+        fogBottom: 0,
+        fogCeiling: geofs.preferences.weather.advanced.fogCeiling,
+        precipitationAmount: geofs.preferences.weather.advanced.precipitationAmount,
+        precipitationType: 75 < g && 30 < Math.abs(b) ? "snow" : "rain",
+        thunderstorm: 90 < e ? 10 * (e - 90) : 0,
+        visibility: 1E4,
+        windDirection: geofs.preferences.weather.advanced.windDirection,
+        windSpeedMS: geofs.preferences.weather.advanced.windSpeedMS,
+        windGustMS: geofs.preferences.weather.advanced.windSpeedMS / 2,
+        windLayerHeight: 7E3,
+        windLayerNb: 3,
+        turbulences: geofs.preferences.weather.advanced.turbulences,
+        AIR_TEMP_SL: clamp(.5 * (100 - g - Math.abs(b)) * (1 - d), -50, 50),
+        timestamp: geofs.utils.now()
+    };
     return weather.manualDefinition
 };
+weather.setManual = function() {
+    $('[gespref="geofs.preferences.weather.quality"]').removeClass("geofs-disabled");
+    $(".geofs-advancedWeather .slider").addClass("geofs-disabled");
+    var a = weather.generateFromPreferences(!0);
+    weather.set(a);
+    geofs.setPreferenceValues(weather.manualWeatherUIContainer)
+};
+weather.setAdvanced = function() {
+    $('[gespref="geofs.preferences.weather.quality"]').addClass("geofs-disabled");
+    $(".geofs-advancedWeather .slider").removeClass("geofs-disabled");
+    0 < geofs.preferences.weather.advanced.precipitationAmount && (geofs.preferences.weather.advanced.clouds = Math.max(geofs.preferences.weather.advanced.clouds, 2 * geofs.preferences.weather.advanced.precipitationAmount));
+    geofs.setPreferenceValues(weather.manualWeatherUIContainer);
+    var a = weather.generateFromPreferences();
+    weather.set(a)
+};
 weather.set = function(a, b) {
-    a = a || {};
-    b = b || camera.lla;
+    a = a || weather.definition || {};
+    b = b || geofs.camera.lla;
     weather.setDateAndTime(b);
     geofs.fx.dayNightManager.init();
     geofs.preferences.weather.manual ? ($(".geofs-manualWeather").show(),
-        a = weather.generateFromPreferences(),
         $(".geofs-metarDisplay").html("").parent().hide()) : ($(".geofs-manualWeather").hide(),
         $(".geofs-metarDisplay").html(a.METAR).parent().show());
     weather.definition = $.extend({}, weather.defaults, a);
@@ -29371,7 +29662,7 @@ weather.set = function(a, b) {
     weather.definition.coverHalfThickness = weather.definition.cloudCoverThickness / 2;
     b = weather.definition.cloudCover;
     b < weather.minimumCloudCover && (weather.definition.cloudCover = 0);
-    geofs.fx.cloudManager.init(camera.lla);
+    geofs.fx.cloudManager.init(geofs.camera.lla);
     geofs.fx.cloudManager.instance.setCloudCover(b);
     0 < weather.definition.precipitationAmount ? geofs.fx.precipitation.create(weather.definition.precipitationType, weather.definition.precipitationAmount) : geofs.fx.precipitation.destroy();
     weather.belowCeilingBrightness = clamp(1.2 - a, 0, 1);
@@ -29382,12 +29673,12 @@ weather.set = function(a, b) {
     }) : geofs.api.removeImageryColorModifier("snow")
 };
 weather.update = function(a) {
-    var b = camera.lla;
+    var b = geofs.camera.lla;
     if (weather.windActive && 0 < weather.windLayers.length) {
         for (var c = geofs.aircraft.instance.llaLocation[2], d = 0, e = 1; e < weather.windLayers.length && !(c < weather.windLayers[e].floor); e++)
             d = e;
-        weather.activeWindLayer != d && (weather.windLayers[d].computeAndSet(),
-            weather.activeWindLayer = d)
+        weather.windLayers[d].computeAndSet();
+        weather.activeWindLayer = d
     }
     geofs.fx.cloudManager.update(b, a);
     geofs.fx.precipitation.update(b, a);
@@ -29397,7 +29688,7 @@ weather.setWindIndicatorVisibility = function(a) {
     instruments.list.wind && (a ? instruments.visible && instruments.list.wind.show() : instruments.list.wind.hide())
 };
 weather.setDateAndTime = function(a) {
-    a = a || camera.lla || [0, 0, 0];
+    a = a || geofs.camera.lla || [0, 0, 0];
     a = a[1] * LONGITUDE_TO_HOURS;
     if (geofs.preferences.weather.manual)
         weather.localTime = geofs.preferences.weather.localTime,
@@ -29418,7 +29709,12 @@ weather.setDateAndTime = function(a) {
     geofs.isNight = .4 < weather.timeRatio;
     geofs.animation.values.night != geofs.isNight && $("body").trigger("nightChange");
     geofs.animation.values.night = geofs.isNight;
+    geofs.animation.values.minutes = 60 * (weather.localTime % 1).toFixed(2);
+    geofs.animation.values.hours = weather.localTime;
     $("body").trigger("geofsTimeChange")
+};
+weather.getLocalTurbulence = function() {
+    return [0, 0, Math.random() < geofs.animation.values.kias / 2E3 ? (Math.random() - .5) * weather.definition.turbulences * 50 : 0]
 };
 weather.Wind = function(a, b, c, d) {
     this.mainDirection = a;
@@ -29430,32 +29726,24 @@ weather.Wind = function(a, b, c, d) {
     this.floor = c;
     this.ceiling = d;
     this.direction = this.mainDirection;
-    this.speed = this.mainSpeedMs;
-    this.maxSpeedDelta = .3 * b;
-    this.maxDirectionDelta = 45;
-    this.directionOffset = this.speedOffset = 0;
-    this.randomizerSpeed = 1
+    this.speed = this.mainSpeedMs
 };
 weather.Wind.prototype.randomize = function() {
-    this.speedOffset += (Math.random() - .5) * this.randomizerSpeed;
-    this.speedOffset = clamp(this.speedOffset, -this.maxSpeedDelta, this.maxSpeedDelta);
-    this.directionOffset += (Math.random() - .5) * this.randomizerSpeed;
-    this.directionOffset = clamp(this.directionOffset, -this.maxDirectionDelta, this.maxDirectionDelta);
-    this.direction = fixAngle(this.mainDirection + this.directionOffset);
-    this.speed = this.mainSpeedMs + this.speedOffset
+    var a = clamp(weather.definition.ceiling / geofs.animation.values.altitudeMeters, 0, 1);
+    this.speed = this.mainSpeedMs + exponentialSmoothing("windGust", weather.definition.windGustMS * (Math.random() - .5) * a)
 };
 weather.Wind.prototype.computeAndSet = function() {
-    geofs.preferences.weather.randomizeWind && this.randomize();
+    this.randomize();
     var a = [0, 0, 0];
     this.direction && (a = this.direction * DEGREES_TO_RAD,
         a = [Math.sin(a), Math.cos(a), 0],
-        a = this.computeLift(a));
+        a = this.computeTerrainLift(a));
     weather.currentWindVector = V3.scale(a, this.speed);
     weather.currentWindDirection = this.direction;
     weather.currentWindSpeedMs = this.speed;
     weather.currentWindSpeed = this.speed * MS_TO_KNOTS
 };
-weather.Wind.prototype.computeLift = function(a) {
+weather.Wind.prototype.computeTerrainLift = function(a) {
     var b = geofs.aircraft.instance.llaLocation,
         c = V3.add(b, xyz2lla(V3.scale(a, 50), b)),
         d = geofs.getGroundAltitude(b[0], b[1]).location[2],
@@ -29506,316 +29794,318 @@ weather.atmosphere.update = function(a) {
     weather.atmosphere.airDensityAtAltitude = weather.atmosphere.airPressureAtAltitude * MOLAR_MASS_DRY_AIR / (IDEAL_GAS_CONSTANT * weather.atmosphere.airTempAtAltitudeKelvin)
 };
 "use strict";
-var camera = window.camera || {};
-camera.animations = {
-    orbitHorizontal: {
-        rate: 5
-    },
-    orbitVertical: {
-        rate: 2,
-        min: -60,
-        max: 60
-    },
-    zoom: {
-        rate: 2,
-        min: -20,
-        max: 50
-    }
-};
-camera.currentMode = 0;
-camera.currentModeName = "follow";
-camera.lastCurrentMode = 0;
-camera.worldPosition = [0, 0, 0];
-camera.openSlave = !1;
-camera.motionRange = [.5, .5, .5];
-camera.FOVIncrement = .1;
-camera.defaultFOV = 1;
-camera.currentFOV = camera.defaultFOV;
-camera.minFOV = .2;
-camera.maxFOV = 2.5;
-camera.groundAvoidanceMargin = 1;
-camera.groundAvoidanceIgnore = 100;
-camera.init = function() {
-    camera.cam = geofs.api.initAndGetCamera();
-    camera.lla = [0, 0, 0];
-    camera.htr = [0, 0, 0];
-    camera.hasMoved = !1;
-    $(document).on("click", "[data-cameraanim]", function(a) {
-        a = $(a.currentTarget).attr("data-cameraAnim");
-        camera.animations[a].active = !camera.animations[a].active
-    }).on("click", ".geofs-stopAllAnim", function() {
-        for (var a in camera.animations)
-            camera.animations[a].active = !1
-    }).on("click", ".geofs-startAllAnim", function() {
-        for (var a in camera.animations)
-            camera.animations[a].active = !0
-    })
-};
-camera.setFOV = function(a) {
-    camera.currentFOV = a || camera.currentFOV || camera.defaultFOV;
-    camera.currentFOV = clamp(camera.currentFOV, camera.minFOV, camera.maxFOV);
-    geofs.api.setFOV(camera.cam, camera.currentFOV);
-    geofs.getViewportDimentions();
-    "cockpit" == camera.currentModeName && instruments.updateCockpitPositions()
-};
-camera.increaseFOV = function(a) {
-    var b = geofs.api.getFOV(camera.cam);
-    b += a || camera.FOVIncrement;
-    b > camera.maxFOV && (b = camera.maxFOV);
-    camera.setFOV(b)
-};
-camera.decreaseFOV = function(a) {
-    var b = geofs.api.getFOV(camera.cam);
-    b -= a || camera.FOVIncrement;
-    b < camera.minFOV && (b = camera.minFOV);
-    camera.setFOV(b)
-};
-camera.reset = function() {
-    camera.definitions = {
-        follow: {
-            orientation: [0, 5, 0]
+window.geofs = window.geofs || {};
+geofs.camera = {
+    animations: {
+        orbitHorizontal: {
+            rate: 5
         },
-        cockpit: {},
-        cockpitless: {},
-        chase: {
-            reset: !0
+        orbitVertical: {
+            rate: 2,
+            min: -60,
+            max: 60
         },
-        free: {
-            reset: !0
+        zoom: {
+            rate: 2,
+            min: -20,
+            max: 50
         }
-    };
-    var a = "",
-        b;
-    for (b in geofs.aircraft.instance.setup.cameras)
-        camera.definitions[b] || (a += '<li class="mdl-menu__item" data-camera="camera.set(null, \'' + b + "');\">" + b + "</li>");
-    a.length ? $(".geofs-extra-views").show().find(".geofs-extra-views-holder").html(a) : $(".geofs-extra-views").hide();
-    a = $.extend(!0, {}, camera.definitions, geofs.aircraft.instance.setup.cameras);
-    var c = 0;
-    camera.modes = [];
-    for (b in a) {
-        var d = a[b];
-        d.name = b;
-        d.mode = c;
-        d.view = d.view || d.name;
-        d.position = d.position || [0, 0, 0];
-        d.orientations = {};
-        d.orientations.neutral = d.orientation || [0, 0, 0];
-        d.orientations.current = V3.dup(d.orientations.neutral);
-        d.orientations.last = V3.dup(d.orientations.neutral);
-        camera.definitions[b] = d;
-        camera.modes.push(camera.definitions[b]);
-        c++
-    }
-    for (b in camera.definitions)
-        d = camera.definitions[b],
-        d.orientations.current = V3.dup(d.orientations.neutral),
-        d.orientations.last = V3.dup(d.orientations.neutral);
-    camera.definitions.follow.lastUsedHtr = V3.dup(geofs.aircraft.instance.htr);
-    camera.set(0);
-    camera.setToNeutral();
-    camera.lla = [0, 0, 0];
-    camera.htr = [0, 0, 0];
-    camera.zoomDistance = 0;
-    camera.update(0)
-};
-camera.cycle = function() {
-    var a = camera.currentMode + 1;
-    a >= camera.modes.length && (a = 0);
-    camera.set(a)
-};
-camera.set = function(a, b) {
-    camera.currentDefinition = camera.modes[a] || camera.definitions[b] || camera.definitions[0];
-    camera.currentMode = camera.currentDefinition.mode;
-    camera.currentModeName = camera.currentDefinition.name;
-    camera.currentView = camera.currentDefinition.view;
-    camera.setFOV(camera.currentDefinition.FOV);
-    "follow" == camera.currentModeName && (a = V3.scale(geofs.aircraft.instance.object3d.getWorldFrame()[1], -camera.definitions.follow.distance),
-        a = xyz2lla(a, geofs.aircraft.instance.llaLocation),
-        camera.lla = V3.add(geofs.aircraft.instance.llaLocation, a),
-        camera.avoidGround(),
-        a = lookAt(geofs.aircraft.instance.llaLocation, camera.lla, [0, 0, 1]),
-        a = [a[0], -a[1] + 90, 0],
-        geofs.api.setCameraPositionAndOrientation(camera.cam, camera.lla, a),
-        instruments.updateScreenPositions());
-    "free" == camera.currentModeName || "chase" == camera.currentModeName ? ($(".geofs-canvas-mouse-overlay").css("pointer-events", "none"),
-        geofs.api.nativeMouseHandling = !0) : ($(".geofs-canvas-mouse-overlay").css("pointer-events", "auto"),
-        geofs.api.nativeMouseHandling = !1);
-    geofs.aircraft.instance && ("cockpitless" == camera.currentModeName ? (geofs.aircraft.instance.setVisibility(!1),
-        instruments.updateScreenPositions()) : geofs.aircraft.instance.setVisibility(!0));
-    "cockpit" == camera.currentModeName || camera.currentDefinition.nearClipping ? (geofs.aircraft.instance.setup.cockpitScaleFix && geofs.aircraft.instance.fixCockpitScale(geofs.aircraft.instance.setup.cockpitScaleFix),
-        geofs.aircraft.instance.loadCockpit(),
-        instruments.updateCockpitPositions(),
-        geofs.api.configureInsideView(),
-        camera.motionOffset = [0, 0, 0],
-        geofs.animation.values.overlaysVisibility = "hidden") : (geofs.aircraft.instance.fixCockpitScale(1),
-        camera.currentDefinition.insideView ? geofs.api.configureInsideView() : geofs.api.configureOutsideView(),
-        geofs.animation.values.overlaysVisibility = "visible");
-    geofs.animation.values.view = camera.currentModeName;
-    geofs.aircraft.instance.placeParts();
-    geofs.aircraft.instance.render();
-    instruments.updateScreenPositions();
-    instruments.update();
-    $(document).trigger("cameraChange");
-    camera.hasMoved = !0
-};
-camera.translate = function(a) {
-    return "follow" == camera.currentModeName ? (camera.zoomDistance += a,
-        camera.zoomDistance < -geofs.aircraft.instance.setup.cameras.follow.distance + 5 && (camera.zoomDistance = -geofs.aircraft.instance.setup.cameras.follow.distance + 5), !0) : !1
-};
-camera.lookAround = function(a, b) {
-    if (camera.isHandlingMouseRotation()) {
-        var c = camera.definitions[camera.currentModeName];
-        void 0 != a && (c.orientations.current[0] = a);
-        void 0 != b && (c.orientations.current[1] = b);
-        camera.saveRotation();
-        "cockpit" == camera.currentModeName && (camera.hasMoved = !0);
-        return !0
-    }
-    return !1
-};
-camera.rotate = function(a, b, c) {
-    a = a || 0;
-    b = b || 0;
-    c = c || 0;
-    if (camera.isHandlingMouseRotation()) {
-        var d = camera.definitions[camera.currentModeName];
-        d.orientations.current[0] = d.orientations.last[0] - a;
-        d.orientations.current[1] = d.orientations.last[1] + b;
-        d.orientations.current[2] = d.orientations.last[2] + (c || 0);
-        "cockpit" == camera.currentModeName && (camera.hasMoved = !0);
-        return !0
-    }
-    return !1
-};
-camera.isHandlingMouseRotation = function() {
-    return "follow" == camera.currentModeName || "cockpit" == camera.currentModeName || camera.currentDefinition.rotatable ? !0 : !1
-};
-camera.setRotation = function(a, b) {
-    var c = camera.definitions[camera.currentModeName];
-    return "follow" == camera.currentModeName ? (c.orientations.current[0] = a,
-        c.orientations.current[1] = b || c.orientations.last[1], !0) : "cockpit" == camera.currentModeName ? (a = fixAngle(a + 180),
-        c.orientations.current[0] = a || c.orientations.last[0],
-        c.orientations.current[1] = b || c.orientations.last[1],
-        camera.hasMoved = !0) : !1
-};
-camera.saveRotation = function() {
-    if (camera.definitions) {
-        var a = camera.definitions[camera.currentModeName];
-        a.orientations.last = V3.dup(a.orientations.current)
-    }
-};
-camera.setToNeutral = function() {
-    var a = camera.definitions[camera.currentModeName];
-    a.orientations.current = V3.dup(a.orientations.neutral);
-    a.orientations.last = V3.dup(a.orientations.neutral);
-    "cockpit" == camera.currentModeName && (camera.hasMoved = !0)
-};
-camera.avoidGround = function() {
-    camera.groundAltitude = geofs.aircraft.instance.collResult.location[2];
-    var a = camera.lla[2] - camera.groundAltitude;
-    geofs.cautiousWithTerrain && Math.abs(a) > camera.groundAvoidanceIgnore || (a <= camera.groundAvoidanceMargin && (camera.lla[2] = camera.groundAltitude + camera.groundAvoidanceMargin),
-        camera.hasMoved = !0)
-};
-camera.getFlytToCoordinates = function() {
-    var a = clone(camera.lla);
-    a[2] = clamp(a[2], 0, 3E4);
-    a[3] = camera.htr[0];
-    camera.lla[2] - camera.groundAltitude < camera.groundAvoidanceMargin ? (a[2] = 0,
-        a[4] = !1) : a[4] = !0;
-    return a
-};
-camera.update = function(a) {
-    var b = geofs.aircraft.instance;
-    if (geofs.aircraft.instance.object3d) {
-        var c = geofs.aircraft.instance.object3d.getWorldFrame(),
-            d = camera.definitions[camera.currentModeName];
-        if (geofs.vr && controls.orientation.available) {
-            var e = controls.orientation.getHtr();
-            camera.rotate(e[0], e[1], e[2])
+    },
+    currentMode: 0,
+    urrentModeName: "follow",
+    lastCurrentMode: 0,
+    worldPosition: [0, 0, 0],
+    lookatOffset: [0, 0, 0],
+    lookatOffsetIncrement: .1,
+    openSlave: !1,
+    motionRange: [.5, .5, .5],
+    FOVIncrement: .1,
+    defaultFOV: 1,
+    currentFOV: 1,
+    minFOV: .2,
+    maxFOV: 2.5,
+    groundAvoidanceMargin: 1,
+    groundAvoidanceIgnore: 100,
+    init: function() {
+        geofs.camera.cam = geofs.api.initAndGetCamera();
+        geofs.camera.lla = [0, 0, 0];
+        geofs.camera.htr = [0, 0, 0];
+        geofs.camera.hasMoved = !1;
+        $(document).on("click", "[data-cameraanim]", function(a) {
+            a = $(a.currentTarget).attr("data-cameraAnim");
+            geofs.camera.animations[a].active = !geofs.camera.animations[a].active
+        }).on("click", ".geofs-stopAllAnim", function() {
+            for (var a in geofs.camera.animations)
+                geofs.camera.animations[a].active = !1
+        }).on("click", ".geofs-startAllAnim", function() {
+            for (var a in geofs.camera.animations)
+                geofs.camera.animations[a].active = !0
+        })
+    },
+    setFOV: function(a) {
+        geofs.camera.currentFOV = a || geofs.camera.currentFOV || geofs.camera.defaultFOV;
+        geofs.camera.currentFOV = clamp(geofs.camera.currentFOV, geofs.camera.minFOV, geofs.camera.maxFOV);
+        geofs.api.setFOV(geofs.camera.cam, geofs.camera.currentFOV);
+        geofs.getViewportDimentions();
+        "cockpit" == geofs.camera.currentModeName && instruments.updateCockpitPositions()
+    },
+    increaseFOV: function(a) {
+        var b = geofs.api.getFOV(geofs.camera.cam);
+        b += a || geofs.camera.FOVIncrement;
+        b > geofs.camera.maxFOV && (b = geofs.camera.maxFOV);
+        geofs.camera.setFOV(b)
+    },
+    decreaseFOV: function(a) {
+        var b = geofs.api.getFOV(geofs.camera.cam);
+        b -= a || geofs.camera.FOVIncrement;
+        b < geofs.camera.minFOV && (b = geofs.camera.minFOV);
+        geofs.camera.setFOV(b)
+    },
+    reset: function() {
+        geofs.camera.definitions = {
+            follow: {
+                orientation: [0, 5, 0]
+            },
+            cockpit: {},
+            cockpitless: {},
+            chase: {
+                reset: !0
+            },
+            free: {
+                reset: !0
+            }
+        };
+        var a = "",
+            b;
+        for (b in geofs.aircraft.instance.definition.cameras)
+            geofs.camera.definitions[b] || (a += '<li class="mdl-menu__item" data-camera="' + b + '">' + b + "</li>");
+        a.length ? $(".geofs-extra-views").show().find(".geofs-extra-views-holder").html(a) : $(".geofs-extra-views").hide();
+        a = $.extend(!0, {}, geofs.camera.definitions, geofs.aircraft.instance.definition.cameras);
+        var c = 0;
+        geofs.camera.modes = [];
+        for (b in a) {
+            var d = a[b];
+            d.name = b;
+            d.mode = c;
+            d.view = d.view || d.name;
+            d.position = d.position || [0, 0, 0];
+            d.orientations = {};
+            d.orientations.neutral = d.orientation || [0, 0, 0];
+            d.orientations.current = V3.dup(d.orientations.neutral);
+            d.orientations.last = V3.dup(d.orientations.neutral);
+            geofs.camera.definitions[b] = d;
+            geofs.camera.modes.push(geofs.camera.definitions[b]);
+            c++
         }
-        if (camera.animations.zoom.active) {
-            e = camera.animations.zoom;
-            if (camera.zoomDistance >= e.max || camera.zoomDistance <= e.min || camera.zoomDistance <= -geofs.aircraft.instance.setup.cameras.follow.distance + 5)
-                e.rate = -e.rate;
-            camera.translate(e.rate * a)
+        for (b in geofs.camera.definitions)
+            d = geofs.camera.definitions[b],
+            d.orientations.current = V3.dup(d.orientations.neutral),
+            d.orientations.last = V3.dup(d.orientations.neutral);
+        geofs.camera.definitions.follow.lastUsedHtr = V3.dup(geofs.aircraft.instance.htr);
+        geofs.camera.set(0);
+        geofs.camera.setToNeutral();
+        geofs.camera.lla = [0, 0, 0];
+        geofs.camera.htr = [0, 0, 0];
+        geofs.camera.zoomDistance = 0;
+        geofs.camera.update(0)
+    },
+    cycle: function() {
+        var a = geofs.camera.currentMode + 1;
+        a >= geofs.camera.modes.length && (a = 0);
+        geofs.camera.set(a)
+    },
+    set: function(a, b) {
+        geofs.camera.currentDefinition = geofs.camera.modes[a] || geofs.camera.definitions[b] || geofs.camera.definitions[0];
+        geofs.camera.currentMode = geofs.camera.currentDefinition.mode;
+        geofs.camera.currentModeName = geofs.camera.currentDefinition.name;
+        geofs.camera.currentView = geofs.camera.currentDefinition.view;
+        geofs.camera.setFOV(geofs.camera.currentDefinition.FOV);
+        "follow" == geofs.camera.currentModeName && (a = V3.scale(geofs.aircraft.instance.object3d.getWorldFrame()[1], -geofs.camera.definitions.follow.distance),
+            a = xyz2lla(a, geofs.aircraft.instance.llaLocation),
+            geofs.camera.lla = V3.add(geofs.aircraft.instance.llaLocation, a),
+            geofs.camera.avoidGround(),
+            a = lookAt(geofs.aircraft.instance.llaLocation, geofs.camera.lla, [0, 0, 1]),
+            a = [a[0], -a[1] + 90, 0],
+            geofs.api.setCameraPositionAndOrientation(geofs.camera.cam, geofs.camera.lla, a),
+            instruments.updateScreenPositions());
+        "free" == geofs.camera.currentModeName || "chase" == geofs.camera.currentModeName ? ($(".geofs-canvas-mouse-overlay").css("pointer-events", "none"),
+            geofs.api.nativeMouseHandling = !0) : ($(".geofs-canvas-mouse-overlay").css("pointer-events", "auto"),
+            geofs.api.nativeMouseHandling = !1);
+        geofs.aircraft.instance && ("cockpitless" == geofs.camera.currentModeName ? (geofs.aircraft.instance.setVisibility(!1),
+            instruments.updateScreenPositions()) : geofs.aircraft.instance.setVisibility(!0));
+        "cockpit" == geofs.camera.currentModeName || geofs.camera.currentDefinition.nearClipping ? (geofs.aircraft.instance.definition.cockpitScaleFix && geofs.aircraft.instance.fixCockpitScale(geofs.aircraft.instance.definition.cockpitScaleFix),
+            geofs.aircraft.instance.loadCockpit(),
+            instruments.updateCockpitPositions(),
+            geofs.api.configureInsideView(),
+            geofs.camera.motionOffset = [0, 0, 0],
+            geofs.animation.values.overlaysVisibility = "hidden") : (geofs.aircraft.instance.fixCockpitScale(1),
+            geofs.camera.currentDefinition.insideView ? geofs.api.configureInsideView() : geofs.api.configureOutsideView(),
+            geofs.animation.values.overlaysVisibility = "visible");
+        geofs.animation.values.view = geofs.camera.currentView;
+        geofs.animation.values.cameraMode = geofs.camera.currentModeName;
+        geofs.aircraft.instance.placeParts();
+        geofs.aircraft.instance.render();
+        instruments.updateScreenPositions();
+        instruments.update();
+        $(document).trigger("cameraChange");
+        geofs.camera.hasMoved = !0
+    },
+    translate: function(a) {
+        return "follow" == geofs.camera.currentModeName ? (geofs.camera.zoomDistance += a,
+            geofs.camera.zoomDistance < -geofs.aircraft.instance.definition.cameras.follow.distance + 5 && (geofs.camera.zoomDistance = -geofs.aircraft.instance.definition.cameras.follow.distance + 5), !0) : !1
+    },
+    lookAround: function(a, b) {
+        if (geofs.camera.isHandlingMouseRotation()) {
+            var c = geofs.camera.definitions[geofs.camera.currentModeName];
+            void 0 != a && (c.orientations.current[0] = a);
+            void 0 != b && (c.orientations.current[1] = b);
+            geofs.camera.saveRotation();
+            "cockpit" == geofs.camera.currentModeName && (geofs.camera.hasMoved = !0);
+            return !0
         }
-        camera.animations.orbitHorizontal.active && (camera.rotate(camera.animations.orbitHorizontal.rate * a),
-            camera.saveRotation());
-        if (camera.animations.orbitVertical.active) {
-            e = camera.animations.orbitVertical;
-            var f = fixAngle(camera.htr[1]);
-            if (f <= e.min || f >= e.max)
-                e.rate = -e.rate;
-            camera.rotate(null, e.rate * a);
-            camera.saveRotation()
+        return !1
+    },
+    rotate: function(a, b, c) {
+        a = a || 0;
+        b = b || 0;
+        c = c || 0;
+        if (geofs.camera.isHandlingMouseRotation()) {
+            var d = geofs.camera.definitions[geofs.camera.currentModeName];
+            d.orientations.current[0] = d.orientations.last[0] - a;
+            d.orientations.current[1] = d.orientations.last[1] + b;
+            d.orientations.current[2] = d.orientations.last[2] + (c || 0);
+            "cockpit" == geofs.camera.currentModeName && (geofs.camera.hasMoved = !0);
+            return !0
         }
-        if ("follow" == camera.currentModeName) {
-            c = V3.add(b.llaLocation, [0, 0, d.lookAtHeight || 0]);
-            f = d.orientations.current[0];
-            e = d.orientations.current[1];
-            var g = 1 - Math.exp(-a / .5);
-            a = d.lastUsedHtr[0] + fixAngle(b.htr[0] - d.lastUsedHtr[0]) * g;
-            g = d.lastUsedHtr[1] + fixAngle(b.htr[1] - d.lastUsedHtr[1]) * g;
-            d.lastUsedHtr = [a, g, 0];
-            a += f;
-            e = g + e;
-            a = M33.rotationXYZ(M33.identity(), [e * DEGREES_TO_RAD, 0, a * DEGREES_TO_RAD]);
-            d = V3.scale(a[1], -(d.distance + camera.zoomDistance));
-            b = xyz2lla(d, b.llaLocation);
-            camera.lla = V3.add(c, b);
-            camera.avoidGround();
-            camera.htr = lookAt(c, camera.lla, [0, 0, 1]);
-            camera.htr = [fixAngle360(camera.htr[0]), fixAngle360(-camera.htr[1]), 0];
-            geofs.api.setCameraPositionAndOrientation(camera.cam, camera.lla, camera.htr)
-        } else
-            "chase" == camera.currentModeName ? (camera.avoidGround(),
-                camera.lla = geofs.api.getCameraLla(camera.cam),
-                d = geofs.utils.llaDistanceInMeters(b.llaLocation, camera.lla, camera.lla),
-                camera.setFOV(clamp(1 - .001 * d, .001, 1)),
-                controls.mouse.down || (camera.htr = lookAt(b.llaLocation, camera.lla, [0, 0, 1]),
-                    camera.htr = [fixAngle360(camera.htr[0]), fixAngle360(-camera.htr[1]), 0],
-                    geofs.api.setCameraPositionAndOrientation(camera.cam, camera.lla, camera.htr))) : "free" == camera.currentModeName ? (camera.avoidGround(),
-                camera.lla = geofs.api.getCameraLla(camera.cam),
-                camera.htr[0] = geofs.api.getHeading(camera.cam)) : (a = d.orientations.current[0],
-                e = d.orientations.current[1],
-                a = M33.rotationXYZ(c, [-e * DEGREES_TO_RAD, 0, a * DEGREES_TO_RAD]),
-                camera.htr = M33.getOrientation(a),
-                camera.worldPosition = V3.dup(d.position),
-                "cockpit" == camera.currentModeName && geofs.preferences.camera.headMotion && (d = V3.scale([-geofs.animation.values.accX, -geofs.animation.values.accY, -geofs.animation.values.accZ], .004 * b.setup.motionSensitivity),
-                    d = V3.exponentialSmoothing("gsmooth", d, .1),
-                    camera.motionOffset[0] = d[0] / (camera.motionRange[0] / (camera.motionRange[0] - camera.motionOffset[0])),
-                    camera.motionOffset[1] = d[1] / (camera.motionRange[1] / (camera.motionRange[1] - camera.motionOffset[1])),
-                    camera.motionOffset[2] = d[2] / (camera.motionRange[2] / (camera.motionRange[2] - camera.motionOffset[2])),
-                    camera.motionOffset = V3.clamp(camera.motionOffset, -.2, .2),
-                    camera.worldPosition = V3.add(camera.worldPosition, camera.motionOffset),
-                    camera.hasMoved = !0),
-                camera.worldPosition = b.object3d.setVectorWorldPosition(camera.worldPosition),
-                "cockpit" == camera.currentModeName && (camera.worldPosition = V3.scale(camera.worldPosition, geofs.aircraft.instance.setup.cockpitScaleFix)),
-                camera.lla = V3.add(b.llaLocation, xyz2lla(camera.worldPosition, b.llaLocation)),
-                camera.htr = [fixAngle360(camera.htr[0]), fixAngle360(-camera.htr[1]), -camera.htr[2]],
-                geofs.api.setCameraPositionAndOrientation(camera.cam, camera.lla, camera.htr));
-        camera.radianRoll = camera.htr[2] * DEGREES_TO_RAD;
-        camera.openSlave && camera.updateSlaveData();
-        "cockpit" == camera.currentModeName && camera.hasMoved && (instruments.updateCockpitPositions(),
-            camera.hasMoved = !1);
-        camera.update3DOverlayPosition()
+        return !1
+    },
+    isHandlingMouseRotation: function() {
+        return "follow" == geofs.camera.currentModeName || "cockpit" == geofs.camera.currentModeName || geofs.camera.currentDefinition.rotatable ? !0 : !1
+    },
+    setRotation: function(a, b) {
+        var c = geofs.camera.definitions[geofs.camera.currentModeName];
+        return "follow" == geofs.camera.currentModeName ? (c.orientations.current[0] = a,
+            c.orientations.current[1] = b || c.orientations.last[1], !0) : "cockpit" == geofs.camera.currentModeName ? (a = fixAngle(a + 180),
+            c.orientations.current[0] = a || c.orientations.last[0],
+            c.orientations.current[1] = b || c.orientations.last[1],
+            geofs.camera.hasMoved = !0) : !1
+    },
+    saveRotation: function() {
+        if (geofs.camera.definitions) {
+            var a = geofs.camera.definitions[geofs.camera.currentModeName];
+            a.orientations.last = V3.dup(a.orientations.current)
+        }
+    },
+    setToNeutral: function() {
+        var a = geofs.camera.definitions[geofs.camera.currentModeName];
+        a.orientations.current = V3.dup(a.orientations.neutral);
+        a.orientations.last = V3.dup(a.orientations.neutral);
+        geofs.camera.setFOV(a.FOV || geofs.camera.defaultFOV);
+        "cockpit" == geofs.camera.currentModeName && (geofs.camera.hasMoved = !0)
+    },
+    avoidGround: function() {
+        geofs.camera.groundAltitude = geofs.aircraft.instance.collResult.location[2];
+        var a = geofs.camera.lla[2] - geofs.camera.groundAltitude;
+        geofs.cautiousWithTerrain && Math.abs(a) > geofs.camera.groundAvoidanceIgnore || (a <= geofs.camera.groundAvoidanceMargin && (geofs.camera.lla[2] = geofs.camera.groundAltitude + geofs.camera.groundAvoidanceMargin),
+            geofs.camera.hasMoved = !0)
+    },
+    getFlytToCoordinates: function() {
+        var a = clone(geofs.camera.lla);
+        a[2] = clamp(a[2], 0, 3E4);
+        a[3] = geofs.camera.htr[0];
+        geofs.camera.lla[2] - geofs.camera.groundAltitude < geofs.camera.groundAvoidanceMargin ? (a[2] = 0,
+            a[4] = !1) : a[4] = !0;
+        return a
+    },
+    update: function(a) {
+        var b = geofs.aircraft.instance;
+        if (geofs.aircraft.instance.object3d) {
+            var c = geofs.aircraft.instance.object3d.getWorldFrame(),
+                d = geofs.camera.definitions[geofs.camera.currentModeName];
+            if (geofs.vr && controls.orientation.available) {
+                var e = controls.orientation.getHtr();
+                geofs.camera.rotate(e[0], e[1], e[2])
+            }
+            if (geofs.camera.animations.zoom.active) {
+                e = geofs.camera.animations.zoom;
+                if (geofs.camera.zoomDistance >= e.max || geofs.camera.zoomDistance <= e.min || geofs.camera.zoomDistance <= -geofs.aircraft.instance.definition.cameras.follow.distance + 5)
+                    e.rate = -e.rate;
+                geofs.camera.translate(e.rate * a)
+            }
+            geofs.camera.animations.orbitHorizontal.active && (geofs.camera.rotate(geofs.camera.animations.orbitHorizontal.rate * a),
+                geofs.camera.saveRotation());
+            geofs.camera.animations.orbitVertical.active && (e = geofs.camera.animations.orbitVertical,
+                fixAngle(geofs.camera.htr[1]),
+                geofs.camera.rotate(null, e.rate * a),
+                geofs.camera.saveRotation());
+            if ("follow" == geofs.camera.currentModeName) {
+                c = V3.add(b.llaLocation, [0 + geofs.camera.lookatOffset[0], 0 + geofs.camera.lookatOffset[1], (d.lookAtHeight || 0) + +geofs.camera.lookatOffset[2]]);
+                var f = d.orientations.current[0];
+                e = d.orientations.current[1];
+                var g = 1 - Math.exp(-a / .5);
+                a = d.lastUsedHtr[0] + fixAngle(b.htr[0] - d.lastUsedHtr[0]) * g;
+                g = d.lastUsedHtr[1] + fixAngle(b.htr[1] - d.lastUsedHtr[1]) * g;
+                d.lastUsedHtr = [a, g, 0];
+                a += f;
+                e = g + e;
+                e = M33.rotationXYZ(M33.identity(), [e * DEGREES_TO_RAD, 0, a * DEGREES_TO_RAD]);
+                d = V3.scale(e[1], -(d.distance + geofs.camera.zoomDistance));
+                b = xyz2lla(d, b.llaLocation);
+                geofs.camera.lla = V3.add(c, b);
+                geofs.camera.avoidGround();
+                geofs.camera.htr = lookAt(c, geofs.camera.lla, [0, 0, 1]);
+                geofs.camera.htr = [fixAngle360(geofs.camera.htr[0]), fixAngle360(-geofs.camera.htr[1]), 0];
+                geofs.api.setCameraPositionAndOrientation(geofs.camera.cam, geofs.camera.lla, geofs.camera.htr)
+            } else
+                "chase" == geofs.camera.currentModeName ? (geofs.camera.avoidGround(),
+                    geofs.camera.lla = geofs.api.getCameraLla(geofs.camera.cam),
+                    d = geofs.utils.llaDistanceInMeters(b.llaLocation, geofs.camera.lla, geofs.camera.lla),
+                    geofs.camera.setFOV(clamp(1 - .001 * d, .001, 1)),
+                    controls.mouse.down || (geofs.camera.htr = lookAt(b.llaLocation, geofs.camera.lla, [0, 0, 1]),
+                        geofs.camera.htr = [fixAngle360(geofs.camera.htr[0]), fixAngle360(-geofs.camera.htr[1]), 0],
+                        geofs.api.setCameraPositionAndOrientation(geofs.camera.cam, geofs.camera.lla, geofs.camera.htr))) : "free" == geofs.camera.currentModeName ? (geofs.camera.avoidGround(),
+                    geofs.camera.lla = geofs.api.getCameraLla(geofs.camera.cam),
+                    geofs.camera.htr[0] = geofs.api.getHeading(geofs.camera.cam)) : (a = d.orientations.current[0],
+                    e = d.orientations.current[1],
+                    e = M33.rotationXYZ(c, [-e * DEGREES_TO_RAD, 0, a * DEGREES_TO_RAD]),
+                    geofs.camera.htr = M33.getOrientation(e),
+                    geofs.camera.worldPosition = V3.dup(d.position),
+                    "cockpit" == geofs.camera.currentModeName && geofs.preferences.camera.headMotion && (d = V3.scale([-geofs.animation.values.accX, -geofs.animation.values.accY, -geofs.animation.values.accZ], .001 * b.definition.motionSensitivity),
+                        d = V3.exponentialSmoothing("gsmooth", d, .1),
+                        geofs.camera.motionOffset[0] = d[0] / (geofs.camera.motionRange[0] / (geofs.camera.motionRange[0] - geofs.camera.motionOffset[0])),
+                        geofs.camera.motionOffset[1] = d[1] / (geofs.camera.motionRange[1] / (geofs.camera.motionRange[1] - geofs.camera.motionOffset[1])),
+                        geofs.camera.motionOffset[2] = d[2] / (geofs.camera.motionRange[2] / (geofs.camera.motionRange[2] - geofs.camera.motionOffset[2])),
+                        geofs.camera.motionOffset = V3.clamp(geofs.camera.motionOffset, -.2, .2),
+                        geofs.camera.worldPosition = V3.add(geofs.camera.worldPosition, geofs.camera.motionOffset),
+                        geofs.camera.hasMoved = !0),
+                    geofs.camera.worldPosition = b.object3d.setVectorWorldPosition(geofs.camera.worldPosition),
+                    "cockpit" == geofs.camera.currentModeName && (geofs.camera.worldPosition = V3.scale(geofs.camera.worldPosition, geofs.aircraft.instance.definition.cockpitScaleFix)),
+                    geofs.camera.lla = V3.add(b.llaLocation, xyz2lla(geofs.camera.worldPosition, b.llaLocation)),
+                    geofs.camera.htr = [fixAngle360(geofs.camera.htr[0]), fixAngle360(-geofs.camera.htr[1]), -geofs.camera.htr[2]],
+                    geofs.api.setCameraPositionAndOrientation(geofs.camera.cam, geofs.camera.lla, geofs.camera.htr));
+            geofs.camera.radianRoll = geofs.camera.htr[2] * DEGREES_TO_RAD;
+            geofs.camera.openSlave && geofs.camera.updateSlaveData();
+            "cockpit" == geofs.camera.currentModeName && geofs.camera.hasMoved && (instruments.updateCockpitPositions(),
+                geofs.camera.hasMoved = !1);
+            geofs.camera.update3DOverlayPosition()
+        }
+    },
+    update3DOverlayPosition: function() {
+        if (geofs.aircraft.instance.parts.camera && geofs.aircraft.instance.parts.camera.object3d) {
+            var a = V3.toRadians(geofs.camera.htr);
+            geofs.aircraft.instance.parts.camera.object3d.setInitiallRotation([-a[1], -a[2], a[0]]);
+            if (a = geofs.api.getLlaFromScreencoordDepth(instruments.gaugeOverlayPosition[0], instruments.gaugeOverlayPosition[1], instruments.gaugeOverlayPosition[2]))
+                geofs.aircraft.instance.parts.camera.object3d.compute(a),
+                geofs.aircraft.instance.parts.camera.object3d.render(a)
+        }
+    },
+    openSlaveWindow: function(a) {
+        var b = "left=" + ((window.screenX || window.screenLeft) + a * (window.outerWidth || 1024));
+        window.open("slave.html?order=" + a, ("geofsSlave" + a).replace("-", "l"), b) && (geofs.camera.openSlave = !0)
+    },
+    updateSlaveData: function() {
+        geofs.camera.transform = M33.setFromEuler([-geofs.camera.htr[1] * DEGREES_TO_RAD, -geofs.camera.htr[2] * DEGREES_TO_RAD, geofs.camera.htr[0] * DEGREES_TO_RAD])
     }
-};
-camera.update3DOverlayPosition = function() {
-    if (geofs.aircraft.instance.parts.camera && geofs.aircraft.instance.parts.camera.object3d) {
-        var a = V3.toRadians(camera.htr);
-        geofs.aircraft.instance.parts.camera.object3d.setInitiallRotation([-a[1], -a[2], a[0]]);
-        if (a = geofs.api.getLlaFromScreencoordDepth(instruments.gaugeOverlayPosition[0], instruments.gaugeOverlayPosition[1], instruments.gaugeOverlayPosition[2]))
-            geofs.aircraft.instance.parts.camera.object3d.compute(a),
-            geofs.aircraft.instance.parts.camera.object3d.render(a)
-    }
-};
-camera.openSlaveWindow = function(a) {
-    var b = "left=" + ((window.screenX || window.screenLeft) + a * (window.outerWidth || 1024));
-    window.open("slave.html?order=" + a, ("geofsSlave" + a).replace("-", "l"), b) && (camera.openSlave = !0)
-};
-camera.updateSlaveData = function() {
-    camera.transform = M33.setFromEuler([-camera.htr[1] * DEGREES_TO_RAD, -camera.htr[2] * DEGREES_TO_RAD, camera.htr[0] * DEGREES_TO_RAD])
 };
 "use strict";
 var instruments = window.instruments || {};
@@ -29833,7 +30123,7 @@ instruments.definitions = {
     airspeed: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/airspeed.png",
+            url: "images/instruments/airspeed.png",
             size: {
                 x: 200,
                 y: 200
@@ -29855,7 +30145,7 @@ instruments.definitions = {
                     ratio: -1.5,
                     min: 0
                 }],
-                url: PAGE_PATH + "images/instruments/airspeed-hand.png",
+                url: "images/instruments/airspeed-hand.png",
                 anchor: {
                     x: 10,
                     y: 34
@@ -29874,7 +30164,7 @@ instruments.definitions = {
     airspeedJet: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/airspeed-high.png",
+            url: "images/instruments/airspeed-high.png",
             size: {
                 x: 200,
                 y: 200
@@ -29896,7 +30186,7 @@ instruments.definitions = {
                     ratio: -.6,
                     min: 0
                 }],
-                url: PAGE_PATH + "images/instruments/airspeed-hand.png",
+                url: "images/instruments/airspeed-hand.png",
                 anchor: {
                     x: 10,
                     y: 34
@@ -29915,7 +30205,7 @@ instruments.definitions = {
     airspeedSupersonic: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/airspeed-supersonic.png",
+            url: "images/instruments/airspeed-supersonic.png",
             size: {
                 x: 200,
                 y: 200
@@ -29937,7 +30227,7 @@ instruments.definitions = {
                     ratio: -.3,
                     min: 0
                 }],
-                url: PAGE_PATH + "images/instruments/airspeed-hand.png",
+                url: "images/instruments/airspeed-hand.png",
                 anchor: {
                     x: 10,
                     y: 34
@@ -29957,7 +30247,7 @@ instruments.definitions = {
                     ratio: -72,
                     min: 0
                 }],
-                url: PAGE_PATH + "images/instruments/mach-hand.png",
+                url: "images/instruments/mach-hand.png",
                 anchor: {
                     x: 5,
                     y: 5
@@ -29976,7 +30266,7 @@ instruments.definitions = {
     altitude_legacy: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/altitude.png",
+            url: "images/instruments/altitude.png",
             size: {
                 x: 200,
                 y: 200
@@ -29997,7 +30287,7 @@ instruments.definitions = {
                     value: "altitude",
                     ratio: -.0036
                 }],
-                url: PAGE_PATH + "images/instruments/tenthousandhand.png",
+                url: "images/instruments/tenthousandhand.png",
                 anchor: {
                     x: 8,
                     y: 0
@@ -30016,7 +30306,7 @@ instruments.definitions = {
                     value: "altitude",
                     ratio: -.036
                 }],
-                url: PAGE_PATH + "images/instruments/small-hand.png",
+                url: "images/instruments/small-hand.png",
                 anchor: {
                     x: 10,
                     y: 28
@@ -30035,7 +30325,7 @@ instruments.definitions = {
                     value: "altitude",
                     ratio: -.36
                 }],
-                url: PAGE_PATH + "images/instruments/airspeed-hand.png",
+                url: "images/instruments/airspeed-hand.png",
                 anchor: {
                     x: 10,
                     y: 34
@@ -30054,7 +30344,7 @@ instruments.definitions = {
     altitude: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/altitude2/background.png",
+            url: "images/instruments/altitude2/background.png",
             size: {
                 x: 200,
                 y: 200
@@ -30078,7 +30368,7 @@ instruments.definitions = {
                     min: 1E4,
                     max: 15E3
                 }],
-                url: PAGE_PATH + "images/instruments/altitude2/stripe_mask.png",
+                url: "images/instruments/altitude2/stripe_mask.png",
                 anchor: {
                     x: 58,
                     y: 54
@@ -30097,7 +30387,7 @@ instruments.definitions = {
                     value: "altitude",
                     ratio: -.0036
                 }],
-                url: PAGE_PATH + "images/instruments/tenthousandhand.png",
+                url: "images/instruments/tenthousandhand.png",
                 anchor: {
                     x: 8,
                     y: 0
@@ -30116,7 +30406,7 @@ instruments.definitions = {
                     value: "altitude",
                     ratio: -.036
                 }],
-                url: PAGE_PATH + "images/instruments/small-hand.png",
+                url: "images/instruments/small-hand.png",
                 anchor: {
                     x: 10,
                     y: 28
@@ -30135,7 +30425,7 @@ instruments.definitions = {
                     value: "altitude",
                     ratio: -.36
                 }],
-                url: PAGE_PATH + "images/instruments/airspeed-hand.png",
+                url: "images/instruments/airspeed-hand.png",
                 anchor: {
                     x: 10,
                     y: 34
@@ -30149,7 +30439,7 @@ instruments.definitions = {
                     y: 0
                 }
             }, {
-                url: PAGE_PATH + "images/instruments/altitude2/shine.png",
+                url: "images/instruments/altitude2/shine.png",
                 size: {
                     x: 200,
                     y: 200
@@ -30168,7 +30458,7 @@ instruments.definitions = {
     vario: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/vario.png",
+            url: "images/instruments/vario.png",
             size: {
                 x: 200,
                 y: 200
@@ -30192,7 +30482,7 @@ instruments.definitions = {
                     min: -1900,
                     offset: 90
                 }],
-                url: PAGE_PATH + "images/instruments/airspeed-hand.png",
+                url: "images/instruments/airspeed-hand.png",
                 anchor: {
                     x: 10,
                     y: 34
@@ -30211,7 +30501,7 @@ instruments.definitions = {
     varioJet: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/vario-high.png",
+            url: "images/instruments/vario-high.png",
             size: {
                 x: 200,
                 y: 200
@@ -30235,7 +30525,7 @@ instruments.definitions = {
                     min: -6E3,
                     offset: 90
                 }],
-                url: PAGE_PATH + "images/instruments/airspeed-hand.png",
+                url: "images/instruments/airspeed-hand.png",
                 anchor: {
                     x: 10,
                     y: 34
@@ -30254,7 +30544,7 @@ instruments.definitions = {
     compass: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/compass.png",
+            url: "images/instruments/compass.png",
             size: {
                 x: 200,
                 y: 200
@@ -30275,7 +30565,7 @@ instruments.definitions = {
                     value: "heading",
                     ratio: 1
                 }],
-                url: PAGE_PATH + "images/instruments/compass-grad.png",
+                url: "images/instruments/compass-grad.png",
                 anchor: {
                     x: 90,
                     y: 90
@@ -30289,7 +30579,7 @@ instruments.definitions = {
                     y: 0
                 }
             }, {
-                url: PAGE_PATH + "images/instruments/compass-hand.png",
+                url: "images/instruments/compass-hand.png",
                 anchor: {
                     x: 25,
                     y: 26
@@ -30308,7 +30598,7 @@ instruments.definitions = {
     attitude: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/attitude.png",
+            url: "images/instruments/attitude.png",
             size: {
                 x: 200,
                 y: 200
@@ -30339,7 +30629,7 @@ instruments.definitions = {
                     min: -25,
                     max: 25
                 }],
-                url: PAGE_PATH + "images/instruments/attitude-hand.png",
+                url: "images/instruments/attitude-hand.png",
                 anchor: {
                     x: 100,
                     y: 75
@@ -30364,7 +30654,7 @@ instruments.definitions = {
                     min: -60,
                     max: 60
                 }],
-                url: PAGE_PATH + "images/instruments/attitude-grad.png",
+                url: "images/instruments/attitude-grad.png",
                 anchor: {
                     x: 100,
                     y: 100
@@ -30378,7 +30668,7 @@ instruments.definitions = {
                     y: 0
                 }
             }, {
-                url: PAGE_PATH + "images/instruments/attitude-pointer.png",
+                url: "images/instruments/attitude-pointer.png",
                 anchor: {
                     x: 100,
                     y: 100
@@ -30397,7 +30687,7 @@ instruments.definitions = {
     attitudeJet: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/attitude-jet.png",
+            url: "images/instruments/attitude-jet.png",
             size: {
                 x: 200,
                 y: 200
@@ -30427,7 +30717,7 @@ instruments.definitions = {
                     min: -90,
                     max: 90
                 }],
-                url: PAGE_PATH + "images/instruments/attitude-jet-hand.png",
+                url: "images/instruments/attitude-jet-hand.png",
                 anchor: {
                     x: 100,
                     y: 70
@@ -30452,7 +30742,7 @@ instruments.definitions = {
                     min: -60,
                     max: 60
                 }],
-                url: PAGE_PATH + "images/instruments/attitude-jet-pointer.png",
+                url: "images/instruments/attitude-jet-pointer.png",
                 anchor: {
                     x: 100,
                     y: 100
@@ -30466,7 +30756,7 @@ instruments.definitions = {
                     y: 0
                 }
             }, {
-                url: PAGE_PATH + "images/instruments/attitude-jet.png",
+                url: "images/instruments/attitude-jet.png",
                 anchor: {
                     x: 100,
                     y: 100
@@ -30485,7 +30775,7 @@ instruments.definitions = {
     rpmJet: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/jet-rpm.png",
+            url: "images/instruments/jet-rpm.png",
             size: {
                 x: 200,
                 y: 200
@@ -30507,7 +30797,7 @@ instruments.definitions = {
                     ratio: -.036,
                     offset: 0
                 }],
-                url: PAGE_PATH + "images/instruments/jet-rpm-hand.png",
+                url: "images/instruments/jet-rpm-hand.png",
                 anchor: {
                     x: 6,
                     y: 15
@@ -30527,7 +30817,7 @@ instruments.definitions = {
                     ratio: -.027,
                     offset: 0
                 }],
-                url: PAGE_PATH + "images/instruments/airspeed-hand.png",
+                url: "images/instruments/airspeed-hand.png",
                 anchor: {
                     x: 10,
                     y: 34
@@ -30546,7 +30836,7 @@ instruments.definitions = {
     rpm: {
         stackX: !0,
         overlay: {
-            url: PAGE_PATH + "images/instruments/rpm.png",
+            url: "images/instruments/rpm.png",
             size: {
                 x: 100,
                 y: 100
@@ -30568,7 +30858,7 @@ instruments.definitions = {
                     ratio: -.03,
                     offset: 120
                 }],
-                url: PAGE_PATH + "images/instruments/rpm-hand.png",
+                url: "images/instruments/rpm-hand.png",
                 anchor: {
                     x: 14,
                     y: 14
@@ -30587,7 +30877,7 @@ instruments.definitions = {
     jetfuel: {
         overlay: {
             class: "geofs-authenticated",
-            url: PAGE_PATH + "images/instruments/jet-fuel-gauge.png",
+            url: "images/instruments/jet-fuel-gauge.png",
             opacity: 1,
             alignment: {
                 x: "right",
@@ -30623,7 +30913,7 @@ instruments.definitions = {
                     max: 1E3
                 }],
                 class: "geofs-authenticated",
-                url: PAGE_PATH + "images/instruments/jet-fuel-hand.png",
+                url: "images/instruments/jet-fuel-hand.png",
                 anchor: {
                     x: 10,
                     y: 10
@@ -30638,7 +30928,7 @@ instruments.definitions = {
                 }
             }, {
                 class: "geofs-authenticated",
-                url: PAGE_PATH + "images/instruments/jet-fuel.png",
+                url: "images/instruments/jet-fuel.png",
                 anchor: {
                     x: 0,
                     y: 0
@@ -30675,7 +30965,7 @@ instruments.definitions = {
     },
     wind: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/wind-body.png",
+            url: "images/instruments/wind-body.png",
             opacity: .5,
             scale: {
                 x: .5,
@@ -30705,7 +30995,7 @@ instruments.definitions = {
                     value: "relativeWind",
                     ratio: -1
                 }],
-                url: PAGE_PATH + "images/instruments/wind-hand.png",
+                url: "images/instruments/wind-hand.png",
                 anchor: {
                     x: 100,
                     y: 100
@@ -30742,7 +31032,7 @@ instruments.definitions = {
     },
     spoilers: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/spoilers.png",
+            url: "images/instruments/spoilers.png",
             visibility: !0,
             anchor: {
                 x: 85,
@@ -30771,7 +31061,7 @@ instruments.definitions = {
     },
     brakes: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/brakes.png",
+            url: "images/instruments/brakes.png",
             visibility: !0,
             anchor: {
                 x: 73,
@@ -30800,7 +31090,7 @@ instruments.definitions = {
     },
     gear: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/gear.png",
+            url: "images/instruments/gear.png",
             anchor: {
                 x: 60,
                 y: 0
@@ -30826,7 +31116,7 @@ instruments.definitions = {
                     type: "show",
                     when: [0]
                 }],
-                url: PAGE_PATH + "images/instruments/led-green.png",
+                url: "images/instruments/led-green.png",
                 anchor: {
                     x: 0,
                     y: 0
@@ -30845,7 +31135,7 @@ instruments.definitions = {
                     type: "show",
                     when: [1]
                 }],
-                url: PAGE_PATH + "images/instruments/led-red.png",
+                url: "images/instruments/led-red.png",
                 anchor: {
                     x: 0,
                     y: 0
@@ -30864,7 +31154,7 @@ instruments.definitions = {
                     type: "show",
                     whenNot: [0, 1]
                 }],
-                url: PAGE_PATH + "images/instruments/led-orange.png",
+                url: "images/instruments/led-orange.png",
                 anchor: {
                     x: 0,
                     y: 0
@@ -30882,7 +31172,7 @@ instruments.definitions = {
     },
     flaps: {
         overlay: {
-            url: PAGE_PATH + "images/instruments/flaps.png",
+            url: "images/instruments/flaps.png",
             anchor: {
                 x: 74,
                 y: 0
@@ -30908,7 +31198,7 @@ instruments.definitions = {
                     value: "flapsValue",
                     ratio: -90
                 }],
-                url: PAGE_PATH + "images/instruments/flaps-hand.png",
+                url: "images/instruments/flaps-hand.png",
                 anchor: {
                     x: 0,
                     y: 5
@@ -31993,7 +32283,7 @@ instruments.updateCockpitPositions = function() {
 instruments.updateScreenPositions = function() {
     for (var a in instruments.list) {
         var b = instruments.list[a];
-        "cockpit" == camera.currentModeName ? b.updateCockpitPosition() : b.overlay && (b.overlay.rotation = 0,
+        "cockpit" == geofs.camera.currentModeName && b.definition.cockpit ? b.updateCockpitPosition() : b.overlay && (b.overlay.rotation = 0,
             b.overlay.scaleAndPlace())
     }
     a = clamp(geofs.viewportWidth / VIEWPORT_REFERENCE_WIDTH, .3, 1);
@@ -32025,7 +32315,7 @@ var Indicator = function(a) {
 };
 Indicator.prototype.scale = function() {
     if (this.definition.cockpit && this.definition.cockpit.position) {
-        var a = geofs.aircraft.instance.setup.scale * geofs.aircraft.instance.setup.cockpitScaleFix;
+        var a = geofs.aircraft.instance.definition.scale * geofs.aircraft.instance.definition.cockpitScaleFix;
         this.definition.cockpit.originalScale = this.definition.cockpit.originalScale || this.definition.cockpit.scale;
         this.definition.cockpit.scale = this.definition.cockpit.originalScale * a
     }
@@ -32046,12 +32336,12 @@ Indicator.prototype.updateCockpitPosition = function() {
     if (this.definition.cockpit) {
         var a = this.definition.cockpit.position;
         geofs.aircraft.instance.object3d.setVectorWorldPosition(a);
-        a.worldPosition = V3.scale(a.worldPosition, geofs.aircraft.instance.setup.cockpitScaleFix);
+        a.worldPosition = V3.scale(a.worldPosition, geofs.aircraft.instance.definition.cockpitScaleFix);
         var b = V3.add(geofs.aircraft.instance.llaLocation, xyz2lla(a.worldPosition, geofs.aircraft.instance.llaLocation)),
             c = geofs.api.getScreenCoordFromLla(b);
         c && (b = c.x,
             c = c.y,
-            a = .8 / V3.length(V3.sub(camera.worldPosition, a.worldPosition)) * this.definition.cockpit.scale,
+            a = .8 / V3.length(V3.sub(geofs.camera.worldPosition, a.worldPosition)) * this.definition.cockpit.scale,
             this.overlay.scale = {
                 x: a * geofs.fovScale,
                 y: a * geofs.fovScale
@@ -32060,7 +32350,7 @@ Indicator.prototype.updateCockpitPosition = function() {
                 x: b,
                 y: geofs.viewportHeight - c
             },
-            this.overlay.rotation = .3 * fixAngle(camera.definitions.cockpit.orientations.current[0]),
+            this.overlay.rotation = .3 * fixAngle(geofs.camera.currentDefinition.orientations.current[0]),
             this.overlay.scaleAndPlace(this.overlay.scale, this.overlay.position, !0))
     }
 };
@@ -32281,7 +32571,7 @@ audio.impl.webAudio = {
                     c.buffer = b;
                     audio.loaded(a)
                 }, function(a) {
-                    throw "Error with decoding audio data" + a.err;
+                    throw "Error with decoding audio data" + a;
                 })
             }, a)
         };
@@ -32553,11 +32843,11 @@ multiplayer.startMapUpdate = function() {
             });
             for (var b = $(".geofs-player-list"), d = b.is(":visible"), e = 0, f = "", g = 0, h = a.users.length; g < h; g++) {
                 var k = a.users[g],
-                    n = k.id;
-                if (multiplayer.myId != n) {
-                    var v = multiplayer.users[n] || new multiplayer.User(k);
+                    m = k.id;
+                if (multiplayer.myId != m) {
+                    var v = multiplayer.users[m] || new multiplayer.User(k);
                     v.update(k, !0);
-                    d && ("Foo" == v.callsign ? e++ : f += '<li data-player="' + n + '">' + v.callsign + " (" + v.aircraftName + ")</li>")
+                    d && ("Foo" == v.callsign ? e++ : f += '<li data-player="' + m + '">' + v.callsign + " (" + v.aircraftName + ")</li>")
                 }
             }
             d && (0 < e && (f += "<li>    ...and " + e + " Foos</li>"),
@@ -32692,17 +32982,14 @@ multiplayer.User.prototype = {
                 var c = !0;
             else
                 return;
-        if (!(0 >= a.ti - this.lastUpdate.ti) || c)
-            if (ui.mapInstance && ui.mapInstance.mapActive && ui.mapInstance.updatePlayerMarker(a.id, a.co, this.callsign, a.ad ? "traffic" : null, this.aircraftName, this.lastUpdate.st.as),
-                this.updated = !0, !b) {
-                this.lastUpdate = $.extend({}, a);
-                this.updateModel(a);
-                if (this.model) {
-                    this.lastUpdate.ad && 0 != this.lastUpdate.co[2] && !this.lastUpdate.st.gr && (this.lastUpdate.co[2] += EGM96_TO_WGS84);
-                    this.visibleGear != this.lastUpdate.st.gr && geofs.api.setNodeVisibility(geofs.api.getModelNode(this.model, "gear"), this.lastUpdate.st.gr) && (this.visibleGear = this.lastUpdate.st.gr);
-                    this.elapsedTime = this.currentServerTime - this.lastUpdate.ti;
-                    this.correctedVelocity = M3.dup(this.lastUpdate.ve);
-                    var d = this.elapsedTime;
+        0 >= a.ti - this.lastUpdate.ti && !c || (ui.mapInstance && ui.mapInstance.mapActive && ui.mapInstance.updatePlayerMarker(a.id, a.co, this.callsign, a.ad ? "traffic" : null, this.aircraftName, this.lastUpdate.st.as),
+            this.updated = !0,
+            b || (this.lastUpdate = $.extend({}, a),
+                this.updateModel(a),
+                this.model && (this.lastUpdate.ad && 0 != this.lastUpdate.co[2] && !this.lastUpdate.st.gr && (this.lastUpdate.co[2] += EGM96_TO_WGS84),
+                    this.visibleGear != this.lastUpdate.st.gr && geofs.api.setNodeVisibility(geofs.api.getModelNode(this.model, "gear"), this.lastUpdate.st.gr) && (this.visibleGear = this.lastUpdate.st.gr),
+                    this.elapsedTime = this.currentServerTime - this.lastUpdate.ti,
+                    this.correctedVelocity = M3.dup(this.lastUpdate.ve),
                     this.currentCoord && (b = M3.add(this.lastUpdate.co, M3.scale(this.lastUpdate.ve, this.elapsedTime)),
                         a = M3.sub(b, this.currentCoord),
                         a[3] = fixAngle(a[3]),
@@ -32714,13 +33001,10 @@ multiplayer.User.prototype = {
                             this.deviationFix = [0, 0, 0, 0, 0, 0]) : (this.deviationFix = M3.scale(a, 1E-5),
                             this.correctedVelocity = M3.add(this.correctedVelocity, this.deviationFix)) : 40 < b || 30 < c ? this.deviationFix = this.currentCoord = null : (b = 10 * multiplayer.minUpdateDelay,
                             this.deviationFix = M3.scale(a, 1 / b),
-                            this.correctedVelocity = M3.add(this.correctedVelocity, this.deviationFix)));
+                            this.correctedVelocity = M3.add(this.correctedVelocity, this.deviationFix))),
                     this.currentCoord ? (this.elapsedTime = 0,
-                        this.referenceCoord = this.currentCoord) : this.referenceCoord = this.lastUpdate.co
-                }
-                geofs.debug.on && $(".debugAicraftId").val() == this.id && $(".debugMultiplayerData").html("elapsed time: " + d + "<br/>velocity co/s: " + 1E3 * V3.length(this.lastUpdate.ve) + "<br/>time: " + this.lastUpdate.ti + "<br/>LOD: " + this.lod);
-                this.currentCoord = null
-            }
+                        this.referenceCoord = this.currentCoord) : this.referenceCoord = this.lastUpdate.co),
+                this.currentCoord = null))
     },
     getLOD: function(a) {
         this.distance = geofs.utils.llaDistanceInMeters(this.currentCoord || a.co, geofs.aircraft.instance.llaLocation, geofs.aircraft.instance.llaLocation);
@@ -32883,8 +33167,7 @@ geofs.debug.stackLog = function(a) {
 geofs.debug.update = function(a) {
     geofs.debug.fps = 1E3 / a;
     geofs.debug.fps = geofs.debug.fps.toPrecision(2);
-    if (geofs.debug.on && (document.title = "fps: " + geofs.debug.fps,
-            a = $(".debugPointName")[0].value)) {
+    if (geofs.debug.on && (a = $(".debugPointName")[0].value)) {
         var b = geofs.aircraft.instance.parts[a],
             c = instruments.list[a];
         if (b) {
@@ -32894,24 +33177,22 @@ geofs.debug.update = function(a) {
                 $(".debugShowForceDirection")[0].checked && geofs.debug.placeAxis(b.object3d.getWorldFrame(), b.points.forceDirection.worldPosition),
                 $(".debugShowLocalPosition")[0].checked && geofs.debug.placeAxis(b.object3d.getWorldFrame(), b.object3d.worldPosition),
                 $(".debugShowsuspensionOrigin")[0].checked && geofs.debug.placeAxis(b.object3d.getWorldFrame(), b.points.suspensionOrigin.worldPosition));
-            $(".debugPartData").html("Node Origin: " + b.object3d._nodeOrigin + "<br/>worldPosition: " + b.object3d.getWorldPosition())
+            $(".debugPartData").html("Node Origin: " + b.object3d._nodeOrigin)
         }
         c && c.definition.cockpit && (b = c.definition.cockpit.position,
             geofs.debug.placeAxis(geofs.aircraft.instance.object3d.getWorldFrame(), b.worldPosition));
-        "camera" == a && (b = geofs.aircraft.instance.setup.camera.cockpit,
+        "camera" == a && (b = geofs.aircraft.instance.definition.camera.cockpit,
             geofs.aircraft.instance.object3d.setVectorWorldPosition(b),
             geofs.debug.placeAxis(geofs.aircraft.instance.object3d.getWorldFrame(), b.worldPosition))
     }
 };
 geofs.debug.loadAxis = function() {
-    var a = PAGE_PATH + "models/debug/axis.glb";
     geofs.debug.axis = {};
-    geofs.debug.axis.model = geofs.loadModel(a)
+    geofs.debug.axis.model = geofs.loadModel("models/debug/axis.glb")
 };
 geofs.debug.loadProbe = function() {
-    var a = PAGE_PATH + "models/debug/probe.glb";
     geofs.debug.probe = {};
-    geofs.debug.probe.model = geofs.loadModel(a)
+    geofs.debug.probe.model = geofs.loadModel("models/debug/probe.glb")
 };
 geofs.debug.placeAxis = function(a, b) {
     geofs.debug.axis || geofs.debug.loadAxis();

@@ -22,6 +22,8 @@ export default {
     components:{
         Navigation,
         Map,
+    },
+    created(){
     }
 }
 </script>

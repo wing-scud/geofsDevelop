@@ -581,6 +581,7 @@ api.Model = function(a, b) {
     this.setPositionOrientationAndScale(b.location, b.rotation);
 };
 api.Model.prototype.setPositionOrientationAndScale = function(a, b, c) {
+    this._lla = a;
     return api.setModelPositionOrientationAndScale(this._model, a, b, c);
 };
 api.Model.prototype.setLocation = function(a) {
@@ -618,6 +619,10 @@ api.loadModel = a => {
     a.castShadows && a.receiveShadows && (b = Cesium.ShadowMode.ENABLED);
     a.shadows = b;
     b = Cesium.Model.fromGltf(a);
+    console.log(a.url)
+    if (a.url == "http://localhost:3030/proxy/models/precipitations/rain.gltf?bla=1") {
+        // debugger
+    }
     a.justLoad || api.addModelToWorld(b);
     return b;
 };

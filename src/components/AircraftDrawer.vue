@@ -26,6 +26,7 @@
     </div>
 </template>
 <script>
+import range from "../lib/utils/aircraftRange"
 import geofs from "../lib/geofs"
 export default {
     name:"AircraftDrawer",
@@ -77,6 +78,7 @@ export default {
     },
     methods:{
         changeAircraft(val){
+            this.$store.dispatch("setKias",range[val.serialNumber].maxKias)
             geofs.aircraft.instance.change(val.serialNumber);
         }
     }

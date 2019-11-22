@@ -37,8 +37,8 @@
         <el-button @click="clickButton($event)" v-popover:autopilot id="autopilot" :style="{backgroundColor:color}" circle> <i class="iconfont">&#xe622;</i></el-button>
     </div>
     <!-- 二种，信息量大的drawer，小的popover,二种生成方式不同 -->
-    <el-drawer :title="format(current)" :custom-class="`width: ${'drawer'}`" :modal-append-to-body="false" :visible.sync="drawer"
-       :wrapperClosable="true" :modal="false" direction="ltr">
+    <el-drawer :title="format(current)" custom-class="drawer" :modal-append-to-body="false" :visible.sync="drawer"
+       :wrapperClosable="false" :modal="false" direction="ltr">
         <Setting v-on:update="receive" v-if="current==='setting'" />
         <!-- <component :is="componentId"></component>  不使用的原因，keep-alive-->
         <keep-alive>
@@ -76,6 +76,10 @@ export default {
         Setting,
         Automap,
         Camera
+    },
+    created(){
+        //debugger
+        // this.$store.dispatch("setId",geofs.aircraft.instance)
     },
     data() {
         return {
@@ -172,18 +176,24 @@ export default {
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.247059) 0px 14px 45px, rgba(0, 0, 0, 0.219608) 0px 10px 18px !important;
 }
-
+.v-modal{
+    width:0;
+    height:0;
+}
 .menu_item {
     margin: 0 10% 5px 10%;
     width: 40px;
     height: 39px;
     padding-top: 10px;
 }
-
-.drawer {
-    padding-left: 15px;
+.el-dialog__wrapper{
     width: 300px !important;
-    left: 4.2% !important;
+    left: 4.1% !important;
+    border-left:1px solid #0000002b;
+}
+.drawer {
+    padding-left:5px;
+    width: 300px !important;
 }
 .autopilotPosition {
     width: 30px;
@@ -202,7 +212,9 @@ export default {
     width: 40px;
     height: 39px;
 }
-
+.el-collapse-item__content {
+    padding-bottom: 10px !important;
+}
 /* .el-button:focus {
     color: #606266;
     border-color:  #DCDFE6;
