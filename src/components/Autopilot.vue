@@ -16,7 +16,7 @@
     </div>
     <div class="blockAuto">
         <!-- <span>高度</span> -->
-        <el-slider v-model="height" :marks="heightMarks" :min=0 :max=6000 style="width:150px">
+        <el-slider v-model="height" :marks="heightMarks" :min=0 :max=10000 style="width:150px">
         </el-slider>
         <!-- <el-input v-model="height" size="small" style="width:130px">
         </el-input> -->

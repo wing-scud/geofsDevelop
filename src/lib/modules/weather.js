@@ -152,11 +152,11 @@ weather.generateFromPreferences = function(a) {
 weather.setManual = function() {
     var a = weather.generateFromPreferences(!0);
     weather.set(a);
-    //  geofs.setPreferenceValues(weather.manualWeatherUIContainer)
+    geofs.setPreferenceValues(weather.manualWeatherUIContainer)
 };
 weather.setAdvanced = function() {
     0 < geofs.preferences.weather.advanced.precipitationAmount && (geofs.preferences.weather.advanced.clouds = Math.max(geofs.preferences.weather.advanced.clouds, 2 * geofs.preferences.weather.advanced.precipitationAmount));
-    //geofs.setPreferenceValues(weather.manualWeatherUIContainer);
+    geofs.setPreferenceValues(weather.manualWeatherUIContainer);
     var a = weather.generateFromPreferences();
     weather.set(a)
 };
@@ -165,9 +165,9 @@ weather.set = function(a, b) {
     b = b || camera.lla;
     weather.setDateAndTime(b);
     geofs.fx.dayNightManager.init();
-    // geofs.preferences.weather.manual ? ($(".geofs-manualWeather").show(),
-    //     $(".geofs-metarDisplay").html("").parent().hide()) : ($(".geofs-manualWeather").hide(),
-    //     $(".geofs-metarDisplay").html(a.METAR).parent().show());
+    geofs.preferences.weather.manual ? ($(".geofs-manualWeather").show(),
+        $(".geofs-metarDisplay").html("").parent().hide()) : ($(".geofs-manualWeather").hide(),
+        $(".geofs-metarDisplay").html(a.METAR).parent().show());
     weather.definition = $.extend({}, weather.defaults, a);
     a = .01 * weather.definition.precipitationAmount;
     0 < weather.definition.windSpeedMS ? (weather.initWind(weather.definition.windDirection, weather.definition.windSpeedMS),
@@ -311,17 +311,6 @@ weather.atmosphere.update = function(a) {
     weather.atmosphere.airPressureAtAltitude = weather.definition.AIR_PRESSURE_SL * Math.pow(1 - a * TEMPERATURE_LAPSE_RATE / b, GR_LM);
     weather.atmosphere.airDensityAtAltitude = weather.atmosphere.airPressureAtAltitude * MOLAR_MASS_DRY_AIR / (IDEAL_GAS_CONSTANT * weather.atmosphere.airTempAtAltitudeKelvin)
 };
-
-
-
-
-
-
-
-
-
-
-
 
 
 export default weather;

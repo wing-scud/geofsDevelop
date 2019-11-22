@@ -104,8 +104,6 @@ export default {
             let temp = parseInt(val / 25)
             return arrays[temp]
         },
-        //原始的数据更新，均是html直接与js绑定，然后调用weather.set更新，
-        //现在需要通过v-model
     },
     watch: {
         manual: function (newValue, oldValue) {

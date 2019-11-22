@@ -34,7 +34,7 @@
         <el-button id="more" circle><i class="iconfont"> &#xe601;</i></el-button>
     </div>
     <div class="menu_item" title="自动驾驶">
-        <el-button @click="clickButton($event)" v-popover:autopilot id="autopilot" :style="{backgroundColor:color}" circle> <i class="iconfont">&#xe622;</i></el-button>
+        <el-button @click="clickButton($event)" v-popover:autopilot id="autopilot" :style="{backgroundColor:autopilotShow?'#87CEEB':'white'}" circle> <i class="iconfont">&#xe622;</i></el-button>
     </div>
     <!-- 二种，信息量大的drawer，小的popover,二种生成方式不同 -->
     <el-drawer :title="format(current)" custom-class="drawer" :modal-append-to-body="false" :visible.sync="drawer"
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import range from "../lib/utils/aircraftRange"
 import Automap from "./Automap"
 import AircraftDrawer from "./AircraftDrawer"
 import Autopilot from "./Autopilot"
@@ -129,12 +130,11 @@ export default {
                     break;
                 case "autopilot":
                     this.autopilotShow = !this.autopilotShow;
-                    this.show=false
                     controls.autopilot.toggle();
                     if (!controls.autopilot.on) {
-                        this.color = "white"
+                        this.autopilotShow=false
                     } else {
-                        this.color = "#87CEEB"
+                        this.autopilotShow=true
                     }
                     break;
             }
@@ -167,6 +167,17 @@ export default {
             }
         },
     },
+    watch:{
+        // 'controls.autopilot.on':function(){
+        //             if (!controls.autopilot.on) {
+        //         this.autopilotShow=false
+        //        this.color = "white"
+        //       } else {
+        //         this.autopilotShow=true
+        //         this.color = "#87CEEB"
+        //     }
+        // }
+    }
 }
 </script>
 

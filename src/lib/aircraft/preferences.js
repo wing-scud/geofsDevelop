@@ -181,6 +181,12 @@ function hackGeoFS(geofs) {
             localTime: 12,
             season: 0,
             manual: !0,
+            advanced: {
+                clouds: 0,
+                fog: 0,
+                windSpeed: 0,
+                windDirection: 0
+            },
             quality: 0,
             customWindActive: !1,
             windSpeed: 0,

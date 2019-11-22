@@ -93,6 +93,7 @@ geofs.init = function(a) {
             windSpeed: parseInt(a.windspeed),
         });
         geofs.preferences = $.extend(!0, geofs.preferences, a);
+        //读取配置文件
         let c = geofs.preferences.coordinates;
         c && (c[0] < -90 || c[0] > 90 || c[1] < -180 || c[1] > 180 || c[2] > 1E5) && (c = null);
         c && c[0] && c[1] || (geofs.initialRunways = [

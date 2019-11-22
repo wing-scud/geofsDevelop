@@ -1,7 +1,7 @@
 <template>
     <div class="location">
         <el-collapse  style="background-color:none;" v-model="activeName" accordion>
-            <el-collapse-item  title="山脉" name="1">
+            <el-collapse-item  title="台湾" name="1">
                 <div  class="image_item" :key="location.name" v-for="location in mountains"  @click="flyTo(location)">
                     <el-row>
                         <el-col :span="24"> {{location.name}}</el-col>
@@ -32,19 +32,20 @@
 </template>
 <script>
 import geofs from "../lib/geofs"
+import controls from '../lib/modules/controls';
 export default {
     name:"LocationDrawer",
     components:{
-        
     },
     data(){
         return{
             activeName: '2',
             destination:"",
-            mountains:[
-                {windOverride:true,windSpeed:12,windDirection:90,coordinate:[27.990458,86.93416,1000,false],name:"珠穆朗玛峰(雪山)"}
-                , {windOverride:true,windSpeed:14,windDirection:90,coordinate:[35.288147, -83.666558,500,false],name:"美国楠塔哈拉国家森林公园"}
-                // ,{windOverride:false,coordinate:[42.99043614854522,-0.19668640145259153,1400,134, true],name:"Argelès-Gazost, Val d'Azun (Paragliding)"}
+            mountains:[{windOverride:false,coordinate:[22.74656,120.741469,3400,134, true],name:"樱花王山脉"},
+                  {windOverride:false,coordinate:[23.148523,120.282713,2900,95.18337967272,true],name:"善化胡厝寮彩绘村"},
+               {windOverride:false,coordinate:[24.817414,121.416255,8000,-140.62100383790101],name:"东眼山国家森林游乐区"},
+               // {windOverride:true,windSpeed:12,windDirection:90,coordinate:[27.990458,86.93416,1000,false],name:"珠穆朗玛峰(雪山)"}
+               // , {windOverride:true,windSpeed:14,windDirection:90,coordinate:[35.288147, -83.666558,500,false],name:"美国楠塔哈拉国家森林公园"}
            ],
             runways:[
                 // {windOverride:false,coordinate:[42.36021520436057,-70.98767662157663,0,-103.54],name:"Logan Int'l (Boston) - 27"},
@@ -58,7 +59,6 @@ export default {
                 {windOverride:false,coordinate:[31.297103,122.391435,455,-51.942644559501176],name:"黄海(海洋)"},
                 {windOverride:false,coordinate:[29.619023,94.944433,1288,-140.62100383790101],name:"雅鲁藏布大峡谷"},
                {windOverride:false,coordinate:[36.110353463200575,-113.24040648366983,800,-140.62100383790101],name:"亚利桑那州大峡谷"},
-                // {windOverride:false,coordinate:[37.969320063220124,23.706062632829592,290,95.18337970067272],name:"Acropolis - Athens - Greece"},
             ]
         }
     },
@@ -72,21 +72,14 @@ export default {
             }
             geofs.windOverride=location.windOverride
             geofs.flyTo(location.coordinate)
-            // controls.autopilot.setKias(110)
-            // controls.autopilot.setAltitude(1000)
-            //  controls.autopilot.turnOn()
-
+            let kias=this.$store.getters.getKias
+             controls.autopilot.setKias(kias)
+             let height=geofs.preferences.coordinates[2]+5000
+             controls.autopilot.setAltitude(height)
+             controls.autopilot.turnOn()
         }
     }
 }
-/**
- *   珠穆朗玛峰 86.934165,27.990458  雪山
- *     苏州纳米城   120.782336,31.287121 平原 
- *      黄海  海洋  122.391435,31.297103
- * 
- *        ：楠塔哈拉国家森林 Nantahala, NC   -83.666558,35.288147 小山脉
- * 
- */
 </script>
 <style scoped>
 .location{

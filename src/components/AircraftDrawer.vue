@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-collapse  style="background-color:none" v-model="activeName" accordion>
-            <el-collapse-item  title="自定义模型" name="1">
+            <!-- <el-collapse-item  title="自定义模型" name="1">
                 <div class="scroll">
                 <div  class="image_item" :key="aircraft.serialNumber" v-for="aircraft in customs" @click="changeAircraft(aircraft)" >
                     <el-row>
@@ -9,11 +9,11 @@
                     </el-row> 
                 </div>
                 </div>
-            </el-collapse-item>
+            </el-collapse-item> -->
             <el-collapse-item title="默认" name="2">
                 <div class="scroll">
                 <div  class="image_item" :key="aircraft.serialNumber" v-for="aircraft in defaults"  @click="changeAircraft(aircraft)">
-                    <el-row :gutter="20">
+                    <el-row >
                         <el-col :span="8">
                              <el-image  :src="aircraft.src" fit="fit" style="width:80px"></el-image>
                        </el-col>
@@ -51,28 +51,41 @@ export default {
                 {name:"Airbus A340-600 (by LRX)",serialNumber:"2153"},
             ],
             defaults:[
-                {name:"Piper Cub",serialNumber:"1",src:require('../assets/images/planes/cub.png')},
-                {name:"Cessna 172",serialNumber:"2",src:require('../assets/images/planes/c172.png')},
-                {name:"Alphajet PAF",serialNumber:"3",src:require('../assets/images/planes/alphajet.png')},
-                {name:"Boeing 737-700",serialNumber:"4",src:require('../assets/images/planes/737-700.png')},
-                {name:"Embraer Phenom 100",serialNumber:"5",src:require('../assets/images/planes/phenom.png')},
-                {name:"de Havilland DHC6 Twin Otter",serialNumber:"6",src:require('../assets/images/planes/dhc6.png')},
-                {name:"F-16 Fighting Falcon",serialNumber:"7",src:require('../assets/images/planes/f16.png')},
-                {name:"Pitts Special S1",serialNumber:"8",src:require('../assets/images/planes/pitts.png')},
-                {name:"Douglas DC-3",serialNumber:"16",src:require('../assets/images/planes/dc3.png')},
-                {name:"McDonnell Douglas MD-11",serialNumber:"17",src:require('../assets/images/planes/md11.png')},
-                {name:"Sukhoi Su-35",serialNumber:"18",src:require('../assets/images/planes/su35.png')},
-                {name:"Airbus A380",serialNumber:"19",src:require('../assets/images/planes/a380.png')},
-                {name:"Concorde",serialNumber:"20",src:require('../assets/images/planes/concorde.png')},
-                {name:"Zlin Z-50",serialNumber:"21",src:require('../assets/images/planes/zlin.png')},
-                {name:"Cessna 152",serialNumber:"22",src:require('../assets/images/planes/c152.png')},
-                {name:"Antonov An-140",serialNumber:"26",src:require('../assets/images/planes/an140.png')},
-                {name:"Evektor Sportstar",serialNumber:"40",src:require('../assets/images/planes/sportstar.png')},
-                {name:"szd-48-3 Jantar",serialNumber:"41",src:require('../assets/images/planes/jantar.png')},
-                {name:"paraglider",serialNumber:"50",src:require('../assets/images/planes/Paraglider.png')},
-                {name:"Major Tom (hot air balloon)",serialNumber:"51",src:require('../assets/images/planes/tom.png')},
-                {name:"Hughes 269a/TH-55 Osage",serialNumber:"52",src:require('../assets/images/planes/hughes.png')},
-                {name:"Goat Airchair",serialNumber:"53",src:require('../assets/images/planes/goat.png')},
+                // {name:"Piper Cub",serialNumber:"1",src:require('../assets/images/planes/cub.png')},
+                // {name:"Cessna 172",serialNumber:"2",src:require('../assets/images/planes/c172.png')},
+                // {name:"Alphajet PAF",serialNumber:"3",src:require('../assets/images/planes/alphajet.png')},
+                // {name:"Boeing 737-700",serialNumber:"4",src:require('../assets/images/planes/737-700.png')},
+                // {name:"Embraer Phenom 100",serialNumber:"5",src:require('../assets/images/planes/phenom.png')},
+                // {name:"de Havilland DHC6 Twin Otter",serialNumber:"6",src:require('../assets/images/planes/dhc6.png')},
+                // {name:"F-16 Fighting Falcon",serialNumber:"7",src:require('../assets/images/planes/f16.png')},
+                // {name:"Pitts Special S1",serialNumber:"8",src:require('../assets/images/planes/pitts.png')},
+                // {name:"Douglas DC-3",serialNumber:"16",src:require('../assets/images/planes/dc3.png')},
+                // {name:"McDonnell Douglas MD-11",serialNumber:"17",src:require('../assets/images/planes/md11.png')},
+                // {name:"Sukhoi Su-35",serialNumber:"18",src:require('../assets/images/planes/su35.png')},
+                // {name:"Airbus A380",serialNumber:"19",src:require('../assets/images/planes/a380.png')},
+                {name:"单翼飞机",serialNumber:"1",src:require('../assets/images/planes/cub.png')},
+                {name:"塞斯纳172",serialNumber:"2",src:require('../assets/images/planes/c172.png')},
+                {name:"阿尔法特PAF",serialNumber:"3",src:require('../assets/images/planes/alphajet.png')},
+                {name:"波音737-700",serialNumber:"4",src:require('../assets/images/planes/737-700.png')},
+                {name:" 巴西航空P100",serialNumber:"5",src:require('../assets/images/planes/phenom.png')},
+                {name:"德·哈维兰DHC-6",serialNumber:"6",src:require('../assets/images/planes/dhc6.png')},
+                {name:"F-16战鹰",serialNumber:"7",src:require('../assets/images/planes/f16.png')},
+                {name:"皮特S1",serialNumber:"8",src:require('../assets/images/planes/pitts.png')},
+                {name:"道格拉斯DC-3",serialNumber:"16",src:require('../assets/images/planes/dc3.png')},
+                {name:"麦克唐纳MD-11",serialNumber:"17",src:require('../assets/images/planes/md11.png')},
+               
+
+                //
+                // {name:"Concorde",serialNumber:"20",src:require('../assets/images/planes/concorde.png')},
+                // {name:"Zlin Z-50",serialNumber:"21",src:require('../assets/images/planes/zlin.png')},
+                // {name:"Cessna 152",serialNumber:"22",src:require('../assets/images/planes/c152.png')},
+                // {name:"Antonov An-140",serialNumber:"26",src:require('../assets/images/planes/an140.png')},
+                // {name:"Evektor Sportstar",serialNumber:"40",src:require('../assets/images/planes/sportstar.png')},
+                // {name:"szd-48-3 Jantar",serialNumber:"41",src:require('../assets/images/planes/jantar.png')},
+                // {name:"paraglider",serialNumber:"50",src:require('../assets/images/planes/Paraglider.png')},
+                // {name:"Major Tom (hot air balloon)",serialNumber:"51",src:require('../assets/images/planes/tom.png')},
+                // {name:"Hughes 269a/TH-55 Osage",serialNumber:"52",src:require('../assets/images/planes/hughes.png')},
+                // {name:"Goat Airchair",serialNumber:"53",src:require('../assets/images/planes/goat.png')},
             ]
         }
     },

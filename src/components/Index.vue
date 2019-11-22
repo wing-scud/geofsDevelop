@@ -1,20 +1,17 @@
 <template>
 <div>
-    <el-row>
-        <el-col :span="1">
+    <div class="geofs">
+        <div class="bar">
             <Navigation></Navigation>
-        </el-col >
-        <el-col :span="23">
+        </div >
+        <div class="page">
             <Map></Map>
-        </el-col >
-    </el-row>
-    
-    
+        </div >
+    </div>
 </div>
 </template>
 <script>
 import "../lib/geofs"
-
 import Navigation from "./Navigation"
 import Map from "./Map"
 export default {
@@ -28,6 +25,19 @@ export default {
 }
 </script>
 <style >
- 
- 
+ .geofs{
+     width:100%;
+     height:100%;
+
+ }
+ .bar{
+     width:60px;
+     height:100%;
+     float: left;
+ }
+ .page{
+     float: left;
+     width: calc(100% - 60px);
+     height:100%;
+ }
 </style>
