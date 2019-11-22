@@ -860,8 +860,8 @@ instruments.definitions = {
     },
     wind: {
         overlay: {
-            url:  "images/instruments/wind-body.png",
-        //    url: PAGE_PATH + "images/instruments/wind-body.png",
+            url: "images/instruments/wind-body.png",
+            //    url: PAGE_PATH + "images/instruments/wind-body.png",
             opacity: .5,
             scale: {
                 x: .5,
@@ -892,8 +892,8 @@ instruments.definitions = {
                     value: "relativeWind",
                     ratio: -1
                 }],
-                url:  "images/instruments/wind-hand.png",
-               // url: PAGE_PATH + "images/instruments/wind-hand.png",
+                url: "images/instruments/wind-hand.png",
+                // url: PAGE_PATH + "images/instruments/wind-hand.png",
                 anchor: {
                     x: 100,
                     y: 100
@@ -931,8 +931,8 @@ instruments.definitions = {
     },
     spoilers: {
         overlay: {
-            url:"",
-           // url: PAGE_PATH + "images/instruments/spoilers.png",
+            url: "",
+            // url: PAGE_PATH + "images/instruments/spoilers.png",
             visibility: !0,
             anchor: {
                 x: 85,
@@ -961,8 +961,8 @@ instruments.definitions = {
     },
     brakes: {
         overlay: {
-            url:"",
-           // url: PAGE_PATH + "images/instruments/brakes.png",
+            url: "",
+            // url: PAGE_PATH + "images/instruments/brakes.png",
             visibility: !0,
             anchor: {
                 x: 73,
@@ -991,8 +991,8 @@ instruments.definitions = {
     },
     gear: {
         overlay: {
-            url:"",
-          //  url: PAGE_PATH + "images/instruments/gear.png",
+            url: "",
+            //  url: PAGE_PATH + "images/instruments/gear.png",
             anchor: {
                 x: 60,
                 y: 0
@@ -1018,7 +1018,7 @@ instruments.definitions = {
                     type: "show",
                     when: [0]
                 }],
-                url:"",
+                url: "",
                 //url: PAGE_PATH + "images/instruments/led-green.png",
                 anchor: {
                     x: 0,
@@ -1038,8 +1038,8 @@ instruments.definitions = {
                     type: "show",
                     when: [1]
                 }],
-                url:"",
-               // url: PAGE_PATH + "images/instruments/led-red.png",
+                url: "",
+                // url: PAGE_PATH + "images/instruments/led-red.png",
                 anchor: {
                     x: 0,
                     y: 0
@@ -1058,8 +1058,8 @@ instruments.definitions = {
                     type: "show",
                     whenNot: [0, 1]
                 }],
-                url:"",
-               // url: PAGE_PATH + "images/instruments/led-orange.png",
+                url: "",
+                // url: PAGE_PATH + "images/instruments/led-orange.png",
                 anchor: {
                     x: 0,
                     y: 0
@@ -1077,8 +1077,8 @@ instruments.definitions = {
     },
     flaps: {
         overlay: {
-            url:"",
-           // url: PAGE_PATH + "images/instruments/flaps.png",
+            url: "",
+            // url: PAGE_PATH + "images/instruments/flaps.png",
             anchor: {
                 x: 74,
                 y: 0
@@ -1104,8 +1104,8 @@ instruments.definitions = {
                     value: "flapsValue",
                     ratio: -90
                 }],
-                url:"",
-               // url: PAGE_PATH + "images/instruments/flaps-hand.png",
+                url: "",
+                // url: PAGE_PATH + "images/instruments/flaps-hand.png",
                 anchor: {
                     x: 0,
                     y: 5
@@ -2139,7 +2139,6 @@ instruments.init = function(a) {
         c && (c.overlay ? (instruments.list[b] = new Indicator(c),
             c = c.group || "all",
             instruments.groups[c] = instruments.groups[c] || {},
-
             instruments.groups[c][b] = instruments.list[b]) : c.include && (geofs.aircraft.instance.addParts([c]),
             geofs.aircraft.instance.parts[c.name].animations.push({
                 value: "overlaysVisibility",
@@ -2218,7 +2217,6 @@ var Indicator = function(a) {
         instruments.stackPosition.y += b.size.y + instruments.defaultMargin + a);
     b.position.y = b.alignment && "top" == b.alignment.y ? b.position.y + instruments.margins[0] : b.position.y + instruments.margins[2];
     b.position.x = b.alignment && "right" == b.alignment.x ? b.position.x + instruments.margins[1] : b.position.x + instruments.margins[3];
-
     this.overlay = new Overlay(b);
     this.setVisibility(this.visibility);
     return this

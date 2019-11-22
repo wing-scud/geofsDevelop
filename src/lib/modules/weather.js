@@ -68,20 +68,7 @@ weather.init = function() {
     }, weather.updateRate);
     weather.generateFromPreferences();
     weather.refresh();
-    $(document).on("change", ".geofs-timeSlider", function(a, b) {
-        a = ("00" + parseInt(60 * (b % 1).toFixed(2))).slice(-2);
-        b = parseInt(b);
-        $(this).find(".slider-input").val(b + ":" + a)
-    });
-    $(document).on("change", ".geofs-seasonSlider", function(a, b) {
-        var c;
-        0 <= b && (c = "Spring");
-        25 < b && (c = "Summer");
-        50 < b && (c = "Autumn");
-        75 < b && (c = "Winter");
-        $(this).find(".slider-input").val(c)
-    });
-    weather.manualWeatherUIContainer = $(".geofs-manualWeather")
+    // weather.manualWeatherUIContainer = $(".geofs-manualWeather")
 };
 weather.reset = function() {
     weather.set($.extend({}, weather.defaults))
@@ -147,16 +134,40 @@ weather.generateFromPreferences = function(a) {
         AIR_TEMP_SL: clamp(.5 * (100 - g - Math.abs(b)) * (1 - d), -50, 50),
         timestamp: geofs.utils.now()
     };
+    weather.manualDefinition = {
+        AIR_PRESSURE_SL:  101325,
+        AIR_TEMP_SL:  20.334999999999997,
+        backgroundFogDensity:  0.19,
+        ceiling:  1000,
+        cloudCover:  190,
+        cloudCoverThickness:  200,
+        coverHalfThickness:  100,
+        fog:  0.19,
+        fogBottom:  0,
+        fogCeiling:  1068.744781570152,
+        fogDensity:  19,
+        precipitationAmount:  41,
+        precipitationType:   "rain",
+        thunderstorm:  0,
+        timestamp:  9075264.075000014,
+        turbulences:  0.297,
+        visibility:  10000,
+        windDirection:  250,
+        windGustMS:  3.75,
+        windLayerHeight:  7000,
+        windLayerNb:  3,
+        windSpeedMS:  7.5,
+    }
     return weather.manualDefinition
 };
 weather.setManual = function() {
     var a = weather.generateFromPreferences(!0);
     weather.set(a);
-    geofs.setPreferenceValues(weather.manualWeatherUIContainer)
+    // geofs.setPreferenceValues(weather.manualWeatherUIContainer)
 };
 weather.setAdvanced = function() {
     0 < geofs.preferences.weather.advanced.precipitationAmount && (geofs.preferences.weather.advanced.clouds = Math.max(geofs.preferences.weather.advanced.clouds, 2 * geofs.preferences.weather.advanced.precipitationAmount));
-    geofs.setPreferenceValues(weather.manualWeatherUIContainer);
+    //geofs.setPreferenceValues(weather.manualWeatherUIContainer);
     var a = weather.generateFromPreferences();
     weather.set(a)
 };
@@ -165,9 +176,9 @@ weather.set = function(a, b) {
     b = b || camera.lla;
     weather.setDateAndTime(b);
     geofs.fx.dayNightManager.init();
-    geofs.preferences.weather.manual ? ($(".geofs-manualWeather").show(),
-        $(".geofs-metarDisplay").html("").parent().hide()) : ($(".geofs-manualWeather").hide(),
-        $(".geofs-metarDisplay").html(a.METAR).parent().show());
+    // geofs.preferences.weather.manual ? ($(".geofs-manualWeather").show(),
+    //     $(".geofs-metarDisplay").html("").parent().hide()) : ($(".geofs-manualWeather").hide(),
+    //     $(".geofs-metarDisplay").html(a.METAR).parent().show());
     weather.definition = $.extend({}, weather.defaults, a);
     a = .01 * weather.definition.precipitationAmount;
     0 < weather.definition.windSpeedMS ? (weather.initWind(weather.definition.windDirection, weather.definition.windSpeedMS),

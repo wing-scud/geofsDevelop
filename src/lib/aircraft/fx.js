@@ -861,10 +861,10 @@ function fxGeofs(geofs) {
                 geofs.fx.precipitation.type = a,
                 geofs.fx.precipitation.amount = b,
                 geofs.fx.precipitation.apiModel = new geofs.api.Model(geofs.fx.precipitation.types[a].model),
-                geofs.fx.precipitation.motionOffset = 0);
-            geofs.fx.precipitation.apiModel = new geofs.api.Model(geofs.fx.precipitation.types[a].model)
+                geofs.fx.precipitation.motionOffset = 0)
         },
         update: function(a, b) {
+
             if (geofs.fx.precipitation.apiModel && this.visible) {
                 !geofs.fx.precipitation._material && geofs.fx.precipitation.apiModel._model && geofs.fx.precipitation.apiModel._model.ready && (geofs.fx.precipitation._material = geofs.fx.precipitation.apiModel._model.getMaterial("rainMaterial"));
                 if ("chase" == camera.currentModeName || "free" == camera.currentModeName) {

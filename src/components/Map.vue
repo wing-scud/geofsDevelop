@@ -24,7 +24,7 @@ export default {
 
 <style>
 .geofs-canvas-mouse-overlay {
-    width: 95.833%;
+    width: calc(100% - 60px);
     left: unset;
 }
 </style>

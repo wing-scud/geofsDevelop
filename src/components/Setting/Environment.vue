@@ -1,8 +1,9 @@
 <template>
-<div >
+<div>
     <div class="block">
         <el-switch active-text="手控" v-model="manual" />
     </div>
+    <template v-if="manual">
     <div class="block">
         <span class="">时刻</span>
         <el-slider v-model="localTime" :min=0 :max=1440 :step=1 :format-tooltip="formatTime" />
@@ -47,6 +48,7 @@
         <span class="">紊流</span>
         <el-slider v-model="turbulences" :min=0 :max=1 :step=0.1 />
     </div>
+    </template>
 </div>
 </template>
 
@@ -70,7 +72,7 @@ export default {
             turbulences: 0,
         };
     },
-    created() {
+    mounted() {
         this.manual = geofs.preferences.weather.manual;
         this.localTime = this.returnTime(geofs.preferences.weather.localTime);
         this.season = geofs.preferences.weather.season;
@@ -83,12 +85,8 @@ export default {
         this.windSpeed = geofs.preferences.weather.advanced.windSpeedMS
         this.windDirection = geofs.preferences.weather.advanced.windDirection
         this.turbulences = geofs.preferences.weather.advanced.turbulences
-
     },
     methods: {
-        update() {
-            //只要天气更新，全部更新
-        },
         returnTime(val) {
             let time = Math.floor(val) * 60
             time += val % 1 * 100
@@ -120,6 +118,14 @@ export default {
         },
         quality: function (newValue, oldValue) {
             geofs.preferences.weather.quality = newValue
+            this.clouds = geofs.preferences.weather.advanced.clouds;
+            this.ceiling = geofs.preferences.weather.advanced.ceiling;
+            this.precipitation = geofs.preferences.weather.advanced.precipitationAmount
+            this.fog = geofs.preferences.weather.advanced.fog
+            this.fogCeiling = geofs.preferences.weather.advanced.fogCeiling
+            this.windSpeed = geofs.preferences.weather.advanced.windSpeedMS
+            this.windDirection = geofs.preferences.weather.advanced.windDirection
+            this.turbulences = geofs.preferences.weather.advanced.turbulences
             weather.setManual();
         },
         clouds: function (newValue, oldValue) {
