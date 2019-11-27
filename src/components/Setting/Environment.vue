@@ -83,6 +83,7 @@ export default {
         this.fog = geofs.preferences.weather.advanced.fog
         this.fogCeiling = geofs.preferences.weather.advanced.fogCeiling
         this.windSpeed = geofs.preferences.weather.advanced.windSpeedMS
+        this.windSpeed = geofs.preferences.weather.windSpeed
         this.windDirection = geofs.preferences.weather.advanced.windDirection
         this.turbulences = geofs.preferences.weather.advanced.turbulences
     },
@@ -151,6 +152,7 @@ export default {
         },
         windSpeed: function (newValue, oldValue) {
             geofs.preferences.weather.advanced.windSpeedMS = newValue
+             geofs.preferences.weather.windSpeed = newValue
             weather.setAdvanced()
         },
         windDirection: function (newValue, oldValue) {

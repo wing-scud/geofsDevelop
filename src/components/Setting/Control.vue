@@ -1,7 +1,7 @@
 <template>
 <div>
     <el-collapse>
-        <el-collapse-item>
+        <el-collapse-item  :disabled="model === 'keyboard' ? false : true" >
             <template slot="title">
                 <el-radio v-model="model" label="keyboard">键盘</el-radio>
             </template>
@@ -19,13 +19,13 @@
                 </div>
                 <div class="textArea" v-for="(value, name) in keys" :key="value.label">
                     <span>{{name}}</span>
-                    <el-input v-model="value.label" size="mini" @focus="keyChoose(value,name)"></el-input>
+                    <el-input v-model="value.label" size="mini" disabled=true></el-input>
                 </div>
             </div>
         </el-collapse-item>
     </el-collapse>
-    <el-collapse>
-        <el-collapse-item>
+    <el-collapse >
+        <el-collapse-item :disabled="model === 'mouse' ? false : true"> 
             <template slot="title">
                 <el-radio v-model="model" label="mouse">鼠标</el-radio>
             </template>
@@ -67,11 +67,7 @@ export default {
     },
     methods: {
         keyChoose(value, name) {
-            //存在问题
-            document.onkeydown = function (e) {
-                let key = e.key
-                this.keys[name].label = key
-            };
+            //不绑定快捷键，直接默认，无需修改
         }
     },
     watch: {
@@ -81,6 +77,7 @@ export default {
         },
         model: function (newValue, oldValue) {
             geofs.preferences.controlMode = newValue
+
             controls.setMode();
         },
         keys: function (newValue, oldValue) {
@@ -100,13 +97,12 @@ export default {
             controls.setMode();
         }
     },
-    created() {
-        //数据所有初始化，都要从preference拿数据1
+    mounted() {
         this.model = geofs.preferences.controlMode;
         if (this.model === "keyboard") {
             this.keys = geofs.preferences.keyboard.keys
         }
-        this.mixRatio = geofs.preferences[this.model].mixRatio
+        this.mixRatio = geofs.preferences[this.model].mixRatio;
         this.sensitivity = geofs.preferences[this.model].sensitivity
         this.exponential = geofs.preferences[this.model].exponential
         this.mixYawRoll = geofs.preferences[this.model].mixYawRoll;

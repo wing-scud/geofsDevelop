@@ -36,7 +36,7 @@ import Environment from "./Environment"
 import Graphics from "./Graphics"
 import geofs from "../../lib/geofs"
 export default {
-    name: 'Setting',
+    name: 'SettingDrawer',
     components: {
         Control,
         Simulation,
@@ -47,10 +47,10 @@ export default {
         return {};
     },
     methods: {
-        close() {
-            geofs.savePreferencesPanel()
-            this.$emit("update", false)
-        }
+        // close() {
+        //     geofs.savePreferencesPanel()
+        //     this.$emit("update", false)
+        // }
     },
     created() {
 

@@ -378,6 +378,7 @@ flight.tick = function(a, b) {
         mb = 60 * (N - llaLocationHeight * METERS_TO_FEET) / a,
         nb = fixAngle(weather.currentWindDirection - aircraftInstance.htr[0]),
         ob = aircraftInstance.engine.rpm * setUp.RPM2PropAS * a;
+
     animationValues.maxAngularVRatio = Ca;
     animationValues.enginesOn = geofs.aircraft.instance.engine.on;
     animationValues.prop = fixAngle360(animationValues.prop + ob);
@@ -404,17 +405,18 @@ flight.tick = function(a, b) {
     animationValues.parkingBrake = geofs.aircraft.instance.brakesOn;
     animationValues.groundContact = aircraftInstance.groundContact ? 1 : 0;
     animationValues.acceleration = M33.transform(M33.transpose(aircraftInstance.object3d._rotation), aircraftInstance.rigidBody.v_acceleration);
-    //acceleration 加速度
     animationValues.accX = animationValues.acceleration[0];
     animationValues.accY = animationValues.acceleration[1];
     animationValues.accZ = animationValues.acceleration[2];
     animationValues.msDt = b;
+    //acceleration 加速度
     //
     animationValues.rollingSpeed = aircraftInstance.groundContact ? aircraftInstance.velocityScalar : 0;
     //得到实际空速
     animationValues.ktas = 1.94 * aircraftInstance.trueAirSpeed;
     animationValues.kias = animationValues.ktas;
     animationValues.mach = aircraftInstance.trueAirSpeed / (331.3 + 0.606 * weather.atmosphere.airTempAtAltitude);
+    animationValues.altitudeMeters = aircraftInstance.llaLocation[2];
     animationValues.altitude = N;
     animationValues.altTenThousands = N % 1E5;
     animationValues.altThousands = N % 1E4;
@@ -431,7 +433,7 @@ flight.tick = function(a, b) {
     animationValues.aroll = aircraftInstance.htr[2];
     animationValues.relativeWind = nb;
     animationValues.windSpeed = weather.currentWindSpeed;
-    animationValues.windSpeedLabel = `${parseInt(weather.currentWindSpeed)} kts`;
+    animationValues.windSpeedLabel = `${parseInt(parseInt(weather.currentWindSpeed)*0.514)}` + ' m/s';
     animationValues.view = camera.currentView;
     animationValues.envelopeTemp = E;
     //相机具有速度

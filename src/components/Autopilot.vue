@@ -1,39 +1,23 @@
 <template>
 <div class="panel">
     <div class="blockAuto">
-        <!-- <span>速度</span> -->
         <el-slider v-model="kias" :min=0 :max="this.$store.getters.getKias" :marks="kiasMarks" style="width:150px">
         </el-slider>
-        <!-- <el-input v-model="kias" size="small" style="width:130px">
-        </el-input> -->
     </div>
     <div class="blockAuto">
-        <!-- <span>偏航</span> -->
-        <el-slider v-model="heading" :marks="headingMarks" :min=0 :max=360 :format-tooltip="headingShow" style="width:150px">
+        <el-slider v-model="heading" :marks="headingMarks" :min=0 :max=360 style="width:150px">
         </el-slider>
-        <!-- <el-input v-model="heading" size="small" style="width:130px">
-        </el-input> -->
     </div>
     <div class="blockAuto">
-        <!-- <span>高度</span> -->
         <el-slider v-model="height" :marks="heightMarks" :min=0 :max=10000 style="width:150px">
         </el-slider>
-        <!-- <el-input v-model="height" size="small" style="width:130px">
-        </el-input> -->
     </div>
 </div>
 </template>
-
 <script>
 import range from "../lib/utils/aircraftRange"
-import {
-    fixAngle360,
-    clamp
-} from "../lib/utils/utils"
+import { fixAngle360 , clamp } from "../lib/utils/utils"
 import controls from "../lib/modules/controls"
-import {
-    async
-} from 'q'
 export default {
     name: 'Autopilot',
     data() {
@@ -58,19 +42,22 @@ export default {
             },
             kiasMarks: {},
             headingMarks: {
+                0 : {
+                    style: {
+                        color: 'white'
+                    },
+                    label: this.$createElement('span', '正北')
+                },
                 180: {
                     style: {
                         color: 'white'
                     },
-                    label: this.$createElement('span', '偏航')
+                    label: this.$createElement('span', '正南')
                 }
             }
         }
     },
     methods: {
-        headingShow(val) {
-            return val - 180;
-        },
         setRange(val) {
             let kias = val
             this.kiasMarks={}

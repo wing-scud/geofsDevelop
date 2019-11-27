@@ -134,30 +134,7 @@ weather.generateFromPreferences = function(a) {
         AIR_TEMP_SL: clamp(.5 * (100 - g - Math.abs(b)) * (1 - d), -50, 50),
         timestamp: geofs.utils.now()
     };
-    weather.manualDefinition = {
-        AIR_PRESSURE_SL:  101325,
-        AIR_TEMP_SL:  20.334999999999997,
-        backgroundFogDensity:  0.19,
-        ceiling:  1000,
-        cloudCover:  190,
-        cloudCoverThickness:  200,
-        coverHalfThickness:  100,
-        fog:  0.19,
-        fogBottom:  0,
-        fogCeiling:  1068.744781570152,
-        fogDensity:  19,
-        precipitationAmount:  41,
-        precipitationType:   "rain",
-        thunderstorm:  0,
-        timestamp:  9075264.075000014,
-        turbulences:  0.297,
-        visibility:  10000,
-        windDirection:  250,
-        windGustMS:  3.75,
-        windLayerHeight:  7000,
-        windLayerNb:  3,
-        windSpeedMS:  7.5,
-    }
+
     return weather.manualDefinition
 };
 weather.setManual = function() {
@@ -179,8 +156,11 @@ weather.set = function(a, b) {
     // geofs.preferences.weather.manual ? ($(".geofs-manualWeather").show(),
     //     $(".geofs-metarDisplay").html("").parent().hide()) : ($(".geofs-manualWeather").hide(),
     //     $(".geofs-metarDisplay").html(a.METAR).parent().show());
+
     weather.definition = $.extend({}, weather.defaults, a);
     a = .01 * weather.definition.precipitationAmount;
+    //////////////
+    /////
     0 < weather.definition.windSpeedMS ? (weather.initWind(weather.definition.windDirection, weather.definition.windSpeedMS),
         weather.windActive = !0,
         weather.setWindIndicatorVisibility(!0)) : (weather.windOff(),
@@ -193,6 +173,7 @@ weather.set = function(a, b) {
     b < weather.minimumCloudCover && (weather.definition.cloudCover = 0);
     geofs.fx.cloudManager.init(camera.lla);
     geofs.fx.cloudManager.instance.setCloudCover(b);
+    //
     0 < weather.definition.precipitationAmount ? geofs.fx.precipitation.create(weather.definition.precipitationType, weather.definition.precipitationAmount) : geofs.fx.precipitation.destroy();
     weather.belowCeilingBrightness = clamp(1.2 - a, 0, 1);
     "snow" == weather.definition.precipitationType ? geofs.api.setImageryColorModifier("snow", {
@@ -203,6 +184,7 @@ weather.set = function(a, b) {
 };
 weather.update = function(a) {
     var b = camera.lla;
+
     if (weather.windActive && 0 < weather.windLayers.length) {
         for (var c = geofs.aircraft.instance.llaLocation[2], d = 0, e = 1; e < weather.windLayers.length && !(c < weather.windLayers[e].floor); e++)
             d = e;
@@ -262,6 +244,7 @@ weather.Wind.prototype.randomize = function() {
     this.speed = this.mainSpeedMs + exponentialSmoothing("windGust", weather.definition.windGustMS * (Math.random() - .5) * a)
 };
 weather.Wind.prototype.computeAndSet = function() {
+
     this.randomize();
     var a = [0, 0, 0];
     this.direction && (a = this.direction * DEGREES_TO_RAD,
@@ -288,6 +271,7 @@ weather.Wind.prototype.computeTerrainLift = function(a) {
 weather.initWind = function(a, b) {
     weather.windLayers = [];
     a = fixAngle(a + 180);
+
     var c = weather.definition.windLayerHeight + Math.random() * weather.definition.windLayerHeight;
     weather.windLayers.push(new weather.Wind(a, b, 0, c));
     weather.windLayers[0].computeAndSet();

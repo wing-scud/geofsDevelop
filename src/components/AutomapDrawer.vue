@@ -30,7 +30,7 @@
 import geofs from "../lib/geofs"
 import ui from "../lib/ui/ui"
 export default {
-    name: "Automap",
+    name: "AutomapDrawer",
     components: {},
     data() {
         return {

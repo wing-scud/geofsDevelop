@@ -41,6 +41,7 @@ aircraft.Aircraft = function(a) {
     this.trueAirSpeed = 0;
     geofs.animation.resetValues({
         altitude: 0,
+        altitudeMeters: 0,
         prop: 0,
         throttle: 0,
         yaw: 0,
@@ -52,6 +53,7 @@ aircraft.Aircraft = function(a) {
         cameraAircraftDistance: 0,
         kias: 0,
         optionalAnimatedPartPosition: 0,
+        turnrate: 0
     });
     this.animationValue = geofs.animation.values;
     this.reset();

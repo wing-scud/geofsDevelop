@@ -1,6 +1,7 @@
 //提供一些初始化的参数->>>键码 . 风速风向。
 //数据保存在本地，序列化（对象，字符串）保存
-import controls from "../modules/controls"
+import controls from "../modules/controls";
+import { clone } from "../utils/utils";
 
 function hackGeoFS(geofs) {
     geofs.preferences = {};
@@ -8,7 +9,7 @@ function hackGeoFS(geofs) {
     geofs.preferencesDefault = {
         aircraft: '',
         coordinates: '',
-        controlMode: 'mouse',
+        controlMode: 'keyboard',
         keyboard: {
             sensitivity: 1,
             exponential: 0,
@@ -174,19 +175,13 @@ function hackGeoFS(geofs) {
             advanced: {
                 clouds: 0,
                 fog: 0,
-                windSpeed: 0,
+                windSpeedMS: 0,
                 windDirection: 0
             },
             sun: !1,
             localTime: 12,
             season: 0,
             manual: !0,
-            advanced: {
-                clouds: 0,
-                fog: 0,
-                windSpeed: 0,
-                windDirection: 0
-            },
             quality: 0,
             customWindActive: !1,
             windSpeed: 0,

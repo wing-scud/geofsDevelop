@@ -1,4 +1,5 @@
 //仪表盘：：设备
+//TODO:去掉flaps ，gear这些没用的设备盘
 import camera from './camera'
 import geofs from "../geofs"
 import Overlay from "./OverLay"
@@ -15,9 +16,11 @@ instruments.list = {};
 instruments.gaugeOverlayPosition = [0, 0, 0];
 instruments.gaugeOverlayOrigin = [20, 200, .8];
 instruments.definitions = {
+    //空速表 Airspeed KNOTS 小的
     airspeed: {
         stackX: !0,
         overlay: {
+            //表盘
             url: PAGE_PATH + "images/instruments/airspeed.png",
             size: {
                 x: 200,
@@ -40,6 +43,7 @@ instruments.definitions = {
                     ratio: -1.5,
                     min: 0
                 }],
+                //指针
                 url: PAGE_PATH + "images/instruments/airspeed-hand.png",
                 anchor: {
                     x: 10,
@@ -56,6 +60,7 @@ instruments.definitions = {
             }]
         }
     },
+    //喷气式飞机
     airspeedJet: {
         stackX: !0,
         overlay: {
@@ -158,6 +163,7 @@ instruments.definitions = {
             }]
         }
     },
+    //力狮？？
     altitude_legacy: {
         stackX: !0,
         overlay: {
@@ -236,6 +242,7 @@ instruments.definitions = {
             }]
         }
     },
+    //ALT
     altitude: {
         stackX: !0,
         overlay: {
@@ -350,6 +357,7 @@ instruments.definitions = {
             }]
         }
     },
+    //Vertical Speed
     vario: {
         stackX: !0,
         overlay: {
@@ -436,6 +444,7 @@ instruments.definitions = {
             }]
         }
     },
+    //Vacuum 真空度
     compass: {
         stackX: !0,
         overlay: {
@@ -490,6 +499,7 @@ instruments.definitions = {
             }]
         }
     },
+    //飞机姿态，第二个仪表盘 ，含有高度
     attitude: {
         stackX: !0,
         overlay: {
@@ -667,6 +677,7 @@ instruments.definitions = {
             }]
         }
     },
+    //转速表
     rpmJet: {
         stackX: !0,
         overlay: {
@@ -858,10 +869,10 @@ instruments.definitions = {
             }]
         }
     },
+    //风速表
     wind: {
         overlay: {
-            url: "images/instruments/wind-body.png",
-            //    url: PAGE_PATH + "images/instruments/wind-body.png",
+            url: PAGE_PATH + "images/instruments/wind-body.png",
             opacity: .5,
             scale: {
                 x: .5,
@@ -885,15 +896,13 @@ instruments.definitions = {
             },
             rescale: !0,
             rescalePosition: !0,
-            //风速表
             overlays: [{
                 animations: [{
                     type: "rotate",
                     value: "relativeWind",
                     ratio: -1
                 }],
-                url: "images/instruments/wind-hand.png",
-                // url: PAGE_PATH + "images/instruments/wind-hand.png",
+                url: PAGE_PATH + "images/instruments/wind-hand.png",
                 anchor: {
                     x: 100,
                     y: 100
@@ -929,199 +938,194 @@ instruments.definitions = {
             }]
         }
     },
-    spoilers: {
-        overlay: {
-            url: "",
-            // url: PAGE_PATH + "images/instruments/spoilers.png",
-            visibility: !0,
-            anchor: {
-                x: 85,
-                y: 0
-            },
-            alignment: {
-                x: "right",
-                y: "bottom"
-            },
-            position: {
-                x: 20,
-                y: 195
-            },
-            size: {
-                x: 85,
-                y: 21
-            },
-            rescale: !0,
-            rescalePosition: !0,
-            animations: [{
-                value: "airbrakesPosition",
-                type: "show",
-                gt: .1
-            }]
-        }
-    },
-    brakes: {
-        overlay: {
-            url: "",
-            // url: PAGE_PATH + "images/instruments/brakes.png",
-            visibility: !0,
-            anchor: {
-                x: 73,
-                y: 0
-            },
-            alignment: {
-                x: "right",
-                y: "bottom"
-            },
-            position: {
-                x: 20,
-                y: 170
-            },
-            size: {
-                x: 73,
-                y: 19
-            },
-            rescale: !0,
-            rescalePosition: !0,
-            animations: [{
-                value: "brakes",
-                type: "show",
-                gt: .5
-            }]
-        }
-    },
-    gear: {
-        overlay: {
-            url: "",
-            //  url: PAGE_PATH + "images/instruments/gear.png",
-            anchor: {
-                x: 60,
-                y: 0
-            },
-            alignment: {
-                x: "right",
-                y: "bottom"
-            },
-            position: {
-                x: 30,
-                y: 230
-            },
-            size: {
-                x: 46,
-                y: 16
-            },
-            class: "gear-overlay",
-            rescale: !0,
-            rescalePosition: !0,
-            overlays: [{
-                animations: [{
-                    value: "gearPosition",
-                    type: "show",
-                    when: [0]
-                }],
-                url: "",
-                //url: PAGE_PATH + "images/instruments/led-green.png",
-                anchor: {
-                    x: 0,
-                    y: 0
-                },
-                size: {
-                    x: 12,
-                    y: 12
-                },
-                position: {
-                    x: -10,
-                    y: 2
-                }
-            }, {
-                animations: [{
-                    value: "gearPosition",
-                    type: "show",
-                    when: [1]
-                }],
-                url: "",
-                // url: PAGE_PATH + "images/instruments/led-red.png",
-                anchor: {
-                    x: 0,
-                    y: 0
-                },
-                size: {
-                    x: 12,
-                    y: 12
-                },
-                position: {
-                    x: -10,
-                    y: 2
-                }
-            }, {
-                animations: [{
-                    value: "gearPosition",
-                    type: "show",
-                    whenNot: [0, 1]
-                }],
-                url: "",
-                // url: PAGE_PATH + "images/instruments/led-orange.png",
-                anchor: {
-                    x: 0,
-                    y: 0
-                },
-                size: {
-                    x: 12,
-                    y: 12
-                },
-                position: {
-                    x: -10,
-                    y: 2
-                }
-            }]
-        }
-    },
-    flaps: {
-        overlay: {
-            url: "",
-            // url: PAGE_PATH + "images/instruments/flaps.png",
-            anchor: {
-                x: 74,
-                y: 0
-            },
-            alignment: {
-                x: "right",
-                y: "bottom"
-            },
-            position: {
-                x: 20,
-                y: 260
-            },
-            size: {
-                x: 74,
-                y: 23
-            },
-            class: "flaps-overlay",
-            rescale: !0,
-            rescalePosition: !0,
-            overlays: [{
-                animations: [{
-                    type: "rotate",
-                    value: "flapsValue",
-                    ratio: -90
-                }],
-                url: "",
-                // url: PAGE_PATH + "images/instruments/flaps-hand.png",
-                anchor: {
-                    x: 0,
-                    y: 5
-                },
-                size: {
-                    x: 17,
-                    y: 6
-                },
-                position: {
-                    x: -23,
-                    y: 25
-                }
-            }]
-        }
-    }
+    //阻流板
+    // spoilers: {
+    //     overlay: {
+    //         url: PAGE_PATH + "images/instruments/spoilers.png",
+    //         visibility: !0,
+    //         anchor: {
+    //             x: 85,
+    //             y: 0
+    //         },
+    //         alignment: {
+    //             x: "right",
+    //             y: "bottom"
+    //         },
+    //         position: {
+    //             x: 20,
+    //             y: 195
+    //         },
+    //         size: {
+    //             x: 85,
+    //             y: 21
+    //         },
+    //         rescale: !0,
+    //         rescalePosition: !0,
+    //         animations: [{
+    //             value: "airbrakesPosition",
+    //             type: "show",
+    //             gt: .1
+    //         }]
+    //     }
+    // },
+    // brakes: {
+    //     overlay: {
+    //         url: PAGE_PATH + "images/instruments/brakes.png",
+    //         visibility: !0,
+    //         anchor: {
+    //             x: 73,
+    //             y: 0
+    //         },
+    //         alignment: {
+    //             x: "right",
+    //             y: "bottom"
+    //         },
+    //         position: {
+    //             x: 20,
+    //             y: 170
+    //         },
+    //         size: {
+    //             x: 73,
+    //             y: 19
+    //         },
+    //         rescale: !0,
+    //         rescalePosition: !0,
+    //         animations: [{
+    //             value: "brakes",
+    //             type: "show",
+    //             gt: .5
+    //         }]
+    //     }
+    // },
+    // //起落架
+    // gear: {
+    //     overlay: {
+    //         url: PAGE_PATH + "images/instruments/gear.png",
+    //         anchor: {
+    //             x: 60,
+    //             y: 0
+    //         },
+    //         alignment: {
+    //             x: "right",
+    //             y: "bottom"
+    //         },
+    //         position: {
+    //             x: 30,
+    //             y: 230
+    //         },
+    //         size: {
+    //             x: 46,
+    //             y: 16
+    //         },
+    //         class: "gear-overlay",
+    //         rescale: !0,
+    //         rescalePosition: !0,
+    //         overlays: [{
+    //             animations: [{
+    //                 value: "gearPosition",
+    //                 type: "show",
+    //                 when: [0]
+    //             }],
+    //             url: PAGE_PATH + "images/instruments/led-green.png",
+    //             anchor: {
+    //                 x: 0,
+    //                 y: 0
+    //             },
+    //             size: {
+    //                 x: 12,
+    //                 y: 12
+    //             },
+    //             position: {
+    //                 x: -10,
+    //                 y: 2
+    //             }
+    //         }, {
+    //             animations: [{
+    //                 value: "gearPosition",
+    //                 type: "show",
+    //                 when: [1]
+    //             }],
+    //             url: PAGE_PATH + "images/instruments/led-red.png",
+    //             anchor: {
+    //                 x: 0,
+    //                 y: 0
+    //             },
+    //             size: {
+    //                 x: 12,
+    //                 y: 12
+    //             },
+    //             position: {
+    //                 x: -10,
+    //                 y: 2
+    //             }
+    //         }, {
+    //             animations: [{
+    //                 value: "gearPosition",
+    //                 type: "show",
+    //                 whenNot: [0, 1]
+    //             }],
+    //             url: PAGE_PATH + "images/instruments/led-orange.png",
+    //             anchor: {
+    //                 x: 0,
+    //                 y: 0
+    //             },
+    //             size: {
+    //                 x: 12,
+    //                 y: 12
+    //             },
+    //             position: {
+    //                 x: -10,
+    //                 y: 2
+    //             }
+    //         }]
+    //     }
+    // },
+    // flaps: {
+    //     overlay: {
+    //         url: PAGE_PATH + "images/instruments/flaps.png",
+    //         anchor: {
+    //             x: 74,
+    //             y: 0
+    //         },
+    //         alignment: {
+    //             x: "right",
+    //             y: "bottom"
+    //         },
+    //         position: {
+    //             x: 20,
+    //             y: 260
+    //         },
+    //         size: {
+    //             x: 74,
+    //             y: 23
+    //         },
+    //         class: "flaps-overlay",
+    //         rescale: !0,
+    //         rescalePosition: !0,
+    //         overlays: [{
+    //             animations: [{
+    //                 type: "rotate",
+    //                 value: "flapsValue",
+    //                 ratio: -90
+    //             }],
+    //             url: PAGE_PATH + "images/instruments/flaps-hand.png",
+    //             anchor: {
+    //                 x: 0,
+    //                 y: 5
+    //             },
+    //             size: {
+    //                 x: 17,
+    //                 y: 6
+    //             },
+    //             position: {
+    //                 x: -23,
+    //                 y: 25
+    //             }
+    //         }]
+    //     }
+    // }
 };
+//手机设备支持设备图片
 instruments.definitionsMobile = {
     airspeed_mini: {
         group: "mini",
@@ -1737,7 +1741,7 @@ instruments.definitions3DOverlay = {
 };
 instruments.includesDefinitions = {
     "3d-altimeter": [{
-        model: "models/gauges/altimeter/altimeter.gltf"
+        model: PAGE_PATH + "models/gauges/altimeter/altimeter.gltf"
     }, {
         name: "hundreds",
         node: "hundreds",
@@ -1779,7 +1783,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-ias": [{
-        model: "models/gauges/ias/ias.gltf"
+        model: PAGE_PATH + "models/gauges/ias/ias.gltf"
     }, {
         name: "hand ",
         node: "hand",
@@ -1792,7 +1796,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-ias-high": [{
-        model: "models/gauges/kias-high/kiashigh.gltf"
+        model: PAGE_PATH + "models/gauges/kias-high/kiashigh.gltf"
     }, {
         name: "hand ",
         node: "kiashand",
@@ -1805,7 +1809,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-ias-supersonic": [{
-        model: "models/gauges/kias-supersonic/kiassupersonic.gltf"
+        model: PAGE_PATH + "models/gauges/kias-supersonic/kiassupersonic.gltf"
     }, {
         name: "hand ",
         node: "kiashand",
@@ -1818,7 +1822,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-compass": [{
-        model: "models/gauges/compass/compass.gltf"
+        model: PAGE_PATH + "models/gauges/compass/compass.gltf"
     }, {
         name: "compass-hand ",
         node: "compass-hand",
@@ -1830,7 +1834,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-vario": [{
-        model: "models/gauges/vario/vario.gltf"
+        model: PAGE_PATH + "models/gauges/vario/vario.gltf"
     }, {
         name: "hand ",
         node: "hand",
@@ -1845,7 +1849,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-vario-high": [{
-        model: "models/gauges/vario-high/vario-high.gltf"
+        model: PAGE_PATH + "models/gauges/vario-high/vario-high.gltf"
     }, {
         name: "hand ",
         node: "hand",
@@ -1860,7 +1864,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-attitude-jet": [{
-        model: "models/gauges/attitude-jet/attitude.gltf"
+        model: PAGE_PATH + "models/gauges/attitude-jet/attitude.gltf"
     }, {
         name: "ball",
         node: "ball",
@@ -1888,7 +1892,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-attitude-jet2": [{
-        model: "models/gauges/attitude-jet2/attitudejet.gltf"
+        model: PAGE_PATH + "models/gauges/attitude-jet2/attitudejet.gltf"
     }, {
         name: "ball",
         node: "ball",
@@ -1916,7 +1920,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-rpm": [{
-        model: "models/gauges/rpm/rpm.gltf"
+        model: PAGE_PATH + "models/gauges/rpm/rpm.gltf"
     }, {
         name: "hand",
         node: "hand",
@@ -1929,7 +1933,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-jet-rpm": [{
-        model: "models/gauges/jet-rpm/rpm.gltf"
+        model: PAGE_PATH + "models/gauges/jet-rpm/rpm.gltf"
     }, {
         name: "hand",
         node: "hand",
@@ -1950,7 +1954,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-attitude": [{
-        model: "models/gauges/attitude/attitude.gltf"
+        model: PAGE_PATH + "models/gauges/attitude/attitude.gltf"
     }, {
         name: "hand",
         node: "hand",
@@ -1982,7 +1986,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-turn-coordinator": [{
-        model: "models/gauges/turn-coordinator/turncoordinator.gltf"
+        model: PAGE_PATH + "models/gauges/turn-coordinator/turncoordinator.gltf"
     }, {
         name: "turn-rate-hand",
         node: "turn-rate-hand",
@@ -2007,7 +2011,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-gmeter": [{
-        model: "models/gauges/gmeter/gmeter.gltf"
+        model: PAGE_PATH + "models/gauges/gmeter/gmeter.gltf"
     }, {
         name: "hand ",
         node: "hand",
@@ -2022,7 +2026,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-compassball": [{
-        model: "models/gauges/compassball/compassball.gltf"
+        model: PAGE_PATH + "models/gauges/compassball/compassball.gltf"
     }, {
         name: "ball ",
         node: "ball",
@@ -2049,7 +2053,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-manifold": [{
-        model: "models/gauges/manifold/manifold.gltf"
+        model: PAGE_PATH + "models/gauges/manifold/manifold.gltf"
     }, {
         name: "handmanifoldpressure",
         node: "handmanifoldpressure",
@@ -2072,7 +2076,7 @@ instruments.includesDefinitions = {
         }]
     }],
     "3d-oil": [{
-        model: "models/gauges/oil/oil.gltf"
+        model: PAGE_PATH + "models/gauges/oil/oil.gltf"
     }, {
         name: "handoilpressure",
         node: "handoilpressure",
@@ -2110,6 +2114,8 @@ instruments.init = function(a) {
         y: 100
     };
     geofs.includes = $.extend(geofs.includes, instruments.includesDefinitions);
+
+    //显示屏幕仪表盘
     a && "default" != a || (a = {
         airspeed: "",
         altitude2: "",
