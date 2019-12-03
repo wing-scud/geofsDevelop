@@ -16,16 +16,6 @@
             </el-collapse-item>
         </el-collapse>
     </div>
-    <!--功能添加到选择哪个drawer启动时候 onShow="geofs.initializePreferencesPanel();" onHide="geofs.savePreferencesPanel();" -->
-    <!-- Bottom buttons 恢复默认设置和 关闭按钮 -->
-    <!-- <div class="bottomButton">
-        <div style="float: left;">
-            <el-button type="warning" @click="geofs.resetPreferences()" round>恢复默认设置</el-button>
-        </div>
-        <div style="float: right;">
-            <el-button type="primary" @click="close" plain>关闭</el-button>
-        </div>
-    </div> -->
     </div>
 </template>
 
@@ -47,10 +37,6 @@ export default {
         return {};
     },
     methods: {
-        // close() {
-        //     geofs.savePreferencesPanel()
-        //     this.$emit("update", false)
-        // }
     },
     created() {
 

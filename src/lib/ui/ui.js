@@ -1,15 +1,8 @@
-import panel from './panel';
-//import chat from './chat';
 import hud from './hud';
 import geofs from '../geofs'
-//import multiplayer from "../modules/multiplayer"
 import camera from "../modules/camera"
-import { DEGREES_TO_RAD } from "../utils/utils"
 import map from "./map"
 window.ui = window.ui || {};
-
-ui.panel = panel;
-//ui.chat=chat;
 ui.hud = hud;
 ui.playerMarkers = {};
 ui.playerSymbols = {};
@@ -65,61 +58,12 @@ ui.init = function() {
     $(document).on('contextmenu', '.geofs-canvas-mouse-overlay', (a) => {
         a.preventDefault();
     });
-    ui.panel.init();
     ui.hud.init();
-    // ui.chat.init();
-    $(document).on('keydown', '.geofs-stopKeyboardPropagation', (a) => {
-        a.stopImmediatePropagation();
-    });
-    $(document).on('keyup', '.geofs-stopKeyupPropagation', (a) => {
-        a.stopImmediatePropagation();
-    });
-    $(document).on('click', '.geofs-stopMousePropagation', (a) => {
-        a.stopImmediatePropagation();
-    });
-    $(document).on('click', '[data-aircraft]', function() {
-        geofs.aircraft.instance.change($(this).attr('data-aircraft'));
-        ui.panel.hide(null, !0);
-        event.stopPropagation();
-    });
-    $(document).on('click', '[data-camera]', function() {
-        eval($(this).attr('data-camera'));
-    });
-    $(document).on('click', '[data-location]', function(a) {
-        eval($(this).attr('data-location'));
-        ui.panel.hide(null, !0);
-        a.stopPropagation();
-    });
-    // $(document).on('click', '[data-player]', function(a) {
-    //     a = $(this).attr('data-player');
-    //     const b = multiplayer.users[a].getCoordinates();
-    //     b[0] -= 0.003 * Math.cos(b[3] * DEGREES_TO_RAD);
-    //     b[1] -= 0.003 * Math.sin(b[3] * DEGREES_TO_RAD);
-    //     multiplayer.users[a].isOnGround() && (b[2] = 0);
-    //     b && (b[4] = !0,
-    //         geofs.flyTo(b));
-    // });
-    $(document).on('keydown', '.address-input', (a) => {
-        a.stopImmediatePropagation();
-    });
-    $(document).on('submit', '.geofs-locationForm', (a) => {
-        geoDecodeLocation($('.address-input').val(), (a, c) => {
-            geofs != null && geofs.aircraft.instance != null && geofs.flyTo([a, c, 1E3, 0]);
-        });
-        $('.address-input').val('');
-        ui.collapseLeft();
-        a.preventDefault();
-    });
-};
-ui.toggleButton = function(a, b) {
-    (b = void 0 == b ? !$(a).hasClass('mdl-button--colored') : b) ? $(a).addClass('mdl-button--colored'): $(a).removeClass('mdl-button--colored');
 };
 ui.expandLeft = function() {
-    $('body').addClass('geofs-expand-left');
     geofs.handleResize();
 };
 ui.collapseLeft = function(a) {
-    $('body').removeClass('geofs-expand-left');
     geofs.handleResize();
 };
 ui.addMouseUpHandler = function(a) {
@@ -133,10 +77,6 @@ ui.runMouseUpHandlers = function(a) {
             geofs.debug.error(c, 'ui.runMouseUpHandlers');
         }
     }
-};
-
-ui.closePreferencePanel = function() {
-    ui.panel.hide('.geofs-preference-list', !0);
 };
 ui.Text = function(a, b) {
     b = $.extend({}, this.defaultOptions, b);
@@ -164,12 +104,7 @@ ui.Text.prototype = {
         this._overlay.destroy();
     },
 };
-ui.clearPlayerList = function() {
-    $('.geofs-player-list').html('');
-};
 ui.initPlayerList = function() {};
-
-
 ui.notification = {};
 ui.notification.show = function(a) {
     geofs.api.notify(a);

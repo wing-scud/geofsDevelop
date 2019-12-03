@@ -1,5 +1,5 @@
 //跑道？
-import { V2, V3, fixAngle, DEGREES_TO_RAD, FEET_TO_METERS, xy2ll, HALF_PI, clamp } from '../utils/utils'
+import { V2, V3, fixAngle, DEGREES_TO_RAD, FEET_TO_METERS, xy2ll, HALF_PI, clamp, PAGE_PATH } from '../utils/utils'
 import geofs from "../geofs"
 import $jscomp from "../utils/jscomp"
 import majorRunwayGrid from "../utils/majorRunwayGrid"
@@ -185,7 +185,7 @@ runways.runway.prototype = {
                                 positions: [new Cesium.Cartesian3.fromDegrees(this.threshold1[1] - this.widthInLla[1], this.threshold1[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold1[1] + c[1] - this.widthInLla[1], this.threshold1[0] + c[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold1[1] + c[1] + this.widthInLla[1], this.threshold1[0] + c[0] + this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold1[1] + this.widthInLla[1], this.threshold1[0] + this.widthInLla[0], 0)],
                             },
                             material: new Cesium.ImageMaterialProperty({
-                                image: 'models/objects/runway/threshold2.jpg',
+                                image: PAGE_PATH + 'models/objects/runway/threshold2.jpg',
                                 color: b,
                             }),
                             classificationType: Cesium.ClassificationType.TERRAIN,
@@ -202,7 +202,7 @@ runways.runway.prototype = {
                             positions: [new Cesium.Cartesian3.fromDegrees(this.threshold2[1] - this.widthInLla[1], this.threshold2[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold2[1] - c[1] - this.widthInLla[1], this.threshold2[0] - c[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold2[1] - c[1] + this.widthInLla[1], this.threshold2[0] - c[0] + this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(this.threshold2[1] + this.widthInLla[1], this.threshold2[0] + this.widthInLla[0], 0)],
                         },
                         material: new Cesium.ImageMaterialProperty({
-                            image: 'models/objects/runway/threshold2.jpg',
+                            image: PAGE_PATH + 'models/objects/runway/threshold2.jpg',
                             color: b,
                         }),
                         classificationType: Cesium.ClassificationType.TERRAIN,
@@ -223,7 +223,7 @@ runways.runway.prototype = {
                                     positions: [new Cesium.Cartesian3.fromDegrees(c[1] - this.widthInLla[1], c[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(c[1] + a[1] - this.widthInLla[1], c[0] + a[0] - this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(c[1] + a[1] + this.widthInLla[1], c[0] + a[0] + this.widthInLla[0], 0), new Cesium.Cartesian3.fromDegrees(c[1] + this.widthInLla[1], c[0] + this.widthInLla[0], 0)],
                                 },
                                 material: new Cesium.ImageMaterialProperty({
-                                    image: 'models/objects/runway/tile2.jpg',
+                                    image: PAGE_PATH + 'models/objects/runway/tile2.jpg',
                                     color: b,
                                 }),
                                 classificationType: Cesium.ClassificationType.TERRAIN,
@@ -245,10 +245,10 @@ runways.runway.prototype = {
                     d = xy2ll([d, d], this.threshold1),
                     e = [this.threshold1[0] + b[0], this.threshold1[1] + b[1]],
                     e = Cesium.Rectangle.fromDegrees(e[1] - d[1], e[0] - d[0], e[1] + d[1], e[0] + d[0]),
-                    runways.asyncSetImageLayerRotationPosition('models/objects/runway/full.jpg', this.headingRad - HALF_PI, e, this.imageryLayers),
+                    runways.asyncSetImageLayerRotationPosition(PAGE_PATH + 'models/objects/runway/full.jpg', this.headingRad - HALF_PI, e, this.imageryLayers),
                     e = [this.threshold2[0] - b[0], this.threshold2[1] - b[1]],
                     e = Cesium.Rectangle.fromDegrees(e[1] - d[1], e[0] - d[0], e[1] + d[1], e[0] + d[0]),
-                    runways.asyncSetImageLayerRotationPosition('models/objects/runway/full.jpg', this.headingRad + HALF_PI, e, this.imageryLayers);
+                    runways.asyncSetImageLayerRotationPosition(PAGE_PATH + 'models/objects/runway/full.jpg', this.headingRad + HALF_PI, e, this.imageryLayers);
             }
         }
     },

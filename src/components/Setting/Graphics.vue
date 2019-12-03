@@ -2,7 +2,7 @@
     <div>
         <div class="block">
             <span class="demonstration">图像质量</span>
-            <el-slider :min=0 :max=5 :step=1 v-model="quality" @input="updateQualityImage"></el-slider>
+            <el-slider :min=1 :max=6 :step=1 v-model="quality" @input="updateQualityImage"></el-slider>
         </div>
         <div class="block">
             <span class="demonstration">增强</span>

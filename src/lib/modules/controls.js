@@ -6,7 +6,6 @@ import instruments from "./instruments"
 import flight from "./flight"
 import { fixAngle, fixAngle360, clamp, exponentialSmoothing, V3, PID } from "../utils/utils"
 window.controls = window.controls || {};
-console.log(clamp)
 controls = {
     states: {},
     mouse: {}
@@ -422,7 +421,7 @@ controls.update = function(a) {
     controls.animatePart("flaps", a);
     controls.animatePart("airbrakes", a);
     controls.animatePart("optionalAnimatedPart", a)
-    
+
 };
 controls.setPartAnimationDelta = function(a) {
     a.delta = a.positionTarget ? a.positionTarget - a.position : a.target - a.position
@@ -883,9 +882,9 @@ controls.autopilot.turnOn = function() {
         controls.autopilot.throttlePID.reset();
         controls.autopilot.setAltitude(a.altitude);
         controls.autopilot.setHeading(a.heading);
-         controls.autopilot.setKias(a.kias);
-         controls.autopilot.setClimbrate(0);   
-         controls.autopilot.on = !0;
+        controls.autopilot.setKias(a.kias);
+        controls.autopilot.setClimbrate(0);
+        controls.autopilot.on = !0;
     }
 };
 controls.autopilot.turnOff = function() {

@@ -1,7 +1,3 @@
-/**
- * options settings  enviroment  weather setting?
- * 
- */
 //天气 ->>风 { 风速，风向，风所在的高度}， 大气 atmosphere  ；白天黑夜，采集数据来源于openweathermap.org
 import camera from "./camera"
 import instruments from './instruments'
@@ -68,7 +64,6 @@ weather.init = function() {
     }, weather.updateRate);
     weather.generateFromPreferences();
     weather.refresh();
-    // weather.manualWeatherUIContainer = $(".geofs-manualWeather")
 };
 weather.reset = function() {
     weather.set($.extend({}, weather.defaults))
@@ -140,11 +135,9 @@ weather.generateFromPreferences = function(a) {
 weather.setManual = function() {
     var a = weather.generateFromPreferences(!0);
     weather.set(a);
-    // geofs.setPreferenceValues(weather.manualWeatherUIContainer)
 };
 weather.setAdvanced = function() {
     0 < geofs.preferences.weather.advanced.precipitationAmount && (geofs.preferences.weather.advanced.clouds = Math.max(geofs.preferences.weather.advanced.clouds, 2 * geofs.preferences.weather.advanced.precipitationAmount));
-    //geofs.setPreferenceValues(weather.manualWeatherUIContainer);
     var a = weather.generateFromPreferences();
     weather.set(a)
 };
@@ -153,14 +146,8 @@ weather.set = function(a, b) {
     b = b || camera.lla;
     weather.setDateAndTime(b);
     geofs.fx.dayNightManager.init();
-    // geofs.preferences.weather.manual ? ($(".geofs-manualWeather").show(),
-    //     $(".geofs-metarDisplay").html("").parent().hide()) : ($(".geofs-manualWeather").hide(),
-    //     $(".geofs-metarDisplay").html(a.METAR).parent().show());
-
     weather.definition = $.extend({}, weather.defaults, a);
     a = .01 * weather.definition.precipitationAmount;
-    //////////////
-    /////
     0 < weather.definition.windSpeedMS ? (weather.initWind(weather.definition.windDirection, weather.definition.windSpeedMS),
         weather.windActive = !0,
         weather.setWindIndicatorVisibility(!0)) : (weather.windOff(),
@@ -173,7 +160,6 @@ weather.set = function(a, b) {
     b < weather.minimumCloudCover && (weather.definition.cloudCover = 0);
     geofs.fx.cloudManager.init(camera.lla);
     geofs.fx.cloudManager.instance.setCloudCover(b);
-    //
     0 < weather.definition.precipitationAmount ? geofs.fx.precipitation.create(weather.definition.precipitationType, weather.definition.precipitationAmount) : geofs.fx.precipitation.destroy();
     weather.belowCeilingBrightness = clamp(1.2 - a, 0, 1);
     "snow" == weather.definition.precipitationType ? geofs.api.setImageryColorModifier("snow", {
@@ -184,7 +170,6 @@ weather.set = function(a, b) {
 };
 weather.update = function(a) {
     var b = camera.lla;
-
     if (weather.windActive && 0 < weather.windLayers.length) {
         for (var c = geofs.aircraft.instance.llaLocation[2], d = 0, e = 1; e < weather.windLayers.length && !(c < weather.windLayers[e].floor); e++)
             d = e;
@@ -218,11 +203,10 @@ weather.setDateAndTime = function(a) {
     weather.timeRatio = Number.parseFloat(weather.timeRatio.toFixed(2));
     weather.seasonRatio = Math.sin(2.7 * weather.localSeason * DEGREES_TO_RAD);
     geofs.isNight = .4 < weather.timeRatio;
-    geofs.animation.values.night != geofs.isNight && $("body").trigger("nightChange");
+    geofs.animation.values.night != geofs.isNight;
     geofs.animation.values.night = geofs.isNight;
     geofs.animation.values.minutes = 60 * (weather.localTime % 1).toFixed(2);
     geofs.animation.values.hours = weather.localTime;
-    $("body").trigger("geofsTimeChange")
 };
 weather.getLocalTurbulence = function() {
     return [0, 0, Math.random() < geofs.animation.values.kias / 2E3 ? (Math.random() - .5) * weather.definition.turbulences * 50 : 0]

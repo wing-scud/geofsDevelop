@@ -1,9 +1,7 @@
 //提供接口方法
-
 import geofs from "../geofs";
 import camera from "../modules/camera";
 import controls from "../modules/controls"
-// import L from "../lib/L.js"
 import {
     V3,
     M33,
@@ -18,6 +16,7 @@ import {
     DEGREES_TO_RAD,
     RAD_TO_DEGREES,
     FEET_TO_METERS,
+    fixAngle360,
     METERS_TO_LOCAL_LAT
 } from '../utils/utils'
 
@@ -211,13 +210,7 @@ api.setGlobeLighting = a => {
 api.setWaterEffect = a => {
     api.viewer.scene.globe.showWaterEffect = a;
 };
-
-
-
-function fixAngle360(a) {
-    a %= 360;
-    return a >= 0 ? a : a + 360;
-}
+//修复是否能够设置高清问题
 api.setHD = a => {
     if (api.hdOn !== a) {
         a = {
@@ -370,12 +363,16 @@ api.applyAtmosphereColorModifiers = () => {
     api.viewer.scene.fog.minimumBrightness = api.atmosphereColors.fogBrightness;
     geofs.fx.cloudManager.setCloudsBrightness(api.atmosphereColors.cloudsBrightness);
 };
+//太阳的是否显示
 api.showSun = () => {
     // api.viewer.scene.sun.show = !0;
 };
 api.hideSun = () => {
     // api.viewer.scene.sun.show = !1;
 };
+
+
+//加载 时候，渲染质量
 $('.geofs-ui-3dview').on('terrainUnstable', () => {
     api.renderingQuality('loading');
     $('.geofs-3dloader').show();
@@ -536,7 +533,6 @@ api.getMostDetailedGroundNormal = (a, b) => {
     a = xyz2lla([1, 1, 0], c);
     let d = V3.add(c, [a[0], 0, 0]),
         e = V3.add(c, [0, a[1], 0]);
-
     a = Cesium.sampleTerrainMostDetailed(api.viewer.terrainProvider, [Cesium.Cartographic.fromDegrees(c[1], c[0]), Cesium.Cartographic.fromDegrees(d[1], d[0]), Cesium.Cartographic.fromDegrees(e[1], e[0])]);
     //对地形进行采样????
     Cesium.when(a, (a) => {
@@ -1120,6 +1116,7 @@ api.FlatRunwayTerrainProvider.prototype = {
         }
     },
 };
+// 这个函数未调用过，添加3D模型
 api.add3dBuildings = () => {
     api.viewer.terrainProvider = api.flatRunwayTerrainProviderInstance = new api.FlatRunwayTerrainProvider({
         baseProvider: new GeoVis.CesiumTerrainProvider({ url: `http://${window.location.hostname}:3030/terrain/1/` })
@@ -1142,10 +1139,6 @@ api.map = function(a, b, c) {
         minZoom: 3,
         maxZoom: 13,
         preferCanvas: !0,
-    });
-    this.map.on('click', function(e) {
-        e.latlng.lat //纬度
-        e.latlng.lng
     });
     L.tileLayer(geofs.mapXYZ, {
         //  attribution: '\u00a9 OpenStreetMap contributors - Made with Natural Earth.',
@@ -1266,7 +1259,13 @@ api.map.prototype = {
             if (c.originalEvent.button == 2 || geofs.isApp) {
                 b.closePopup();
                 const d = `${c.latlng.lat},${c.latlng.lng}`;
-                b.setContent(`<div class="geofs-map-popup"><ul><li><a href="http://flyto://${d}, 0, 0, true">地面</a></li><li><a href="http://flyto://${d}, 304, 0, true"> 300米 </a></li><li><a href="http://flyto://${d}, 914, 0, true"> 1000 米</a></li><li><a href="http://flyto://${d}, 3048, 0, true"> 3500 米</a></li><li><a href="http://flyto://${d}, 6096, 0, true"> 7000 米</a></li><li><a href="http://flyto://${d}, 9144, 0, true"> 10,000 米</a></li></ul></div>`).setLatLng(c.latlng).openOn(a.map);
+                b.setContent(`<div class="geofs-map-popup"><ul><li><a href="http://flyto://${d}, 0, 0, true">地面</a></li>
+                <li><a href="http://flyto://${d}, 304, 0, true"> 300米 </a></li>
+                <li><a href="http://flyto://${d}, 914, 0, true"> 1000 米</a></li>
+                <li><a href="http://flyto://${d}, 3048, 0, true"> 3500 米</a></li>
+                <li><a href="http://flyto://${d}, 6096, 0, true"> 7000 米</a></li>
+                <li><a href="http://flyto://${d}, 9144, 0, true"> 10,000 米</a></li>
+                </ul></div>`).setLatLng(c.latlng).openOn(a.map);
                 c.originalEvent.preventDefault();
             }
         });
@@ -1320,7 +1319,11 @@ api.map.addRunwayMarker = (a, b) => {
             fillOpacity: 1,
             pane: 'overlayPane',
         },
-        popupContent: `<div class="geofs-map-popup"><b>${a[0]}</b><br><a href="http://flyto://${c},0,${a[1]}">Take-off from</a><a href="http://flyto://${c},1000,${a[1]}">Fly by</a><a href="http://flyto://${c},${a[4]},${a[1]},approach,4800,450">Approach</a></div>`,
+        popupContent: `<div class="geofs-map-popup">
+        <b>${a[0]}</b><br><a href="http://flyto://${c},0,${a[1]}">Take-off from</a>
+        <a href="http://flyto://${c},1000,${a[1]}">Fly by</a>
+        <a href="http://flyto://${c},${a[4]},${a[1]},approach,4800,450">Approach</a>
+        </div>`,
     }, a[2], a[3]);
 };
 api.map.makeMarker = a => L.circleMarker(L.latLng(a.lat, a.lon), a.options).bindPopup(a.popupContent);
@@ -1389,22 +1392,17 @@ api.map.createPath = (a, b) => {
         weight: 5,
     };
     api.map.flightPath || (api.map.flightPath = L.Polyline.Plotter(b || [], c).addTo(a.map));
-    // api.flightPath._latlngs=>飞行路径点
     api.map.flightPath.setReadOnly(!1);
-    $('.geofs-createPath').addClass('on');
-    $('.geofs-clearPath').show();
     api.map.flightPathOn = !0;
 };
 api.map.stopCreatePath = () => {
     api.map.flightPath && (api.map.flightPath.setReadOnly(!0),
-        $('.geofs-createPath').removeClass('on'),
         api.map.flightPathOn = !1);
 };
 api.map.clearPath = () => {
     api.map.flightPath && (api.map.stopCreatePath(),
         api.map.flightPath.remove(),
-        api.map.flightPath = null,
-        $('.geofs-clearPath').hide());
+        api.map.flightPath = null);
 };
 api.map.getPathPoints = () => {
     if (api.map.flightPath) {
@@ -1429,4 +1427,4 @@ api.reverserGeocode = (a, b) => {
         } catch (e) {}
     });
 };
-export default api;
+export default api

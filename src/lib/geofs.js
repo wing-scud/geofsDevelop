@@ -23,7 +23,6 @@ import instruments from "./modules/instruments"
 import ui from './ui/ui'
 
 var geofs = window.geofs || {};
-//geofs.mapXYZ = "http://192.168.13.32/tiles/googleimg/{z}/{x}/{y}.png"
 geofs.aircraft = aircraft
 geofs.animation = animation
 geofs.api = api
@@ -37,7 +36,6 @@ geofs.includes = {};
 geofs.aircraftList = list;
 geofs.frameCallbackStack = {};
 geofs.minPenetrationThreshold = 0.001;
-//geofs.multiplayerHost = geofs.multiplayerHost || 'https://net.geo-fs.com:8080';
 geofs.init = function(a) {
     for (var i in geofs.aircraftList) {
         geofs.aircraftList[i].path = geofs.aircraftList[i].dir.replace(/\|/gi, '/')
@@ -93,7 +91,6 @@ geofs.init = function(a) {
             windSpeed: parseInt(a.windspeed),
         });
         geofs.preferences = $.extend(!0, geofs.preferences, a);
-        //读取配置文件
         let c = geofs.preferences.coordinates;
         c && (c[0] < -90 || c[0] > 90 || c[1] < -180 || c[1] > 180 || c[2] > 1E5) && (c = null);
         c && c[0] && c[1] || (geofs.initialRunways = [
@@ -124,16 +121,7 @@ geofs.init = function(a) {
     geofs.api.addFrameCallback(geofs.frameCallback)
 };
 geofs.unload = function() {
-    geofs.api.destroyWorld();
-    geofs.savePreferences();
-    if (geofs.PRODUCTION) {
-        try {
-            //    multiplayer.avgPing && geofs.api.analytics.event('system', 'networkLatency', `${50 * Math.ceil(multiplayer.avgPing / 50)}`, Math.floor(multiplayer.avgPing)),
-            geofs.api.analytics.event('system', 'framerate', `${5 * Math.ceil(geofs.debug.fps / 5)}`, 1 * geofs.debug.fps);
-        } catch (a) {
-            geofs.debug.error(a, 'geofs.unload');
-        }
-    }
+    geofs.api.destroyWorld()
 };
 geofs.initLoggedInUser = function() {
     geofs.userRecord.muteList = geofs.utils.pivotArray(geofs.userRecord.mutelist);
@@ -171,11 +159,10 @@ geofs.isPaused = function() {
 geofs.doPause = function(a, b) {
     a = a || 0;
     geofs.pauses = geofs.pauses || {};
-    a < geofs.pauseLevel || (b || // multiplayer.stopUpdates(),
+    a < geofs.pauseLevel || (b ||
         audio.stop(),
         flight.recorder.stopRecording(),
         flight.recorder.pausePlayback(),
-        ui.toggleButton('.geofs-button-pause', !0),
         geofs.pause = !0,
         geofs.pauseLevel = a);
 };
@@ -185,7 +172,6 @@ geofs.undoPause = function(a) {
             $(geofs.canvas).one('terrainStable', flight.recorder.startRecording)) : ( //multiplayer.startUpdates(),
             flight.recorder.startRecording()),
         geofs.pause = !1,
-        ui.toggleButton('.geofs-button-pause', !1),
         geofs.pauseLevel = 0,
         flight.recorder.unpausePlayback());
 };

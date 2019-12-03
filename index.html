@@ -37,23 +37,16 @@
     <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
     <link rel="shortcut icon" href="favicon.ico">
     <script type="text/javascript" src="static/js/loader.js"></script>
-    <!-- dest="static/js/loader.js" obfuscation="update" -->
-    <!-- Common CSS -->
     <link rel="stylesheet" type="text/css" href="/static/css/commonCSS.css?kc=1566290741" media="screen" />
-    <!-- Common JS -->
+
     <script type="text/javascript" src="/static/js/commonJS.js?kc=1566290741"></script>
-    <!-- 3rd parties -->
-    <!-- <script type="text/javascript" src="static/js/CesiumUnminified/Cesium.js"></script> -->
     <script type="text/javascript" src="static/Build/GeoVis.js"></script>
-    <!-- Data -->
-    <!-- Common libs -->
-    <!-- Sim -->
+
     <script type="text/javascript">
         window.Cesium = GeoVis;
         geofs.PRODUCTION = true;
         geofs.killCache = '?kc=1560503593';
     </script>
-    <!-- <deferredscript type="text/javascript" src="/static/js/geofs.js?kc=1560503593-3" defer></deferredscript> -->
     <link rel="stylesheet" type="text/css" href="static/css/geofs.css?kc=1560503593-2" media="screen" />
 </head>
 
@@ -67,21 +60,14 @@
         "role": 0
     };
     geofs.userRecord.muteList = [];
-    window.executeOnEventDone('afterDeferredload', function() {
-        jQuery(document).trigger('loginChange');
-    });
-
     geofs.geoIpUpdate = function() {
-        // jQuery('.geofs-creditContainer').html('<a rel="nofollow" target="_blank" href="https://s2maps.eu">Sentinel-2 cloudless - https://s2maps.eu</a> by <a rel="nofollow" target="_blank" href="https://eox.at/">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2016 & 2017)');
         geofs.preferences.graphics.HD = false;
         document.body.classList.remove('geofs-hd');
         geofs.api.imageryProvider = new Cesium.UrlTemplateImageryProvider({
             url: 'http://www.google.cn/maps/vt?lyrs=s@709&gl=cn&x={x}&y={y}&z={z}'
         })
         geofs.api.setImageryProvider(geofs.api.imageryProvider, true, 1, 1, 1);
-        // geofs.api.analytics.event('geofs', 'mode', 'sd', 1);
     };
-
     var geofsNewHDState = false;
     window.executeOnEventDone('afterDeferredload', function() {
         if (geofs.api.hdOn === geofsNewHDState)
@@ -132,13 +118,6 @@
         $(document).on('flyto', function() {
             var t = new Date().getTime();
             if (t - geofs.lastFlyTo > 40000) {
-
-                if (geofs.adCount % 3 == 0) {
-                    // every three impressions
-                    $('.geofs-refreshTarget').htmlView('load', '/pages/common/includes/ba/loader.php?type=2');
-                } else {
-                    $('.geofs-refreshTarget').empty().html('<scr' + 'ipt async src="//pagead2.googlesyndication.com/pagead/static/js/adsbygoogle.js"></scr' + 'ipt><ins class="adsbygoogle" style="display:block; width: 160px;" data-ad-client="ca-pub-1808592532341984" data-ad-slot="5302287636" data-ad-format="auto"></ins><scr' + 'ipt>(adsbygoogle = window.adsbygoogle || []).push({});</scr' + 'ipt>');
-                }
                 geofs.adCount++;
                 geofs.lastFlyTo = t;
             }

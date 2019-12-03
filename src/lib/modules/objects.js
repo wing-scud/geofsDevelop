@@ -1,5 +1,4 @@
-
-import { V3,lla2xyz ,xyz2lla,intersect_RayTriangle} from '../utils/utils'
+import { V3, lla2xyz, xyz2lla, intersect_RayTriangle, PAGE_PATH } from '../utils/utils'
 import geofs from "../geofs"
 
 var objects = window.objects || {};
@@ -10,7 +9,7 @@ objects.visible = [];
 objects.list = {
     carrier: {
         location: [37.777228, -122.609482, 0],
-        url: 'models/objects/carrier/carrier.gltf',
+        url: PAGE_PATH + 'models/objects/carrier/carrier.gltf',
         collisionRadius: 400,
         collisionTriangles: [
             [
@@ -59,7 +58,7 @@ objects.collidableObjectList = [];
 objects.collidableObject = !1;
 objects.init = function() {
     objects.preProcessObjects();
-    setInterval(objects.updateVisibility, 1E4);//定时调用
+    setInterval(objects.updateVisibility, 1E4); //定时调用
     setInterval(objects.updateCollidables, 2E3);
 };
 objects.preProcessObjects = function() {
@@ -97,7 +96,7 @@ objects.loadMatrixModels = function(a) {
         const c = objects.matrix[a][b];
         c.url && (c.model = geofs.loadModel(c.url, c.options),
             geofs.api.setModelPositionOrientationAndScale(c.model, c.location));
-            
+
     }
 };
 objects.updateCollidables = function() {

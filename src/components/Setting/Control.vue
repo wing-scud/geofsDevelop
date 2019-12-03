@@ -19,7 +19,7 @@
                 </div>
                 <div class="textArea" v-for="(value, name) in keys" :key="value.label">
                     <span>{{name}}</span>
-                    <el-input v-model="value.label" size="mini" disabled=true></el-input>
+                    <el-input v-model="value.label" size="mini" :disabled=true></el-input>
                 </div>
             </div>
         </el-collapse-item>

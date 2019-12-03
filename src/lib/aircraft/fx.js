@@ -423,7 +423,7 @@ function fxGeofs(geofs) {
         brightness: 1,
         create: function() {
             geofs.fx.fog.ppStage || (geofs.fx.fog.ppStage = new Cesium.PostProcessStage({
-                    fragmentShader: "uniform sampler2D colorTexture; \nuniform sampler2D depthTexture; \nuniform vec4 fogColor; \nuniform float fogDensity; \nvarying vec2 v_textureCoordinates; \nvoid main(void) \n{ \n    vec4 color = texture2D(colorTexture, v_textureCoordinates); \n    vec4 depth = texture2D(depthTexture, v_textureCoordinates); \n    gl_FragColor = mix(color, fogColor, clamp(depth.r * fogDensity, 0.0, 1.0)); \n} \n",
+                    fragmentShader: "uniform sampler2D colorTexture; \nuniform sampler2D depthTexture;\nuniform vec4 fogColor; \nuniform float fogDensity; \nvarying vec2 v_textureCoordinates; \nvoid main(void) \n{ \n    vec4 color = texture2D(colorTexture, v_textureCoordinates); \n    vec4 depth = texture2D(depthTexture, v_textureCoordinates); \n    gl_FragColor = mix(color, fogColor, clamp(depth.r * fogDensity, 0.0, 1.0)); \n} \n",
                     uniforms: {
                         fogColor: this.adjustedColor,
                         fogDensity: this.density || 1

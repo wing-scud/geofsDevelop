@@ -198,9 +198,7 @@ function hackGeoFS(geofs) {
         },
         crashDetection: !1,
         showPapi: !0,
-        // multiplayer: !0,
         adsb: !0,
-        //chat: !1,
         sound: !0,
     };
     geofs.preferencesKeycodeLookup = {
@@ -240,22 +238,9 @@ function hackGeoFS(geofs) {
         144: '<Num lock>',
         145: '<Scroll Lock>',
     };
+    //生成geofs.localSotrage
     geofs.initPreferences = function() {
-        geofs.$preferencePanel = $('.geofs-preferences');
-        const a = function(a) {
-            a.stopPropagation();
-        };
-        geofs.$preferencePanel.keydown(a);
-        geofs.$preferencePanel.keyup(a);
         geofs.localStorage = window.localStorage || {};
-        $(document).on('expanded', '.geofs-preference-controls', () => {
-            geofs.preferencesStartFeedback();
-        }).on('collapsed', '.geofs-preference-controls', () => {
-            geofs.preferencesStopFeedback();
-        });
-    };
-    geofs.isPreferencePanelOpen = function() {
-        return geofs.$preferencePanel.is(':visible');
     };
     geofs.savePreferences = function() {
         geofs.aircraft.instance && (geofs.preferences.coordinates = geofs.aircraft.instance.getCurrentCoordinates(),
@@ -266,18 +251,16 @@ function hackGeoFS(geofs) {
         } catch (b) {
             geofs.debug.error(b, 'Could not save preferences');
         }
-        $(document).trigger('preferenceSaved');
     };
     geofs.resetPreferences = function() {
         geofs.preferences = clone(geofs.preferencesDefault);
         geofs.preferences.version = geofs.version;
         geofs.savePreferences();
-        geofs.initializePreferencesPanel();
     };
+    //从localStorage读取，失败时，初始化为默认配置
     geofs.readPreferences = function(a) {
         let b = geofs.localStorage.getItem('preferences'),
             c = b || {};
-        b || $('.geofs-preferences-alert').show();
         try {
             c = eval(c),
                 c = c[0];
@@ -291,7 +274,6 @@ function hackGeoFS(geofs) {
         geofs.preferences.graphics.waterEffect = !1;
         geofs.userRecord.id || (geofs.preferences.chat = !1);
         a && a();
-        $(document).trigger('preferenceRead');
     };
 
     function serialize(a) {
@@ -325,252 +307,5 @@ function hackGeoFS(geofs) {
         };
         return "[" + b(a) + "]"
     }
-    //警告显示？？？ 实验->>controls.joystick.poll();
-    geofs.populateButtonAssignments = function() {
-        const a = $('.geofs-joystick-button-container', geofs.$preferencePanel);
-        if (a) {
-            let b = '';
-            for (i in controls.setters) { b += `<option value="${i}">${controls.setters[i].label}</option>`; }
-            b += '</select>';
-            let c = '',
-                d;
-            for (d in controls.joystick.buttons) {
-                c += `<div class="geofs-feedback-wrapper"><label>Button ${controls.joystick.buttons[d].globalId}</label><div class="geofs-feedback" button="${d}"></div>`,
-                    c += `<select gespref="geofs.preferences.joystick.buttons.${d}" update="controls.joystick.configure">${b}</div>`;
-            }
-            a.html(c);
-        }
-    };
-    geofs.populateAxesAssignments = function() {
-        const a = $('.geofs-joystick-axes-container', geofs.$preferencePanel);
-        if (a) {
-            let b = '';
-            for (i in controls.axisSetters) { b += `<option value="${i}">${controls.axisSetters[i].label}</option>`; }
-            b += '</select>';
-            let c = '',
-                d;
-            for (d in controls.joystick.axes) {
-                c += `<div class="geofs-feedback-wrapper"><label>Axis ${controls.joystick.axes[d].globalId}</label>`,
-                    c += `<select gespref="geofs.preferences.joystick.axis.${d}">${b}`,
-                    c += `<div class="progress" axis="${d}"><div class="bar"></div></div>`,
-                    c += '<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" title="Reverse axis">',
-                    c += `<input type="checkbox" class="mdl-switch__input" gespref="geofs.preferences.joystick.multiplier.${d}" update="controls.setMode();">`,
-                    c += '<span class="mdl-switch__label">Reverse</span>',
-                    c += '</label>';
-            }
-            a.html(c);
-        }
-    };
-    geofs.populateKeyAssignments = function() {
-        //循环生成key绑定的内容，动态显示。-》vue
-        let a = $('.geofs-keyboard-keys-container', geofs.$preferencePanel),
-            b = '',
-            c;
-        for (c in geofs.preferences.keyboard.keys) {
-            const d = `keyInput${geofs.preferences.keyboard.keys[c].keycode}`;
-            b += `<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input id="${d}" class="geofs-preferences-key-detect mdl-textfield__input" type="text" data-type="keydetect" gespref="geofs.preferences.keyboard.keys.${c}" keycode="${geofs.preferences.keyboard.keys[c].keycode}" value="${geofs.preferences.keyboard.keys[c].label}"/><label class="mdl-textfield__label" for="${d}">${c}</label></div>`;
-        }
-        a.html(b);
-        componentHandler.upgradeDom();
-        a.on('click focus', '.geofs-preferences-key-detect', function() {
-            $('.geofs-preference-key-detecting', a).each(function() {
-                this.value = this._originalValue;
-                $(this).removeClass('geofs-preference-key-detecting');
-            });
-            this._originalValue = this.value;
-            this.value = '';
-            $(this).addClass('geofs-preference-key-detecting');
-        }).on('keyup', '.geofs-preferences-key-detect', function(a) {
-            $(this).hasClass('geofs-preference-key-detecting') && (a.which != 27 ? (this.value = geofs.preferencesKeycodeLookup[a.which] ? geofs.preferencesKeycodeLookup[a.which] : this.value.toUpperCase(),
-                    this.setAttribute('keycode', a.which),
-                    geofs.setPreferenceFromInput(this)) : this.value = this._originalValue,
-                $(this).removeClass('geofs-preference-key-detecting'),
-                $(this).blur(),
-                a.stopPropagation(),
-                a.preventDefault());
-        }).on('keydown', '.geofs-preferences-key-detect', function(a) {
-            $(this).hasClass('geofs-preference-key-detecting') && a.which == 9 && (a.stopPropagation(),
-                a.preventDefault());
-        }).on('blur', '.geofs-preferences-key-detect', function(a) {
-            $(this).hasClass('geofs-preference-key-detecting') && (this.value == '' && (this.value = this._originalValue),
-                $(this).removeClass('geofs-preference-key-detecting'),
-                a.stopPropagation(),
-                a.preventDefault());
-        });
-    };
-    geofs.preferencesDebugInfo = function() {
-        //debug infor textArea输出的信息
-        //    for (var a = `Network Latency (avg): ${multiplayer.avgPing} ms\nFramerate (avg): ${geofs.debug.fps} fps\n--------------\nlogs:\n`, b = 0; b < geofs.debug.logStack.length; b++) { a += `${geofs.debug.logStack[b]}\n`; }
-        //   $('.geofs-debug-info', geofs.$preferencePanel).html(a);
-    };
-    geofs.preferencesTestJoystick = function() {
-        const a = controls.joystick.poll();
-        a ? ($('.geofs-preferences-joystick-status .alert-success').show().html(controls.joystick.info),
-            $('.geofs-preferences-joystick-status .alert-warning').hide(),
-            $('.geofs-preferences-joystick-status .alert-error').hide()) : (controls.joystick.api ? ($('.geofs-preferences-joystick-status .alert-error').hide(),
-                $('.geofs-preferences-joystick-status .alert-warning').show()) : $('.geofs-preferences-joystick-status .alert-error').show(),
-            $('.geofs-preferences-joystick-status .alert-success').hide());
-        return a;
-    };
-    geofs.preferencesTestOrientation = function() {
-        if (geofs.isMobile) {
-            return $('.geofs-preferences-orientation').show(),
-                controls.orientation.isAvailable() ? $('.geofs-preferences-orientation-status .alert-error').hide() : $('.geofs-preferences-orientation-status .alert-error').show(), !0;
-        }
-        $('.geofs-preferences-orientation').hide();
-        return !1;
-    };
-    geofs.preferencesStartFeedback = function() {
-        geofs.preferencesFeedbackInterval || (geofs.preferencesFeedbackInterval = setInterval(() => {
-            geofs.preferencesTestJoystick() && ($('.geofs-preferences-joystick .progress[axis]', geofs.$preferencePanel).each(function() {
-                    let a = controls.joystick.getAxisValue(this.getAttribute('axis'));
-                    a = 50 * (a + 1);
-                    $(this).find('.bar').css('width', `${a}%`);
-                }),
-                $('.geofs-preferences-joystick .geofs-feedback[button]', geofs.$preferencePanel).each(function() {
-                    controls.joystick.checkButton(parseInt(this.getAttribute('button'))) ? $(this).addClass('on') : $(this).removeClass('on');
-                }));
-            geofs.preferencesTestOrientation() && $('.geofs-preferences-orientation .progress[axis]', geofs.$preferencePanel).each(function() {
-                let a = controls.orientation.getNormalizedAxis(geofs.preferences.orientation.axis[this.getAttribute('axis')]);
-                a *= 100;
-                this.getAttribute('centered') && (a = (a + 100) / 2);
-                $(this).find('.bar').css('width', `${a}%`);
-            });
-        }, 100));
-    };
-    geofs.preferencesStopFeedback = function() {
-        clearInterval(geofs.preferencesFeedbackInterval);
-        geofs.preferencesFeedbackInterval = null;
-    };
-    geofs.initializePreferencesPanel = function() {
-        controls.joystick.ready && (geofs.populateButtonAssignments(),
-            geofs.populateAxesAssignments());
-        $(controls.joystick).on('joystickReady', () => {
-            geofs.populateButtonAssignments();
-            geofs.populateAxesAssignments();
-            geofs.setPreferenceValues(geofs.$preferencePanel.find('.geofs-preferences-joystick'));
-        });
-        geofs.setPreferenceValues(geofs.$preferencePanel);
-        geofs.populateKeyAssignments();
-        geofs.preferencesTestJoystick();
-        geofs.preferencesTestOrientation();
-        geofs.preferencesDebugInfo();
-    };
-    geofs.setPreferenceValues = function(a) {
-        $(a).find('[gespref]').each(function() {
-            let a = $(this),
-                c = this.getAttribute('data-type') || this.getAttribute('type');
-            this.nodeName == 'SELECT' && (c = 'select');
-            c = c.toLowerCase();
-            for (var d = this.getAttribute('gespref').split('.'), e = window, f = 0; f < d.length - 1; f++) { e = e[d[f]]; }
-            d = e[d[f]];
-            switch (c) {
-                case 'slider':
-                    a.slider('value', d);
-                    a.on('change', function(a, b) {
-                        geofs.setPreferenceFromInput(this);
-                    });
-                    break;
-                case 'select':
-                    geofs.selectDropdown(this, d);
-                    this.onchange = function() {
-                        geofs.setPreferenceFromInput(this);
-                    };
-                    break;
-                case 'radio-button':
-                    (c = this.getAttribute('matchvalue')) && c == d && a.addClass('is-checked');
-                    a.on('click', 'input', function() {
-                        geofs.setPreferenceFromInput(this);
-                    });
-                    break;
-                case 'checkbox':
-                case 'radio':
-                    c = (c = this.getAttribute('matchvalue')) ? c == d : d == 1;
-                    a.prop('checked', c);
-                    c ? a.parent('.mdl-radio, .mdl-switch').addClass('is-checked') : a.parent('.mdl-radio, .mdl-switch').removeClass('is-checked');
-                    this.onchange = function() {
-                        geofs.setPreferenceFromInput(this);
-                    };
-                    break;
-                case 'keydetect':
-                    break;
-                default:
-                    this.value = d,
-                        this.onchange = function() {
-                            geofs.setPreferenceFromInput(this);
-                        };
-            }
-        });
-    };
-    geofs.destroyPreferencePanel = function() {
-        geofs.preferencesStopFeedback();
-    };
-    geofs.cancelPreferencesPanel = function() {
-        geofs.destroyPreferencePanel();
-        ui.closePreferencePanel();
-    };
-    geofs.setPreferenceFromInput = function(a) {
-
-        try {
-            let b = a.getAttribute('gespref');
-            if (b) {
-                let c = a.getAttribute('data-type') || a.getAttribute('type');
-                a.nodeName == 'SELECT' && (c = 'select');
-                c = c.toLowerCase();
-                const d = b.split('.');
-                b = window;
-                for (var e = 0; e < d.length - 1; e++) { b = b[d[e]]; }
-                switch (c) {
-                    case 'radio-button':
-                        $(a).is('.is-checked') && (b[d[e]] = a.getAttribute('matchvalue'));
-                        break;
-                    case 'checkbox':
-                        var f = a.getAttribute('matchvalue');
-                        var g = a.checked;
-                        f ? g && (b[d[e]] = f) : b[d[e]] = g;
-                        break;
-                    case 'radio':
-                        f = a.getAttribute('matchvalue');
-                        g = a.checked;
-                        f ? g && (g = b[d[e]] = f) : b[d[e]] = g;
-                        break;
-                    case 'slider':
-                        g = parseFloat($(a).slider('value'));
-                        b[d[e]] = g;
-                        break;
-                    case 'keydetect':
-                        g = a.value;
-                        b[d[e]].keycode = parseInt(a.getAttribute('keycode'));
-                        b[d[e]].label = g;
-                        break;
-                    default:
-                        g = a.value,
-                            b[d[e]] = g;
-                }
-                const h = a.getAttribute('update');
-                if (h) {
-                    c = function(a) {
-                        const b = eval(h);
-                        typeof b === 'function' && b(a);
-                    };
-                    try {
-                        c.call(a, g);
-                    } catch (k) {
-                        geofs.debug.error(k, 'setPreferenceFromInput updateFunction.call');
-                    }
-                }
-            }
-        } catch (k) {
-            geofs.debug.error(k, 'geofs.setPreferenceFromInput');
-        }
-    };
-    geofs.savePreferencesPanel = function() {
-        $('[gespref]', geofs.$preferencePanel).each(function() {
-            geofs.setPreferenceFromInput(this);
-        });
-        geofs.destroyPreferencePanel();
-        geofs.savePreferences();
-    };
 }
-
 export default hackGeoFS;

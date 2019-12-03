@@ -13,7 +13,7 @@
         </el-button>
     </div>
     <div class="menu_item" title="声音">
-        <el-button @click="clickButton($event)" id="volume"  circle>
+        <el-button @click="clickButton($event)" id="volume" circle>
             <i class="iconfont">&#xe62f;</i>
         </el-button>
     </div>
@@ -23,7 +23,7 @@
         </el-button>
     </div>
     <div class="menu_item" title="暂停">
-        <el-button @click="clickButton($event)" id="stop"  circle>
+        <el-button @click="clickButton($event)" id="stop" circle>
             <i class="iconfont"> &#xe612;</i>
         </el-button>
     </div>
@@ -35,16 +35,16 @@
         <el-button id="more" circle><i class="iconfont"> &#xe601;</i>
         </el-button>
     </div>
-    <el-drawer custom-class="drawer" :modal-append-to-body="false" :visible.sync="drawer" 
-        :wrapperClosable="false" :modal="false" direction="ltr">
+    <el-drawer custom-class="drawer" :modal-append-to-body="false" :visible.sync="drawer" :wrapperClosable="false" :modal="false" direction="ltr">
         <keep-alive>
             <component :is="current"></component>
         </keep-alive>
     </el-drawer>
-    <div class="autopilotPosition" v-if="autopilotShow" @click="showPanel">
+    <div class="autopilotPosition" v-if="autopilot.on" @click="showPanel">
         <i class="iconfontBigArrow">&#xe602;</i>
     </div>
-    <Autopilot v-if="show" />
+    <!-- 状态管理  -->
+    <Autopilot v-if="show && autopilot.on" />
     <el-popover width="80px" popper-class="el-popover" :value="cameraShow">
         <Camera></Camera>
     </el-popover>
@@ -77,12 +77,11 @@ export default {
     data() {
         return {
             drawer: false,
-            autopilotShow: false,
             current: "",
             color: [],
             show: false,
             cameraShow: false,
-            autopilot:controls.autopilot,
+            autopilot: controls.autopilot,
             // audioOn:audio.on, //没有追踪声音的动态变化，data的追踪依赖
             // pause:geofs.pause,
             drawers: [{
@@ -108,6 +107,9 @@ export default {
             ]
         }
     },
+    mounted() {
+
+    },
     methods: {
         showPanel() {
             this.show = !this.show
@@ -123,10 +125,8 @@ export default {
                 this.drawer = true;
             }
             this.current = e.target.id;
-            if (this.drawer === true) {
-                geofs.initializePreferencesPanel();
-            } else {
-                geofs.savePreferencesPanel()
+            if (this.drawer === false) {
+                geofs.savePreferences();
             }
         },
         clickButton(e) {
@@ -146,14 +146,7 @@ export default {
                     break;
                 case "autopilot":
                     this.drawer = false
-                    this.autopilotShow = this.autopilotShow ? false : true;
                     controls.autopilot.toggle();
-                    if(controls.autopilot.on){
-                        this.show = true;
-                    }
-                    else{
-                         this.show = false;
-                    }
             }
         },
     },
@@ -184,10 +177,12 @@ export default {
     left: 4.1% !important;
     border-left: 1px solid #0000002b;
 }
-.onActive{
-    color:#409EFF;
+
+.onActive {
+    color: #409EFF;
     background-color: #d5e1ee !important;
 }
+
 .drawer {
     padding-left: 5px;
     width: 300px !important;
