@@ -110,14 +110,14 @@ aircraft.Aircraft.prototype.parseRecord = function(a) {
     }
     return d;
 };
-aircraft.Aircraft.prototype.load = (a, b, c) => { //载入飞机的json，配置文件
+//载入飞机的json，配置文件
+aircraft.Aircraft.prototype.load = (a, b, c) => {
     $.ajax(aircraftList[a] && aircraftList[a].local ? `${aircraftList[a].path}aircraft.json` : `${geofs.url}/models/aircraft/load.php`, {
         data: {
             id: a,
         },
         dataType: 'text',
         success(d, e, f) {
-            // @ts-ignore
             if (e !== 'error') {
                 if (aircraftList[a].local && (d = JSON.stringify({
                         id: a,
@@ -253,8 +253,13 @@ aircraft.Aircraft.prototype.loadCockpit = function() { //驾驶舱信息初始�
         } else { aircraft.instance._cockpitLoaded = !0; }
     }
 };
-aircraft.Aircraft.prototype.addParts = (a, b, c) => { //添加飞机组成，共 body  leftWing rightWing horizontalStab  verticalStab  aileronleft 
-    // aileronright   elevator  rudder   gearleft  wheelleft   gearright wheelright  tailwheel   engine   prop   propblur  
+/**添加飞机组成
+  *  body  leftWing  rightWing  horizontalStab  verticalStab  aileronleft 
+  *  aileronright  elevator  rudder  gearleft  wheelleft
+  *  gearright  wheelright  tailwheel  engine  prop  propblur 
+  *  会有一个跟节点，然后所有组装在根节点
+ */
+aircraft.Aircraft.prototype.addParts = (a, b, c) => { 
     c = c || 1;
     for (var d = 0; d < a.length; d++) {
         var e = a[d];

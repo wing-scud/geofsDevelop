@@ -125,7 +125,7 @@ flight.tick = function(a, b) {
                 M.temperature = E;
                 aircraftInstance.rigidBody.applyForce([0, 0, (weather.atmosphere.airDensityAtAltitude - weather.atmosphere.airPressureAtAltitude / (GAS_CONSTANT * (E + KELVIN_OFFSET))) * M.volume * GRAVITY], M.points.forceSourcePoint.worldPosition);
             }
-            if (aircraftInstance.trueAirSpeed > 0.01) { //拖拽银因子 dragFactor
+            if (aircraftInstance.trueAirSpeed > 0.01) { //拖拽因子 dragFactor
                 let aa = V3.scale(aircraftInstance.veldir, -(setUp.dragFactor * aircraftInstance.trueAirSpeed * aircraftInstance.trueAirSpeed * weather.atmosphere.airDensityAtAltitude));
                 //这个中心力？？
                 aircraftInstance.rigidBody.applyCentralForce(aa);
