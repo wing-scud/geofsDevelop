@@ -1350,25 +1350,30 @@ api.map.planeMarker.prototype = {
         this._marker && this._marker.remove();
     },
 };
-api.map.autoFlight = function() {
+// 路径导航
+api.map.autoFlight = function(kias, height) {
     if (api.map.flightPath !== null) {
+        controls.autopilot.autoLocation = 0;
         var start = api.map.flightPath._latlngs[0]
         var end = api.map.flightPath._latlngs[1]
         var angle = GetAzimuth(start, end)
+        let destination = [start.lat, start.lng, 0, 0, "true"];
+        geofs.flyTo(destination);
+        controls.autopilot.turnOn();
+        controls.autopilot.setKias(kias);
+        controls.autopilot.setAltitude(height);
         controls.autopilot.heading = angle;
-        let destination = [start.lat, start.lng, 0, 0, "true"]
-        geofs.flyTo(destination)
-        controls.autopilot.turnOn()
         let autoFlightJudge = setInterval(function() {
             if (api.map.flightPath !== null) {
-                var llaLocation = [geofs.aircraft.instance.llaLocation[0], geofs.aircraft.instance.llaLocation[1]]
-                var autoLocation = controls.autopilot.autoLocation
-                var destination = api.map.flightPath._latlngs[autoLocation + 1]
-
-                var distance = GetDistanceTwo(destination, llaLocation)
-
+                var llaLocation = [geofs.aircraft.instance.llaLocation[0], geofs.aircraft.instance.llaLocation[1]];
+                var llaLocationLatLong = { lat: llaLocation[0], lng: llaLocation[1] };
+                var autoLocation = controls.autopilot.autoLocation;
+                var destination = api.map.flightPath._latlngs[autoLocation + 1];
+                var distance = GetDistanceTwo(destination, llaLocation);
+                //加上一个一直修正方向，
+                angle = GetAzimuth(llaLocationLatLong, destination)
+                controls.autopilot.heading = angle;
                 if (distance <= 250) {
-
                     //飞机是运行中转向，所以速度越快，对应的距离要越大，不然，转向之后是越过了
                     controls.autopilot.autoLocation++;
                     autoLocation = controls.autopilot.autoLocation
@@ -1383,9 +1388,10 @@ api.map.autoFlight = function() {
                     var end = api.map.flightPath._latlngs[autoLocation + 1]
                     var angle = GetAzimuth(start, end)
                     controls.autopilot.heading = angle;
+                    console.log("angle" + angle)
                 }
             }
-        }, 100)
+        }, 1000)
     }
 }
 api.map.flightPath = null;

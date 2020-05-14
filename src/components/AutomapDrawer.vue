@@ -55,10 +55,7 @@ export default {
         },
         autoFlight() {
             this.color = "white";
-            controls.autopilot.autoLocation = 0
-            controls.autopilot.setKias(Number(this.kias))
-            controls.autopilot.setAltitude(Number(this.height))
-            geofs.api.map.autoFlight()
+            geofs.api.map.autoFlight(Number(this.kias),Number(this.height))
         }
     },
     mounted() {

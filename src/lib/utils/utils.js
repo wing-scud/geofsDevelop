@@ -548,9 +548,19 @@ function getBuildingCollision(a) {
     return null
 }
 
+// function xyz2lla(a, b) {
+//     return geofs.api.xyz2lla(a, b)
+// }
+
 function xyz2lla(a, b) {
-    return geofs.api.xyz2lla(a, b)
-}
+    let c = new Cesium.Matrix4(),
+        d = geofs.api.viewer.scene.globe.ellipsoid,
+        e = Cesium.Cartesian3.fromDegrees(b[1], b[0], b[2]);
+    Cesium.Transforms.eastNorthUpToFixedFrame(e, d, c);
+    a = new Cesium.Cartesian3(a[0], a[1], a[2]);
+    c = Cesium.Matrix4.multiplyByPoint(c, a, new Cesium.Cartesian3());
+    return (d = Cesium.Cartographic.fromCartesian(c, d, new Cesium.Cartographic())) ? [d.latitude * RAD_TO_DEGREES - b[0], d.longitude * RAD_TO_DEGREES - b[1], d.height - b[2]] : [0, 0, 0];
+};
 
 function xy2ll(a, b) {
     var c = [];

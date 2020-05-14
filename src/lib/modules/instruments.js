@@ -3,7 +3,7 @@
 import camera from './camera'
 import geofs from "../geofs"
 import Overlay from "./OverLay"
-import { VIEWPORT_REFERENCE_WIDTH, VIEWPORT_REFERENCE_HEIGHT, clamp, PAGE_PATH } from "../utils/utils"
+import { VIEWPORT_REFERENCE_WIDTH, VIEWPORT_REFERENCE_HEIGHT, clamp, PAGE_PATH, V3, xyz2lla, fixAngle } from "../utils/utils"
 var instruments = window.instruments || {};
 instruments.stackPosition = {
     x: 0,
